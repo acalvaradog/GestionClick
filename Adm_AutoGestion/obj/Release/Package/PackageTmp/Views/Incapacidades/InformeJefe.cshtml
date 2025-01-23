@@ -37,7 +37,7 @@
                         <div class="col-3" style="text-align:left">
                             <label for="CodigoEmpleado">Codigo Empleado:</label>
                             @Html.TextBox("CodigoEmpleado", null, htmlAttributes: new { @class = "form-control", placeholder = "Codigo Empleado" })
-                           
+
                         </div>
 
                         <div class="col-3" style="text-align:left">
@@ -45,10 +45,10 @@
                             @Html.DropDownList("Empresa", new SelectList(ViewBag.Empresa, "Codigo", "Descripcion"), htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
                             @*Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", placeholder = "Empresa" })*@
                             @*<select class="form-control" id="Empresa" name="Empresa">
-                <option value="">Seleccionar...</option>
-                <option value="1000" @(ViewBag.EmpresaSeleccionada == "1000" ? "selected" : "")>1000</option>
-                <option value="2000" @(ViewBag.EmpresaSeleccionada == "2000" ? "selected" : "")>2000</option>
-            </select>*@
+                        <option value="">Seleccionar...</option>
+                        <option value="1000" @(ViewBag.EmpresaSeleccionada == "1000" ? "selected" : "")>1000</option>
+                        <option value="2000" @(ViewBag.EmpresaSeleccionada == "2000" ? "selected" : "")>2000</option>
+                    </select>*@
                         </div>
                         <div class="col-3" style="text-align:left">
                             <label for="exampleFormControlSelect1">Estado: </label>&nbsp&nbsp
@@ -58,125 +58,132 @@
                                 <option value="2" @(ViewBag.EstadoSeleccionado == "2" ? "selected" : "")>Aprobado</option>
                                 <option value="3" @(ViewBag.EstadoSeleccionado == "3" ? "selected" : "")>Rechazado</option>
                                 @*<option value="15">Cargar Aseguradora</option>
-                <option value="16">Devuelto</option>*@
+                        <option value="16">Devuelto</option>*@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row justify-content-start">
-                    <div class="col-md-12 mb-2" style="text-align:center">
-                        <button type="submit" class="bi bi-search btn btn-outline-primary mb-2" style="font-size:16px" id="Search" onclick="@Url.Action("InformeJefe","Incapacidades")">&nbsp; Buscar</button>
+
+                    <br />
+
+
+                    <div class="row justify-content-start">
+                        <div class="col-md-12 mb-2" style="text-align:center">
+                            <button type="submit" class="bi bi-search btn btn-outline-primary rounded-pill mb-2" style="font-size:16px" id="Search" onclick="@Url.Action("InformeJefe","Incapacidades")">&nbsp; Buscar</button>
+                        </div>
                     </div>
+
+                    <hr />
+
+                    <div class="table-responsive">
+                        <table class="table table-striped display dataTable table-sm" id="Exportar_a_Excel">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Nombre Empleado
+                                    </th>
+                                    <th>
+                                        Codigo Empleado
+                                    </th>
+                                    <th>
+                                        Cargo
+                                    </th>
+                                    <th>
+                                        Fecha de Solicitud
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.FechaInicio)*@
+                                        Fecha Inicial
+                                    </th>
+                                    <th>
+                                        Fecha Fin
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.CantidadDias)*@
+                                        Cant. Dias Incap.
+                                    </th>
+                                    <th>
+                                        @*  @Html.DisplayNameFor(model => model.Diagnostico)*@
+                                        Diagnostico
+                                    </th>
+                                    <th>
+                                        Empresa
+                                    </th>
+                                    <th>
+                                        Area
+                                    </th>
+                                    <th>
+                                        @*@Html.DisplayNameFor(model => model.EstadoId)*@
+                                        Estado
+                                    </th>
+                                    <th>
+                                        Adjunto
+                                    </th>
+                                    @*<th></th>*@
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.PersonalActivo.Cargo)
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @*@Html.DisplayFor(modelItem => item.FechaInicial)*@
+                                            @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CantidadDias)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Diagnostico)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Empleado.Empresa)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Empleado.Area)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.EstadosIncapacidades.Nombre)
+                                        </td>
+                                        <td style="text-align:center">
+                                            @*@Html.DisplayFor(modelItem => item.Adjunto)*@
+                                            @*@Html.ActionLink("Ver Archivos Adjuntos", "Adjunto", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 1 }, new { target = "_blank" })*@
+                                            <a href='@Url.Action("Adjunto", "Incapacidades", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 0 }, null)' target="_blank" title="Ver Adjuntos">
+
+                                                <i class="fas fa-cloud-download-alt"></i>
+                                            </a>
+                                        </td>
+                                        @*<td>
+                                    @Html.ActionLink("Edit", "Edit", new { id=item.Id })
+                                </td>*@
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
                 </div>
+
             </div>
-   
-
-    <div class="table-responsive">
-        <table class="table table-striped display dataTable table-sm" id="Exportar_a_Excel">
-            <thead>
-                <tr>
-                    <th>
-                        Nombre Empleado
-                    </th>
-                    <th>
-                        Codigo Empleado
-                    </th>
-                    <th>
-                        Cargo
-                    </th>
-                    <th>
-                        Fecha de Solicitud 
-                    </th>
-                    <th>
-                        @*@Html.DisplayNameFor(model => model.FechaInicio)*@
-                        Fecha Inicial
-                    </th>
-                    <th>
-                        Fecha Fin
-                    </th>
-                    <th>
-                        @*@Html.DisplayNameFor(model => model.CantidadDias)*@
-                        Cant. Dias Incap.
-                    </th>
-                    <th>
-                        @*  @Html.DisplayNameFor(model => model.Diagnostico)*@
-                        Diagnostico
-                    </th>
-                    <th>
-                        Empresa
-                    </th>
-                    <th>
-                        Area
-                    </th>
-                    <th>
-                        @*@Html.DisplayNameFor(model => model.EstadoId)*@
-                        Estado
-                    </th>
-                    <th>
-                        Adjunto
-                    </th>
-                    @*<th></th>*@
-                </tr>
-
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PersonalActivo.Cargo)
-                        </td>
-                        <td>
-                            @*@Html.DisplayFor(modelItem => item.Fecha)*@
-                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
-                        </td>
-                        <td>
-                            @*@Html.DisplayFor(modelItem => item.FechaInicial)*@
-                            @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
-                        </td>
-                        <td>
-                            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CantidadDias)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Diagnostico)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Empleado.Empresa)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Empleado.Area)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EstadosIncapacidades.Nombre)
-                        </td>
-                        <td style="text-align:center">
-                            @*@Html.DisplayFor(modelItem => item.Adjunto)*@
-                            @*@Html.ActionLink("Ver Archivos Adjuntos", "Adjunto", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 1 }, new { target = "_blank" })*@
-                            <a href='@Url.Action("Adjunto", "Incapacidades", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 0 }, null)' target="_blank" title="Ver Adjuntos">
-
-                                <i class="fas fa-cloud-download-alt"></i>
-                            </a>
-                        </td>
-                        @*<td>
-                                @Html.ActionLink("Edit", "Edit", new { id=item.Id })
-                            </td>*@
-                    </tr>
-                }
-
-            </tbody>
-
-        </table>
-    </div>
-
+    
 </form>
 
 <script language="javascript" type="text/javascript">

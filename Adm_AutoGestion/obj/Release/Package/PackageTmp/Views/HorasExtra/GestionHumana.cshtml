@@ -37,6 +37,8 @@
                 </div>
             </div>
 
+            <hr />
+
 
             <div class="row justify-content-start">
                 <div class="col-12" style="text-align:left">
@@ -46,12 +48,16 @@
             </div>
             <div class="row justify-content-start">
                 <div class="table-responsive">
-                    <table id="Tabla_HorasExtra" class="table table-striped">
+                    <table id="Tabla_HorasExtra" class="table table-striped table-sm">
                         <thead>
                             <tr>
                                 <th>
                                     Seleccione
                                 </th>
+                                <th>
+                                    Ver Observación
+                                </th>
+                                <th>Ver histórico</th>
                                 <th>
                                     No.Solicitud
                                 </th>
@@ -121,13 +127,13 @@
                                 </th>
 
                                 @*<th>
-                                        Cargue Nómina
-                                    </th>*@
+            Cargue Nómina
+        </th>*@
 
                                 <th>
                                     Estado
                                 </th>
-                                <th>Ver histórico</th>
+                             
 
 
 
@@ -143,6 +149,17 @@
 
                                             <button class="btn close fas fa-eye text-muted mr-4" disabled></button>
                                         </td>
+
+                                        <td>
+                                            @*@Html.ActionLink(" ", "HistorialHE", new { id = item.Id }, new { data_modalHistoricoHEJefeDetail = "", @class = "btn close fa fa-user-circle text-primary mr-4", onclick = "openmodalHE02(this.href, 'Historial del Proceso de Horas Extra')" })*@
+                                            <button class=" close fas fa-user-circle text-muted mr-4" disabled></button>
+                                        </td>
+
+                                        <td>
+                                            @*@Html.ActionLink(" ", "HistorialHE", new { id = item.Id }, new { data_modalHistoricoHEJefeDetail = "", @class = "btn close fa fa-user-circle text-primary mr-4", onclick = "openmodalHE02(this.href, 'Historial del Proceso de Horas Extra')" })*@
+                                            <button class=" close fas fa-user-circle text-muted mr-4" disabled></button>
+                                        </td>
+
                                         <td>
                                             Registro total
                                         </td>
@@ -193,84 +210,89 @@
                                         <td>
                                             @* @item.EstadosHorasExtra.Nombre*@
                                         </td>
-                                        <td>
-                                            @*@Html.ActionLink(" ", "HistorialHE", new { id = item.Id }, new { data_modalHistoricoHEJefeDetail = "", @class = "btn close fa fa-user-circle text-primary mr-4", onclick = "openmodalHE02(this.href, 'Historial del Proceso de Horas Extra')" })*@
-                                            <button class=" close fas fa-user-circle text-muted mr-4" disabled></button>
-                                        </td>
+                                       
 
                                     </tr>
                                 }
                                 else
                                 {
-                                    <tr>
-                                        <td style="text-align:center">
-                                            <input type="checkbox" class="form-check-input" id="@item.Id" name="item[]" value=" @item.Id " />
-                                            @*@Html.ActionLink(" ", "DetalleHorasExtraGestion2", new { id = item.Id }, new { data_modalHEJefeDetail = "", @class = "btn close fas fa-eye text-primary mr-4", onclick = "openmodalHE01(this.href, 'Detalle horas extras')" })*@
-                                        </td>
-                                        <td style="text-align:center">
-                                            <label> @item.Id</label>
-                                        </td>
+                        <tr>
+                            <td style="text-align:center">
+                                <input type="checkbox" class="form-check-input" id="@item.Id" name="item[]" value=" @item.Id " />
+                                @*@Html.ActionLink(" ", "DetalleHorasExtraGestion2", new { id = item.Id }, new { data_modalHEJefeDetail = "", @class = "btn close fas fa-eye text-primary mr-4", onclick = "openmodalHE01(this.href, 'Detalle horas extras')" })*@
+                            </td>
+                            <td style="text-align:center">
 
-                                        <td>
-                                            @item.FechadeRegistro
-                                        </td>
-                                        <td>
-                                            @item.Empleado.Documento
-                                        </td>
-                                        <td>
-                                            @item.Empleado.Nombres
-                                        </td>
-                                        <td>
-                                            @item.Empleado.Empresa
-                                        </td>
-                                        <td>
-                                            @item.Empleado.NroEmpleado
-                                        </td>
-                                        <td>
-                                            @item.Empleado.AreaDescripcion
-                                        </td>
-                                        <td>
-                                            @item.FechaHora
-                                        </td>
-                                        <td>
-                                            @item.HoraDesde
-                                        </td>
-                                        <td>
-                                            @item.HoraHasta
-                                        </td>
-                                        <td style="text-align:center">
-                                            @item.LiquidacionDiurna
-                                        </td>
-                                        <td style="text-align:center">
-                                            @item.LiquidacionNocturna
-                                        </td>
-                                        <td style="text-align:center">
-                                            @item.LiquidacionDiurnaFestivo
-                                        </td>
-                                        <td style="text-align:center">
-                                            @item.LiquidacionNocturnaFestivo
-                                        </td>
-                                        <td style="text-align:center">
-                                            @item.TotalHoras
-                                        </td>
-                                        <td>
+                                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalObservacion" data-observacion="@item.ObservacionesMotivo">
+                                    <i class="fas fa-eye"></i>
+                                </button>
 
-                                            @if (item.EstadosHorasExtra != null)
-                                            {
-                                                @item.EstadosHorasExtra.Nombre
-                                            }
-                                        </td>
-                                        <td style="text-align:center">
-                                            <a href="@Url.Action("HistorialHE", new { id = item.Id })"
-                                               data-modalHistoricoHEJefeDetail=""
-                                               onclick="openmodalHE02(this.href, 'Historial del proceso de horas extra')">
-                                                <i class="fas fa-clock text-primary"></i>
-                                                <span class="sr-only">Historial</span>
-                                            </a>
-                                            @*@Html.ActionLink(" ", "HistorialHE", new { id = item.Id }, new { data_modalHistoricoHEJefeDetail = "", @class = "btn fas fa-clock text-primary mr-4", onclick = "openmodalHE02(this.href, 'Historial del proceso de horas extra')" })*@
-                                        </td>
+                            </td>
+                            <td style="text-align:center">
+                                <a href="@Url.Action("HistorialHE", new { id = item.Id })"
+                                   data-modalHistoricoHEJefeDetail=""
+                                   onclick="openmodalHE02(this.href, 'Historial del proceso de horas extra')">
+                                    <i class="fas fa-clock text-primary"></i>
+                                    <span class="sr-only">Historial</span>
+                                </a>
+                                @*@Html.ActionLink(" ", "HistorialHE", new { id = item.Id }, new { data_modalHistoricoHEJefeDetail = "", @class = "btn fas fa-clock text-primary mr-4", onclick = "openmodalHE02(this.href, 'Historial del proceso de horas extra')" })*@
+                            </td>
+                            <td style="text-align:center">
+                                <label> @item.Id</label>
+                            </td>
 
-                                    </tr>
+                            <td>
+                                @item.FechadeRegistro
+                            </td>
+                            <td>
+                                @item.Empleado.Documento
+                            </td>
+                            <td>
+                                @item.Empleado.Nombres
+                            </td>
+                            <td>
+                                @item.Empleado.Empresa
+                            </td>
+                            <td>
+                                @item.Empleado.NroEmpleado
+                            </td>
+                            <td>
+                                @item.Empleado.AreaDescripcion
+                            </td>
+                            <td>
+                                @item.FechaHora
+                            </td>
+                            <td>
+                                @item.HoraDesde
+                            </td>
+                            <td>
+                                @item.HoraHasta
+                            </td>
+                            <td style="text-align:center">
+                                @item.LiquidacionDiurna
+                            </td>
+                            <td style="text-align:center">
+                                @item.LiquidacionNocturna
+                            </td>
+                            <td style="text-align:center">
+                                @item.LiquidacionDiurnaFestivo
+                            </td>
+                            <td style="text-align:center">
+                                @item.LiquidacionNocturnaFestivo
+                            </td>
+                            <td style="text-align:center">
+                                @item.TotalHoras
+                            </td>
+                            <td>
+
+                                @if (item.EstadosHorasExtra != null)
+                                {
+                                    @item.EstadosHorasExtra.Nombre
+                                }
+                            </td>
+                          
+
+                        </tr>
                                 }
                             }
                         </tbody>
@@ -325,4 +347,24 @@
 
         </div>
     </div>
+
+    <div class="modal fade in" id="modalObservacion" tabindex="-1" aria-labelledby="modalObservacionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #1565C0">
+                    <h5 class="modal-title text-white"> Observación Hora Extra</h5>
+                    <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+
+                </div>
+                <div class="modal-body">
+                    <p id="textoObservacion"></p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
 </form>

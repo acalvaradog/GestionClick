@@ -46,6 +46,8 @@
                 </div>
             </div>
 
+            <hr />
+
             <div class="row justify-content-start">
                 <div class="col-12" style="text-align:left">
                     @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
@@ -225,8 +227,8 @@
                             </td>
                             <td style="text-align:center">
 
-                                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalObservacion" data-observacion="@item.ObservacionesMotivo">
-                                    Ver
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalObservacion" data-observacion="@item.ObservacionesMotivo">
+                                    <i class="fas fa-eye"></i>
                                 </button>
 
                             </td>
