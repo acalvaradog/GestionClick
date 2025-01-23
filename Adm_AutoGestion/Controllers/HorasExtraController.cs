@@ -51,8 +51,8 @@ namespace Adm_AutoGestion.Controllers
             //public float? TotalLiquidacionNocturnaFestivo { get; set; }
             public int Estado { get; set; }
             public DateTime? FechaPago { get; set; }
-          
-        public EstadosHorasExtra EstadosHorasExtra { get; set; }
+
+            public EstadosHorasExtra EstadosHorasExtra { get; set; }
 
 
         }
@@ -78,8 +78,9 @@ namespace Adm_AutoGestion.Controllers
             return View(model);
         }
 
-        public ActionResult DescargarPDF(int Id) { 
-            Document doc  = new Document(PageSize.LETTER);
+        public ActionResult DescargarPDF(int Id)
+        {
+            Document doc = new Document(PageSize.LETTER);
             doc.SetMargins(40f, 40f, 40f, 40f);
             MemoryStream ms = new MemoryStream();
             //FileStream file = new FileStream("archivo.pdf", FileMode.Create,FileAccess.ReadWrite);
@@ -90,7 +91,7 @@ namespace Adm_AutoGestion.Controllers
             doc.Open();
 
             BaseFont _titulo = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, true);
-            iTextSharp.text.Font titulo = new iTextSharp.text.Font(_titulo,14f,iTextSharp.text.Font.BOLD, new BaseColor(0,0,0));
+            iTextSharp.text.Font titulo = new iTextSharp.text.Font(_titulo, 14f, iTextSharp.text.Font.BOLD, new BaseColor(0, 0, 0));
 
             BaseFont _subtitulo = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, true);
             iTextSharp.text.Font subtitulo = new iTextSharp.text.Font(_subtitulo, 10f, iTextSharp.text.Font.BOLD, new BaseColor(0, 0, 0));
@@ -98,7 +99,7 @@ namespace Adm_AutoGestion.Controllers
             BaseFont _parrafo = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, true);
             iTextSharp.text.Font parrafo = new iTextSharp.text.Font(_parrafo, 10f, iTextSharp.text.Font.NORMAL, new BaseColor(0, 0, 0));
 
-            iTextSharp.text.Font negrita = new iTextSharp.text.Font( _subtitulo, 8f, iTextSharp.text.Font.BOLD, new BaseColor(0, 0, 0));
+            iTextSharp.text.Font negrita = new iTextSharp.text.Font(_subtitulo, 8f, iTextSharp.text.Font.BOLD, new BaseColor(0, 0, 0));
 
             BaseFont _parrafo2 = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, true);
             iTextSharp.text.Font parrafo2 = new iTextSharp.text.Font(_parrafo, 8f, iTextSharp.text.Font.NORMAL, new BaseColor(0, 0, 0));
@@ -111,14 +112,14 @@ namespace Adm_AutoGestion.Controllers
             //doc.Add(linea);
 
             //iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance("~/Contents/assets/images/Logo.png");
-           // logo.ScaleAbsoluteWidth(150);
+            // logo.ScaleAbsoluteWidth(150);
             var tbl = new PdfPTable(new float[] { 50f, 50f }) { WidthPercentage = 100 };
             tbl.AddCell(new PdfPCell(new Phrase("Radiologos Especializados S.A.", titulo)) { Border = 0, Rowspan = 2, VerticalAlignment = Element.ALIGN_MIDDLE });
-            tbl.AddCell(new PdfPCell(new Phrase("REPORTE HORAS EXTRAS", titulo)) { Border = 0,  HorizontalAlignment = Element.ALIGN_RIGHT});
-            doc.Add(tbl); 
+            tbl.AddCell(new PdfPCell(new Phrase("REPORTE HORAS EXTRAS", titulo)) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+            doc.Add(tbl);
 
             doc.Add(new Phrase(" "));
-           
+
 
             doc.Add(Chunk.NEWLINE);
 
@@ -144,14 +145,15 @@ namespace Adm_AutoGestion.Controllers
             {
                 genero = "MASCULINO";
             }
-            else {
+            else
+            {
 
                 genero = "FEMENINO";
             }
 
-            tbl = new PdfPTable(new float[] { 20f, 25f,10f,20f,10f, 15f}) { WidthPercentage = 100 };
+            tbl = new PdfPTable(new float[] { 20f, 25f, 10f, 20f, 10f, 15f }) { WidthPercentage = 100 };
             tbl.AddCell(new PdfPCell(new Phrase("NOMBRE EMPLEADO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
-            tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.Nombres,parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.Nombres, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase("CARGO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.Cargo, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase("EDAD:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
@@ -159,7 +161,7 @@ namespace Adm_AutoGestion.Controllers
             doc.Add(tbl);
             tbl = new PdfPTable(new float[] { 20f, 25f, 10f, 20f, 10f, 15f }) { WidthPercentage = 100 };
             tbl.AddCell(new PdfPCell(new Phrase("CODIGO EMPLEADO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
-            tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.NroEmpleado, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE  });
+            tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.NroEmpleado, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase("GENERO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(genero, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
@@ -167,17 +169,17 @@ namespace Adm_AutoGestion.Controllers
             doc.Add(tbl);
             doc.Add(new Phrase(" "));
             doc.Add(new Phrase(" "));
-            tbl = new PdfPTable(new float[] { 12f, 11f, 11f, 11f, 11f, 11f,11f,11f,11f }) { WidthPercentage = 100 };
-            var c1 = new PdfPCell(new Phrase("FECHA", negrita)) {Border = 0, BorderWidthBottom = 2f,BorderColor = new BaseColor (0,69,161), Padding =4f };
-            var c2 = new PdfPCell(new Phrase("HORA DESDE",negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
-            var c3= new PdfPCell(new Phrase("HORA HASTA",negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            tbl = new PdfPTable(new float[] { 12f, 11f, 11f, 11f, 11f, 11f, 11f, 11f, 11f }) { WidthPercentage = 100 };
+            var c1 = new PdfPCell(new Phrase("FECHA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c2 = new PdfPCell(new Phrase("HORA DESDE", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c3 = new PdfPCell(new Phrase("HORA HASTA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c9 = new PdfPCell(new Phrase("MOTIVO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
-            var c4 = new PdfPCell(new Phrase("DIURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161),Padding =4f };
-            var c5 = new PdfPCell(new Phrase("NOCTURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161),Padding =4f };
+            var c4 = new PdfPCell(new Phrase("DIURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c5 = new PdfPCell(new Phrase("NOCTURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c6 = new PdfPCell(new Phrase("DIURNA FESTIVA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c7 = new PdfPCell(new Phrase("NOCTURNA FESTIVA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c8 = new PdfPCell(new Phrase("TOTAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
-     
+
             tbl.AddCell(c1);
             tbl.AddCell(c2);
             tbl.AddCell(c3);
@@ -187,16 +189,16 @@ namespace Adm_AutoGestion.Controllers
             tbl.AddCell(c6);
             tbl.AddCell(c7);
             tbl.AddCell(c8);
-            
-            
 
-            c1.Border = 0; c2.Border = 0; c3.Border = 0;  c4.Border = 0; c5.Border = 0; c6.Border = 0; c7.Border = 0; c8.Border = 0; c9.Border = 0;
+
+
+            c1.Border = 0; c2.Border = 0; c3.Border = 0; c4.Border = 0; c5.Border = 0; c6.Border = 0; c7.Border = 0; c8.Border = 0; c9.Border = 0;
 
             var detalleHorasExtra = _repo.ObtenerDetallesHorasExtra(Id);
 
             foreach (var deta in detalleHorasExtra)
             {
-                c1.Phrase = new Phrase(string.Format("{0:yyyy-MM-dd}", deta.Fecha),parrafo2);
+                c1.Phrase = new Phrase(string.Format("{0:yyyy-MM-dd}", deta.Fecha), parrafo2);
                 c2.Phrase = new Phrase(deta.HoraDesde.ToString(), parrafo2);
                 c3.Phrase = new Phrase(deta.HoraHasta.ToString(), parrafo2);
                 if (deta.ObservacionesMotivo is null)
@@ -209,12 +211,12 @@ namespace Adm_AutoGestion.Controllers
                     c9.Phrase = new Phrase(deta.ObservacionesMotivo.ToString(), parrafo2);
                 }
                 c4.Phrase = new Phrase(deta.LiquidacionDiurna.ToString(), parrafo2);
-                c5.Phrase = new Phrase( deta.LiquidacionNocturna.ToString(), parrafo2);
+                c5.Phrase = new Phrase(deta.LiquidacionNocturna.ToString(), parrafo2);
                 c6.Phrase = new Phrase(deta.LiquidacionDiurnaFestivo.ToString(), parrafo2);
-                c7.Phrase = new Phrase( deta.LiquidacionNocturnaFestivo.ToString(), parrafo2);
-                c8.Phrase = new Phrase( deta.TotalHoras.ToString(), parrafo2);
-              
-              
+                c7.Phrase = new Phrase(deta.LiquidacionNocturnaFestivo.ToString(), parrafo2);
+                c8.Phrase = new Phrase(deta.TotalHoras.ToString(), parrafo2);
+
+
                 tbl.AddCell(c1);
                 tbl.AddCell(c2);
                 tbl.AddCell(c3);
@@ -224,11 +226,11 @@ namespace Adm_AutoGestion.Controllers
                 tbl.AddCell(c6);
                 tbl.AddCell(c7);
                 tbl.AddCell(c8);
-               
+
             }
 
             c1.Colspan = 9;
-            c1.Phrase = new Phrase("Total Horas Extras "+detalleHorasExtra.Sum(x => x.TotalHoras).ToString(),parrafo);
+            c1.Phrase = new Phrase("Total Horas Extras "+detalleHorasExtra.Sum(x => x.TotalHoras).ToString(), parrafo);
             c1.HorizontalAlignment =Element.ALIGN_RIGHT;
             tbl.AddCell(c1);
 
@@ -238,20 +240,20 @@ namespace Adm_AutoGestion.Controllers
             tbl = new PdfPTable(new float[] { 100f }) { WidthPercentage = 100 };
 
             string imagenbase64 = HorasExtra.Firma.Split(',')[1];
-       
+
             byte[] imageBytes = Convert.FromBase64String(imagenbase64);
 
             Image pdfImage = Image.GetInstance(imageBytes);
 
             float ancho = pdfImage.Width;
             float alto = pdfImage.Height;
-            float proporcion  = ancho/ alto;
+            float proporcion = ancho/ alto;
 
             pdfImage.ScaleAbsoluteWidth(150);
             pdfImage.ScaleAbsoluteHeight(150);
 
             tbl.AddCell(new PdfPCell(pdfImage));
-          //  tbl.AddCell(new PdfPCell(new Phrase("Firma", subtitulo)) { Border = 0, VerticalAlignment = Element.ALIGN_CENTER });
+            //  tbl.AddCell(new PdfPCell(new Phrase("Firma", subtitulo)) { Border = 0, VerticalAlignment = Element.ALIGN_CENTER });
             doc.Add(tbl);
 
             tbl = new PdfPTable(new float[] { 100f }) { WidthPercentage = 100 };
@@ -264,12 +266,12 @@ namespace Adm_AutoGestion.Controllers
             //ms.Seek(0, SeekOrigin.Begin);
             return File(ms.ToArray(), "application/pdf");
 
-        
-       
-        
+
+
+
         }
 
-        public ActionResult JefeDirectoHorasExtra(string JefeID, string TrabajadorS,  string UnidadOrg, string Empresa, string Estado)
+        public ActionResult JefeDirectoHorasExtra(string JefeID, string TrabajadorS, string UnidadOrg, string Empresa, string Estado)
         {
             List<string> funciones = Acceso.Validar(Session["Empleado"]);
             if (Acceso.EsAnonimo)
@@ -290,11 +292,11 @@ namespace Adm_AutoGestion.Controllers
                 DateTime Fecha2 = DateTime.Now;
                 string NmrRegistro = "";
 
-               Empleado empleado = new Empleado();
+                Empleado empleado = new Empleado();
 
                 var opcion = "JefeDirectoHorasExtra";
                 var Empleadolog = Convert.ToString(Session["Empleado"]);
-                
+
 
                 int JefeID2 = 0;
                 if (JefeID == null || JefeID == "")
@@ -307,7 +309,8 @@ namespace Adm_AutoGestion.Controllers
                 var Lider = db.Empleados.Where(e => e.Lider.Trim() == NroEmpLog.NroEmpleado.Trim() && e.Activo.Trim() == "SI").OrderBy(x => x.Nombres).ToList();
                 var Jefe2 = db.Empleados.Where(e => e.Jefe.Trim() == NroEmpLog.NroEmpleado.Trim() && e.Activo.Trim()  == "SI").OrderBy(x => x.Nombres).ToList();
 
-                if (Lider.Count != 0){
+                if (Lider.Count != 0)
+                {
 
                     empleado = db.Empleados.FirstOrDefault(e => e.Id == JefeID2);
                     ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO"  && f.Empresa == empleado.Empresa && f.Lider == empleado.NroEmpleado).OrderBy(x => x.Nombres).ToList();
@@ -317,15 +320,16 @@ namespace Adm_AutoGestion.Controllers
                     {
 
                         Empleado Item = x.FirstOrDefault();
-                        if (Item.UnidadOrganizativa != "00003103" || Item.UnidadOrganizativa != "00003105" || Item.UnidadOrganizativa != "00003109" ||  Item.UnidadOrganizativa != "00003110" ||  Item.UnidadOrganizativa != "00003117" || Item.UnidadOrganizativa != "00003625" || Item.UnidadOrganizativa != "00003700")   {
+                        if (Item.UnidadOrganizativa != "00003103" || Item.UnidadOrganizativa != "00003105" || Item.UnidadOrganizativa != "00003109" ||  Item.UnidadOrganizativa != "00003110" ||  Item.UnidadOrganizativa != "00003117" || Item.UnidadOrganizativa != "00003625" || Item.UnidadOrganizativa != "00003700")
+                        {
 
                             ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.UnidadOrganizativa, Text = "" + Item.AreaDescripcion });
                         }
-                       
+
                         // ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.AreaDescripcion, Text = Item.AreaDescripcion });
                     }
 
-                   
+
                 }
 
                 if (Jefe2.Count != 0)
@@ -348,10 +352,10 @@ namespace Adm_AutoGestion.Controllers
                 //ViewBag.Sociedad = db.Sociedad.ToList();
 
                 ViewBag.Empresa =  db.Sociedad.Where(x => x.Codigo== empleado.Empresa).ToList();
-               
+
                 ViewBag.EstadosHorasExtra = db.EstadosHorasExtra.Where(x => x.Id == 1 || x.Id == 5).ToList();
-               
-                
+
+
 
 
 
@@ -427,19 +431,19 @@ namespace Adm_AutoGestion.Controllers
                 }
 
                 ListadoFinal = ListadoFinal.OrderBy(x => x.EmpleadoId).ToList();
-                
+
                 InformeTotalHE NewRTotal = new InformeTotalHE();
 
 
 
                 foreach (InformeTotalHE Item in ListadoFinal.Reverse<InformeTotalHE>())
                 {
-                   
+
                     Item.Empleado = db.Empleados.FirstOrDefault(e => e.Id == Item.EmpleadoId);
                     Item.EstadosHorasExtra = db.EstadosHorasExtra.FirstOrDefault(e => e.Id == Item.Estado);
-                    
+
                 }
-                
+
 
 
 
@@ -479,7 +483,8 @@ namespace Adm_AutoGestion.Controllers
 
         }
 
-        public ActionResult EnviarAprobadosJefe(int[] ids ,string fechap ) {
+        public ActionResult EnviarAprobadosJefe(int[] ids, string fechap)
+        {
 
             bool mensaje = true;
             int IdUsuarioM = 0;
@@ -493,9 +498,10 @@ namespace Adm_AutoGestion.Controllers
             var idlider = db.Empleados.FirstOrDefault(x => x.Id == IdUsuarioM);
             var listlider = db.Empleados.Where(x => x.Lider == idlider.NroEmpleado).ToList();
 
-            if (listlider.Count > 0) {
+            if (listlider.Count > 0)
+            {
 
-              opcion = "LIDER";
+                opcion = "LIDER";
 
             }
 
@@ -508,17 +514,18 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-                    mensaje = _repo.EnviarAprobados(ids, IdUsuarioM,fechap,opcion);
-                    
+                    mensaje = _repo.EnviarAprobados(ids, IdUsuarioM, fechap, opcion);
+
                     foreach (int id2 in ids)
                     {
-                        if (opcion == "JEFE") { 
-                        var Emp = db.HorasExtra.Include(x => x.Empleado).Where(x => x.Id == id2).FirstOrDefault();
-                        HorasExtra horasExtra = db.HorasExtra.Where(x => x.Id == id2).FirstOrDefault();
+                        if (opcion == "JEFE")
+                        {
+                            var Emp = db.HorasExtra.Include(x => x.Empleado).Where(x => x.Id == id2).FirstOrDefault();
+                            HorasExtra horasExtra = db.HorasExtra.Where(x => x.Id == id2).FirstOrDefault();
 
-                        var Correo = db.Configuraciones.Where(x => x.Parametro == "TXTHECORREOGH").FirstOrDefault();
-                        _repo.notificar_Solicitud(id2, Correo.Valor, Emp.EmpleadoId, horasExtra.FechaDeRegistro, "AprobadoJefe");
-                        
+                            var Correo = db.Configuraciones.Where(x => x.Parametro == "TXTHECORREOGH").FirstOrDefault();
+                            _repo.notificar_Solicitud(id2, Correo.Valor, Emp.EmpleadoId, horasExtra.FechaDeRegistro, "AprobadoJefe");
+
                         }
                     }
 
@@ -534,7 +541,7 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-                       
+
                     }
                     else
                     {
@@ -568,7 +575,7 @@ namespace Adm_AutoGestion.Controllers
         }
 
 
-        public ActionResult EnviarRechazadosJefe(int[] ids,string observaciones)
+        public ActionResult EnviarRechazadosJefe(int[] ids, string observaciones)
         {
 
             bool mensaje = true;
@@ -586,7 +593,7 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-                    mensaje = _repo.EnviarRechazados(ids, IdUsuarioM,observaciones);
+                    mensaje = _repo.EnviarRechazados(ids, IdUsuarioM, observaciones);
                     foreach (int id2 in ids)
                     {
 
@@ -594,7 +601,19 @@ namespace Adm_AutoGestion.Controllers
                         HorasExtra horasExtra = db.HorasExtra.Where(x => x.Id == id2).FirstOrDefault();
 
 
+                        if (Emp.Empleado.Lider!= null)
+                        {
 
+
+                            var CorreoLider = db.Empleados.FirstOrDefault(x => x.NroEmpleado == Emp.Empleado.Lider);
+                            _repo.notificar_Rechazado(id2, CorreoLider.Correo, Emp.EmpleadoId, horasExtra.FechaDeRegistro, observaciones, "Rechazado");
+
+                        }
+
+                        //CORREO JEFE
+
+                        var CorreoJefe = db.Empleados.FirstOrDefault(x => x.NroEmpleado == Emp.Empleado.Jefe);
+                        _repo.notificar_Rechazado(id2, CorreoJefe.Correo, Emp.EmpleadoId, horasExtra.FechaDeRegistro, observaciones, "Rechazado");
 
                         _repo.notificar_Rechazado(id2, Emp.Empleado.Correo, Emp.EmpleadoId, horasExtra.FechaDeRegistro, observaciones, "Rechazado");
                     }
@@ -611,7 +630,7 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-                     
+
                     }
                     else
                     {
@@ -688,7 +707,7 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-                       
+
                     }
                     else
                     {
@@ -742,11 +761,11 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-                    mensaje = _repo.EnviarAprobados(ids, IdUsuarioM,fechap,opcion);
+                    mensaje = _repo.EnviarAprobados(ids, IdUsuarioM, fechap, opcion);
 
                     foreach (int id2 in ids)
                     {
-                        
+
                         var Emp = db.HorasExtra.Include(x => x.Empleado).Where(x => x.Id == id2).FirstOrDefault();
                         Empleado Jefe = db.Empleados.Where(x => x.NroEmpleado == Emp.Empleado.Jefe).FirstOrDefault();
                         HorasExtra horasExtra = db.HorasExtra.Where(x => x.Id == id2).FirstOrDefault();
@@ -766,7 +785,7 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-                       
+
                     }
                     else
                     {
@@ -823,7 +842,7 @@ namespace Adm_AutoGestion.Controllers
             // var opcion = "GestionHumana";
             var Personal = db.Empleados.FirstOrDefault(e => e.Id == persona);
             ViewBag.Empresa = db.Sociedad.Where(x => x.Codigo== Personal.Empresa).ToList();
-            ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO"   && f.Empresa ==Personal.Empresa).OrderBy(x=> x.Nombres).ToList();
+            ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO"   && f.Empresa ==Personal.Empresa).OrderBy(x => x.Nombres).ToList();
             ViewBag.EstadosHorasExtra = db.EstadosHorasExtra.ToList();
             var areaDescripcionGroups = db.Empleados.Where(f => f.Activo != "NO" && f.AreaDescripcion != null && f.AreaDescripcion != "" && f.Empresa == Personal.Empresa).GroupBy(b => b.AreaDescripcion).ToList();
             ViewBag.AreaDescripcion = new List<SelectListItem>();
@@ -848,7 +867,7 @@ namespace Adm_AutoGestion.Controllers
                                (Encabezado, Detallado) => new { Encabezado, Detallado })
                             .Where(x => x.Encabezado.Estado == 2 && x.Encabezado.Empleado.Empresa == Personal.Empresa
                              && (string.IsNullOrEmpty(TrabajadorS) || SqlFunctions.StringConvert((decimal)x.Encabezado.EmpleadoId).Contains(TrabajadorS)
-                          
+
                             ))
                             .Select(x =>
                                    new InformeTotalHE
@@ -913,7 +932,7 @@ namespace Adm_AutoGestion.Controllers
                 ListadoFinal = nuevaLista.OrderBy(x => x.EmpleadoId).ToList();
 
 
-               
+
             }
 
             return View(ListadoFinal);
@@ -1014,7 +1033,7 @@ namespace Adm_AutoGestion.Controllers
             DetalleHorasExtra DetalleHorasExtra = new DetalleHorasExtra();
             DetalleHorasExtra = db.DetalleHorasExtras.FirstOrDefault(o => o.HorasExtraId == HorasExtraId);
             HorasExtra HorasExtra = new HorasExtra();
-            
+
             var idUserlog = Convert.ToInt32(Session["Empleado"]);
             Empleado userlog = db.Empleados.Where(d => d.Id == idUserlog).FirstOrDefault();
             var Fechaactual = DateTime.Now;
@@ -1050,7 +1069,7 @@ namespace Adm_AutoGestion.Controllers
                                 Estado = "4";
                             }
 
-                            var a = _repo.Modificar(HorasExtraId, Estado, Observaciones, IdUsuarioM,FechaPago);
+                            var a = _repo.Modificar(HorasExtraId, Estado, Observaciones, IdUsuarioM, FechaPago);
                             if (a == true)
                             {
                                 var Opcion = "JefeDirectoHorasExtra";
@@ -1058,7 +1077,7 @@ namespace Adm_AutoGestion.Controllers
 
                                 //h
                                 Empleado Emp = db.Empleados.Where(x => x.Id == horasExtra.EmpleadoId).FirstOrDefault();
-                                
+
                                 if (Estado == "2")
                                 {
                                     var Correo = db.Configuraciones.Where(x => x.Parametro == "TXTHECORREOGH").FirstOrDefault();
@@ -1075,7 +1094,8 @@ namespace Adm_AutoGestion.Controllers
                                     HistoricoHorasExtra Historico = db.HistoricoHorasExtra.Where(x => x.HorasExtraId == HorasExtraId).FirstOrDefault();
                                     Empleado Jefe = db.Empleados.Where(x => x.NroEmpleado == Emp.Jefe).FirstOrDefault();
                                     Empleado Lider = db.Empleados.Where(x => x.NroEmpleado == Emp.Lider).FirstOrDefault();
-                                    if (Lider != null) {
+                                    if (Lider != null)
+                                    {
 
                                         _repo.notificar_RechazadoGH(HorasExtraId, Emp.Correo, Lider.Correo, Emp.Id, HorasExtra.FechaDeRegistro, Historico.Observaciones, "Rechazado");
 
@@ -1135,7 +1155,7 @@ namespace Adm_AutoGestion.Controllers
             DetalleHorasExtra DetalleHorasExtra = new DetalleHorasExtra();
             DetalleHorasExtra = db.DetalleHorasExtras.FirstOrDefault(o => o.HorasExtraId == HorasExtraId);
             HorasExtra HorasExtra = new HorasExtra();
-            
+
             var idUserlog = Convert.ToInt32(Session["Empleado"]);
             Empleado userlog = db.Empleados.Where(d => d.Id == idUserlog).FirstOrDefault();
             var Fechaactual = DateTime.Now;
@@ -1171,7 +1191,7 @@ namespace Adm_AutoGestion.Controllers
                                 Estado = "4";
                             }
 
-                            var a = _repo.Modificar(HorasExtraId, Estado, Observaciones, IdUsuarioM,FechaPago);
+                            var a = _repo.Modificar(HorasExtraId, Estado, Observaciones, IdUsuarioM, FechaPago);
                             if (a == true)
                             {
                                 var Opcion = "GestionHumana";
@@ -1184,7 +1204,7 @@ namespace Adm_AutoGestion.Controllers
                                     Empleado Jefe = db.Empleados.Where(x => x.NroEmpleado == Emp.Jefe).FirstOrDefault();
                                     HistoricoHorasExtra Historico = db.HistoricoHorasExtra.Where(x => x.HorasExtraId == HorasExtraId).FirstOrDefault();
                                     Empleado Lider = db.Empleados.Where(x => x.NroEmpleado == Emp.Lider).FirstOrDefault();
-                                    
+
                                     if (Lider != null)
                                     {
 
@@ -1281,8 +1301,8 @@ namespace Adm_AutoGestion.Controllers
                         if (Item.UnidadOrganizativa != "00003103" && Item.UnidadOrganizativa != "00003105" && Item.UnidadOrganizativa != "00003109" &&  Item.UnidadOrganizativa != "00003110" &&  Item.UnidadOrganizativa != "00003117" && Item.UnidadOrganizativa != "00003625" && Item.UnidadOrganizativa != "00003700")
                         {
                             ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.UnidadOrganizativa, Text = "" + Item.AreaDescripcion });
-                        // ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.AreaDescripcion, Text = Item.AreaDescripcion });
-                        
+                            // ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.AreaDescripcion, Text = Item.AreaDescripcion });
+
                         }
                     }
                 }
@@ -1311,10 +1331,10 @@ namespace Adm_AutoGestion.Controllers
                 }
 
                 // ViewBag.Sociedad = db.Sociedad.ToList();
-                
+
                 ViewBag.Empresa =  db.Sociedad.Where(x => x.Codigo== empleado.Empresa).ToList();
                 ViewBag.EstadosHorasExtra = db.EstadosHorasExtra.ToList();
-                
+
 
                 DateTime Fecha1 = DateTime.Now;
                 DateTime Fecha2 = DateTime.Now;
@@ -1598,7 +1618,7 @@ namespace Adm_AutoGestion.Controllers
                 var Jefe = db.Empleados.FirstOrDefault(e => e.Id == JefeID2);
                 ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO" && f.Empresa ==Jefe.Empresa).OrderBy(x => x.Nombres).ToList();
                 ViewBag.EstadosHorasExtra = db.EstadosHorasExtra.ToList();
-                var areaDescripcionGroups = db.Empleados.Where(x => x.Activo == "SI" && ( x.AreaDescripcion != null && x.AreaDescripcion != "") && x.Empresa ==Jefe.Empresa).GroupBy(b => b.UnidadOrganizativa).ToList();
+                var areaDescripcionGroups = db.Empleados.Where(x => x.Activo == "SI" && (x.AreaDescripcion != null && x.AreaDescripcion != "") && x.Empresa ==Jefe.Empresa).GroupBy(b => b.UnidadOrganizativa).ToList();
                 ViewBag.AreaDescripcion = new List<SelectListItem>();
                 foreach (var x in areaDescripcionGroups)
                 {
@@ -1793,19 +1813,19 @@ namespace Adm_AutoGestion.Controllers
 
             var Empleadolog = Session["Empleado"];
             int JefeID2 = 0;
-            
-            
-                JefeID2 = Convert.ToInt32(Empleadolog);
-            
 
-            
+
+            JefeID2 = Convert.ToInt32(Empleadolog);
+
+
+
             List<InformeTotalHE> ListadoFinal = new List<InformeTotalHE>();
             using (var db = new AutogestionContext())
             {
 
                 //----------------List Empleados------------------------------//
                 // ViewBag.Sociedad = db.Sociedad.ToList();
-               
+
                 var Jefe = db.Empleados.FirstOrDefault(e => e.Id == JefeID2);
                 ViewBag.Empresa = db.Sociedad.Where(x => x.Codigo== Jefe.Empresa).ToList();
                 ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO" && f.Empresa ==Jefe.Empresa).OrderBy(x => x.Nombres).ToList();
