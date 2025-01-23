@@ -105,9 +105,12 @@
                             <tr>
                                 <th>Firma</th>
 
+                                <th>Ver histórico</th>
                                 <th>
+
                                     No.Registro
                                 </th>
+
                                 <th>
                                     Fecha Hora Extra
                                 </th>
@@ -174,7 +177,7 @@
                                 <th>
                                     Fecha Pago
                                 </th>
-                                @*<th>Ver histórico</th>*@
+
 
 
 
@@ -188,6 +191,15 @@
                                     <td style="text-align:center">
                                         <a href='@Url.Action("DescargarPDF", "HorasExtra", new { id = item.Id }, null)' target="_blank">
                                             <i class="fas fa-file-pdf text-primary"></i>
+                                        </a>
+                                    </td>
+
+                                    <td style="text-align:center">
+                                        <a href="@Url.Action("HistorialHE", new { id = item.Id })"
+                                           data-modalHistoricoHEJefeDetail=""
+                                           onclick="openmodalHE02(this.href, 'Historial del proceso de horas extra')">
+                                            <i class="fas fa-clock text-primary"></i>
+                                            <span class="sr-only">Historial</span>
                                         </a>
                                     </td>
 
@@ -255,9 +267,7 @@
 
                                         }
                                     </td>
-                                    @*<td>
-            @Html.ActionLink(" ", "HistorialHE", new { id = item.Id }, new { data_modalHistoricoHEJefeDetail = "", @class = "btn close fa fa-user-circle text-primary mr-4", onclick = "openmodalHE02(this.href, 'Historial del proceso de horas extra')" })
-        </td>*@
+
 
                                 </tr>
 
@@ -283,7 +293,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #1565C0">
-                <h2 class="modal-title text-white"> Titulo </h2>
+                <h5 class="modal-title text-white"> Titulo </h5>
                 <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"></span>
                 </button>
