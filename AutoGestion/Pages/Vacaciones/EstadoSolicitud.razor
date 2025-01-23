@@ -1,0 +1,115 @@
+﻿@using Autogestion.Shared.DTO.Empleado
+@using Blazored.LocalStorage
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using System.Text.Json
+@using Autogestion.Shared.DTO.Vacaciones
+@inject IJSRuntime JS
+@page "/estadosolicitud"
+
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+    //TABLA VACACIONES EN DISFRUTE
+    @if (vacacionesDTO != null)
+    {
+        <MudPaper Elevation="25" Class="pa-4" Style="height:100%">
+            
+            <MudIcon Icon="@Icons.Material.Filled.HolidayVillage" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+            
+            <MudText Typo="Typo.subtitle1" Class="mud-text-secondary">Su solicitud de vacaciones en disfrute se encuentra en estado:</MudText>
+            <MudText Typo="Typo.h5" Class="mb-2">@vacacionesDTO.EstadoVacaciones.Nombre</MudText>
+            <MudText Typo="Typo.subtitle1">Solicitud Vacaciones (@vacacionesDTO.CantDiasSolicitados dias solicitados) </MudText>
+            <MudText Typo="Typo.subtitle1">Fecha de Inicio (@Convert.ToDateTime(vacacionesDTO.FechaInicial).ToString("dd/MM/yyyy") ) </MudText>
+            <MudText Typo="Typo.subtitle1">Fecha de Reintegro (@Convert.ToDateTime(vacacionesDTO.FechaFin).ToString("dd/MM/yyyy") ) </MudText>
+
+            <div>
+                @if (vacacionesDTO.Observacion != null && vacacionesDTO.Observacion != "")
+                {
+                <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">Por favor revisar la siguiente observación: @vacacionesDTO.Observacion</MudText>                
+                }
+                @if (vacacionesDTO.EstadoId == 1 && Convert.ToDateTime(vacacionesDTO.Fecha).ToString("dd/MM/yyyy") == Convert.ToDateTime(DateTime.Today).ToString("dd/MM/yyyy"))
+                {
+                    <hr>
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Small" FullWidth="false" OnClick="Anular">Anular Solicitud</MudButton>
+                }
+            </div>
+
+        </MudPaper>
+    }
+    
+
+
+
+}
+@code {
+    [Parameter]
+    public EmpleadoReturnSapDTO? datosempleado { get; set; }
+    public bool _loading = true;
+    string[] Historialvacaciones;
+    private VacacionesDTO? vacacionesDTO;
+    private VacacionesDTO? vacacionesDTO2;
+    protected override async Task OnInitializedAsync()
+    {
+
+        _loading = true;
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+        var vacaciones = await Http.GetFromJsonAsync<string>($"api/Vacaciones/Consulta/{datosempleado.Id}");
+
+        Historialvacaciones = vacaciones.Split(';');
+
+        vacacionesDTO = JsonSerializer.Deserialize<VacacionesDTO>(Historialvacaciones[0]);
+
+        vacacionesDTO2 = JsonSerializer.Deserialize<VacacionesDTO>(Historialvacaciones[1]);
+
+        _loading = false;
+        StateHasChanged();
+    }
+
+    private async Task Anular()
+
+    {
+        var resultado = await Http.GetFromJsonAsync<string>($"api/Vacaciones/anularRegistro/{vacacionesDTO.Id}");
+        resultado = resultado.Trim(new Char[] { ' ', '*', '.', '"' });
+        if (resultado == "True")
+
+        {
+            await JS.ShowMessage("Anular Solicitud", "Se ha anulado solicitud", "success");
+        }
+        else
+        
+        {
+            await JS.ShowMessage("Error", "No se ha podido anular solicitud", "error");
+        
+        }
+    }
+
+}
+
+
+@*<string xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+    {
+    "Id":18,"EmpleadoId":1,"Empleado":null,"Fecha":"2020-09-23T08:20:20.323","FechaInicial":"2020-09-21T00:00:00","FechaFin":"2020-09-28T00:00:00","CantDiasSolicitados":"5","CantDiasPendientes":"7","VacacionesPagadas":"NO","VacacionesAdelantadas":"NO","VacacionesDiasMayor6":"NO","EstadoId":2,"EstadoVacaciones":
+    {
+        "Id":2,"Nombre":"Aprobado Jefe Inmediato"},"Empresa":"0","Adjunto":"202009230820204044-carta.jpg","Opciones":null,"ListadoEmpleado":null,"ListadoEmpleadosJefe":null,"IdModifica":0,"personal":null,"HistorialVacaciones":null,"Empleado2":null,"Periodo":null,"Observacion":""
+    };
+        
+        
+        {
+            "Id":9,"EmpleadoId":1,"Empleado":null,"Fecha":"2020-07-16T15:45:18.26","FechaInicial":"2020-07-16T00:00:00","FechaFin":"2020-07-17T00:00:00","CantDiasSolicitados":"6","CantDiasPendientes":"1","VacacionesPagadas":"SI","VacacionesAdelantadas":"SI","VacacionesDiasMayor6":"NO","EstadoId":4,"EstadoVacaciones":
+        {
+            "Id":4,"Nombre":"Confirmado"
+        }
+        ,"Empresa":"0","Adjunto":"202007161545268638-carta.jpg","Opciones":null,"ListadoEmpleado":null,"ListadoEmpleadosJefe":null,"IdModifica":0,"personal":null,"HistorialVacaciones":null,"Empleado2":null,"Periodo":null,"Observacion":""
+    }
+    
+
+
+</string>*@

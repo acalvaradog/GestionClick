@@ -1,0 +1,822 @@
+﻿@model Adm_AutoGestion.Models.Vacaciones
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "CreateXJefe";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "SI", Value = "SI" },
+        new ListItem { Text = "NO", Value = "NO" }
+        };
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+    Session.Remove("message");
+}
+
+<div class="container">
+    <br />
+    <h2 class="colorTitulo" style="text-align:center">Cargue de Vacaciones del Personal Asignado</h2>
+
+
+    @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+
+            <div class="card ">
+                <div class="card-header text-white fondoDegradado">Datos de la Solicitud</div>
+                <div class="card-body">
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <div class="editor-label">
+                                Empleado
+                            </div>
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.EmpleadoId, new SelectList(Model.ListadoEmpleadosJefe, "Id", "Nombres"), "Seleccione un Empleado", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", @Name = "EmpleadoId", @id = "EmpleadoId" })
+                            </div>
+                        </div>
+
+                        <div class="col-6 d-flex align-items-center align-content-end flex-wrap">
+
+                            @Html.ActionLink("Solicitar Autorización Vacaciones", "SolicitarAutorizacionVacaciones", "Vacaciones", new { Empl = @Model.EmpleadoId }, new { modal140 = "", @class = "btn btn-outline-primary", id = "Btn_AutorVac" })
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-4" id="AutorizaVacPag">
+                            <div class="editor-label">
+                                Vacaciones Pagadas
+                            </div>
+                            <div class="editor-field">
+                                @Html.ValidationMessageFor(model => model.VacacionesPagadas)
+                                @*@Html.TextBox("VacacionesPagadas", null, htmlAttributes: new { @class = "form-control"} )*@
+                                @Html.DropDownListFor(model => model.VacacionesPagadas, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                            </div>
+                        </div>
+                        <div class="col-4" id="AutorizaVacAdel">
+                            <div class="editor-label">
+                                Vacaciones Anticipadas
+                            </div>
+                            <div class="editor-field">
+                                @Html.ValidationMessageFor(model => model.VacacionesAdelantadas)
+                                @*@Html.TextBox("VacacionesAdelantadas", null, htmlAttributes: new { @class = "form-control"} )*@
+                                @Html.DropDownListFor(model => model.VacacionesAdelantadas, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                            </div>
+                        </div>
+                        <div class="col-4" id="DiasMayora6">
+                            <div class="editor-label">
+                                Vacaciones Menor a 6 Dias
+                            </div>
+                            <div class="editor-field">
+                                @Html.ValidationMessageFor(model => model.VacacionesDiasMayor6)
+                                @*@Html.TextBox("VacacionesDiasMayor6", null, htmlAttributes: new { @class = "form-control"} )*@
+                                @Html.DropDownListFor(model => model.VacacionesDiasMayor6, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <div class="editor-label">
+                                Cantidad Dias Solicitados
+                            </div>
+                            <div class="editor-field">
+                                @Html.ValidationMessageFor(model => model.CantDiasSolicitados)
+                                @Html.TextBox("CantDiasSolicitados", null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="editor-label">
+                                Cantidad Dias Pendientes
+                            </div>
+                            <div class="editor-field">
+                                @Html.ValidationMessageFor(model => model.CantDiasPendientes)
+                                @Html.TextBox("CantDiasPendientes", null, htmlAttributes: new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <div class="editor-label">
+                                Fecha Inicio de Vacaciones
+                            </div>
+                            <div class="editor-field">
+                                @Html.TextBox("FechaInicial", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date", value = "" })
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="editor-label">
+                                Fecha de Reintegro Laboral
+                            </div>
+                            <div class="editor-field">
+                                @Html.ValidationMessageFor(model => model.FechaFin)
+                                @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date", @readonly = "true", value = "" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <p>
+                        - Favor tener en cuenta que solo se permiten archivos de tipo ( jpg, jpeg, png, doc, docx, pdf ) con un tamaño maximo de 500 Kb.
+                    </p>
+                    <br />
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="editor-label">
+                                    @Html.LabelFor(model => model.Adjunto)
+                                </div>
+                                <div class="editor-field">
+                                    <label class="bi bi-upload btn btn-outline-primary mb-2">
+                                        <span id="labelFile"> Subir archivo</span>
+                                        @Html.ValidationMessageFor(model => model.Adjunto)
+                                        <input type="file" name="Adjunto" hidden id="Adjunto" onchange="mostrarNombreArchivo();" />
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row justify-content-center">
+                        <div class="col-12" style="text-align:center">
+                            <button class="bi bi-plus-square btn btn-outline-primary mb-2" onclick="crear();return false;"> Crear</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </fieldset>
+    }
+
+
+
+</div>
+
+
+<div class="modal fade in" id="modal_Aut_Registro_Vac">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal14">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function mostrarNombreArchivo() {
+        var file = $("#Adjunto").get(0).files;
+        var archivo = file[0];
+        var texto = document.getElementById('labelFile');
+
+        texto.innerHTML = " Archivo subido: " + archivo.name;
+
+    }
+</script>
+
+<script>
+
+    document.getElementById("VacacionesPagadas").addEventListener("input", VacacionesPagas);
+
+
+    var cantdiaspendi = 0;
+    $("#Btn_AutorVac").hide();
+    var NumeroEmpleado = $("#EmpleadoId").val();
+    $("#AutorizaVacPag").hide();
+    $("#AutorizaVacAdel").hide();
+    $("#DiasMayora6").hide();
+    var Empl = $("#EmpleadoId").val();
+
+
+    $(document).ready(function () {
+
+        $("#EmpleadoId").change(function () {
+            var NumeroEmpleado = $("#EmpleadoId").val();
+            var Empl = $("#EmpleadoId").val();
+            $("#Btn_AutorVac").show();
+            $("#FechaInicial").prop("disabled", false);
+            $("#FechaInicial").val("");
+            $("#FechaFin").val("");
+            validar()
+            TraerDiasDisponibles(NumeroEmpleado)
+
+            var urlDetalle = "../api/Vacaciones/Autoriza/" + NumeroEmpleado;
+            $.ajax({
+                url: urlDetalle,
+                //data: JSON.stringify(Empleado),
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    if (data == "DsMayorAntPag") {
+                        $("#AutorizaVacPag").show();
+                        $("#AutorizaVacAdel").show();
+                        $("#DiasMayora6").show();
+                    }
+                    if (data == "DsMayorAnt") {
+                        $("#AutorizaVacPag").hide();
+                        $("#AutorizaVacAdel").show();
+                        $("#DiasMayora6").show();
+                    }
+                    if (data == "DsMayorPag") {
+                        $("#AutorizaVacPag").show();
+                        $("#AutorizaVacAdel").hide();
+                        $("#DiasMayora6").show();
+                    }
+                    if (data == "AntPag") {
+                        $("#AutorizaVacPag").show();
+                        $("#AutorizaVacAdel").show();
+                        $("#DiasMayora6").hide();
+                    }
+                    if (data == "DsMayor") {
+                        $("#AutorizaVacPag").hide();
+                        $("#AutorizaVacAdel").hide();
+                        $("#DiasMayora6").show();
+                    }
+                    if (data == "Ant") {
+                        $("#AutorizaVacPag").hide();
+                        $("#AutorizaVacAdel").show();
+                        $("#DiasMayora6").hide();
+                    }
+                    if (data == "Pag") {
+                        $("#AutorizaVacPag").show();
+                        $("#AutorizaVacAdel").hide();
+                        $("#DiasMayora6").hide();
+                    }
+                    if (data == "SinAut") {
+                        $("#AutorizaVacPag").hide();
+                        $("#AutorizaVacAdel").hide();
+                        $("#DiasMayora6").hide();
+                    }
+
+                }
+            })
+
+
+        });
+
+        $("#CantDiasSolicitados").on('input', function () {
+            var Pagas = $("#VacacionesPagadas").val();
+            if (Pagas != "SI") {
+                calculardias()
+            }
+        });
+
+        $("#FechaInicial").change(function () {
+            //ValidarFechaini()
+            ValidarDias()
+        });
+
+        $("#Btn_AutorVac").click(function () {
+            //var Empleado = $("#EmpleadoId").val();
+            //if (cantdiassol == "") {
+            //    throw 'Para continuar, Primero debe seleccionar el empleado.';
+            //}
+            validar();
+        });
+
+        $("#VacacionesPagadas").change(function () {
+            VacacionesPagas();
+        });
+
+
+    });
+
+
+    function validar() {
+        var Empleado = $("#EmpleadoId").val();
+
+        $("#EmpleadoP").val(Empleado);
+        $("#VacacionesPagadas").val(Empleado);
+
+
+    }
+
+    function crear() {
+
+        var files = $("#Adjunto").get(0).files;
+
+        try {
+
+            var cantdiassol = $("#CantDiasSolicitados").val();
+            var Pagas = $("#VacacionesPagadas").val();
+            var anticipadas = $("#VacacionesAdelantadas").val();
+            var mayor6 = $("#VacacionesDiasMayor6").val();
+            var FecIni = $("#FechaInicial").val();
+            var FecFin = $("#FechaFin").val();
+            var cantdias = cantdiaspendi;
+
+            if (cantdiassol == "") {
+                throw 'Para continuar, Primero debe digitar la cantidad de dias a solicitar.';
+            }
+
+            if (cantdiassol > 7 && Pagas == "SI") {
+                throw 'No es posible solicitar mas de 7 dias para disfrutar en dinero.';
+            }
+
+            if (FecIni == "") {
+                throw 'Para continuar, Primero debe digitar la Fecha Inicial.';
+            }
+
+            if (FecFin < FecIni) {
+                throw 'La fecha fin de vacaciones deber ser mayor a la fecha inicio de vacaciones.';
+            }
+
+
+
+            //var Adjun = files.length;
+            //if (Adjun == 0) {
+            //    throw 'Para continuar, Primero debe adjuntar la carta.';
+            //}
+
+
+            if (Pagas == "" || Pagas == null) {
+
+                Pagas = "NO";
+            }
+
+            if (anticipadas == "" || anticipadas == null) {
+
+                //document.getElementById("txt_vacacionesadelant").value == "NO";
+                anticipadas = "NO";
+            }
+
+            if (mayor6 == "" || mayor6 == null) {
+
+                mayor6 = "NO";
+            }
+
+
+            var frmData = new FormData();
+            frmData.append("Vacaciones.EmpleadoId", document.getElementById("EmpleadoId").value);
+            frmData.append("Vacaciones.FechaInicial", document.getElementById("FechaInicial").value);
+            frmData.append("Vacaciones.FechaFin", document.getElementById("FechaFin").value);
+            frmData.append("Vacaciones.CantDiasSolicitados", document.getElementById("CantDiasSolicitados").value);
+            frmData.append("Vacaciones.CantDiasPendientes", document.getElementById("CantDiasPendientes").value);
+            frmData.append("Vacaciones.VacacionesPagadas", Pagas);
+            frmData.append("Vacaciones.VacacionesAdelantadas", anticipadas);
+            frmData.append("Vacaciones.VacacionesDiasMayor6", mayor6);
+            frmData.append("Vacaciones.Cantdias", cantdiaspendi);
+
+            frmData.append("Adjunto", files[0]);
+
+
+
+            $.ajax({
+                url: "Crear",
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: frmData,
+                //cache: false,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == "true") {
+                        alertify.confirm('Los datos se guardaron correctamente.', function () { location.replace('CreateXJefe'); });
+
+                    } else {
+                        alertify.alert(result);
+                    }
+                }
+            });
+
+        } catch (err) {
+            alertify.alert(err);
+        }
+
+
+    }
+
+    function atras() {
+
+
+    }
+
+
+    function TraerDiasDisponibles(Empleado) {
+        $.ajax({
+            url: "CantidadDIasDisponibles",
+            data: { 'Empleado': Empleado },
+            type: "post",
+            dataType: "html",
+            success: function (result) {
+                $("#CantDiasPendientes").val(result);
+                cantdiaspendi = result;
+
+            }
+
+        });
+
+
+    }
+
+    function calculardias() {
+
+        var vacio = "";
+        var solicitados = parseInt($("#CantDiasSolicitados").val(), 0);
+        $("#FechaInicial").val(vacio);
+        $("#FechaFin").val(vacio);
+        var pendientes = parseInt(cantdiaspendi, 0);
+
+
+        if (solicitados > 0) {
+            var calcular = pendientes - solicitados;
+            $("#CantDiasPendientes").val(calcular);
+            calcular = "";
+
+
+        } else {
+            $("#CantDiasPendientes").val(pendientes);
+        }
+    }
+
+
+    function ValidarFechaini() {
+
+        var respuesta = "";
+        var fechaini = $("#FechaInicial").val();
+        var fecha = new Date();
+        var dia = fecha.getDate();
+        var mes = fecha.getMonth() + 1;
+        var anio = fecha.getFullYear();
+        if (mes < 10) { mes = "0" + mes };
+        if (dia < 10) { dia = "0" + dia };
+        var fechaactual = anio + "-" + mes + "-" + dia;
+
+
+        try {
+
+            if (fechaini != "" && fechaini < fechaactual) {
+                document.getElementById("FechaInicial").value = "";
+                document.getElementById("FechaFin").value = "";
+                throw 'No es posible seleccionar una fecha anterior a la actual.';
+            }
+
+
+            $.ajax({
+                url: "validarFechaini",
+                data: { 'fechaini': fechaini },
+                type: 'post',
+                dataType: 'html',
+                success: function (data) {
+
+                    if (data == "Error") {
+
+                        respuesta = "No se permite la seleccion de Sabados, Domingos ni festivos";
+                        document.getElementById("FechaInicial").value = "";
+                        document.getElementById("FechaFin").value = "";
+                        alertify.alert(respuesta);
+
+                    } else {
+                        calcularfecha()
+                    }
+
+
+                }
+            })
+
+        } catch (err) {
+            alertify.alert(err);
+
+        };
+
+    }
+
+    function calcularfecha() {
+
+        var fechaini = $("#FechaInicial").val();
+
+        var diferencia = parseInt($("#CantDiasSolicitados").val(), 0);
+
+        try {
+
+
+
+            if (isNaN(diferencia)) {
+                throw 'Para continuar, Primero debe digitar la cantidad de dias que va a solicitar.';
+            }
+
+            $.ajax({
+                url: "Festivos",
+                data: { 'fechaini': fechaini, 'diferencia': diferencia },
+                type: 'post',
+                dataType: 'html',
+                success: function (data) {
+
+                    var fecha = data.split(" ");
+                    var fecha1 = fecha[0].split("/");
+                    var mes = fecha1[1];
+                    var dia = fecha1[0];
+                    var anio = fecha1[2];
+                    var fechafin = anio + "-" + mes + "-" + dia;
+
+                    $("#FechaFin").val(fechafin);
+                    //document.getElementById('txt_fechafinalVac').value = fecha[0];
+
+                }
+            })
+
+
+        } catch (err) {
+
+            alertify.alert(err);
+
+        };
+
+    }
+
+    function VacacionesPagas() {
+
+        var pagas = $("#VacacionesPagadas").val();
+        var fecha = new Date();
+        var dia = fecha.getDate();
+        var mes = fecha.getMonth();
+        var anio = fecha.getFullYear();
+
+        if (pagas == "SI") {
+
+            if (dia > 0 && dia <= 20) {
+
+                if (mes == 1) {
+                    var fechaini = anio + "-" + "0" + (mes + 1) + "-" + 28;
+                    var fechafin = anio + "-" + "0" + (mes + 1) + "-" + 28;
+                } else {
+
+                    var cantdias = (new Date(mes, anio, 0)).getDate();
+
+                    if (cantdias >= 30) {
+                        if ((mes + 1) < 10) {
+                            var fechaini = anio + "-" + "0" + (mes + 1) + "-" + 30;
+                            var fechafin = anio + "-" + "0" + (mes + 1) + "-" + 30;
+                        } else {
+                            var fechaini = anio + "-" + (mes + 1) + "-" + 30;
+                            var fechafin = anio + "-" + (mes + 1) + "-" + 30;
+                        }
+
+                        $("#FechaInicial").val(fechaini);
+                        $('#FechaInicial').attr('disabled', 'disabled');
+                        $("#FechaFin").val(fechafin);
+                    } else if (cantdias < 30) {
+                        if ((mes + 1) < 10) {
+                            var fechaini = anio + "-" + "0" + (mes + 1) + "-" + 28;
+                            var fechafin = anio + "-" + "0" + (mes + 1) + "-" + 28;
+                        } else {
+                            var fechaini = anio + "-" + (mes + 1) + "-" + 28;
+                            var fechafin = anio + "-" + (mes + 1) + "-" + 28;
+                        }
+                    }
+                }
+
+                $("#FechaInicial").val(fechaini);
+                $('#FechaInicial').attr('disabled', 'disabled');
+                $("#FechaFin").val(fechafin);
+
+
+            } else {
+
+                var cantdias = (new Date((mes + 1), anio, 0)).getDate();
+
+                if (mes == 11) {
+
+                    mes = "01";
+                    anio = anio + 1;
+
+                    var cantdias = (new Date(mes, anio, 0)).getDate();
+
+                    if (cantdias >= 30) {
+                        if ((mes + 1) < 10) {
+                            var fechaini = anio + "-" + "0" + mes + "-" + 30;
+                            var fechafin = anio + "-" + "0" + mes + "-" + 30;
+                        } else {
+                            var fechaini = anio + "-" + mes + "-" + 30;
+                            var fechafin = anio + "-" + mes + "-" + 30;
+                        }
+
+                        $("#FechaInicial").val(fechaini);
+                        $('#FechaInicial').attr('disabled', 'disabled');
+                        $("#FechaFin").val(fechafin);
+                    } else if (cantdias < 30) {
+                        if ((mes + 1) < 10) {
+                            var fechaini = anio + "-" + "0" + mes + "-" + 28;
+                            var fechafin = anio + "-" + "0" + mes + "-" + 28;
+                        } else {
+                            var fechaini = anio + "-" + (mes + 1) + "-" + 28;
+                            var fechafin = anio + "-" + (mes + 1) + "-" + 28;
+                        }
+
+                        $("#FechaInicial").val(fechaini);
+                        $('#FechaInicial').attr('disabled', 'disabled');
+                        $("#FechaFin").val(fechafin);
+                    }
+
+
+                } else {
+
+                    mes = mes + 1;
+
+                    if (mes == 1) {
+                        var fechaini = anio + "-" + "0" + (mes + 1) + "-" + 28;
+                        var fechafin = anio + "-" + "0" + (mes + 1) + "-" + 28;
+                    } else {
+                        if ((mes + 1) < 10) {
+                            var fechaini = anio + "-" + "0" + (mes + 1) + "-" + 30;
+                            var fechafin = anio + "-" + "0" + (mes + 1) + "-" + 30;
+                        } else {
+                            var fechaini = anio + "-" + (mes + 1) + "-" + 30;
+                            var fechafin = anio + "-" + (mes + 1) + "-" + 30;
+                        }
+
+                    }
+
+                    $("#FechaInicial").val(fechaini);
+                    $('#FechaInicial').attr('disabled', 'disabled');
+                    $("#FechaFin").val(fechafin);
+
+                }
+
+            }
+
+        } else {
+            $('#FechaInicial').attr('disabled', false);
+            document.getElementById("FechaFin").value = "";
+        }
+
+    }
+
+    function ValidarDias() {
+
+        var Codigo = $("#EmpleadoId").val();
+        var CantSolt = $("#CantDiasSolicitados").val();
+        //var CantPendt = $("#txt_candiaspen_vac").val();
+        var pendientes = parseInt(cantdiaspendi, 0);
+        var Menor6 = $("#VacacionesDiasMayor6").val();
+        var adelantadas = $("#VacacionesAdelantadas").val();
+        if (Menor6 == "") { Menor6 = "NO"; }
+        if (adelantadas == "") { adelantadas = "NO"; }
+
+        var urlDetalle = "../api/ValidarDias/" + Codigo;
+        try {
+
+            if (adelantadas == "NO" || adelantadas == "vacio") {
+
+                if (CantSolt > pendientes) {
+                    document.getElementById("FechaInicial").value = "";
+                    document.getElementById("FechaFin").value = "";
+                    throw 'No es posible solicitar mas dias de los que tiene pendientes.';
+                }
+            }
+
+            if (Menor6 == "NO" || Menor6 == "vacio") {
+
+                $.ajax({
+                    url: urlDetalle,
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function (data) {
+
+                        var datos = data.split(",");
+                        if (datos.length > 1) {
+                            var cant = datos.length - 1;
+                            datos2 = datos[cant].split("-");
+                        } else if (datos.length == 1) {
+                            datos2 = datos[0].split("-");
+                        }
+
+                        try {
+
+                            if (adelantadas == "SI") {
+                                if (pendientes >= 15) {
+                                    if (parseInt(datos2[0]) < 15 && parseInt(datos2[1]) == 0) {
+                                        var dif = 15 - parseInt(datos2[0]);
+                                        var dias = pendientes;
+                                        pendientes = pendientes + dif;
+                                        if (CantSolt > pendientes) {
+                                            var dias = pendientes + 6;
+                                        }
+                                        //var dias = pendientes;
+                                    } else {
+                                        var dias = 15 + 6;
+                                    }
+
+                                } if (pendientes < 15) {
+
+                                    if (parseInt(datos2[0]) < 15 && parseInt(datos2[1]) == 0) {
+                                        if (CantSolt == 15) {
+                                            var diferencia = 15 - pendientes;
+                                            var dias = pendientes + diferencia;
+                                            datos[0] = parseInt(datos[0]) + diferencia;
+                                        } else if (CantSolt < 15) {
+                                            datos[0] = CantSolt;
+                                        } else { var dias = 15 + 6; }
+                                    }
+
+                                }
+                                //else { var dias = pendientes + 6; }
+
+
+                                if (CantSolt < dias) {
+                                    document.getElementById("FechaInicial").value = "";
+                                    document.getElementById("FechaFin").value = "";
+                                    throw 'No es posible solicitar menos de 6 dias para disfrutar.';
+                                }
+
+
+                            } else if (datos2[1] == 0 && CantSolt < 6 && CantSolt > 0) {
+                                document.getElementById("FechaInicial").value = "";
+                                document.getElementById("FechaFin").value = "";
+                                throw 'No es posible solicitar menos de 6 dias para disfrutar.';
+                            }
+
+                            if (parseInt(datos[0]) == 15 && CantSolt < 6 && CantSolt > 0) {
+                                document.getElementById("FechaInicial").value = "";
+                                document.getElementById("FechaFin").value = "";
+                                throw 'No es posible solicitar menos de 6 dias para disfrutar.';
+                            }
+
+                            if (parseInt(datos[0]) <= 15 && CantSolt > parseInt(datos[0]) && adelantadas == "NO") {
+
+
+                                if (parseInt(datos[1]) != "") {
+                                    var dif = CantSolt - parseInt(datos[0]);
+                                    if (dif < 6) {
+                                        document.getElementById("FechaInicial").value = "";
+                                        document.getElementById("FechaFin").value = "";
+                                        throw 'No es posible solicitar menos de 6 dias de un nuevo periodo para disfrutar.';
+                                    }
+                                    if (dif > parseInt(datos[1])) {
+                                        if (parseInt(datos[2]) != "") {
+                                            var dif2 = dif - parseInt(datos[1]);
+                                            if (dif2 < 6) {
+                                                document.getElementById("FechaInicial").value = "";
+                                                document.getElementById("FechaFin").value = "";
+                                                throw 'No es posible solicitar menos de 6 dias de un nuevo periodo para disfrutar.';
+                                            }
+                                            if (dif2 > parseInt(datos[2])) {
+                                                if (parseInt(datos[3]) != "") {
+                                                    var dif3 = dif - parseInt(datos[2]);
+                                                    if (dif3 < 6) {
+                                                        document.getElementById("FechaInicial").value = "";
+                                                        document.getElementById("FechaFin").value = "";
+                                                        throw 'No es posible solicitar menos de 6 dias de un nuevo periodo para disfrutar.';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                } else {
+                                    document.getElementById("FechaInicial").value = "";
+                                    document.getElementById("FechaFin").value = "";
+                                    throw 'No es posible solicitar mas dias de los que tiene pendientes.';
+                                }
+                            }
+                        } catch (err) {
+                            alertify.alert(err);
+
+                        };
+                        var fechaini = $("#FechaInicial").val();
+                        if (fechaini != "") {
+                            ValidarFechaini();
+                        }
+
+                    }
+                })
+
+            } else {
+                var fechaini = $("#FechaInicial").val();
+                if (fechaini != "") {
+                    ValidarFechaini();
+                }
+            }
+
+        } catch (err) {
+            alertify.alert(err);
+
+        };
+    }
+</script>

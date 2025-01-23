@@ -1,0 +1,194 @@
+﻿@page "/solicitudcesantia"
+@inject HttpClient Http
+@using Autogestion.Shared.DTO.Cesantias
+@inject IJSRuntime JS
+@using AutoGestion.Helpers;
+@using System.Text;
+@using System.Text.RegularExpressions;
+@using Autogestion.Shared.DTO.Empleado;
+@using System.Globalization
+<PageTitle>Solicitud de Cesantías</PageTitle>
+
+<h3 class="text-center mb-4">Solicitud de Cesantías</h3>
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Large" Class="my-7" />
+    <MudText Align="Align.Center" Typo="Typo.body1">Procesando...</MudText>
+}
+
+<MudForm @ref="myForm">
+    <MudCard Class="mb-4 p-4">
+        <MudGrid>
+            <MudItem xs="12" sm="6">
+                <MudNumericField Label="Valor a Retirar" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-ES")" T="decimal" @bind-Value="solicitud.ValorRetiro" Required="true" Variant="Variant.Outlined" FullWidth="true" />
+            </MudItem>
+
+            <MudItem xs="12" sm="6">
+                <MudSelect T="int" Label="Destino" Required="true" Value="@solicitud.DestinoId" ValueChanged="value => CargarSoportesRequeridos(value)" Variant="Variant.Outlined" FullWidth="true">
+                    <MudSelectItem Value="0">Seleccionar</MudSelectItem>
+                    @foreach (var destino in destinos)
+                    {
+                        <MudSelectItem T="int" Value="@(destino.Id)">@destino.Nombre</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+        </MudGrid>
+    </MudCard>
+
+    <MudCard Class="mb-4 p-4">
+        <MudText Typo="Typo.h5" Class="mb-3">Soportes Requeridos</MudText>
+        <MudTable Items="@soportesRequeridos" Dense="true">
+            <HeaderContent>
+                <MudTh>Nombre Anexo</MudTh>
+                <MudTh>Anexo</MudTh>
+                <MudTh>Archivo</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                    <MudTextField @bind-Value="context.Nombre" Variant="Variant.Outlined" FullWidth="true" />
+                </MudTd>
+                <MudTd>
+                    <MudTextField @bind-Value="context.adjunto" Variant="Variant.Outlined" FullWidth="true" />
+                </MudTd>
+                <MudTd>
+                    <InputFile id="@($"file-{context.Id}")" OnChange="@(e => this.UploadFiles(e, context))" accept=".pdf" hidden />
+                    <MudFab HtmlTag="label" Color="Color.Success" Icon="@Icons.Filled.AttachFile" Size="Size.Small" for="@($"file-{context.Id}")" />
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudCard>
+
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RegistrarSolicitud" Class="mt-4" FullWidth="true">
+        <MudIcon Icon="@Icons.Filled.Save" /> Registrar Solicitud
+    </MudButton>
+</MudForm>
+
+<hr />
+
+@code {
+    private SolicitudCesantiaDTO solicitud = new();
+    private List<DestinoCesantiaDTO> destinos = new();
+    private List<SoporteDestinoDTO> soportesRequeridos = new();
+    private List<IBrowserFile> soporteFiles = new();
+    private int empleadoIdBusqueda;
+    private List<int> tiposAdjuntos = new List<int>();
+    private MudForm myForm;
+    private long maxFileSize;
+    string pesoMaximo;
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        await CargarDestinos();
+    }
+
+    private async Task CargarDestinos()
+    {
+        try
+        {
+            destinos = await Http.GetFromJsonAsync<List<DestinoCesantiaDTO>>("api/cesantias/listar-destinos");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar destinos: {ex.Message}");
+        }
+    }
+
+    private async Task CargarSoportesRequeridos(int destino)
+    {
+        try
+        {
+            solicitud.DestinoId = destino;
+            soportesRequeridos = await Http.GetFromJsonAsync<List<SoporteDestinoDTO>>($"api/cesantias/listar-soportes-por-destino/{destino}");
+            soporteFiles.Clear(); // Reinicia los archivos seleccionados
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al cargar soportes: {ex.Message}");
+        }
+    }
+
+    private async Task RegistrarSolicitud()
+    {
+        try
+        {
+            await myForm.Validate();
+            if (!myForm.IsValid) return;
+            _loading = true;
+            solicitud.Soportes = new List<SoporteCesantiaDTO>();
+
+            var frmData = new MultipartFormDataContent();
+            frmData.Add(new StringContent(datosempleado.Id.ToString()), "solicitud.EmpleadoId");
+            frmData.Add(new StringContent(solicitud.EstadoId.ToString()), "solicitud.EstadoId");
+            frmData.Add(new StringContent(solicitud.DestinoId.ToString()), "solicitud.DestinoId");
+            frmData.Add(new StringContent(solicitud.ValorRetiro.ToString()), "solicitud.ValorRetiro");
+            frmData.Add(new StringContent(soporteFiles.Count.ToString()), "solicitud.CantidadAdjuntos");
+
+            // Cargar archivos
+            for (int i = 0; i < soporteFiles.Count; i++)
+            {
+                string maxSizeConfig = await Http.GetFromJsonAsync<string>("api/ConsultarConfiguracion/LIMITEPESOARCHIVO");
+                if (long.TryParse(maxSizeConfig, out long result))
+                {
+                    maxFileSize = result * 1024 * 1024;
+                }
+
+                if (soporteFiles[i].Size > maxFileSize)
+                {
+                    _loading = false;
+                    await JS.ShowMessage("Error", $"El archivo {soporteFiles[i].Name} supera el tamaño permitido", "");
+                    foreach (var input in soportesRequeridos)
+                    {
+                        input.adjunto = "";
+                    }
+                    soporteFiles.Clear();
+                    tiposAdjuntos.Clear();
+                    return;
+                }
+
+                // Subir archivo
+                string fileName = soporteFiles[i].Name;
+                var fileStream = soporteFiles[i].OpenReadStream(maxFileSize);
+                frmData.Add(new StreamContent(fileStream), $"Adjunto{i}", fileName);
+            }
+
+            var response = await Http.PostAsync("api/cesantias/registrar-solicitud-con-soportes", frmData);
+            if (response.IsSuccessStatusCode)
+            {
+                await JS.ShowMessage("Ok", "Solicitud registrada con éxito", "");
+            }
+            else
+            {
+                await JS.ShowMessage("Error", "Ocurrió un error al guardar, vuelve a intentarlo", "");
+            }
+            _loading = false;
+        }
+        catch (Exception ex)
+        {
+            _loading = false;
+            Console.WriteLine($"Error al registrar la solicitud: {ex.Message}");
+        }
+    }
+
+    private async Task UploadFiles(InputFileChangeEventArgs e, SoporteDestinoDTO item)
+    {
+        if (e.File.ContentType.ToLower() == "application/pdf")
+        {
+            item.adjunto = e.File.Name;
+            soporteFiles.Add(e.File);
+            tiposAdjuntos.Add(item.Id);
+        }
+        else
+        {
+            await JS.InvokeAsync<object>("Swal.fire", new
+            {
+                Title = "Archivo Incorrecto",
+                Text = "Por favor, sube solo archivos en formato PDF.",
+                Icon = "error"
+            });
+        }
+    }
+}

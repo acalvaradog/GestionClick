@@ -1,0 +1,318 @@
+﻿@model Adm_AutoGestion.Models.DetallePersonalSalud
+
+
+
+
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+       
+}
+
+@{var ListItems = new List<ListItem> { 
+        new ListItem { Text = "Talento humano en salud", Value = "2" }, 
+        new ListItem { Text = "Apoyo logistico para la atención en Salud", Value = "3" }
+       
+        };
+}
+
+<div class="container">
+<br />
+<br />
+<div align="center">
+<h4>Modificar Registro Personal Vacuna</h4>
+</div>
+</div>
+</div>
+<br />
+<br />
+
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        
+        @Html.HiddenFor(model => model.Id)
+<div class="container">
+        <div class="row">
+          <div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.TipoRegistro)
+        </div>
+        <div class="editor-field">
+             @Html.DropDownList("TipoRegistro",  new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control"})
+            @Html.ValidationMessageFor(model => model.TipoRegistro)
+        </div>
+</div>
+
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Empresa)
+        </div>
+        <div class="editor-field">
+           @Html.TextBox("Empresa", null, new { @class = "form-control",  @Value = Model.Empresa,@readonly="true" } )
+            @Html.ValidationMessageFor(model => model.Empresa)
+        </div>
+</div>
+       
+        
+ <div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdTipoDocumento)
+        </div>
+        <div class="editor-field">
+             @Html.DropDownListFor( model => model.IdTipoDocumento, new SelectList(Model.ListadoTipoDocumento, "Id", "Nombre" ),"---Seleccione---", htmlAttributes: new { @class = "form-control"})
+            @Html.ValidationMessageFor(model => model.IdTipoDocumento)
+        </div>
+</div>
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NumeroIdentificacion)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("NumeroIdentificacion", null, new { @class = "form-control",  @Value = Model.NumeroIdentificacion, @readonly="true" } )
+            @Html.ValidationMessageFor(model => model.NumeroIdentificacion)
+        </div>
+</div>
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PrimerApellido)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("PrimerApellido", null,new { @class = "form-control", @Value = Model.PrimerApellido, @readonly="true" } )
+            @Html.ValidationMessageFor(model => model.PrimerApellido)
+        </div>
+</div>
+
+<div class="col-6">
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SegundoApellido)
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("SegundoApellido", null, new { @class = "form-control", @Value = Model.SegundoApellido, @readonly="true" } )
+            @Html.ValidationMessageFor(model => model.SegundoApellido)
+        </div>
+</div>
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PrimerNombre)
+        </div>
+        <div class="editor-field">
+             @Html.TextBox("model => model.PrimerNombre", null, new { @class = "form-control", @Value = Model.PrimerNombre, @readonly="true" } )
+            @Html.ValidationMessageFor(model => model.PrimerNombre)
+        </div>
+</div>
+
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SegundoNombre)
+        </div>
+        <div class="editor-field">
+           @Html.TextBox("SegundoNombre", null, new { @class = "form-control", @Value = Model.SegundoNombre,@readonly="true" } )
+            @Html.ValidationMessageFor(model => model.SegundoNombre)
+        </div>
+</div>
+
+            
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdPerfilProfesional)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdPerfilProfesional", new SelectList(ViewBag.perfil, "Id", "nomcodigo" ),"Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" ,data_live_search="true"})
+            @Html.ValidationMessageFor(model => model.IdPerfilProfesional)
+        </div>
+</div>
+
+        
+
+       
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdServicioCovid)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdServicioCovid", new SelectList(ViewBag.servicio, "Id", "nomservicio" ),"---Seleccione---", htmlAttributes: new { @class = "form-control selectpicker" ,data_live_search="true"})
+            @Html.ValidationMessageFor(model => model.IdServicioCovid)
+        </div>
+</div>
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdAreaCovid)
+        </div>
+        <div class="editor-field">
+           @Html.DropDownListFor( model => model.IdAreaCovid, new SelectList(Model.ListadoAreaCovid, "Id", "Nombre" ),"---Seleccione---", htmlAttributes: new { @class = "form-control"})
+            @Html.ValidationMessageFor(model => model.IdAreaCovid)
+        </div>
+</div>
+<div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdDedicacion)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor( model => model.IdDedicacion, new SelectList(Model.ListadoTiempoDedicacion, "Id", "Nombre" ),"---Seleccione---", htmlAttributes: new { @class = "form-control"})
+            @Html.ValidationMessageFor(model => model.IdDedicacion)
+        </div>
+</div>
+
+
+    <div class="col-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdCargo)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("IdCargo", new SelectList(ViewBag.cargo, "Id", "nomcargo" ),"---Seleccione---", htmlAttributes: new { @class = "form-control selectpicker" ,data_live_search="true"})
+            @Html.ValidationMessageFor(model => model.IdCargo)
+        </div>
+</div>
+
+
+
+<div class="container">
+<br /> 
+        <p>
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+        </p>
+</div>
+
+</div>
+</div>
+    </fieldset>
+}
+
+<div class="container">
+    @Html.ActionLink("Atras", "Index")
+</div>
+
+
+<script>
+
+
+    window.onload = function () {
+
+
+        var TipoRegistro = $("#TipoRegistro").val();
+        $("#TipoRegistro").prop('disabled', true);
+
+
+        if (TipoRegistro == "3") {
+                
+            $("#IdPerfilProfesional").prop('disabled', true);
+        
+        }
+        
+       
+    }
+
+
+    $(document).ready(function () {
+
+        //var TipoRegistro = $("#TipoRegistro").val();
+
+        ////$("#TipoRegistro").change(function () {
+        ////    var TipoRegistro = $("#TipoRegistro").val();
+        ////    var Id = $("#Id").val();
+
+        ////    llenarcargo(Id,TipoRegistro)
+
+        ////});
+
+    });
+
+    //function llenarcargo(Id,TipoRegistro) {
+
+    //    try {
+
+    //        if (TipoRegistro == "2") {
+
+
+    //            $.ajax({
+    //                url: "llenarcargoAsistencial1",
+    //                data: { 'Id': Id },
+    //                type: "post",
+
+    //                dataType: "html",
+    //                success: function (result) {
+
+    //                    if (result == undefined || result == null || result == "[]") {
+    //                        alertify.alert("No se encuentran Registros")
+
+    //                    } else {
+    //                        $("#IdCargo").empty();
+    //                        var obj = jQuery.parseJSON(result);
+    //                        obj.forEach(function (valor, indice) {
+    //                            $("#IdCargo").append('<option value=' + valor.Id + '>' + valor.Nombre + '</option>');
+
+
+    //                        });
+
+
+
+
+    //                    }
+
+
+
+
+
+    //                }
+
+    //            });
+
+
+    //        } else if (id == "3") {
+
+
+
+
+    //            $.ajax({
+    //                url: "llenarcargoApoyo",
+    //                type: "post",
+    //                dataType: "html",
+    //                success: function (result) {
+
+    //                    if (result == undefined || result == null || result == "[]") {
+    //                        alertify.alert("No se encuentran Registros")
+
+    //                    } else {
+    //                        $("#IdCargo").empty();
+    //                        var obj = jQuery.parseJSON(result);
+    //                        obj.forEach(function (valor, indice) {
+    //                            $("#IdCargo").append('<option value=' + valor.Id + '>' + valor.Nombre + '</option>');
+
+
+    //                        });
+
+
+
+
+    //                    }
+
+
+
+
+
+    //                }
+
+    //            });
+
+
+    //        } else {
+    //            $("#IdCargo").empty();
+
+    //        }
+
+
+    //    } catch (e) { alert(e); }
+
+
+    //}
+
+
+</script>
+
+

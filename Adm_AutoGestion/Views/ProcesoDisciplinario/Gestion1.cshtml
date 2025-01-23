@@ -1,0 +1,189 @@
+﻿@model Adm_AutoGestion.Models.ProcesoDisciplinario
+
+@{
+    Adm_AutoGestion.Models.ProcesoDisciplinario Item = ViewBag.ProcesoDisciplinario;
+}
+
+<script src="~/Contents/js/Procesos.js"></script>
+
+<div class="container">
+
+
+    <div class="card-body">
+        <form action="~/ProcesoDisciplinario/Gestion2" method="post">
+            @*                 <div class="col-12" style="text-align:center">
+                          @Html.ActionLink("Ver Empleados", "Implicado1", new { Id = Item.Id }, new {  @class = "btn btn-primary " })
+                   @Html.ActionLink("Ver Anexos", "Anexo1", new { Id=Item.Id,Id2=Item.EmpleadoRegistraId }, new {  @class = "btn btn-primary", data_modal5 = ""  })
+                @Html.ActionLink("Ver Pruebas", "Prueba1", new { Id = Item.Id, Id2 = Item.EmpleadoRegistraId }, new {  @class = "btn btn-primary " })
+
+                </div>*@
+            <div class="row justify-content-start">
+
+                <div class="col-3" style="text-align:left">
+                    <br />
+                    <label for="Nombre">Fecha Registro: </label>
+                    <input type="text" class="form-control" id="FechaInicial" name="FechaInicial" value="@Convert.ToDateTime(Item.FechaRegistro).ToString("dd/MM/yyyy")" disabled="disabled" />
+
+                </div>
+                <div class="col-6" style="text-align:left">
+                    <br />
+                    <label for="Nombre">Empleado Registra: </label>
+                    <input type="text" class="form-control" id="Nom" value=" @Item.Empleado.Nombres" readonly="true" />
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <br />
+                    <label for="Nombre">Documento Empleado: </label>
+                    <input type="text" class="form-control" id="Doc" value="@Item.Empleado.Documento" disabled="disabled" />
+                </div>
+
+
+                <div class="table-responsive">
+                    <br />
+                    <br />
+                    <table class="table table-hover">
+                        <thead><tr class="text-white fondoDegradado"><th></th><th>Nombre</th><th>Cargo</th><th>Area</th><th>Jefe</th></tr></thead>
+                        <tbody id="AddItemsemp"></tbody>
+
+                        @foreach (var Item2 in Item.PDTrabajador)
+                        {
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <label>
+                                        @Item2.Empleado2.Nombres
+                                    </label>
+                                </td>
+                                <td>
+                                    @if (@Item2.Empleado2.Cargo == "" || @Item2.Empleado2.Cargo == null)
+                                    {
+                                        <div style="color:#FF0000;">
+                                            <label>Sin Definir</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <label>@Item2.Empleado2.Cargo</label>
+                                    }
+                                </td>
+                                <td>
+                                    @if (@Item2.Empleado2.Area == "" || @Item2.Empleado2.Area == null)
+                                    {
+                                        <div style="color:#FF0000;">
+                                            <label>Sin Definir</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <label>@Item2.Empleado2.Area</label>
+                                    }
+                                </td>
+                                <td>
+                                    @if (@Item2.Jefe == null)
+                                    {
+                                        <div style="color:#FF0000;">
+                                            <label>Sin Definir</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <label>@Item2.Jefe.Nombres</label>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                    <br />
+                </div>
+                <div class="col-6">
+
+                    <label for="Nombre">Momento de los hechos: </label>
+                    <input type="text" class="form-control" id="fh" value="@Item.FechaHechos" disabled="disabled" />
+                </div>
+                <div class="col-6">
+                    <label for="Nombre">Nivel de Prioridad: </label>
+                    <input type="text" class="form-control" id="Np" value="@Item.NivelPrioridad" disabled="disabled" />
+                </div>
+                <div class="col-12">
+
+                    <label for="Nombre">Lugar de los hechos: </label>
+                    <input type="text" class="form-control" id="lugar" value="@Item.Lugar" disabled="disabled" />
+                </div>
+                <div class="col-12" style="text-align:left">
+                    <br />
+                    <label for="comment">Fundamentos:</label>
+                    <textarea class="form-control" rows="4" id="Fundamentos" name="Fundamentos" readonly>@Item.Fundamentos</textarea>
+                </div>
+
+            </div>
+            <br />
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-md-6" style="text-align:center">
+                    @*@Html.ActionLink("Añadir Nota", "NotasCreate", new { Id=Item.Id}, new { data_modal15 = "", data_dismiss="modal", data_backdrop="false", @class="btn btn-outline-dark  btn-info",@style="color:white; width:100%;"} )*@
+                    <a href='@Url.Action("NotasCreate", "ProcesoDisciplinario", new { Id=Item.Id}, null)' data-modal15-2='' class="bi bi-plus-square btn btn-outline-primary mb-2" style="width:100%;"> Añadir Nota</a>
+
+                </div>
+                <div class="col-md-6" style="text-align:center">
+                    @*@Html.ActionLink("Ver Notas", "NotaDetails", new { Id=Item.Id}, new { data_modal14 = "", @class="btn btn-outline-dark btn-info",@style=" color:white; width:100%;" } )*@
+                    <a href='@Url.Action("NotaDetails", "ProcesoDisciplinario", new { Id=Item.Id}, null)' data-modal14-2='' class="bi bi-eye btn btn-outline-primary mb-2" style="width:100%;"> Ver Notas</a>
+
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row justify-content-start">
+
+                <div class="col-4">
+
+                    <label>Sanciones:</label>
+                    <input type="text" class="form-control" id="Sancion" name="Sancion" value="@Item.Sanciones" disabled />
+
+                </div>
+                <div class="col-4">
+
+                    <label>Motivo de Sancion</label>
+                    <input type="text" id="MotivoSan" name="MotivoSan" class="form-control" value="@Item.MtvSancion" disabled />
+
+                </div>
+                <div class="col-4">
+
+                    <label id="Suspensionlb">Días a Suspender:</label>
+                    <input type="number" id="Suspension" name="Suspension" class="form-control" value="@Item.Suspencion" disabled />
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-4" style="text-align:left">
+                    <br />
+                    <label for="exampleFormControlSelect1">Estado: </label>
+                    <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+                    <input type="hidden" id="Empleado" name="Empleado" value="@Item.Empleado.Id" />
+                    <input type="hidden" id="NroEmpleado" name="NroEmpleado" value="@Item.Empleado.NroEmpleado" />
+
+                    <select class="form-control" id="Estado" name="Estado" onchange="javascript:MostrarJ();">
+
+                        <option>Remitido a Juridica</option>
+                        <option>Anulado</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <br />
+                    <label id="JustificacionLb" hidden>Justificación de la Anulacion:</label>
+                    @*  <input type="number" id="Justificacion" name="Justificacion" class="form-control" value="0" />*@
+                    <textarea class="form-control" rows="4" id="Justificacion" name="Justificacion" hidden></textarea>
+                </div>
+            </div>
+
+
+
+
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

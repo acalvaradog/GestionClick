@@ -1,0 +1,239 @@
+﻿@page "/Eventos/RegistroFamiliar"
+@using Autogestion.Shared.DTO.Eventos
+@inject HttpClient Http
+@using System.Text.Json
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@inject NavigationManager Navigation
+@using AutoGestion.Helpers
+@inject IJSRuntime JS
+@using System.ComponentModel.DataAnnotations
+
+<MudText Typo="Typo.h5" Color="Color.Surface" Class="mb-4">Registro Familiar</MudText>
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}else{
+    @if (empleado != null)
+    {
+        <EditForm Model="@Familiar" OnValidSubmit="@GuardarFamiliar">
+            <DataAnnotationsValidator />
+            <MudCard Class="mb-5">
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="Primer Nombre" @bind-Value="Familiar.PrimerNombre" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="Segundo Nombre" @bind-Value="Familiar.SegundoNombre" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="Primer Apellido" @bind-Value="Familiar.PrimerApellido" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField T="string" Label="Segundo Apellido" @bind-Value="Familiar.SegundoApellido" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudNumericField HideSpinButtons="true" T="string" MaxLength="11" Label="Documento" @bind-Value="Familiar.Documento" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudSelect T="string" Placeholder="Seleccione..." Label="Tipo de Documento" @bind-Value="TipoDocumento">
+                                @if (tipoDocumentos != null)
+                                {
+                                    @foreach (var opcion in tipoDocumentos)
+                                    {
+                                        <MudSelectItem T="string" Value="@opcion.Id">@opcion.Nombre</MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudSelect T="string" Placeholder="Seleccione..." Label="Parentesco" @bind-Value="Parentesco">
+                                <MudSelectItem T="string" Value="@("Hijo/a")" />
+                                <MudSelectItem T="string" Value="@("Padre/Madre")" />
+                                <MudSelectItem T="string" Value="@("Esposo/a")" />
+                                <MudSelectItem T="string" Value="@("Hermano/a")" />
+                                <MudSelectItem T="string" Value="@("Acompañante")" />
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudDatePicker PickerVariant="PickerVariant.Dialog" Label="Fecha de Nacimiento" @bind-Date="Familiar.FechaNacimiento"></MudDatePicker>
+                        </MudItem>
+                    </MudGrid>
+                    <MudCardActions>
+                        <MudButton Class="mt-3" Color="Color.Primary" ButtonType="ButtonType.Submit" Variant="Variant.Outlined">Agregar Familiar</MudButton>
+                    </MudCardActions>
+                </MudCardContent>
+            </MudCard>
+        </EditForm>
+
+        //************TABLA LISTA DE FAMILIARES************//
+
+        <MudContainer>
+            <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Surface">Familiares Registrados</MudText> </MudCardHeader>
+            <MudCard Class="mb-5">
+                <MudTable Items="@ListaFamiliar" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+                    <HeaderContent>
+                        <MudTh>Nombre Completo</MudTh>
+                        <MudTh>Documento</MudTh>
+                        <MudTh>Tipo Doc.</MudTh>
+                        <MudTh>Parentesco</MudTh>
+                        <MudTh>Fecha de Nac.</MudTh>
+                        <MudTh>Edad</MudTh>
+                        <MudTh></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nombre Completo" Class="text-capitalize">@context.PrimerNombre @context.SegundoNombre @context.PrimerApellido @context.SegundoApellido</MudTd>
+                        <MudTd DataLabel="Documento">@context.Documento</MudTd>
+                        <MudTd DataLabel="Tipo Doc.">@context.TipoDocumento</MudTd>
+                        <MudTd DataLabel="Parentesco">@context.Parentesco</MudTd>
+                        <MudTd DataLabel="Fecha de Nac.">@context.FechaNacimiento?.ToString("dd/MM/yyyy")</MudTd>
+                        <MudTd DataLabel="Edad">@context.Edad</MudTd>
+                        <MudTd>
+                            <MudTooltip Text="Borrar Familiar" Color="Color.Primary" Placement="Placement.Top">
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="Modal"></MudIconButton>
+                            </MudTooltip>
+                        </MudTd>
+
+                        <MudMessageBox @ref="mbox" Title="@($"Borrar registro de {context.PrimerNombre} {context.PrimerApellido}")" CancelText="No">
+                            <MessageContent>
+                                Esta seguro?
+                            </MessageContent>
+                            <YesButton>
+                                <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(args => BorrarFamiliar(context.Id))">Si</MudButton>
+                            </YesButton>
+                        </MudMessageBox>
+
+                    </RowTemplate>
+                </MudTable>
+            </MudCard>
+        </MudContainer>
+    }
+}
+
+
+@code {
+    [Inject] private IDialogService? DialogService { get; set; }
+    private EmpleadoReturnSapDTO? empleado { get; set; }
+    private List<FamiliarDTO>? ListaFamiliar;
+    private List<TipoDocumento>? tipoDocumentos;
+    private FamiliarDTO? familiar { get; set; }
+    private bool _loading;
+    private string TipoDocumento;
+    private string Parentesco;
+    FamiliarDTO Familiar = new FamiliarDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        var actedad = await Http.GetFromJsonAsync<bool>($"api/CalcularEdad/{empleado.Id}");
+        ListaFamiliar = await Http.GetFromJsonAsync<List<FamiliarDTO>>($"api/Eventos/ListarFamiliares/{empleado.Id}");
+        tipoDocumentos = await Http.GetFromJsonAsync<List<TipoDocumento>>($"api/Eventos/TipoDocumento");
+        _loading = false;
+        StateHasChanged();
+    }
+
+    MudMessageBox mbox { get; set; }
+    public async void Modal()
+    {
+        bool? result = await mbox.Show();
+    }
+
+    private async void BorrarFamiliar(int Id)
+    {
+        var Respuesta = await Http.GetFromJsonAsync<bool>($"api/Eventos/BorrarFamiliar/{Id}");
+
+        if (Respuesta == true)
+        {
+            await JS.ShowMessage("Cambios guardados", "Se ha borrado el registro", "success");
+            Navigation.NavigateTo("reload/Eventos.RegistroFamiliar", false, true);
+        }
+        else
+        {
+            await JS.ShowMessage("Error", "Ha ocurrido un error", "error");
+        }
+    }
+
+    private async void GuardarFamiliar()
+    {
+        bool IsValid = true;
+        var respuesta = "";
+
+        if (Familiar.PrimerNombre == null)
+        {
+            respuesta = "Primer Nombre <br/>" + respuesta;
+            IsValid = false;
+        }
+        if (Familiar.PrimerApellido == null)
+        {
+            respuesta = "Primer Apellido <br/>" + respuesta;
+            IsValid = false;
+        }
+
+        if (TipoDocumento != "" && TipoDocumento != null)
+        {
+            Familiar.TipoDocumento = TipoDocumento;
+        }
+        else
+        {
+            respuesta = "Tipo de Documento <br/>" + respuesta;
+            IsValid = false;
+        }
+
+        if (Parentesco != "" && Parentesco != null)
+        {
+            Familiar.Parentesco = Parentesco;
+        }
+        else
+        {
+            respuesta = "Parentesco <br/>" + respuesta;
+            IsValid = false;
+        }
+
+        if (Familiar.FechaNacimiento == null)
+        {
+            respuesta = "Fecha de Nacimiento <br/>" + respuesta;
+            IsValid = false;
+        }
+
+        if (IsValid)
+        {
+            DateTime FechaNac = Convert.ToDateTime(Familiar.FechaNacimiento);
+
+            //var Nac = int.Parse(FechaNac.ToString("yyyyMMdd"));
+
+            //var FechaActual = int.Parse(DateTime.Now.ToString("yyyyMMdd"));
+
+            //var Edad = (FechaActual - Nac) / 10000;
+
+
+            Familiar.NroEmpleado = empleado.PERNR;
+            Familiar.EmpleadoId = Convert.ToInt32(empleado.Id);
+            //Familiar.Edad = Edad;
+            var Respuesta = await Http.PostAsJsonAsync<FamiliarDTO>($"api/Eventos/GuardarFamiliar/", Familiar);
+            
+
+            if (Respuesta.IsSuccessStatusCode)
+            {
+                var codigoRespuesta = await Respuesta.Content.ReadFromJsonAsync<bool>();
+
+                if (codigoRespuesta == true)
+                {
+                    await JS.ShowMessage("Guardado", "Se ha guardado los datos del familiar", "success");
+                    Navigation.NavigateTo("reload/Eventos.RegistroFamiliar", false, true);
+                }
+                else
+                {
+                    await JS.ShowMessage("Error", "Ha ocurrido un error", "error");
+                }
+            }
+        }
+        else
+        {
+            await JS.ShowMessage("Verifique el formulario o recargue la pagina", "Los siguientes campos son obligatorios: <br/>" + respuesta, "warning");
+        }
+    }
+
+}

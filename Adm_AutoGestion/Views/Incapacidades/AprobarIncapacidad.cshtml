@@ -1,0 +1,227 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Incapacidades>
+
+@{
+    ViewBag.Title = "AprobarIncapacidad";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.Incapacidades Item = ViewBag.Incapacidades;
+}
+@{
+    string message = string.Format("{0}", Session["message"]);
+    if (!string.IsNullOrWhiteSpace(message))
+    {
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Nota!</h4>
+            <hr>
+            <p class="mb-0">@message</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+        </div>
+        Session.Remove("message");
+    }
+}
+<script src="~/Contents/js/Incapacidades.js"></script>
+
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Aprobar Incapacidad</h4>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="Documento">Documento:</label>
+                        <input type="text" class="form-control" id="Doc" value="@Item.Empleado.Documento" disabled="disabled" />
+                    </div>
+                    <div class="col-6" style="text-align:left">
+                        <label for="Nombre">Nombre: </label>
+                        <input type="text" class="form-control" id="Nom" value=" @Item.Empleado.Nombres" readonly />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Cantidad Dias: </label>&nbsp&nbsp&nbsp
+                        <input type="text" class="form-control" id="Cd" value="@Item.CantidadDias" disabled="disabled" />
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Fecha Inicio: </label>
+                        <input type="text" class="form-control" id="FcI" value="@Convert.ToDateTime(Item.FechaInicio).ToString("dd/MM/yyyy")" disabled="disabled" />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Fecha Fin: </label>&nbsp&nbsp&nbsp
+                        <input type="text" class="form-control" id="FcF" value="@Convert.ToDateTime(Item.FechaFin).ToString("dd/MM/yyyy")" disabled="disabled" />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Diagnostico: </label>&nbsp&nbsp
+                        <input type="text" class="form-control" id="FcI" value="@Item.Diagnostico" disabled="disabled" />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">EPS: </label>&nbsp&nbsp
+                        <input type="text" class="form-control" id="FcI" value="@Item.ListadoEps.Nombre" disabled="disabled" />
+                    </div>
+                </div>
+                <br />
+                <form id="frm_aprobar_incapacidad" action="~/Incapacidades/AprobarIncapacidad1">
+
+
+                    <div class="row justify-content-start">
+                        @*<div class="col-3" style="text-align:left">
+                        <label for="Nombre">Prorroga: </label>&nbsp&nbsp
+                        <select class="form-control" id="Prorroga" name="Prorroga">
+                            <option value="0">Seleccione...</option>
+                            <option value="SI">SI</option>
+                            <option value="NO">NO</option>
+                        </select>
+                    </div>*@
+                        <div class="col-3" style="text-align:left">
+                            <label for="Nombre">Prórroga: </label>&nbsp&nbsp
+                            <input type="text" class="form-control" id="FcI" value="@Item.Prorroga" disabled="disabled" />
+                        </div>
+                        <div class="col-3" style="text-align:left">
+                            <label for="exampleFormControlSelect1">Estado: </label>
+                            <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+                            <input type="hidden" id="Empleado" name="Empleado" value="@Item.Empleado.Id" />
+                            <select class="form-control" id="Estado" name="Estado">
+                                <option value="2">Aprobar</option>
+                                <option value="3">Rechazar</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row justify-content-start">
+                        <div class="col-12" style="text-align:left">
+                            <label for="comment">Observación:</label>
+                            <textarea class="form-control" rows="2" id="Observacion" name="Observacion"></textarea>
+                        </div>
+                    </div>
+                    <br />
+
+
+                    <div class="row justify-content-start">
+                        <div id="alert_formulario"></div>
+                        <div class="col-12" style="text-align:center">
+                            <button type="submit" id="Search" class="btn btn-outline-primary  rounded-pill mb-2"><span class="bi bi-save"></span><span class="spinner-border spinner-border-sm" role="status" style="display:none" aria-hidden="true"></span> Guardar</button>
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+
+            </div>
+        </div>
+</div>
+<br />
+
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th></th>
+                <th>
+                    Adjunto
+                </th>
+                <th>
+                    Nombre Empleado
+                </th>
+                <th>
+                    Fecha Registro
+                </th>
+                <th>
+                    Fecha Inicio
+                </th>
+                <th>
+                    Fecha Fin
+                </th>
+                <th>
+                    Cantidad Dias
+                </th>
+                <th>
+                    EPS
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Diagnostico)
+                </th>
+                <th>
+                    Prorroga
+                </th>
+                <th>
+                    Estado
+                </th>
+
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:center">
+                        @*@Html.ActionLink("Ver", "AprobarIncapacidad", new { Id = item.Id })*@
+                        <a href='@Url.Action("AprobarIncapacidad", "Incapacidades", new { Id = item.Id}, null)' title="Ver Incapacidad">
+
+                            <i class="fas fa-eye text-primary"></i>
+                        </a>
+                    </td>
+                    <td style="text-align:center">
+                        @*@Html.ActionLink("Ver Archivos Adjuntos", "Adjunto", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 0 }, new { target = "_blank" })*@
+                        <a href='@Url.Action("Adjunto", "Incapacidades", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 0 }, null)' target="_blank" title="Ver Adjuntos">
+
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </a>
+                    </td>
+
+                    <td>
+                        @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                        @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.FechaInicio)*@
+                        @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.FechaFin)*@
+                        @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CantidadDias)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ListadoEps.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Diagnostico)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Prorroga)*@
+                        @if (item.Prorroga == "SI")
+                        {
+                            <img src="~/Contents/image/relojarena.png">
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstadosIncapacidades.Nombre)
+                    </td>
+                    <!--<td style="text-align:center">-->
+                        @*@Html.ActionLink("Ver Archivos Adjuntos", "Adjunto", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 0 }, new { target = "_blank" })*@
+                        <!--<a href='@Url.Action("Adjunto", "Incapacidades", new { Id = item.Id, Empleado = item.Empleado.Id, IndJefe = 0 }, null)' target="_blank" title="Ver Adjuntos">
+
+                            <i class="fas fa-cloud-download-alt"></i>
+                        </a>
+                    </td>-->
+                    <!--<td style="text-align:center">-->
+                    @*@Html.ActionLink("Ver", "AprobarIncapacidad", new { Id = item.Id })*@
+                    <!--<a href='@Url.Action("AprobarIncapacidad", "Incapacidades", new { Id = item.Id}, null)' title="Ver Incapacidad">
+
+            <i class="fas fa-eye text-primary"></i>
+        </a>
+    </td>-->
+                </tr>
+            }
+
+        </table>
+    </div>

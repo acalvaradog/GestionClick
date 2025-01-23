@@ -1,0 +1,16 @@
+﻿@model Adm_AutoGestion.Models.Eventos
+
+@using (Html.BeginForm())
+{
+    <div class="row me-5 ms-5 mt-3">
+        <div class="col-12">
+            <label>Enlace</label>
+            @Html.EditorFor(model => model.LinkEncuestaNoAsistidos, new { htmlAttributes = new { @class = "form-control", type = "url" } })
+        </div>
+    </div>
+    <div class="row mt-3 mb-2">
+        <div class="col-12 d-flex justify-content-center">
+            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Registrar</button>
+        </div>
+    </div>
+}

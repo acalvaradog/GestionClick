@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.PDTrabajador>
+
+@{
+    Adm_AutoGestion.Models.Empleado Item = ViewBag.Empleado;
+}
+<div class="container">
+
+
+    <br />
+
+    <div class="form-inline" role="form">
+  <div class="container-fluid">
+    <div class="row">
+            <div class="col-sm">
+                <div class ="form-group">
+                  &nbsp&nbsp&nbsp
+                  <label for="Nombre" class="control-label col-sm-1">Empleado Registra: </label>  &nbsp&nbsp&nbsp
+                  <input  type = "text" class="form-control col-sm-7" id = "Nom" value="@Item.Nombres" readonly="true"/>
+                </div>
+            </div>
+       </div>
+   </div>
+ </div>
+    <br />
+        <div class = "table-responsive">
+        <table class= "table table-hover">
+            <tr>
+  
+                <th>
+            
+                     Nombre del Empleado
+                </th>
+                <th>
+                    Documento
+                </th>
+                <th>
+                    Cargo
+                </th>
+                <td>
+                    Area
+                </td>
+            @*    <td>
+                    Superior
+                </td>*@
+                <td>
+                    Jefe
+                </td>
+                <th></th>
+            </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+  
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado2.Nombres)
+
+                </td>
+
+                <td>
+                      @Html.DisplayFor(modelItem => item.Empleado2.Documento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado2.Cargo)
+           
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado2.Area)
+          
+                </td>
+           @*     <td>
+                        @Html.DisplayFor(modelItem => item.Empleado2.Superior)
+                </td>*@
+                <td>
+           @Html.DisplayFor(modelItem => item.Jefe.Nombres)
+                </td>
+            </tr>
+        }
+
+        </table>
+            <br />
+        </div>
+    </div>

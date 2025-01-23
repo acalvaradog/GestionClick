@@ -1,0 +1,247 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Reconocimiento>
+
+@{
+    ViewBag.Title = "GestionHumana";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+@if (message != "" && message != null)
+{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+}
+
+
+    
+
+    <form method="post">
+        <div class="card">
+            <div class="card-header  mb-3">Reconocimientos Gestion Humana</div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-6" style="text-align:left">
+                        <label for="sospechoso">Trabajador Reconocido</label>
+                        @Html.DropDownList("TrabajadorS", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                    <div class="col-6" style="text-align:left">
+                        <label for="Area">Área</label>
+                        @Html.DropDownList("AreaDescripcion", new SelectList(ViewBag.AreaDescripcion, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                </div>
+                <br />
+
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Fechas Desde:</label>
+                        @Html.TextBox("FechaI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Fechas Hasta:</label>
+                        @Html.TextBox("FechaF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+
+
+                    <div class="col-3" style="text-align:left">
+                        <label for="Empresa">Empresa:</label>
+                        <select class="form-control" id="Empresa" name="Empresa">
+                            <option value="">Seleccione...</option>
+                            <option value="1000">1000</option>
+                            <option value="2000">2000</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="col-3" style="text-align:left">
+                        <label for="TipoReconocimiento">Tipo Reconocimiento:</label>
+                        @Html.DropDownList("TipoReconocimiento", new SelectList(ViewBag.TipoReconocimiento, "Id", "Nombre"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-md" })
+                    </div>
+
+                    <div class="col-3" style="text-align:left">
+                        <br />
+                        <label for="sospechoso">Nmr Reconocimiento</label>
+                        @Html.TextBox("NmrRegistro", "", htmlAttributes: new { @class = "form-control", type = "number" })
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <br />
+                        <label for="sospechoso">Documento</label>
+                        @Html.TextBox("Documento", "", htmlAttributes: new { @class = "form-control", type = "number" })
+
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <br />
+                        <label for="Activo">Activo:</label>
+                        <select class="form-control" id="Activo" name="Activo">
+                            <option value="">Seleccione...</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <br />
+                        <label for="sospechoso">Codigo</label>
+                        @Html.TextBox("NroEmpleado", "", htmlAttributes: new { @class = "form-control", type = "number" })
+
+                    </div>
+                </div>
+                <br />
+
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary rounded-pill mb-2" onclick="@Url.Action("ReconocimientoGH","Reconocimiento")"> Buscar</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </form>
+
+
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-striped display dataTable table-sm" id="Exportar_a_Excel_Reconocimiento">
+            <thead>
+                <tr>
+                    <th>
+                        Ver Detalle
+                    </th>
+                    <th>
+                        Nmr Reconocimiento
+                    </th>
+                    <th>
+                        Fecha Registro
+                    </th>
+                    <th>
+                        Documento
+                    </th>
+                    <th>
+                        Empleado Reconocido
+                    </th>
+
+
+                    <th>
+                        Sociedad
+                    </th>
+                    <th>
+                        Codigo
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        Tipo Reconocimiento
+                    </th>
+                    <th>
+                        Activo
+                    </th>
+
+
+
+
+
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(" ", "DetalleReconocimientoGestion", new { id = item.Id }, new { 
+                            RecoJefeDetail = "", @class = "btn close fas fa-eye text-primary mr-4", onclick = "openmodalReco01(this.href, 'Detalle Reconocimiento')" })
+                        </td>
+                        <td>
+                            <label> @item.Id</label>
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @item.EmpleadoReconocido.Documento
+                        </td>
+                        <td>
+                            @item.EmpleadoReconocido.Nombres
+                        </td>
+
+
+                        <td>
+                            @item.EmpleadoReconocido.Empresa
+                        </td>
+                        <td>
+                            @item.EmpleadoReconocido.NroEmpleado
+                        </td>
+                        <td>
+                            @item.EmpleadoReconocido.AreaDescripcion
+                        </td>
+                        <td>
+                            @item.TipoReconocimiento.Nombre
+                        </td>
+                        <td>
+                            @if (@item.Activo == true)
+                            { 
+                                <h6>Activo</h6>
+                            }
+                            else
+                            {
+                                <h6>Inactivo</h6>
+                            }
+
+                        </td>
+
+
+
+
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+<div class="modal fade in" id="modal_RecoDetailJefe" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h2 class="modal-title text-white"> Titulo </h2>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalReco2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+

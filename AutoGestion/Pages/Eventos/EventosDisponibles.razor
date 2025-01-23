@@ -1,0 +1,186 @@
+﻿@page "/Eventos/EventosDisponibles"
+@using Autogestion.Shared.DTO.Eventos
+@inject HttpClient Http
+@using System.Text.Json
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+@inject Microsoft.Extensions.Configuration.IConfiguration config
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    if (Eventos != null)
+    {
+        @foreach (var i in Eventos)
+        {
+            bool EsFechaLimite = false;
+            bool FinEventoGeneral = false;
+            @if (i.RegistroRequerido == false)
+            {
+                var fechaFin = Convert.ToDateTime(i.FechaFin);
+                var horaFin = Convert.ToDateTime(i.HoraFin);
+                var fechaActual = DateTime.Now;
+                DateTime fechaCombinada = fechaFin.Date.Add(horaFin.TimeOfDay);
+                FinEventoGeneral = fechaCombinada <= fechaActual;
+            }
+            @if (i.RegistroRequerido == true)
+            {
+                var fechaCierre = Convert.ToDateTime(i.FechaCierre);
+                var horaCierre = Convert.ToDateTime(i.HoraCierre);
+                var fechaActual = DateTime.Now;
+                DateTime fechaCombinada = fechaCierre.Date.Add(horaCierre.TimeOfDay);
+                EsFechaLimite = fechaCombinada <= fechaActual;
+            }
+            @if (EsFechaLimite == false && FinEventoGeneral == false)
+            {
+            <MudContainer>
+                <MudGrid>
+                    <MudItem xs="12" sm="12" md="12" lg="12">
+                            <MudCard>
+                                <MudText Style="text-transform:uppercase;font-weight:700;padding: 16px 16px 8px 16px;" Color="Color.Info" Typo="Typo.h5">@i.NombreEvento</MudText>
+                                <MudCardHeader Style="padding: 0px 16px 16px 16px;" Class="flex-wrap gap-3 flex-md-wrap">
+                                    <MudText Style="font-weight:bolder;" Typo="Typo.subtitle1">@Convert.ToDateTime(i.FechaInicio).ToLongDateString()&nbsp;@Convert.ToDateTime(i.HoraInicio).ToShortTimeString()</MudText>
+                                    <MudText Style="font-weight:bolder;" Typo="Typo.subtitle1">@Convert.ToDateTime(i.FechaFin).ToLongDateString()&nbsp;@Convert.ToDateTime(i.HoraFin).ToShortTimeString()</MudText>
+                                </MudCardHeader>
+                                    <MudImage Style="width:-webkit-fill-available;height:190px;margin:0px 16px 0 16px" Src="@($"{@config["Configuraciones:URLAnexosEventos"]}/{i.Imagen}")" />
+                                    <MudCardContent>
+                                    <MudText Style="display:block" Typo="Typo.caption">Fecha de Publicación - @Convert.ToDateTime(@i.FechaPublicacion).ToString("dd/MM/yyyy hh:mm tt")</MudText>
+                                    @if (i.RegistroRequerido != false)
+                                    {
+                                        <MudText Style="display:block" Typo="Typo.caption">Fecha Cierre de Inscripciones - @Convert.ToDateTime(i.FechaCierre).ToString("dd/MM/yyyy") @Convert.ToDateTime(@i.HoraCierre).ToString("hh:mm tt")</MudText>
+                                    }
+
+                                    @if (i.RegistroRequerido != false && i.DirigidoA != "General")
+                                    {
+                                        @if (i.Cupo == 0)
+                                        {
+                                            <MudText Inline Style="font-weight:bolder;color:red;" Typo="Typo.body1">@i.Cupo</MudText>
+                                            <MudText Inline Typo="Typo.body1">Cupos disponibles</MudText>
+                                        }
+                                        else if (i.DirigidoA == "Ambos")
+                                        {
+                                            <MudText Inline Style="font-weight:bolder" Typo="Typo.body1">@i.Cupo</MudText>
+                                            <MudText Inline Typo="Typo.body1">Cupos disponibles</MudText>
+                                            <MudButton Href="@($"Eventos/RegistroEventoFamiliar/{i.Id}")" Variant="Variant.Outlined" Color="Color.Primary">Inscripciones</MudButton>
+                                        }
+                                        else if (i.EmpInscrito == false && i.DirigidoA == "Trabajadores" && i.EstaInscritoOtraFecha == true)
+                                        {
+                                            <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Info" Placement="Placement.Top" Text="Ya estás inscrito a este evento en otra fecha">
+                                                <MudButton Variant="Variant.Outlined" Color="Color.Primary">Inscribirse</MudButton>
+                                            </MudTooltip>
+                                        }
+                                        else if (i.EmpInscrito == true && i.DirigidoA == "Trabajadores" && i.EstaInscritoOtraFecha == null)
+                                        {
+                                            <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Info" Placement="Placement.Top" Text="Ya estás inscrito a este evento">
+                                                <MudButton Variant="Variant.Outlined" Color="Color.Primary">Inscribirse</MudButton>
+                                            </MudTooltip>
+                                        }
+                                        else if (i.DirigidoA == "Trabajadores")
+                                        {
+                                            <MudText Inline Style="font-weight:bolder" Typo="Typo.body1">@i.Cupo</MudText>
+                                            <MudText Inline Typo="Typo.body1">Cupos disponibles</MudText>
+                                            <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(args => InscribirEmpleado(i.Id))">Inscribirse</MudButton>
+                                        }
+                                        else if (i.DirigidoA == "Familiares")
+                                        {
+                                            <MudText Inline Style="font-weight:bolder" Typo="Typo.body1">@i.Cupo</MudText>
+                                            <MudText Inline Typo="Typo.body1">Cupos disponibles</MudText>
+                                            <MudButton Href="@($"Eventos/RegistroEventoFamiliar/{i.Id}")" Variant="Variant.Outlined" Color="Color.Primary">Inscribir Familiares</MudButton>
+                                        }
+                                    }
+                                    else if (i.RegistroRequerido != true && i.DirigidoA == "General")
+                                    {
+                                        <MudText Inline Style="font-weight:bolder" Typo="Typo.body1">Evento General</MudText>
+                                    }
+                                    else
+                                    {
+                                        <MudText Inline Style="font-weight:bolder" Typo="Typo.body1">No requiere inscribirse</MudText>
+                                    }
+                                    <MudText Class="mt-3" Style="text-transform:capitalize;font-weight:500" Typo="Typo.body1">@i.Descripcion</MudText>
+                                </MudCardContent>
+                            </MudCard>
+                    </MudItem>
+                </MudGrid>
+            </MudContainer>
+            }
+        }
+    }
+    else
+    {
+        <MudText Typo="Typo.h4">No hay eventos disponibles aún!</MudText>
+    }
+}
+
+
+@code {
+    [Inject] private IDialogService? DialogService { get; set; }
+    DetalleEventosDTO model = new DetalleEventosDTO();
+    private List<EventosDTO>? Eventos;
+    private List<EventosRelacionadosDTO>? EventosR;
+    private EmpleadoDTO? empleado { get; set; }
+    private bool _loading;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        Eventos = await Http.GetFromJsonAsync<List<EventosDTO>>($"api/Eventos/EventosAgendados/{empleado.Id}");
+        EventosR = await Http.GetFromJsonAsync<List<EventosRelacionadosDTO>>("api/Eventos/EventosRelacionados");
+        _loading = false;
+        StateHasChanged();
+        //Console.WriteLine("ID EMPLEADO " + empleado.Id);
+    }
+
+    public async void InscribirEmpleado(int EventoId)
+    {
+        model.EventosId = EventoId;
+        model.EmpleadoId = empleado.Id;
+        model.Observaciones = "";
+        //Console.WriteLine("MODELO " + model.EmpleadoId);
+
+        var Respuesta = await Http.PostAsJsonAsync<DetalleEventosDTO>($"api/Eventos/GuardarEventoEmpleado/", model);
+
+        if (Respuesta.IsSuccessStatusCode)
+        {
+            var codigoRespuesta = await Respuesta.Content.ReadFromJsonAsync<string>();
+
+            if (codigoRespuesta == "true")
+            {
+                await JS.ShowMessage("Consulte en Eventos Agendados", "Se ha inscrito con éxito", "success");
+                Navigation.NavigateTo("reload/Eventos.EventosDisponibles");
+            }
+            else if (codigoRespuesta == "EstaInscritoEventoConcurrente")
+            {
+                await JS.ShowMessage("Error", "Ya está inscrito a otra fecha del evento", "error");
+                Navigation.NavigateTo("reload/Eventos.EventosDisponibles");
+            }
+            else if (codigoRespuesta == "Inscrito")
+            {
+                await JS.ShowMessage("Error", "Ya está inscrito a este evento", "error");
+                Navigation.NavigateTo("reload/Eventos.EventosDisponibles");
+            }
+            else if (codigoRespuesta == "SinCupos")
+            {
+                await JS.ShowMessage("Error", "No hay cupos disponibles para este evento", "error");
+                Navigation.NavigateTo("reload/Eventos.EventosDisponibles");
+            }
+            else if (codigoRespuesta == "FechaLimite")
+            {
+                await JS.ShowMessage("Error", "Ya cerraron las inscripciones al evento", "error");
+                Navigation.NavigateTo("reload/Eventos.EventosDisponibles");
+            }
+            else if (codigoRespuesta == "false")
+            {
+                await JS.ShowMessage("Error", "Ha ocurrido un error", "error");
+                Navigation.NavigateTo("reload/Eventos.EventosDisponibles");
+            }
+        }
+    }
+
+}

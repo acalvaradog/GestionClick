@@ -1,0 +1,389 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EntregaEPP>
+
+@{
+    ViewBag.Title = "ListaPorCompletar";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Nota!</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+
+
+
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+            <h4 class="card-title">Mis Actas Abiertas</h4>
+        </div>
+
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <tr>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+                        Empleado
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Area)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Sociedad)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado)
+                    </th>
+                    <th>QR</th>
+                    <th>Registrar Entrega</th>
+                    <th>Entrega Realizada</th>
+                    <th>Cerrar Acta</th>
+                    <th>Anular Acta</th>
+                    <th>Enviar Notificacion</th>
+                    <th>Pendientes por Firmar</th>
+                    <th>Generar Impresión</th>
+                    <th>Generar Link</th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sociedades.Descripcion)
+                            @*@if(item.Sociedad == "1"){
+                                  <p>Fundación Oftalmologica de Santander</p>
+                                }else{
+                                 <p>Fundación Fosunab</p>
+                                }*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        @* <td>
+                                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+
+                            </td>*@
+                        <td  style="text-align:center">
+
+                            <a href="javascript:GenerarQR('@Html.DisplayFor(modelItem => item.Id)','@Html.DisplayFor(modelItem => item.Fecha)','@Html.DisplayFor(modelItem => item.EmpleadoId)');">
+                                
+
+                                <i>
+                                    <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M9.18824 3.74722C9.18824 3.33438 8.84724 3 8.42724 3H8.42624L6.79724 3.00098C4.60624 3.00294 2.82324 4.75331 2.82324 6.90279V8.76201C2.82324 9.17386 3.16424 9.50923 3.58424 9.50923C4.00424 9.50923 4.34624 9.17386 4.34624 8.76201V6.90279C4.34624 5.57604 5.44624 4.4964 6.79824 4.49444L8.42724 4.49345C8.84824 4.49345 9.18824 4.15907 9.18824 3.74722ZM17.1931 3.00029H15.6001C15.1801 3.00029 14.8391 3.33468 14.8391 3.74751C14.8391 4.15936 15.1801 4.49277 15.6001 4.49277H17.1931C18.5501 4.49277 19.6541 5.57535 19.6541 6.90603V8.7623C19.6541 9.17415 19.9951 9.50952 20.4151 9.50952C20.8361 9.50952 21.1761 9.17415 21.1761 8.7623V6.90603C21.1761 4.75165 19.3901 3.00029 17.1931 3.00029ZM9.23804 6.74266H14.762C15.367 6.74266 15.948 6.98094 16.371 7.40554C16.797 7.83407 17.033 8.40968 17.032 9.00883V10.2542C17.027 10.4003 16.908 10.5189 16.759 10.5229H7.23904C7.09104 10.518 6.97204 10.3993 6.96904 10.2542V9.00883C6.95804 7.76837 7.97404 6.75541 9.23804 6.74266Z" fill="currentColor"></path>
+                                        <path d="M22.239 12.0413H1.762C1.342 12.0413 1 12.3756 1 12.7885C1 13.2003 1.342 13.5337 1.762 13.5337H2.823V17.0972C2.823 19.2467 4.607 20.9971 6.798 20.999L8.427 21C8.848 21 9.188 20.6656 9.189 20.2528C9.189 19.841 8.848 19.5066 8.428 19.5066L6.8 19.5056C5.447 19.5036 4.346 18.424 4.346 17.0972V13.5337H6.969V14.5251C6.959 15.7656 7.974 16.7795 9.238 16.7913H14.762C16.027 16.7795 17.042 15.7656 17.032 14.5251V13.5337H19.655V17.0933C19.655 18.425 18.551 19.5066 17.194 19.5066H15.601C15.18 19.5066 14.839 19.841 14.839 20.2528C14.839 20.6656 15.18 21 15.601 21H17.194C19.39 21 21.177 19.2487 21.177 17.0933V13.5337H22.239C22.659 13.5337 23 13.2003 23 12.7885C23 12.3756 22.659 12.0413 22.239 12.0413Z" fill="currentColor"></path>
+                                    </svg>
+                                </i>
+                            </a>
+
+                        </td>
+                        <td style="text-align:center">
+                            @*@Html.ActionLink("Registrar Entrega", "RegistrarEntrega", "DetalleEntregaEPP", new { id = item.Id }, null)*@
+                            <a href='@Url.Action("RegistrarEntrega", "DetalleEntregaEPP", new { id = item.Id }, null)'>
+                                <i >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="icon-32" viewBox="0 0 24 24">
+                                        <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z" />
+                                        <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1" />
+                                    </svg>
+                                </i>
+                            </a>
+                        </td>
+                        <td style="text-align:center">
+                            <a href='@Url.Action("DetalleActa", "DetalleEntregaEPP", new { id = item.Id }, null)'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="icon-32" viewBox="0 0 24 24">
+                                    <path opacity="0.4" fill-rule="evenodd" d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                    <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                                    <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+                                </svg>
+                            </a>
+                        </td>
+                        <td style="text-align:center" >
+                            <a href="javascript:CerrarActa1('@Html.DisplayFor(modelItem => item.Id)');">
+                                <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M7.7688 8.71387H16.2312C18.5886 8.71387 20.5 10.5831 20.5 12.8885V17.8254C20.5 20.1308 18.5886 22 16.2312 22H7.7688C5.41136 22 3.5 20.1308 3.5 17.8254V12.8885C3.5 10.5831 5.41136 8.71387 7.7688 8.71387ZM11.9949 17.3295C12.4928 17.3295 12.8891 16.9419 12.8891 16.455V14.2489C12.8891 13.772 12.4928 13.3844 11.9949 13.3844C11.5072 13.3844 11.1109 13.772 11.1109 14.2489V16.455C11.1109 16.9419 11.5072 17.3295 11.9949 17.3295Z" fill="currentColor"></path>                               
+                                <path opacity="0.4" d="M17.523 7.39595V8.86667C17.1673 8.7673 16.7913 8.71761 16.4052 8.71761H15.7447V7.39595C15.7447 5.37868 14.0681 3.73903 12.0053 3.73903C9.94257 3.73903 8.26594 5.36874 8.25578 7.37608V8.71761H7.60545C7.20916 8.71761 6.83319 8.7673 6.47754 8.87661V7.39595C6.4877 4.41476 8.95692 2 11.985 2C15.0537 2 17.523 4.41476 17.523 7.39595Z" fill="currentColor"></path>                               
+                                </svg>
+                            </a>
+                        </td>
+                        <td style="text-align:center" >
+                            <a href="javascript:AnularActa1('@Html.DisplayFor(modelItem => item.Id)');">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="icon-32" viewBox="0 0 24 24">
+                                    <path opacity="0.4" fill-rule="evenodd" d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708" />
+                                    <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                                    <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+                                </svg>
+                            </a>
+                        </td>
+                        <td  style="text-align:center">
+                            @if (item.cantifirmados == "0")
+                            {
+                            }
+                            else
+                            {
+                                <a href="javascript:EnviarEmailFirma('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                                    <i>
+                                        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4" d="M22 15.94C22 18.73 19.76 20.99 16.97 21H16.96H7.05C4.27 21 2 18.75 2 15.96V15.95C2 15.95 2.006 11.524 2.014 9.298C2.015 8.88 2.495 8.646 2.822 8.906C5.198 10.791 9.447 14.228 9.5 14.273C10.21 14.842 11.11 15.163 12.03 15.163C12.95 15.163 13.85 14.842 14.56 14.262C14.613 14.227 18.767 10.893 21.179 8.977C21.507 8.716 21.989 8.95 21.99 9.367C22 11.576 22 15.94 22 15.94Z" fill="currentColor"></path>
+                                            <path d="M21.4759 5.67351C20.6099 4.04151 18.9059 2.99951 17.0299 2.99951H7.04988C5.17388 2.99951 3.46988 4.04151 2.60388 5.67351C2.40988 6.03851 2.50188 6.49351 2.82488 6.75151L10.2499 12.6905C10.7699 13.1105 11.3999 13.3195 12.0299 13.3195C12.0339 13.3195 12.0369 13.3195 12.0399 13.3195C12.0429 13.3195 12.0469 13.3195 12.0499 13.3195C12.6799 13.3195 13.3099 13.1105 13.8299 12.6905L21.2549 6.75151C21.5779 6.49351 21.6699 6.03851 21.4759 5.67351Z" fill="currentColor"></path>
+                                        </svg>
+                                    </i>
+                                </a>
+                                @Html.DisplayFor(modelItem => item.cantifirmados)
+                            }
+                        </td>
+                        <td  style="text-align:center">
+                            <a href='@Url.Action("PendientePorFirmar", "EntregaEPP", new { id = item.Id }, null)' data-modal2=''>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 24 24">
+                                    <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001" />
+                                </svg>
+                            </a>
+                        </td>
+                        <td  style="text-align:center">
+                            <a href='@Url.Action("GenerarImpresionPDF", "EntregaEPP", new { id = item.Id, fecha = item.Fecha, empleado = item.EmpleadoId }, null)'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="icon-32" viewBox="0 0 24 24">
+                                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                                    <path d="M4.603 14.087a.8.8 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.7 7.7 0 0 1 1.482-.645 20 20 0 0 0 1.062-2.227 7.3 7.3 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a11 11 0 0 0 .98 1.686 5.8 5.8 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.86.86 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.7 5.7 0 0 1-.911-.95 11.7 11.7 0 0 0-1.997.406 11.3 11.3 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.8.8 0 0 1-.58.029m1.379-1.901q-.25.115-.459.238c-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361q.016.032.026.044l.035-.012c.137-.056.355-.235.635-.572a8 8 0 0 0 .45-.606m1.64-1.33a13 13 0 0 1 1.01-.193 12 12 0 0 1-.51-.858 21 21 0 0 1-.5 1.05zm2.446.45q.226.245.435.41c.24.19.407.253.498.256a.1.1 0 0 0 .07-.015.3.3 0 0 0 .094-.125.44.44 0 0 0 .059-.2.1.1 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a4 4 0 0 0-.612-.053zM8.078 7.8a7 7 0 0 0 .2-.828q.046-.282.038-.465a.6.6 0 0 0-.032-.198.5.5 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822q.036.167.09.346z" />
+                                </svg>
+                                @*<img src="~/Contents/image/pdf.png" alt="GenerarPdf" />*@
+                            </a>
+                        </td>
+                        <td  style="text-align:center">
+                            <a href="javascript:CrearLink('@Html.DisplayFor(modelItem => item.Id)')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="icon-32" viewBox="0 0 24 24">
+                                    <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z" />
+                                    <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z" />
+                                </svg>
+                                @*<img src="~/Contents/image/buscador.png" alt="GenerarLink" />*@
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+        </div>
+    </div>
+
+        <div class="modal" tabindex="-1" role="dialog" id="popupqr" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">QR</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p><label id="Label1" style="white-space: pre-wrap;"></label></p>
+                        <img id="ItemPreview" src="" style="height:200px;width:200px" />
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="processState" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">&nbsp;Mensaje</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input class="form-control border-0" id="mensaje" name="mensaje">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="signatureSbmt" type="submit" class="btn btn-primary" onclick="return reloadPage();">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade in" id="modal_Pendienteporfirma">
+            <div class="modal-dialog modal-xl ">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #1565C0 ">
+                        <h5 class="modal-title text-white">Pendientes por Firmar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div id="contentModal2">
+                        <br />
+                        <br />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+
+
+    function GenerarQR(id,fecha,idempleado){
+        $('#popupqr').modal('show');
+
+        document.getElementById("ItemPreview").src = "../Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: '@Url.Action("ObtenerQr", "EntregaEPP")',
+                data: { 'id': id, 'fecha': fecha, 'empleado':idempleado},
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("ItemPreview").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+
+    function EnviarEmailFirma(id) {
+
+        $('#popupqr').modal('show');
+        document.getElementById("ItemPreview").src = "~/Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: '@Url.Action("EnviarEmailFirma", "EntregaEPP")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    $('#popupqr').modal('hide');
+                    if (e != null) {
+
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+    function AnularActa1(id) {
+
+        alertify.confirm("Esta Seguro que Desea anular el Acta?", function (e) {
+            if (e) {
+
+                AnularActa(id);
+            } else {
+
+            }
+        });
+    }
+
+    function AnularActa(id) {
+
+
+        try {
+            $.ajax({
+                url: '@Url.Action("AnularActa", "EntregaEPP")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+
+        }
+        catch (e) { alert(e); }
+
+
+    }
+
+    function CerrarActa1(id) {
+
+        alertify.confirm("Esta Seguro que Desea cerrar el Acta?", function (e) {
+            if (e) {
+
+                CerrarActa(id);
+            } else {
+
+            }
+        });
+    }
+
+    function CerrarActa(id) {
+
+
+        try {
+            $.ajax({
+                url: '@Url.Action("CerrarActa", "EntregaEPP")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    function CrearLink(id)
+    {
+
+        var URLactual = location.origin;
+        var pr = location.pathname;
+        var url = pr.split('/');
+        var ruta = URLactual + "/" + url[1] + "/DetalleEntregaEPP/DetalleActa2/" + id
+        alert(ruta);
+    }
+
+        </script>

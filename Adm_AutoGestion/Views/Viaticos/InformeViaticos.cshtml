@@ -1,0 +1,306 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Viaticos>
+
+@{
+    ViewBag.Title = "InformeViaticos";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+@if (message != "" && message != null)
+{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+}
+
+
+    <form method="post">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Informe Viáticos</h4>
+                </div>
+
+
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:left">
+                        <label for="sospechoso">Trabajador Solicitante</label>
+                        @Html.DropDownList("TrabajadorS", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:center">
+                        <label for="sospechoso">Fechas Desde:</label>
+                        @Html.TextBox("FechaI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-3" style="text-align:center">
+                        <label for="sospechoso">Fechas Hasta:</label>
+                        @Html.TextBox("FechaF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Estado">Estado del Proceso:</label>
+                        <select class="form-control" id="Estado" name="Estado">
+                            <option selected>Todos</option>
+                            <option>Solicitado</option>
+                            <option>Aprobado Jefe directo</option>
+                            <option>Cerrado</option>
+                            <option>Rechazado</option>
+                        </select>
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Numero Viático</label>
+                        @Html.TextBox("NmrRegistro", "", htmlAttributes: new { @class = "form-control", type = "number" })
+                    </div>
+                </div>
+                <br />
+
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary  rounded-pill mb-2" onclick="@Url.Action("InformeViaticos","Viaticos")"> Buscar</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </form>
+
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-striped display dataTable table-sm" id="Exportar_a_Excel_Viaticos">
+            <thead>
+                <tr>
+                    <th>
+                        Nmr Solicitud
+                    </th>
+                    <th>
+                        Fecha Registro
+                    </th>
+                    <th>
+                        Empleado Solicitante
+                    </th>
+
+                    <th>
+                        Fecha de Viaje
+                    </th>
+                    <th>
+                        Fecha de Retorno
+                    </th>
+                    <th>
+                        Gasto Alimentacion
+                    </th>
+                    <th>
+                        Gasto Transporte
+                    </th>
+                    <th>
+                        Contabilizado Nómina
+                    </th>
+                    @*<th>
+            Cargue Nómina
+        </th>*@
+                    <th>
+                        Liquidado Tesorería
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>Historico del Proceso</th>
+                    <th>Verificar Viaje</th>
+                    <th>Cancelar solicitud</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <label> @item.Id</label>
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @item.Empleado.Nombres
+                        </td>
+                        <td>
+                          
+                            @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                           
+                            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                          $   @item.GastoAlimentacion
+                        </td>
+                        <td>
+                          $   @item.GastosTransporte
+                        </td>
+                        @if (item.CheckNomina == true)
+                        {
+                            <td>
+                                Si
+                            </td>
+                        }
+                        else if (item.CheckNomina == false)
+                        {
+                            <td>
+                                NO
+                            </td>
+                        }
+                        @if (item.CheckTesoreria == true)
+                        {
+                            <td>
+                                Si
+                            </td>
+                        }
+                        else if (item.CheckTesoreria == false)
+                        {
+                            <td>
+                                NO
+                            </td>
+                        }
+                        <td>
+                            $ @item.Total
+                        </td>
+
+                        <td>
+                            @item.EstadosViaticos.Nombre
+                        </td>
+
+                        <td>
+                            <center>
+                                @Html.ActionLink(" ", "ViaticosLogDetails", new { id = item.Id }, new { data_modalVTGH1 = "", @class = "btn close bi bi-life-preserver text-primary mr-4" })
+                                </center>
+                            </td>
+
+                        <td>
+                            @if (item.ViajeRealizado == false && item.FechaFin <= DateTime.Today && item.ViajeRealizadoObservacion == null && (item.Estado == 3 || item.Estado == 6))
+                            {
+                                <center>
+                                    @Html.ActionLink(" ", "ConfirmarViajeJefe", item, new { data_modalVTCHECKJEFE = "", @class = "btn close bi bi-exclamation-triangle text-warning mr-4" })
+                                </center>
+
+                            }
+                            else if (item.FechaFin >= DateTime.Today)
+                            {
+                                <center> <i class="btn close bi bi-x-circle  text-success mr-4"></i></center>
+
+                            }
+                            else if (item.ViajeRealizadoObservacion != null)
+                            {
+                                 <center> <i class="btn close bi bi-check-circle  text-success mr-4"></i></center>
+
+                            }
+                            else
+                            {
+                                 <center> <i class="btn close bi bi-x-circle  text-success mr-4"></i></center>
+                            }
+                        </td>
+                        <td>
+                            @if (item.ViajeRealizado == false && item.FechaFin >= DateTime.Today && item.ViajeRealizadoObservacion == null && item.Estado !=5 && item.Estado != 4 && item.Estado != 1)
+                            {
+                                <center>
+                                    @Html.ActionLink(" ", "AnularViajeModal" , item, new { data_modalVTAnularJEFE = "",  @class = "btn close bi bi-exclamation-triangle  text-warning mr-4" })
+                                </center>
+
+                            }
+                            else
+                            {
+                             
+                                <center> <i class="btn close bi bi-x-circle  text-success mr-4"></i></center>
+
+                            }
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade in" id="modal_ViaticosLog" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header"  style="background-color: #1565C0" >
+                <h5 class="modal-title text-white"> Modificaciones Viatico </h5>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalViaticosLog">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_ViaticosCHECKJEFE" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"  style="background-color: #1565C0">
+                <h5 class="modal-title text-white"> Verificar Viaje Del Empleado </h5>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalViaticosCHECKJEFE">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_ViaticosAnularJEFE" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header"  style="background-color: #1565C0">
+                <h5 class="modal-title text-white"> Cancelar Solicitud </h5>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalViaticosAnularJEFE">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,397 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Permiso>
+
+@{
+    ViewBag.Title = "ConfirmacionPer";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.Permiso Item = ViewBag.Permiso;
+    Adm_AutoGestion.Models.Empleado Item_Empleado = ViewBag.empleado;
+    //Adm_AutoGestion.Models.HistorialPermisos Item_Historial = ViewBag.HistorialPermiso;
+    string message = string.Format("{0}", Session["message"]);
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]);
+    string ErrorAutorizacion = string.Format("{0}", Session["ErrorAutorizacion"]);
+    if (!string.IsNullOrWhiteSpace(ErrorAutorizacion)) { Session.Remove("ErrorAutorizacion"); }
+
+}
+<head>
+    @*<script src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/datatables-buttons-excel-styles@1.2.0/js/buttons.html5.styles.templates.min.js"></script>*@
+</head>
+@if (!string.IsNullOrWhiteSpace(message))
+{
+    <head>
+
+        <style rel="stylesheet">
+            .scroll::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+    </head>
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Importante</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+    Session.Remove("message");
+}
+
+<h2 class="colorTitulo text-center mt-3">Confirmación</h2>
+
+<div class="card">
+    <div class="card-header text-white fondoDegradado mb-3">Busqueda</div>
+    <div class="card-body">
+        <form action="~/permisos/ConfirmacionPerNom">
+            <div class="row justify-content-start">
+                <div class="col-md-4" style="text-align:left">
+                    <label for="sospechoso">Fecha Registro:</label>
+                    @Html.TextBox("Fecha", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date", id = "Fecha", name = "Fecha" })
+
+                </div>
+                <div class="col-md-4" style="text-align:left">
+                    <label for="sospechoso">Fecha Inicio Permiso:</label>
+                    @Html.TextBox("FechaPermiso", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date", id = "FechaPermiso", name = "FechaPermiso" })
+
+                </div>
+                <div class="col-md-4" style="text-align:left">
+                    <label for="sospechoso">Fecha Fin Permiso:</label>
+                    @Html.TextBox("FechaFinPermiso", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date", id = "FechaFinPermiso", name = "FechaFinPermiso" })
+                </div>
+
+                <div class="col-md-3" style="text-align:left;padding-top: 30px;">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2"> Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table id="Tabla_Per_Nom" class="table table-striped dt-responsive " style="width:100%">
+        <thead class="text-center text-capitalize ">
+            <tr class="fondoDegradado text-white">
+                <th>Nombre Empleado</th>
+                <th>Codigo Empleado</th>
+                <th>Fecha De Solicitud</th>
+                <th>Fecha Ini.</th>
+                <th>Fecha Fin</th>
+                <th>Hora Ini.</th>
+                <th>Hora Fin</th>
+                <th>Ver Historico</th>
+                <th>Remunerado</th>
+                <th>Estado Permiso</th>
+                <th>Jornada laboral completa</th>
+                <th>Motivo Permiso</th>
+                <th>Doc. Adjunto</th>
+                <th>Ver</th>
+                <th>Anular Permiso</th>
+            </tr>
+        </thead>
+        <tbody class="text-center text-capitalize align-content-center">
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @*<a class="btn text-black text-capitalize" data-bs-toggle="tooltip" data-bs-placement="top" title="Detalle Empleado" value="" onclick="Detalle($Id = @item.EmpleadoId)">&nbsp; @item.Empleado.Nombres.ToLower()</a>*@
+
+                        @Html.ActionLink(@item.Empleado.Nombres.ToLower(), "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.FechaPermiso).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.FechaFinPermiso).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoraInicioPermiso)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoraFinPermiso)
+                    </td>
+                    <td>
+                        <h4><button id="Boton_Histo" class="btn bi bi-clock-fill text-info " data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="" onclick="Historico($Id = @item.Id)"></button></h4>
+
+                        @*<h4><button class="btn fab fa-hive text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="" onclick="Historico($Id = @item.Id)"></button></h4>*@
+                    </td>
+                    <td>
+                        @if (item.Remunerado == "SI")
+                        {<img src="~/Contents/image/dinero.png">}
+                        else
+                        {<i class="fal fa-times-square" style="color: #c80000;"></i>}
+                        @*{<i class="far fa-check-square" style="color: #1ec201;"></i>}
+                            else
+                              {<i class="fal fa-times-square" style="color: #c80000;"></i>}*@
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstadoPermiso.Nombre)
+                    </td>
+                    <td>
+                        @if (item.Jornada == "SI")
+                        {
+                            <p>SI</p>
+                            @*<i class="far fa-check-square" style="color: #1ec201;"></i>*@
+                        }
+                        else
+                        {
+                            <p>NO</p>
+                            @*<i class="fal fa-times-square" style="color: #c80000;"></i>*@
+                        }
+
+                        @*@if (item.Jornada == "1")
+                            {<i id="iJornada" class="text-info fas fa-check-circle"></i> }
+                            else
+                            { <i id="iJornada" class="fas fa-ban text-danger"></i>
+                            }*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MotivoPermiso.Nombre)
+                    </td>
+                    <td>
+                        <button id="Boton_Desc" class="btn close fas fa-cloud-download-alt text-info mr-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntos" value="" onclick="Descarga_Adjuntos_Per($Id = @item.Id)"></button>
+                    </td>
+                    <td>
+                        @Html.ActionLink("Ver", "ConfirmacionPerNom2", new { id = item.Id }, new { data_modal25 = "" })
+                    </td>
+                    <td>
+                        <h4>
+                            <button class="btn text-info" onclick="Modal_Anularnom($Id = @item.Id)"><i class="fas fa-ban "></i></button>
+                        </h4>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@*----------------------------------------- Modal Historico ------------------------------------------------------ *@
+<div class="modal " id="Modal_Historico_json" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white font-weight-bold" id="Modal_Historico_label">Trazabilidad Permiso </h5>
+                <button type="button" class="btn-close text-white" id="cerrar_mod_his1" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="form-group">
+
+                        <div class=" ">
+                            <table id="Tabla_Historico" class="table table-striped dt-responsive " style=" width: 100%;">
+                                <thead>
+                                    @*fondo_titulos titulo_pagina*@
+                                    <tr class="font-weight-bolder fondoDegradado text-white titulo_pagina " style="color: #515050;">
+                                        <td class="align-middle text-center">Id Permiso</td>
+                                        <td class="align-middle text-center">Fecha de Modificación</td>
+                                        <td class="align-middle text-center">Usuario Que Modificó</td>
+                                        <td class="align-middle text-center">Estado Permiso</td>
+                                        <td class="align-middle text-center">Observaciones</td>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center text-capitalize">
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cerrar_mod_his2">Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+@*----------------------------------- *************************** -------------------------------------------------*@
+
+
+
+@*--------------------------------- Modal Anular --------------------------------- *@
+<div class="modal" id="Modal_Anulado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="~/Permisos/ConfirmacionPer1">
+                <div class="modal-body">
+                    <h5 class="modal-title text-left" id="Modal_reserva_label2">Por favor describa el motivo de la anulación del permiso?</h5>
+
+                    <textarea class="form-control" id="Observacion" name="Observacion"></textarea>
+
+                    <input type="hidden" id="Id_1" name="Id" value="" />
+                    <input type="hidden" id="Id_2" name="Id1" value="" />
+                    <input type="hidden" id="Empleado1" name="Empleado" value="" />
+                    <input type="hidden" id="NroEmpleado1" name="NroEmpleado" value="" />
+                    <input type="hidden" id="FechaPermiso1" name="FechaPermiso" value="" />
+                    <input type="hidden" id="HoraInicioPermiso1" name="HoraInicioPermiso" value="" />
+                    <input type="hidden" id="HoraFinPermiso1" name="HoraFinPermiso" value="" />
+                    <input type="hidden" id="Jornada1" name="Jornada" value="" />
+                    <input type="hidden" id="Estado1" name="Estado" value="10" />
+                    <input type="hidden" id="tipo1" name="tipo" value="1" />
+                </div>
+                <br />
+                <div class="modal-footer mx-auto">
+                    <button type="button" class="btn btn-secondary" id="cerrar_mod_2">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*************************************************************************************@
+
+@*----------------------------------- Modal Descarga Adjuntos -----------------------------------------------------*@
+<div class="modal " id="Modal_Descarga_json" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header " style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white font-weight-bold" id="Modal_Empleado_label">Documentos Anexos</h5>
+                <button type="button" class="btn-close text-white" id="cerrar_mod_desc1" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-12" style="padding-top: 15px; padding-bottom: 15px;">
+
+                            <div class="form-group">
+
+
+                                <table id="Tabla_Descargar_archivos" class="table table-striped dt-responsive wrap " style=" width: 100%;">
+                                    <thead>
+                                        <tr class="font-weight-bolder fondoDegradado text-white titulo_pagina text-left" style="color: #515050;">
+                                            <td class="align-middle text-center">Id</td>
+                                            <td class="align-middle text-center">Documento</td>
+                                            <td class="align-middle text-center">Archivo</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center text-capitalize">
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    @*<div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" id="cerrar_mod_desc2">Close</button>
+
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@***********************************------------------------------------********************************************@
+
+@*----------------------------------- Modal detallado -----------------------------------------------------*@
+<div class="modal fade in" id="modal_detalle">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalle Solicitud</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal25">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@***********************************------------------------------------********************************************@
+
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+            //****************************---------------- Datatable Tabla Permisos -------------------**************************
+            $('#Tabla_Per_Nom').DataTable({
+
+                columnDefs: [
+                    { targets: [0], visible: true, searchable: true, orderable: true },
+                    { targets: [1], visible: true, searchable: false, orderable: false },
+                    { targets: [2], visible: true, searchable: false, orderable: false },
+                    { targets: [3], visible: true, searchable: false, orderable: false },
+                    { targets: [4], visible: true, searchable: true, orderable: true },
+                    { targets: [5], visible: true, searchable: true, orderable: true },
+                    { targets: [6], visible: true, searchable: false, orderable: false },
+                    { targets: [7], visible: true, searchable: false, orderable: false },
+                    { targets: [8], visible: true, searchable: true, orderable: true },
+                    { targets: [9], visible: true, searchable: false, orderable: false },
+                    { targets: [10], visible: true, searchable: true, orderable: true },
+                    { targets: [11], visible: true, searchable: false, orderable: false },
+                    { targets: [12], visible: true, searchable: false, orderable: false },
+                    { targets: [13], visible: true, searchable: false, orderable: false },
+
+
+
+
+                ],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "row selected": "Fila Seleccionada",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                /* dom: 'Bfrtip',*/
+                select: true,
+                //dom: 'lfrtip',
+                dom: 'Bfrtip',
+                "searching": false,
+                buttons: [
+
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i>',
+                        filename: 'Permisos_Nomina.xlsx',
+                        titleAttr: 'Exportar a Excel',
+                        className: 'btn btn-success',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 5, 8, 9, 10]
+                        }
+                    },
+
+                ]
+            });
+
+        });
+                        //***********************************------------------------------------********************************************
+    </script>
+}

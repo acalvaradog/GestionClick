@@ -1,0 +1,129 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Vacaciones>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+    <!--<h2 class="colorTitulo">Vacaciones</h2>
+    <br />
+    <p>-->
+        @*@Html.ActionLink("Crear Nuevo Registro", "Create")*@
+        <!--@Html.ActionLink(" Crear Nuevo", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary mb-2" })
+    </p>-->
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row justify-content-start mt-3">
+                <div class="col-12">
+                    <h4 class="card-title">Vacaciones</h4>
+                </div>
+
+
+                <div class="col-8" style="text-align:right">   @Html.ActionLink(" Crear Nuevo", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary  rounded-pill " })</div>
+
+
+            </div>
+
+
+
+        </div>
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <tr>
+                        <th>
+                            @* @Html.DisplayNameFor(model => model.EmpleadoId)*@
+                            Nombre Empleado
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fecha)
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.FechaInicial)*@
+                            Fecha Inicial
+                        </th>
+                        <th>
+                            Fecha Fin
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.CantDiasSolicitados)*@
+                            Cant. Dias Solicitados
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.CantDiasPendientes)*@
+                            Cant. Dias Pendientes
+                        </th>
+                        <th>
+                            Vacaciones Pagadas
+                        </th>
+                        <th>
+                            Vacaciones Anticipadas
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.EstadoId)*@
+                            Estado
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Adjunto)
+                        </th>
+                        @* <th></th>*@
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                                @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.FechaInicial)*@
+                                @Convert.ToDateTime(item.FechaInicial).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CantDiasSolicitados)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CantDiasPendientes)
+                            </td>
+                            <td>
+                                @* @Html.DisplayFor(modelItem => item.VacacionesPagadas)*@
+                                @if (item.VacacionesPagadas == "SI")
+                                {
+                                    <img src="~/Contents/image/dinero.png">
+                                }
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.VacacionesAdelantadas)*@
+                                @if (item.VacacionesAdelantadas == "SI")
+                                {
+                                    <img src="~/Contents/image/hora.png">
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.Adjunto)*@
+                                @Html.ActionLink("Descargar Archivo", "Download", new { archivo = item.Adjunto })
+                            </td>
+
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+       </div>

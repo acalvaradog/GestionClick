@@ -1,0 +1,214 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Incapacidades>
+
+@{
+    ViewBag.Title = "Informe";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<form>
+    <div class="container">
+
+
+        <br />
+
+        <form>
+            <div class="card">
+                <div class="card-header text-white fondoDegradado mb-3"> <h5>Informe Incapacidades</h5></div>
+                <div class="card-body">
+                    <div class="row justify-content-start">
+                        <div class="col-3" style="text-align:left">
+                            <label for="FechaInicio">Fecha Inicio:</label>
+                            @Html.TextBox("FechaIni", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                        </div>
+                        <div class="col-3" style="text-align:left">
+                            <label for="FechaFin">Fecha Fin:</label>
+                            @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                        </div>
+                        <div class="col-6" style="text-align:left">
+                            <label for="Empleado">Empleado:</label>
+                            @Html.TextBox("Empleado", null, htmlAttributes: new { @class = "form-control col-sm-12", placeholder = "Nombre Empleado" })
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-start">
+                        <div class="col-3" style="text-align:left">
+                            <label for="CodigoEmpleado">Codigo Empleado:</label>
+                            @Html.TextBox("CodigoEmpleado", null, htmlAttributes: new { @class = "form-control", placeholder = "Codigo Empleado" })
+                        </div>
+
+                        <div class="col-3" style="text-align:left">
+                            <label for="Empresa">Empresa:</label>
+                            @Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", placeholder = "Empresa" })
+                        </div>
+                        <div class="col-3" style="text-align:left">
+                            <label for="exampleFormControlSelect1">Estado: </label>&nbsp&nbsp
+                            <select class="form-control" id="Estado" name="Estado">
+                                <option value="0">Seleccionar...</option>
+                                <option value="1">Solicitado</option>
+                                <option value="2">Aprobar</option>
+                                <option value="5">Rechazar</option>
+                                <option value="15">Cargar Aseguradora</option>
+                                <option value="16">Devuelto</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-start">
+                    <div class="col-md-12 mb-2" style="text-align:center">
+                        <button type="submit" class="bi bi-search btn btn-outline-primary mb-2" style="font-size:16px" id="Search" onclick="@Url.Action("Informe","Incapacidades")">&nbsp; Buscar</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr class="fondoDegradado text-white">
+                    <th>
+                        Nombre Empleado
+                    </th>
+                    <th>
+                        Codigo Empleado
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FechaInicio)*@
+                        Fecha Inicial
+                    </th>
+                    <th>
+                        Fecha Fin
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.CantidadDias)*@
+                        Cant. Dias Inca.
+                    </th>
+                    <th>
+                        @*  @Html.DisplayNameFor(model => model.Diagnostico)*@
+                        Diagnostico
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.EstadoId)*@
+                        Estado
+                    </th>
+                    <th>
+                        Adjunto
+                    </th>
+                    @*<th></th>*@
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PersonalActivo.Cargo)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.FechaInicial)*@
+                            @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CantidadDias)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Diagnostico)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Empresa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Adjunto)*@
+                            @Html.ActionLink("Ver Archivos Adjuntos", "Adjunto", new { Id = item.Id, Empleado = item.Empleado.Id }, new { target = "_blank" })
+                        </td>
+                        @*<td>
+                                @Html.ActionLink("Edit", "Edit", new { id=item.Id })
+                            </td>*@
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+
+</form>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+                {
+
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'informe_Incapacidad.xlsx',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+                }
+            ]
+        });
+
+
+
+    });
+
+</script>

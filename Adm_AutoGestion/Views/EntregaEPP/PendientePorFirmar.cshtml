@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleEntregaEPP>
+
+
+
+
+<div class="container-fluid" style=" padding-right: 50px;padding-left: 50px;">
+    <div class="table-responsive">
+        <table class="table table-striped display dataTable table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr>
+                    <th>
+                        N° Entrega
+                    </th>
+                    <th>
+                        Empleado
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cargo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Area)
+                    </th>
+                    <th>
+                        Elemento de Protección Personal
+                    </th>
+                    <th>
+                        Cant.
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.MotivoEntrega)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.FechaFin)
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NumeroEntrega)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Cargo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ElementosProtecionPersonal.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cantidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MotivoEntrega)
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                        </td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

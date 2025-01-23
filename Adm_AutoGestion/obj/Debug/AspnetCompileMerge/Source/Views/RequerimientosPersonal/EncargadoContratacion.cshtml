@@ -1,0 +1,217 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.RequerimientosDelPersonal>
+
+@{
+    ViewBag.Title = "EncargadoContratacion";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container-fluid" style="width:90%">
+    <br />
+    <div class="colorTitulo" style="text-align:center">
+<h2>Encargado Selección</h2>
+        </div>
+    <br />
+
+<div class="container-fluid">
+<div class = "table-responsive">
+
+<table class= "table table-hover ">
+    <tr class="fondoDegradado text-white">
+         <th></th>
+        <th>
+            N° Solicitud
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Empleado.Documento)*@
+            <label>Empleado Registra</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Empresa.Codigo)*@
+            <label>Empresa</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.EstadoRdP.Nombre)*@
+            <label>Estado</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Horario.Nombre)*@
+            <label>Horario</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Jornada.Nombre)*@
+            <label>Jornada</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.MtvSolicitud.Nombre)*@
+            <label>Motivo Solicitud</label>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cargo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Direccion)
+        </th>
+        <th>
+            N° Personas
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sexo)
+        </th>
+        @*<th>
+            Empleado Saliente
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contratado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaIngreso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaSugeridaIngreso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.JustificacionCargo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TiempoContratacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequisitosAdicionales)
+        </th>*@
+        <th>
+            Descargar
+        </th>
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td style="text-align:center">
+   
+            <a href='@Url.Action("DetalleContratacion", "RequerimientosPersonal", new { id = item.Id }, null)' data-modaldetalles=''>
+            <img src='@Url.Content("~/Contents/image/ojo.png")' / style="width:32px;height:32px">
+            </a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empresa.Codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoRdP.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Horario.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Jornada.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MtvSolicitud.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cargo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Direccion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumeroPresonas)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sexo)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.EmpSaliente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contratado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaIngreso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaSugeridaIngreso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.JustificacionCargo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TiempoContratacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequisitosAdicionales)
+        </td>*@
+       @* <td>
+           
+            @Html.ActionLink("Ver", "DetalleRequerimiento", new { id=item.Id}, new { data_modaldetalles = "" } )
+        </td>*@
+        <td> @if (item.Archivo == "" || item.Archivo==null)
+            {
+            <label>No hay Archivo</label> }
+             else
+             {@Html.ActionLink("Descargar Archivo", "Download1", new { archivo = item.Archivo })}
+        </td>
+        
+    </tr>
+}
+
+</table>
+    </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Detalles">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h5 class="modal-title text-white">Detalles</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div id ="contentModalDetalles">
+       <br />
+        <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+<div class="modal fade in" id="modal_Registros" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y:visible">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h2 class="modal-title text-white"></h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div id ="contentModalResgistros">
+       <br />
+        <br />
+          <div class="card" style="text-align:center">
+              <b>Cargando...</b>
+          </div>
+          <br />
+ </div>
+      
+    </div>
+  </div>
+</div>

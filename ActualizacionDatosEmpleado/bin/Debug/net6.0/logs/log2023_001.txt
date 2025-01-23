@@ -1,0 +1,14 @@
+2023-05-31 15:04:35.719 -05:00 [INF] Ejecucion
+2023-05-31 15:04:38.495 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:06:13.685 -05:00 [ERR] Error al ejecutar metodo actualizarempleado 
+2023-05-31 15:06:13.701 -05:00 [INF] Inicia ejecuación proceso Actualización Estructura
+2023-05-31 15:06:13.709 -05:00 [ERR] Error al ejecutar metodo actualizarEstructura 
+2023-05-31 15:08:51.786 -05:00 [INF] Ejecucion
+2023-05-31 15:08:56.729 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:24:17.919 -05:00 [INF] Ejecucion
+2023-05-31 15:24:18.434 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:25:58.355 -05:00 [INF] Ejecucion
+2023-05-31 15:25:58.883 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:27:38.985 -05:00 [ERR] Error al ejecutar metodo actualizarempleado The request was canceled due to the configured HttpClient.Timeout of 100 seconds elapsing.
+2023-05-31 15:27:53.064 -05:00 [INF] Ejecucion
+2023-05-31 15:27:53.564 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado

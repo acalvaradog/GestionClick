@@ -1,0 +1,75 @@
+﻿@model Adm_AutoGestion.Models.Tercero
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "LoginExpositor";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@{var ListItems = new List<ListItem> { 
+        new ListItem { Text = "SI", Value = "SI" }, 
+        new ListItem { Text = "NO", Value = "NO" } 
+        };
+}
+
+
+<div class="container col-sm-offset-2 col-md-offset-2 col-lg-offset-3 col-sm-8 col-md-8 col-lg-4">
+@*<div class="container">*@
+    <form action="~/Capacitacion/LoginVistaExpositor" method="post">
+
+        <br />
+        <br />
+        <br />
+        <br />
+       
+
+
+       <div class="panel panel-info center-block">
+        <div class="card  border-info mb-3 shadow p-3 mb-5" style="max-width: 35rem;"><br />
+            <div class="panel-heading" align="center">
+                <h2 style="color:#07ABDF">Bienvenido!!!</h2>
+            </div>
+            <br />
+
+
+            <div class="form-horizontal" align="center">
+               <img src="~/Contents/image/icono.png" >
+                <div class="form-group">
+                   <br />
+                    <label class="control-label col-sm-5">Nro de Documento </label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" autofocus="autofocus" id="alias" name="alias" value="" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                  
+                    <label class="control-label col-sm-8">Email </label>
+                    <div class="col-sm-8">
+                        <input type="email" class="form-control" autofocus="autofocus" id="correo" name="correo" value="" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                   
+                    <label class="control-label col-sm-4">Tercero </label>
+                    <div class="col-sm-4">
+                        @Html.DropDownList("Tercero", new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                    </div>
+                </div>
+
+             
+
+                <div class="form-group">
+                    <hr />
+
+                    <div class="col-sm-10">
+                        <div class="text-center">
+                            <button type="submit" id="loginAccedr" class="btn btn-primary">Ingresar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

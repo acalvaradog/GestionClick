@@ -1,0 +1,308 @@
+﻿@model Adm_AutoGestion.Models.Empleado
+
+
+
+<div class="container">
+
+
+<fieldset>
+   
+<div class="row justify-content-start">
+
+
+<div class="col-12" style="padding-top: 15px; padding-bottom: 15px;>
+<div class="card ">
+@*<div class="card-header text-white" style="background-color:#0B9ACF">Datos Basicos del Empleado</div>*@
+<div class="card-body">
+   <div class="row justify-content-start">
+     <div class="col-4">
+        <div class="display-label">
+            <strong>@Html.DisplayNameFor(model => model.Documento)</strong>
+        </div>
+        <div class="display-field">
+        @Html.DisplayFor(model => model.Documento)
+        </div>
+     </div>
+     <div class="col-4">
+        <div class="display-label">
+         <strong>@Html.DisplayNameFor(model => model.Nombres)</strong>
+        </div>
+        <div class="display-field">
+        @Html.DisplayFor(model => model.Nombres)
+        </div>
+     </div>
+     <div class="col-4">
+        <div class="display-label">
+         <strong>@Html.DisplayNameFor(model => model.NroEmpleado)</strong>
+        </div>
+        <div class="display-field">
+        @Html.DisplayFor(model => model.NroEmpleado)
+        </div>
+     </div>
+  </div>
+  <br />
+  <div class="row justify-content-start">
+     <div class="col-4">
+       <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.FechaNacimiento)</strong>
+            </div>
+            <div class="display-field">
+                @Convert.ToDateTime(Model.FechaNacimiento).ToString("dd/MM/yyyy")
+            </div>
+     </div>
+    <div class="col-4">
+       <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Genero)</strong>
+            </div>
+            <div class="display-field">
+                @if(Model.Genero == "1"){
+                <p>Masculino</p>
+                }else{
+                <p>Femenino</p>
+                }
+            </div>
+     </div>
+     <div class="col-4">
+       <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.RH)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.RH)
+            </div>
+     </div>
+        
+  </div>
+  <br />
+  <div class="row justify-content-start">
+        <div class="col-4">
+        <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Telefono)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Telefono)
+            </div>
+        </div>
+         <div class="col-4">
+          <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Correo)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Correo)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.CorreoPersonal)
+            </div>   
+        </div>
+        
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Cargo)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Cargo)
+            </div>
+        </div>
+        
+   </div>
+   <br />
+   <div class="row justify-content-start">
+        <div class="col-4">
+          <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Area)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Area)
+            </div> 
+        </div>
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Empresa)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Empresa)
+            </div>
+        </div>
+        <div class="col-4">
+           <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.FechaIngreso)</strong>
+            </div>
+            <div class="display-field">
+               
+                @Convert.ToDateTime(Model.FechaIngreso).ToString("dd/MM/yyyy")
+            </div> 
+        </div>
+        
+    </div>
+    <br />
+    <div class="row justify-content-start">
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Jefe)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Jefe)
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Superior)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Superior)
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Director)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Director)
+            </div>
+        </div>
+        
+    </div>
+    <br />
+    <div class="row justify-content-start">
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.CeCo)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.CeCo)
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.UnidadOrganizativa)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.UnidadOrganizativa)
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.AreaDescripcion)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.AreaDescripcion)
+            </div>
+        </div>
+    </div>
+    <br />
+       <div class="row justify-content-start">
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.TipoArea)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.TipoArea)
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.ModoTrabajo)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.ModoTrabajo)
+            </div>
+        </div>
+         <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Activo)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Activo)
+            </div>
+        </div>
+         <br />
+        <div class="col-4">
+            <div class="display-label">
+             <strong>QR</strong>
+                 <div> <img id="img_qr" src="" style="height:100px;width:100px"/> </div>
+           
+        </div>
+        </div>
+        
+        <div class="col-4">
+             <div class="display-label">
+             <strong>Foto</strong>
+            </div>
+            <div>
+                <img id="img_foto" src="" style="height:100px;width:100px"/> 
+            </div>
+          
+        </div>
+       
+   </div>
+
+
+
+
+
+  </div>
+
+
+
+</div>
+</div>
+
+
+        
+   </div>
+
+</div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        GenerarQR(@Html.DisplayFor(model => model.Id));
+
+        GenerarFoto(@Html.DisplayFor(model => model.NroEmpleado));
+    });
+
+    function GenerarQR(id){
+        
+     
+        try {
+            $.ajax({
+                url: "@Url.Action("ObtenerQREmpleado")",
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("img_qr").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+    
+    }
+
+    function GenerarFoto(id) {
+     
+
+      
+        try {
+            $.ajax({
+                url: "@Url.Action("ObtenerFotoEmpleado")",
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("img_foto").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+</script>

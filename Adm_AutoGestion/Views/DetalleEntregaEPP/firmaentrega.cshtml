@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="~/Contents/css/bootstrap.min.css">
+<script src="~/Contents/js/bootstrap-select.min.js"></script>
+
+</head>
+<body style="margin-top:50px">
+<nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background: linear-gradient(90deg, #07ABDF 10%, #426AB0 90%);">
+      <a class="navbar-brand" href="~/Login/Index" onclick="location.reload();">
+       <img src="~/Contents/image/Logoauto.png" class="d-inline-block align-top" alt="">&nbsp Gestión de Personal</a>
+</nav>
+<br />
+<br />
+
+<div class="container col-sm-offset-2 col-md-offset-2 col-lg-offset-3 col-sm-8 col-md-8 col-lg-4">
+<br />
+<br />
+
+
+
+<div class="panel panel-info center-block">
+        <div class="card  border-info mb-3 shadow p-3 mb-5" style="max-width: 35rem;"><br />
+            
+            <div class="panel-heading" align="center">
+                <img src="~/Contents/image/icono.png" >
+                <br />
+                <br />
+                <h5 style="color:#07ABDF">
+                @{
+                    ViewBag.Title = "firmaentrega";
+                }
+                @if (ViewBag.firma != null)
+                {
+                 <h5 style="color:#07ABDF">@ViewBag.firma</h5>
+                }else{
+                <h5 style="color:#07ABDF">Proceso de Firma...</h5>
+
+                }</h5>
+            </div>
+
+
+
+            <div class="form-horizontal" align="center">
+               
+                <div class="form-group">
+                   
+                    <hr>
+                      <h4>
+                        <br />
+                    @if (ViewBag.Message != null)
+                    {
+                       <span>@ViewBag.Message</span>
+                    }
+                        <br />
+                        <br />
+                      </h4>
+                        
+                      <hr>
+                </div>
+            </div>
+
+
+</div>
+</div>
+
+
+
+
+
+
+
+@*<div class="alert alert-light" role="alert">
+  <h4 class="alert-heading">
+@{
+    ViewBag.Title = "firmaentrega";
+}
+@if (ViewBag.firma != null)
+{
+ <h2>@ViewBag.firma</h2>
+}else{
+<h2>Proceso de Firma...</h2>
+
+}
+
+  </h4>
+<hr>
+  <p>
+@if (ViewBag.Message != null)
+{
+   <span>@ViewBag.Message</span>
+}
+  </p>
+  <hr>
+  
+</div>*@
+
+
+</div>
+
+
+</body>
+
+<br />
+<br />
+ <nav class="navbar-fixed-bottom" style="border: solid 5px transparent;">    
+        
+        <p class="text-muted text-center" >Copyright © 2020 FOSCAL. Todos los derechos reservados. Fundación Oftalmológica de Santander - Clinica FOSCAL. - Bucaramanga. Colombia.</p>          
+    </nav>
+</html>

@@ -1,0 +1,30 @@
+﻿@model Adm_AutoGestion.Models.Viaticos
+@{
+    ViewBag.Title = "ConfirmacionViaje";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<h2 style="margin-top:70px;" class="text-center colorTitulo">Confirmacion Viaje</h2>
+
+<div class="container">
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center text-black">
+                    @if (ViewBag.Respuesta == "true")
+                    {
+                        <span>La confirmación fue exitosa, Ya puede cerrar esta página.</span>
+                    }
+                    else if (ViewBag.Respuesta == "viajerealizado")
+                    {
+                        <span>Ya se ha confirmado antes, Ya puede cerrar esta página.</span>
+                    }
+                    else
+                    {
+                        <span>Confirmación fallida.</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

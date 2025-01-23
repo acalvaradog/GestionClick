@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.HistorialVacaciones>
+
+@{
+    ViewBag.Title = "HistorialVac";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="card">
+    <div class="card-header colorTitulo mb-3">
+        <h5>Historial del Proceso de Vacaciones</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-sm table-bordered">
+                <tr class="fondoDegradado text-white">
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.VacacionesId)
+                        </th>*@
+                    <th>
+                        Fecha Solicitud
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.Accion)*@
+                        Estado
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Observaciones)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.UsuarioModifica)*@
+                        Usuario Modifica
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.VacacionesId)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Fecha)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Observaciones)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                        </td>
+
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+</div>

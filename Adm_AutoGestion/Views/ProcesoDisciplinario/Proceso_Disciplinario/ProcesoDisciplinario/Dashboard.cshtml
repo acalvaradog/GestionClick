@@ -1,0 +1,91 @@
+﻿@model Adm_AutoGestion.Models.ProcesoDisciplinario
+
+@{
+    ViewBag.Title = "Dashboar";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+ <br />
+<div class="container" style="max-width: 75%;">
+    <br />
+    <center><h2>Dashboard</h2></center>
+
+     <br />
+<form>
+<div class="card" >
+
+ <div class="card-body">
+<div class="row"align="center">
+
+       <div class="col-md-3"align="center" id="activos">
+           <div class="card"  id="activos1">
+ <div class="card-header bg-info">
+  Procesos Activos
+ </div>
+ <div class="card-body">
+   <h5 class="card-title">@ViewBag.CntProcesosAc</h5>
+
+ </div>
+</div>
+           </div>
+
+        <div class="col-md-3"align="center" id="anulados">
+                 <div class="card"  id="anulados1">
+ <div class="card-header bg-warning">
+  Procesos Anulados
+ </div>
+ <div class="card-body">
+   <h5 class="card-title">@ViewBag.CntProcesosAn</h5>
+
+ </div>
+</div>
+           </div>
+
+        <div class="col-md-3"align="center" id="cerrados">
+                 <div class="card" id="cerrados1">
+ <div class="card-header bg-danger">
+  Procesos Cerrados
+ </div>
+ <div class="card-body">
+   <h5 class="card-title">@ViewBag.CntProcesosC</h5>
+
+ </div>
+</div>
+           </div>
+
+        <div class="col-md-3"align="center" id="RJ">
+                 <div class="card" id="RJ1">
+ <div class="card-header bg-success">
+  Procesos Remitidos a Juridica
+ </div>
+ <div class="card-body">
+   <h5 class="card-title">@ViewBag.CntProcesosRJ </h5>
+
+ </div>
+</div>
+           </div>
+
+ </div>
+</div>
+
+     </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#activos1').css('cursor', 'pointer');
+        $('#anulados1').css('cursor', 'pointer');
+        $('#cerrados1').css('cursor', 'pointer');
+        $('#RJ1').css('cursor', 'pointer');
+        $('#activos').click(function ()
+        { window.location.href = 'DetalleProcesoDisciplinario?EmpleadoCP=&EmpleadoI=&FechaProcesoI=&FechaProcesoF=&Estado=Activo'; });
+        $('#anulados').click(function ()
+        { window.location.href = 'DetalleProcesoDisciplinario?EmpleadoCP=&EmpleadoI=&FechaProcesoI=&FechaProcesoF=&Estado=Anulado'; });
+        $('#cerrados').click(function ()
+        { window.location.href = 'DetalleProcesoDisciplinario?EmpleadoCP=&EmpleadoI=&FechaProcesoI=&FechaProcesoF=&Estado=Cerrado'; });
+        $('#RJ').click(function () 
+        { window.location.href = 'DetalleProcesoDisciplinario?EmpleadoCP=&EmpleadoI=&FechaProcesoI=&FechaProcesoF=&Estado=Remitido+a+Juridica'; });
+
+    });
+
+</script>

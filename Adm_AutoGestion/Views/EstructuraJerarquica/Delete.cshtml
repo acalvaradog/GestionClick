@@ -1,0 +1,89 @@
+﻿@model Adm_AutoGestion.Models.EstructuraJerarquica
+<br />
+<div class="col d-flex justify-content-center">
+    <h3>Esta seguro que desea eliminar la siguiente estructura?</h3>
+</div>
+
+<br />
+<div class="card m-3">
+    <div class="card-header col d-flex justify-content-center">
+ 
+    </div>
+    <div class="card-body m-3">
+       
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                Sociedad
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayFor(model => model.Sociedad)
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                Area
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayFor(model => model.Area)
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayNameFor(model => model.Lider)
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayFor(model => model.Lider)
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayNameFor(model => model.Jefe)
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayFor(model => model.Jefe)
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayNameFor(model => model.Superior)
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayFor(model => model.Superior)
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayNameFor(model => model.Director)
+            </div>
+            <div class="col-6 d-flex justify-content-center">
+                @Html.DisplayFor(model => model.Director)
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-12 d-flex justify-content-center">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-actions no-color">
+                        <input type="submit" value="Eliminar" class="bi bi-save rounded-pill btn btn-outline-primary mb-2" />
+
+                    </div>
+                }
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+
+    </div>

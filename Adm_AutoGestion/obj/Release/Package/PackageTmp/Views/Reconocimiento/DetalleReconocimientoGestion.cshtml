@@ -1,0 +1,233 @@
+﻿@model List<Adm_AutoGestion.Models.Reconocimiento>
+
+@{
+
+    ViewBag.Title = "DetalleReconocimientoGestion";
+    bool Count = true;
+}
+
+<div class="modal-body">
+    <div class="card">
+        <div class="container-fluid">
+            <br />
+            <form action="javascript:;" method="post" id="form" enctype="multipart/form-data">
+                <div class="form-group col-md-12">
+
+                    @*Primera Fila*@
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+
+                                    <h4 class="text-center">Datos Del Empleado Reconocido</h4>
+                                    @*<input type="text" class="form-control" value="" disabled="disabled" />*@
+
+                                    <br />
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        @*Segunda Fila - Tabla*@
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm">
+                                        <tr class="fondoDegradado text-white">
+                                            <th>
+                                                @*Numerto del proceso*@
+
+                                            </th>
+                                            <th>
+                                                Documento
+                                            </th>
+
+                                            <th>
+
+                                                Nombre
+                                            </th>
+                                            <th>
+
+                                                Cargo
+                                            </th>
+                                            <th>
+
+                                                Sociedad
+                                            </th>
+                                            <th>
+
+                                                Area
+                                            </th>
+                                            <th>
+
+                                                Codigo del Empleado
+                                            </th>
+                                            <th></th>
+                                        </tr>
+
+                                        @foreach (var reconocimiento in ViewBag.Reconocimiento)
+                                        {
+                                            <tr>
+                                                @if (Count)
+                                                {
+
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        @reconocimiento.EmpleadoReconocido.Documento
+                                                    </td>
+
+                                                    <td>
+                                                        @reconocimiento.EmpleadoReconocido.Nombres
+                                                    </td>
+                                                    <td>
+                                                        @reconocimiento.EmpleadoReconocido.Cargo
+                                                    </td>
+                                                    <td>
+                                                        @reconocimiento.EmpleadoReconocido.Empresa
+                                                    </td>
+                                                    <td>
+                                                        @reconocimiento.EmpleadoReconocido.AreaDescripcion
+                                                    </td>
+                                                    <td>
+                                                        @reconocimiento.EmpleadoReconocido.NroEmpleado
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+
+                                            </tr>
+                                            Count = false;
+                                        }
+                                    </table>
+
+
+                                </div>                            <br />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row justify-content-center">
+                                <div class="col-12">
+
+                                    <h4 for="FechaRegistro" class="text-center">Detalle Reconocimiento</h4>
+                                    @*<input type="text" class="form-control" value="" disabled="disabled" />*@
+
+                                    <br />
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-sm">
+                                        <tr class="fondoDegradado text-white">
+                                            <th>
+                                                Fuente
+
+                                            </th>
+
+                                            <th>
+                                                Fecha
+                                            </th>
+
+                                            <th>
+
+                                                Tipo Reconocimiento
+                                            </th>
+                                            <th>
+
+                                                Observaciones
+                                            </th>
+                                            
+                                            <th>
+
+                                                Responsable
+                                            </th>
+                                            
+                                           
+
+                                            <th></th>
+                                        </tr>
+
+                                        @foreach (var reconocimiento in ViewBag.Reconocimiento)
+                                        {
+                                            <tr>
+
+
+                                                <td>
+                                                    @reconocimiento.Fuente
+                                                </td>
+                                                <td>
+                                                    @Convert.ToDateTime(reconocimiento.Fecha).ToString("dd/MM/yyyy")
+                                                </td>
+                                                <td>
+                                                    @reconocimiento.TipoReconocimiento.Nombre
+                                                </td>
+                                                <td style="overflow-wrap: break-word; max-width: 400px;">
+                                                    @reconocimiento.Observaciones
+                                                </td>
+                                                <td>
+                                                    @reconocimiento.Empleado.Nombres
+                                                </td>
+
+
+                                            </tr>
+                                        }
+
+                                    </table>
+
+
+                                </div>                            <br />
+                            </div>
+                        </div>
+                    </div>
+                    
+
+
+                    
+                    <div class="row justify-content-start">
+
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Activo:</label>
+                            <select class="form-control" Id="Activo" name="Activo">
+
+                                <option value="Seleccione...">Seleccione...</option>
+                                
+                                <option value="Desactivar">Desactivar</option>
+                            </select>
+
+                        </div>
+
+
+                    </div>
+                    
+                    
+                    <input type="hidden" id="ReconocimientoId" value="@ViewBag.ReconocimientoId" />
+
+
+                    @*Boton*@
+                    <div class="row justify-content-start">
+                        <div class="col-12" style="text-align:center">
+                            <br />
+                            <button type="submit" id="AprobacionJefe" name="AprobacionJefe" class="bi bi-save btn btn-outline-primary mb-2" " onclick="javascript:return GestionHumana();"> Guardar </button>
+                            <br />
+                        </div>
+
+                    </div>
+                    <br />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,261 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+@using System.Web.UI.WebControls;
+@{
+
+    var ListItems2 = new List<ListItem>
+{
+        new ListItem { Text = "INTERNO", Value = "INTERNO" },
+        new ListItem { Text = "EXTERNO", Value = "EXTERNO" }
+
+    };
+
+    Adm_AutoGestion.Models.RequerimientosDelPersonal Item = ViewBag.Requerimiento;
+
+}
+<script src="~/Contents/js/RequerimientosPersonal.js"></script>
+<div class="container-fluid" style="width:95%">
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <br />
+            <h2 style="text-align:center">Detalle del Requerimiento</h2>
+            <br />
+            <input id="Id" name="Id" value="@Model.Id" hidden readonly="true" />
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <label>Empresa</label>
+                        @Html.TextBox("EmpresaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Empresa.Descripcion })
+                    </div>
+                    <div class="col-6">
+                        <label>Cargo</label>
+                        @Html.TextBox("Cargo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Area a la que Pertenece</label>
+                        @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Centro de Costos al que Pertenece</label>
+                        @Html.TextBox("CeCos", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Direccion a la que Pertenece</label>
+                        @Html.TextBox("Direccion", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Numero de Personas</label>
+                        @Html.TextBox("NumeroPresonas", null, htmlAttributes: new { @class = "form-control", @type = "number", @readonly = "true" })
+                    </div>
+                   
+                    @*<div class="col-6">
+                        <br />
+                        <label>Sexo</label>
+                        @Html.TextBox("Sexo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+
+                    </div>*@
+                    <div class="col-6">
+                        <br />
+                        <label>Motivo Solicitud</label>
+                        @Html.TextBox("MtvSolicitudID2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.MtvSolicitud.Nombre })
+                        @*@Html.DropDownList("MtvSolicitudID", new SelectList(ViewBag.MtvSolicitud, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+
+                </div>
+                <br />
+                <hr />
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table ">
+                                <tr class="fondoDegradado text-white">
+                                    <th>
+                                        Empleado
+                                    </th>
+                                    <th>
+                                        Motivo Egreso
+                                    </th>
+                                </tr>
+                                @foreach (var item2 in Item.DetalleRequerimiento)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item2.Empleado.Nombres
+                                        </td>
+                                        <td>
+                                            @item2.MotivoEgreso.Nombre
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <hr />
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <br />
+                        <label>Jornada </label>
+                        @Html.TextBox("JornadaRequeridaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Jornada.Nombre + " " + "Horas" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Horario</label>
+                        @Html.TextBox("HorarioTrabajoId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Horario.Nombre })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Tiempo de Contratación</label>
+                        @Html.TextBox("Contratacion", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Tipo de Concurso</label>
+                        @Html.TextBox("TipoConcurso", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.TipoConcurso })
+                    </div>
+                </div>
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <br />
+                        <label>Justificación del Cargo</label>
+                        @Html.TextArea("JustificacionCargo", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+                    <div class="col-12">
+                        <br />
+                        <label>Requisitos adicionales</label>
+                        @Html.TextArea("RequisitosAdicionales", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+                    <div class="col-12">
+                        <br />
+                        <label>Observaciones</label>
+                        @Html.TextArea("Observaciones", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20" })
+                    </div>
+                    @*<div class="col-6" id="TipoConcurso">
+                        <br />
+                        <label>Estado Selección</label>
+                        @Html.DropDownList("EstadoSelec", new SelectList(ViewBag.EstadoSelec, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", @type = "text" })
+                    </div>*@
+                    <div class="col-12">
+                        <br />
+                        <hr />
+                        <label>Contratados Anteriormente</label>
+                        <br />
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <br />
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="fondoDegradado text-white">
+                                                <th>
+                                                    Empleado Contratado
+                                                </th>
+                                                <th>
+                                                    Fecha de Ingreso
+                                                </th>
+                                                <th>
+                                                    Tipo Empleado
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="Tabla_Anteriores">
+                                            @foreach (var item3 in Item.Detalle_Requerimientos_Cont)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        @item3.Contratado
+                                                    </td>
+                                                    <td>
+                                                        @Convert.ToDateTime(item3.FechaIngreso).ToString("yyyy-MM-dd")
+                                                    </td>
+                                                    <td>
+                                                        @item3.TipoEmpleado
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header fondoDegradado text-white">Datos Empleado Contratado</div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label>Empleado Contratado</label>
+                                        @Html.TextBox("Contratado", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+                                    </div>
+
+
+                                    <div class="col-3">
+                                        <label>Fecha De Ingreso</label>
+                                        @Html.TextBox("FechaIngreso", null, htmlAttributes: new { @class = "form-control", @type = "date", required = "required" })
+                                    </div>
+                                    <div class="col-3">
+                                        <label>Tipo de Empleado </label>
+                                        @Html.DropDownList("TipoEmpleado", new SelectList(ListItems2, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-2">
+                                        <br />
+                                        <button type="button" class="btn btn-outline-primary mb-2" id="Addformc2" onclick="javascript: return AddRow3('Addecont', true );">Agregar</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="panel-body">
+                                            <div class="panel panel-default">
+                                                <div class="table-responsive">
+                                                    <br />
+                                                    <table class="table table-hover">
+                                                        <thead><tr class="fondoDegradado text-white"><th></th><th>Contratado</th><th>Fecha Ingreso</th><th>Tipo Empleado</th></tr></thead>
+                                                        <tbody id="AddItemCont"></tbody>
+                                                        <tfoot><tr><td colspan="4"></td></tr></tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <input id="Accion" name="Accion" value="EncargadoContratacion" hidden readonly="true" />
+            </div>
+            <div style="text-align:center">
+                <a href="@Url.Action("Registros","RequerimientosPersonal", new { Id = Item.Id}, null)" data-registros='' class="bi bi-eye btn btn-outline-primary mb-2"> Ver Observaciones</a>
+                <button type="button" class="btn btn-outline-primary mb-2" id="Addformc2" onclick="javascript: return CerrarRdP( @Model.Id);"> Contratar</button>
+                <button type="button" class="btn btn-outline-primary mb-2" id="Anular" onclick="javascript: return AnularRdP( @Model.Id);">No Aprobado</button>
+
+            </div>
+        </div>
+        <br />
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#Addformc2").on("click", function () {      
+            //---------- Luego de agregar el personal se limpian los cajones -------
+            document.getElementById("Contratado").value = "";
+            document.getElementById("FechaIngreso").value = "";
+            $("#TipoEmpleado").val("");
+            //---------- --------------------------------------------------- -------
+        });
+    });
+</script>

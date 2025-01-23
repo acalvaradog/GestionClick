@@ -1,0 +1,578 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    var dirigidoArray = ViewBag.dirigidoArray as object[];
+    string[] numeros = ViewBag.numeros.Split(',');
+
+    List<string> valores = new List<string>();
+    foreach (var item in dirigidoArray)
+    {
+        var propiedades = item.GetType().GetProperties();
+        var idPropiedad = propiedades.FirstOrDefault(p => p.Name == "Id");
+        if (idPropiedad != null)
+        {
+            var idValor = idPropiedad.GetValue(item);
+            if (numeros.Contains(idValor.ToString()))
+            {
+                var valorPropiedad = propiedades.FirstOrDefault(p => p.Name == "Valor");
+                if (valorPropiedad != null)
+                {
+                    valores.Add(valorPropiedad.GetValue(item).ToString());
+                }
+            }
+        }
+    }
+
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="card ">
+                <div class="card-header text-white fondoDegradado">
+                    <div class="col-12">
+                        <h2>Editar Acción de Formación</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mt-3 justify-content-start">
+                        <div class="col-8">
+                            <label>Nombre de la Acción de Formación</label>
+                            @Html.TextBox("Nombre", null, new { @class = "form-control", @Value = Model.Nombre, @readonly = "true" })
+                        </div>
+
+                        <div class="col-4">
+                            <label>Mes</label>
+                            @Html.TextBoxFor(model => model.Mes, new { @type = "text", @Value = Model.Mes.ToString("MMMM, yyyy"), @class = "form-control", @readonly = "true" })
+                        </div>
+
+                        <div class="col-4 mt-3">
+                            <label>Empleado Creador</label>
+                            @Html.TextBox("Empleado", null, new { @class = "form-control", @Value = Model.Empleado.Nombres, @readonly = "true" })
+                        </div>
+
+                        <div class="col-4 mt-3">
+                            <label>Estado</label>
+                            @Html.TextBox("Estado", null, new { @class = "form-control", @Value = Model.Estado, @readonly = "true" })
+                        </div>
+
+                        <div class="col-4 mt-3">
+                            <label>Fecha de Creación</label>
+                            @Html.TextBoxFor(model => model.FechaRegistro, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start">
+                        <div class="col-4 mt-3">
+                            <label>Fecha de la sesión</label>
+                            @Html.TextBoxFor(model => model.FechaCapacitacion, new { @type = "date", @Value = Model.FechaCapacitacion.ToString("yyyy-MM-dd"), @class = "form-control" })
+                        </div>
+                        <div class="col-4 mt-3">
+                            <label>Hora de Inicio</label>
+                            @*@Html.TextBoxFor(model => model.HoraInicio, new { @type = "time", @Value = Model.HoraInicio.ToString("hh:mm"),@class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HoraInicio)*@
+                            @Html.TextBox("HoraInicio", null, new { @class = "form-control", @Value = Model.HoraInicio, type = "time", onblur = "javascript: CalculoHorasPorSesion();" })
+
+                        </div>
+                        <div class="col-4 mt-3">
+                            <label>Hora de Finalización</label>
+                            @Html.TextBox("HoraFin", null, new { @class = "form-control", @Value = Model.HoraFin, type = "time", onblur = "javascript: CalculoHorasPorSesion();" })
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start">
+                        <div class="col-md-4 mt-3">
+                            <label>Tipo de PEC</label>
+                            @*@Html.DropDownListFor(model => model.IdTipoPEC, new SelectList(ViewBag.TipoPEC, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", onchange = "javascript: AlternarPICO();" })*@
+                            @*@Html.TextBox("IdTipoPEC", null, new { @class ="form-control", @Value = ViewBag.TipoPEC })*@
+                            @Html.TextBox("IdTipoPEC", null, new { @class = "form-control", @Value = ViewBag.TipoPEC, @readonly = "true" })
+                        </div>
+
+                        <div class="col-4 mt-3">
+                            <label>Empresa</label>
+                            @*@Html.DropDownListFor(model => model.Empresa, new SelectList(Model.ListEmpresa, "Codigo", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })*@
+                            @Html.TextBox("Empresa", null, new { @class = "form-control", @Value = ViewBag.Empresa, @readonly = "true" })
+                        </div>
+
+                        <div class="col-4 mt-3">
+                            <label>Sede</label>
+                            @*@Html.DropDownListFor(model => model.IdSede, new SelectList(Model.ListSede, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })*@
+                            @Html.TextBox("IdSede", null, new { @class = "form-control", @Value = ViewBag.Sede, @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3" id="d">
+                            <label>Gestor Educativo</label>
+                            @Html.TextBox("Responsable", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3" id="e">
+                            <label>Cargo del Gestor Educativo</label>
+                            @Html.TextBox("CargoResponsable", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3" hidden id="a">
+                            <label>Programa Institucional o C.O.</label>
+                            @*@Html.DropDownListFor(model => model.IdProgramaInstitucional, new SelectList(ViewBag.PICO, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })*@
+                            @Html.TextBox("IdProgramaInstitucional", null, new { @class = "form-control", @Value = ViewBag.PICO, @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3" hidden id="b">
+                            <label>Lider del Programa</label>
+                            @Html.TextBox("ResponsablePrograma", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3" hidden id="c">
+                            <label>Cargo del Lider del Programa</label>
+                            @Html.TextBox("CargoResponsablePrograma", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Area</label>
+                            @Html.TextBox("AreaObjetivo", null, htmlAttributes: new { @class = "form-control", @type = "text", min = "1", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Duración de cada sesión</label>
+                            @Html.TextBox("TotalHoras", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Total Sesiones</label>
+                            @Html.TextBox("TotalSesiones", null, htmlAttributes: new { @class = "form-control", @type = "number", min = "1", @readonly = "true" })
+                        </div>
+                        
+                        @if (Model.FechaCapacitacion > DateTime.Today && (Model.Metodologia == 2 || Model.Metodologia == 3 || Model.Metodologia == 4 || Model.Metodologia == 9))
+                        {
+                            <div class="col-md-4 mt-3">
+                                <label>Cantidad de programados</label>
+                                @Html.TextBox("CtnProgramados", null, htmlAttributes: new { @class = "form-control", @type = "text", maxlength = "3" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4 mt-3">
+                                <label>Cantidad de programados</label>
+                                @Html.TextBox("CtnProgramados", null, htmlAttributes: new { @class = "form-control", @type = "number", min = "1", @readonly = "true" })
+                            </div>
+                        }
+
+
+                        <div class="col-4 mt-3">
+                            <label>Dirigido A</label>
+                            @*@Html.DropDownListFor(model => model.DirigidoASelect, new SelectList(ViewBag.DirigidoA, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })*@
+                            @*@Html.TextArea("DirigidoASelect", null, htmlAttributes: new { @class = "form-control", @readonly = "true", rows = "1", cols = "1" })*@
+                            <textarea class="form-control" readonly="readonly" rows="1" type="text" cols="1">@string.Join(",", valores)</textarea>
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Proveedor</label>
+                            @Html.TextBox("Proveedor", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Docentes</label>
+                            @Html.TextArea("Docente", null, htmlAttributes: new { @class = "form-control", type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Meta Eficacia</label>
+                            @Html.TextBox("MetaEficacia", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Requerimiento Institucional</label>
+                            @*@Html.DropDownList("IdRequerimientoInstitucional", new SelectList(ViewBag.ReqInst, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })*@
+                            @Html.TextBox("IdRequerimientoInstitucional", null, new { @class = "form-control", @Value = ViewBag.ReqInst, @readonly = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Especifique el Requerimiento</label>
+                            @Html.TextBox("EspecificacionReq", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                        </div>
+
+                        <div class="col-4 mt-3">
+                            <label>Tipo de Acción de Formación</label>
+                            @*@Html.DropDownListFor(model => model.Metodologia, new SelectList(Model.ListMetodología, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })*@
+                            @Html.TextBox("Metodologia", null, new { @class = "form-control", @Value = ViewBag.Metodologia, @readonly = "true" })
+                        </div>
+
+                        @if (Model.Modalidad == "4")
+                        {
+                            <div class="col-md-4 mt-3">
+                                <label>Modalidad</label>
+                                @Html.TextBox("Modalidad", null, new { @class = "form-control", @readonly = "true" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-4 mt-3">
+                                <label>Modalidad</label>
+                                <select id="Modalidad" name="Modalidad" class="form-control selectpicker" onchange="javascript: ValidarModalidad();">
+                                    <option value="1" @(Model.Modalidad == "1" ? "selected" : "")>Presencial</option>
+                                    <option value="2" @(Model.Modalidad == "2" ? "selected" : "")>Virtual con conectividad (meet, teams, zoom)</option>
+                                    <option value="3" @(Model.Modalidad == "3" ? "selected" : "")>Híbrida (Presencial, y/o con conectividad y/o plataforma externa)</option>
+                                </select>
+                            </div>
+                        }
+
+                        <div id="CiudadDiv" class="col-md-4 mt-3" hidden>
+                            <label>Ciudad</label>
+                            @Html.DropDownListFor(x => x.Ciudad, new SelectList(ViewBag.Ciudad, "Id", "Nombre"), null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione..." })
+                        </div>
+
+                        <div id="OtraCiudadDiv" class="col-md-4 mt-3" hidden>
+                            <label>Especifique la Ciudad</label>
+                            <input id="OtraCiudad" name="Ciudad" class="form-control" type="text" value="@Model.Ciudad" />
+                        </div>
+
+                        <div id="LugarDiv" class="col-md-4 mt-3" hidden>
+                            <label>Lugar</label>
+                            @Html.DropDownListFor(x => x.Lugar, new SelectList(ViewBag.Lugares, "Id", "Nombre"), null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione..." })
+                        </div>
+
+                        <div id="OtroLugarDiv" class="col-md-4 mt-3" hidden>
+                            <label>Especifique el Lugar</label>
+                            <input id="OtroLugar" name="Lugar" class="form-control" type="text" value="@Model.Lugar" />
+                        </div>
+
+                        @if (Model.PresupuestoRequerido == true)
+                        {
+                            <div class="col-md-4 mt-3" id="DivPresupuesto">
+                                <label>Presupuesto</label>
+                                @Html.TextBox("Presupuesto", null, htmlAttributes: new { @class = "form-control", @type = "number", @readonly = "true" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4 mt-3" hidden id="DivPresupuesto">
+                                <label>Presupuesto</label>
+                                @Html.TextBox("Presupuesto", null, htmlAttributes: new { @class = "form-control", @type = "number", @readonly = "true" })
+                            </div>
+                        }
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mt-3">
+                            <label>Enlace Evaluación Conocimientos</label>
+                            @Html.TextBox("EvaluacionConocimiento", null, htmlAttributes: new { @class = "form-control", @type = "url", @autocomplete = "false", @placeholder = "https://www.docs.google.com" })
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label>Enlace Encuesta Satisfacción</label>
+                            @Html.TextBox("EncuestaSatisfaccion", null, htmlAttributes: new { @class = "form-control", @type = "url", @autocomplete = "false", @placeholder = "https://www.docs.google.com", @readonly = "true" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mt-3">
+                            <label>Temas de la Acción de Formación</label>
+                            @Html.TextArea("temas", null, new { @class = "form-control", @Value = Model.temas, @readonly = "true" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-2 mt-3">
+                            <label>Objetivos de la Acción de Formación</label>
+                            @Html.TextArea("Objetivo", null, new { @class = "form-control", @value = Model.Objetivo, @readonly = "true" })
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex justify-content-evenly">
+                            <div>
+                                <button id="botonGuardar" type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                            </div>
+                            <div>
+                                @Html.ActionLink(" Regresar", "ListaPorCompletar", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary mb-2" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function inputNumeros(input) {
+        let valor = $(input).val().replace(/[^0-9\s]/g, '');
+        $(input).val(valor.toUpperCase());
+    }
+
+    $('#CtnProgramados').on('input', function () {
+        inputNumeros(this);
+    });
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        function inicializarSelects() {
+            $('#Lugar').selectpicker();
+            $('#Ciudad').selectpicker();
+        }
+
+        function mostrarDivsYValores() {
+            var opt = $('#Modalidad').val();
+
+            var ciudadDiv = document.getElementById("CiudadDiv");
+            var lugarDiv = document.getElementById("LugarDiv");
+            var OtraCiudadDiv = document.getElementById("OtraCiudadDiv");
+            var OtroLugarDiv = document.getElementById("OtroLugarDiv");
+
+            if (opt == 1 || opt == 3) {
+
+                ciudadDiv.hidden = false;
+                lugarDiv.hidden = false;
+
+                if ($('#Lugar').val() == "") {
+                    $('#Lugar').val("OTRO");
+                    OtroLugarDiv.hidden = false;
+                }
+                if ($('#Ciudad').val() == "") {
+                    $('#Ciudad').val("Otro");
+                    OtraCiudadDiv.hidden = false;
+                }
+            } else if (opt == 2) {
+                ciudadDiv.hidden = true;
+                lugarDiv.hidden = true;
+                OtraCiudadDiv.hidden = true;
+                OtroLugarDiv.hidden = true;
+            }
+
+            setTimeout(function () {
+                $('#Lugar').selectpicker("refresh");
+                $('#Ciudad').selectpicker("refresh");
+            }, 100);
+
+        }
+
+        inicializarSelects();
+        mostrarDivsYValores();
+
+        $('#Modalidad').change(function () {
+            mostrarDivsYValores();
+        });
+
+        $('#Lugar').change(function () {
+            if ($(this).val() === "OTRO") {
+                OtroLugarDiv.hidden = false;
+            } else {
+                OtroLugarDiv.hidden = true;
+            }
+        });
+
+        $('#Ciudad').change(function () {
+            if ($(this).val() === "Otro") {
+                OtraCiudadDiv.hidden = false;
+            } else {
+                OtraCiudadDiv.hidden = true;
+            }
+        });
+    });
+
+    $('#Ciudad').append($('<option>', {
+        value: 'Otro',
+        text: 'Otro'
+    }));
+
+    $('form').on('submit', function () {
+        var ciudadSelect = $('#Ciudad').val();
+        var lugarSelect = $('#Lugar').val();
+
+        if (ciudadSelect === 'Otro') {
+            $('#Ciudad').val($('#OtraCiudad').val());
+        }
+
+        if (lugarSelect === 'OTRO') {
+            $('#Lugar').val($('#OtroLugar').val());
+        }
+    });
+</script>
+
+<script>
+    function CalculoHorasPorSesion() {
+
+        var inicio = $('#HoraInicio').val();
+        var fin = $('#HoraFin').val();
+        var duracion = $('#TotalHoras').val();
+
+        var inicioDate = new Date("1970-01-01T" + inicio + "Z");
+        var finDate = new Date("1970-01-01T" + fin + "Z");
+
+        var diff = finDate - inicioDate;
+
+        var diffHoras = diff / (1000 * 60 * 60);
+        var diffHorasRedondeado = diffHoras.toFixed(1);
+
+        if (diffHoras < 0) {
+            alertify.alert("La hora inicio no puede ser mayor a la hora fin.");
+            $('#botonGuardar').attr('disabled', true);
+        } else {
+            $('#botonGuardar').attr('disabled', false);
+        }
+
+        if (diffHorasRedondeado != duracion) {
+            alertify.alert("La duración de la sesión debe ser de " + duracion + ".Modifique las horas nuevamente.");
+            $('#botonGuardar').attr('disabled', true);
+        } else {
+            $('#botonGuardar').attr('disabled', false);
+        }
+    }
+
+
+    $(document).ready(function () {
+
+        var modalidad = $('#Modalidad').val();
+
+        if (modalidad == 4) {
+            $('#Modalidad').val("Plataforma Virtual Formativa EduFoscal");
+        }
+
+        var err = "@ViewBag.Message";
+
+        if (err == "") {
+
+        } else {
+            alertify.alert("@ViewBag.Message");
+        }
+
+        var a = document.getElementById('a');
+        var b = document.getElementById('b');
+        var c = document.getElementById('c');
+        var d = document.getElementById('d');
+        var e = document.getElementById('e');
+        var select = $('#IdTipoPEC').val();
+
+        if (select == "Cultura Organizacional") {
+            a.hidden = false;
+            b.hidden = false;
+            c.hidden = false;
+            d.hidden = true;
+            e.hidden = true;
+        }
+
+    });
+
+</script>
+
+<script>
+
+    const diaActual = new Date().getDate();
+    const mesActual = new Date().getMonth() + 1;
+    const añoActual = new Date().getFullYear();
+
+    const festivosColombia = [
+        @Html.Raw(ViewBag.FestivosColombia)
+    ];
+
+    function esDiaHabil(fecha) {
+        const dia = fecha.getDay();
+        const esFestivo = festivosColombia.some(festivo =>
+            festivo.getDate() === fecha.getDate() &&
+            festivo.getMonth() === fecha.getMonth() &&
+            festivo.getFullYear() === fecha.getFullYear()
+        );
+
+        return dia !== 0 && dia !== 6 && !esFestivo;
+    }
+
+    function obtenerDiasHabilesDesdeHoy(dias) {
+        let contador = 0;
+        let fechaActual = new Date();
+
+        while (contador < dias) {
+            fechaActual.setDate(fechaActual.getDate() + 1);
+            if (esDiaHabil(fechaActual)) {
+                contador++;
+            }
+        }
+
+        return fechaActual;
+    }
+
+    var fechaCap = new Date(document.getElementById('FechaCapacitacion').value);
+    var fechaHoy = new Date();
+    var fechaLimite = obtenerDiasHabilesDesdeHoy(1);
+
+    if (fechaCap >= fechaLimite) {
+        $('#HoraInicio').attr("readonly", false);
+        $('#HoraFin').attr("readonly", false);
+        $('#FechaCapacitacion').attr("readonly", false);
+    } else {
+        $('#HoraInicio').attr("readonly", true);
+        $('#HoraFin').attr("readonly", true);
+        $('#FechaCapacitacion').attr("readonly", true);
+    }
+
+    function formatearFecha(dia, mes, año) {
+        var fecha = `${año}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`
+        return fecha;
+    }
+
+    var mesSeleccionado = new Date('@Model.Mes.ToString("yyyy-MM-ddT00:00:00Z")');
+    var ultimoDiaMes = new Date(mesSeleccionado.getUTCFullYear(), mesSeleccionado.getUTCMonth() + 1, 0).getDate();
+
+    const metodologia = $('#Metodologia').val();
+
+    if (metodologia === "Curso" || metodologia === "Diplomado" || metodologia === "Entrenamiento") {
+        $('#FechaCapacitacion').attr("min", formatearFecha(1, mesSeleccionado.getUTCMonth() + 1, mesSeleccionado.getUTCFullYear()));
+
+        const fechaMax = new Date(mesSeleccionado);
+        fechaMax.setMonth(fechaMax.getMonth() + 3);
+
+        if (fechaMax.getUTCMonth() === 2 && mesSeleccionado.getUTCMonth() === 11) {
+            const ultimoDiaFebrero = new Date(fechaMax.getUTCFullYear(), 2, 0).getDate();
+            $('#FechaCapacitacion').attr("max", formatearFecha(ultimoDiaFebrero, 2, fechaMax.getFullYear()));
+        } else {
+            const ultimoDia = new Date(fechaMax.getUTCFullYear(), fechaMax.getMonth() + 1, 0).getDate();
+            $('#FechaCapacitacion').attr("max", formatearFecha(ultimoDia, fechaMax.getMonth() + 1, fechaMax.getUTCFullYear()));
+        }
+
+        if (mesSeleccionado.getUTCMonth() + 1 === mesActual && mesSeleccionado.getFullYear() === añoActual && diaActual > 1) {
+            $('#FechaCapacitacion').attr("min", formatearFecha(diaActual, mesActual, añoActual));
+        }
+    } else {
+        if (mesSeleccionado.getUTCMonth() + 1 === mesActual && mesSeleccionado.getFullYear() === añoActual && diaActual > 1) {
+            $('#FechaCapacitacion').attr("min", formatearFecha(diaActual, mesSeleccionado.getUTCMonth() + 1, mesSeleccionado.getUTCFullYear()));
+            $('#FechaCapacitacion').attr("max", formatearFecha(ultimoDiaMes, mesSeleccionado.getUTCMonth() + 1, mesSeleccionado.getUTCFullYear()));
+        } else {
+            $('#FechaCapacitacion').attr("min", formatearFecha(1, mesSeleccionado.getUTCMonth() + 1, mesSeleccionado.getUTCFullYear()));
+            $('#FechaCapacitacion').attr("max", formatearFecha(ultimoDiaMes, mesSeleccionado.getUTCMonth() + 1, mesSeleccionado.getUTCFullYear()));
+        }
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        function inputMayusculasAlfabeto(input) {
+            let valor = $(input).val().replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ\s]/g, '');
+            $(input).val(valor.toUpperCase());
+        }
+
+        function inputMayusculasAlfabetoNumeros(input) {
+            let valor = $(input).val().replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]/g, '');
+            $(input).val(valor.toUpperCase());
+        }
+
+        $('#OtroLugar').on('input', function () {
+            inputMayusculasAlfabeto(this);
+        });
+
+        $('#OtraCiudad').on('input', function () {
+            inputMayusculasAlfabetoNumeros(this);
+        });
+
+    });
+</script>

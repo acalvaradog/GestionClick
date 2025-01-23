@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.IncapacidadAdjuntos>
+
+@{
+    ViewBag.Title = "Adjunto";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.Empleado Item = ViewBag.Empleado;
+    
+}
+
+<div class="container">
+
+
+<br />
+<h2 class="colorTitulo">Archivos Adjuntos</h2>
+
+<div class="form-inline" role="form">
+  <div class="container-fluid">
+    <div class="row">
+            <div class="col-sm">
+                <div class ="form-group">
+                  <label for="Nombre" class="control-label col-sm-1 ">Documento: </label>&nbsp&nbsp
+                  <input  type = "text" class="form-control" id = "Doc" value="@Item.Documento" disabled = "disabled" />
+                  
+                  &nbsp&nbsp&nbsp
+                  <label for="Nombre" class="control-label col-sm-1">Nombre: </label>
+                  <input  type = "text" class="form-control col-sm-7" id = "Nom" value="@Item.Nombres" readonly/>
+                </div>
+            </div>
+       </div>
+   </div>
+</div>
+
+<br />
+<br />
+
+<div class = "table-responsive">
+<table class= "table table-hover">
+    <tr class="fondoDegradado text-white">
+       @* <th>
+            @Html.DisplayNameFor(model => model.IncapacidadId)
+        </th>*@
+        <th>
+            @*@Html.DisplayNameFor(model => model.TipoIncapacidad)*@
+            Tipo Incapacidad
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adjunto)
+        </th>
+        <th>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.IncapacidadId)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.ListadoTiposInc.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Adjunto)
+        </td>
+        <td>
+            @Html.ActionLink(" Descargar Archivo", "Download", new { archivo=item.Adjunto }, new { @class = "bi bi-download btn btn-outline-primary mb-2"})
+        </td>
+       
+    </tr>
+}
+
+</table>
+</div>
+
+
+</div>

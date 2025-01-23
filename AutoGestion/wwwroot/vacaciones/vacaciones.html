@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="../css/EstilosPersonalizados.css" rel="stylesheet" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <link href="../js/alertify.js-0.3/themes/alertify.core.css" rel="stylesheet" />
+    <link href="../js/alertify.js-0.3/themes/alertify.default.css" rel="stylesheet" />
+    <script src="../js/bootstrap.min.js"></script>
+    <title></title>
+</head>
+<body>
+    <div id="FrmVacaciones" class="container">
+        <!--<h3 style="text-align:center; color:#01509f;">Vacaciones</h3>-->
+
+
+        <form enctype="multipart/form-data" id="formuploadajax" method="post">
+            <br /><br />
+            <div class="card  border-info mb-3 shadow p-3 mb-5">
+                <div class="card-header">
+                    <div class="header-title">
+                        <h4 class="card-title"> Periodos Historico Vacaciones</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha Inicial</th>
+                                    <th>Fecha Final</th>
+                                    <th>Cantidad Dias Por Disfrutar</th>
+                                    <th>Cantidad Dias Disfrutados</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody id="TabHsVac"></tbody>
+                            <tfoot><tr></tr></tfoot>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <!--<hr width="90%" size="3" style="color: #0056b2;" />
+
+            <br />-->
+            <div class="card  border-info mb-3 shadow p-3 mb-5">
+                <div class="card-header">
+                    <div class="header-title">
+                        <h4 class="card-title">Solicitud de Vacaciones</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4" id="AutorizaVacPag">
+                            Vacaciones en Dinero:
+                            <select id="txt_vacacionespagas" class="form-control">
+                                <option value="vacio">Seleccione...</option>
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+                        <br />
+                        <div class="col-4" id="AutorizaVacAdel">
+                            Vacaciones Anticipadas:
+                            <select id="txt_vacacionesadelant" class="form-control">
+                                <option value="vacio">Seleccione...</option>
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+                        <div class="col-4" id="DiasMayora6">
+                            Vacaciones Menor a 6 Dias:
+                            <select id="txt_vacacionesMayor6" class="form-control">
+                                <option value="vacio">Seleccione...</option>
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-6">
+                            Cantidad Dias Solicitados: <input type="number" id="txt_candiassol_vac" class="form-control" name="txt_candiassol_vac" min="0">
+                        </div>
+                        <br />
+                        <div class="col-6">
+                            Cantidad Dias Pendientes: <input type="number" id="txt_candiaspen_vac" class="form-control" name="txt_candiaspen_vac" disabled="disabled">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-6">
+                            Fecha Inicio Vacaciones: <input type="date" id="txt_fechainicialVac" class="form-control" name="txt_fechainicialVac" />
+                        </div>
+                        <br />
+                        <div class="col-6">
+                            Fecha de Reintegro laboral: <input type="text" id="txt_fechafinalVac" class="form-control" name="txt_fechafinalVac" disabled="disabled" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-12">
+                            <H2>Favor especificar el o los periodos a tomar.  </H2>
+                            <textarea id="txt_ObsVac" name="txt_ObsVac" class="form-control" rows="2"></textarea>
+
+                        </div>
+                        <br />
+
+                    </div>
+                </div>
+            </div>
+
+            
+            <H5><strong>Nota:</strong></H5>
+
+            
+            <H6>
+                - Recuerde que, si va a disfrutar sus vacaciones, es importante que el registro y aprobación se hagan oportunamente antes del 20 de cada mes, por motivos de cierre de nómina.
+                Todo lo que se registre y apruebe después de la fecha se tendrá en cuenta para la nómina del siguiente mes.
+
+
+            </H6>
+
+
+           
+           
+            <center>
+                <input type="submit" value="Grabar" class="btn btn-primary" />
+            </center>
+            <br />
+            <br />
+            
+        </form>
+
+    </div>
+    <script src="../js/alertify.js-0.3/src/alertify.js"></script>
+    <script src="Vacaciones.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>-->
+
+    <div class="modal fade" id="processState">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center"><img src="img/Spinner.gif" /> Espere....</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

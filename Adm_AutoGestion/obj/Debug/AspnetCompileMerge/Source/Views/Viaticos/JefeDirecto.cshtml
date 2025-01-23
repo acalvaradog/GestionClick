@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Viaticos>
+@{
+    ViewBag.Title = "JefeDirecto";
+
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.Viaticos Item = ViewBag.Viaticos;
+
+}
+
+<div class="card">
+    <div class="card-header colorTitulo mb-3"><h5>Viáticos Pendientes de Aprobación</h5></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="Tabla_Viaticos" class="table table-hover table-sm">
+                <thead class="text-center text-capitalize ">
+                    <tr class="fondoDegradado text-white">
+                        <th>Ver Detalle</th>
+                        <th>
+                            Nmr Solicitud
+                        </th>
+                        <th>
+                            Documento
+                        </th>
+                        <th>
+                            Empleado Solicitante
+                        </th>
+                        <th>
+                            Destino
+                        </th>
+                        <th>
+                            Empresa
+                        </th>
+                        <th>
+                            Fecha de Ingreso
+                        </th>
+                        <th>
+                            Fecha de Salida
+                        </th>
+                        <th>
+                            Prorroga
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-center text-capitalize">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(" ", "DetallesViatico", new { id = item.Id }, new { data_modal33 = "", @class = "btn close fas fa-eye text-primary mr-4" })
+                            </td>
+                            <td>
+                                <label>@item.Id</label>
+                            </td>
+                            <td>
+
+                                @Html.ActionLink(@item.Empleado.Documento, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+
+                            </td>
+                            <td>
+                                @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                            </td>
+                            <td>
+
+                                @item.DestinoViatico.Nombre
+                            </td>
+                            <td>
+
+                                @if (@item.Empleado.Empresa == "2000")
+                                {
+                                    <label>FOSUNAB</label>
+
+                                }
+                                @if (@item.Empleado.Empresa == "1000")
+                                {
+                                    <label>FOSCAL</label>
+
+                                }
+
+
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+
+                            </td>
+                            <td>
+
+                                @if (item.Prorroga == false)
+                                {
+
+
+                                    <p>No</p>
+
+                                }
+                                else
+                                {
+                                    <p>SI</p>
+
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EstadosViaticos.Nombre)
+                            </td>
+
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_ViaticoDetail" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Detalle Viatico </h2>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModal33">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+

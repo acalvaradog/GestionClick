@@ -1,0 +1,234 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+}
+<div id="loading" class="col-12 sticky-top">
+    <div class="col-12 d-flex justify-content-center" style="top:70px;position:absolute">
+        <div class="bg-opacity-50" style="padding:128px 200px 192px 200px;backdrop-filter:blur(5px)">
+            <img src="~/Contents/image/Spinner.gif" style="width:64px;position:absolute; margin-top:24px;" />
+            <div class="text-black">Cargando...</div>
+        </div>
+    </div>
+</div>
+<br />
+<h2 class="colorTitulo" align="center">Dashboard Requerimientos de Personal</h2>
+<br />
+<form>
+    <div class="card mt-3">
+        <br />
+        <div class="card-body" style="padding:9px; overflow:hidden;">
+            <div class="row justify-content-center" align="center">
+
+                <div class="col-md-3" style="text-align: center;" id="Solicitados1">
+                    <div class="card" id="Solicitados">
+                        <div class="card-header bg-info colorGrisOscuro Chart_Titulo1" style="height:79px">
+                            <b>  Requerimientos Solicitados </b>
+
+                        </div>
+                        <div class="card-body " style="align-content: center;">
+                            <h5 class="card-title">@ViewBag.CntRdPSolicitado</h5>
+                            <br />
+                            <div id="Div_Chart_Solicitados" class="col-md-12" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="text-align: center;" id="Director1">
+                    <div class="card" id="Director">
+                        <div class="card-header bg-warning colorGrisOscuro Chart_Titulos" style="height:79px">
+                            <b>  Rquerimientos Aprobados <br /> Por el Director</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPAprobadoDirectorArea</h5>
+                            <br />
+                            <div id="Div_Chart_Aprob_Director" class="col-md-12" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="text-align: center;" id="Gerencia1">
+                    <div class="card" id="Gerencia">
+                        <div class="card-header bg-danger colorGrisOscuro Chart_Titulos" style="height:79px">
+                            <b>  Requerimientos Aprobados <br /> por Gerencia</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPAprobadoGerencia</h5>
+                            <br />
+                            <div id="Div_Chart_Apro_Gerencia" class="col-md-12" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="text-align:center" id="Seleccion1">
+                    <div class="card" id="Seleccion">
+                        <div class="card-header bg-success colorGrisOscuro Chart_Titulos" style="height:79px">
+                            <b>Requerimientos en Selección</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPSelección </h5>
+                            <br />
+                            <div id="Div_Chart_Cantidad_Seleccion" class="col-md-12" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div class="row justify-content-center" align="center">
+                <div class="col-md-3" style="text-align:center" id="Seleccion">
+                    <div class="card" id="Seleccion">
+                        <div class="card-header colorGrisOscuro Chart_Cerrados" style="height: 79px">
+                            <b>Requerimientos Cerrados</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.Cant_Cerrados </h5>
+                            <br />
+                            <div id="Div_Chart_Cant_Cerrados" class="col-md-12" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="text-align:center" id="General1">
+                    <div class="card" id="General">
+                        <div class="card-header colorGrisOscuro Chart_Anulados" style="height: 79px">
+                            <b>Requerimientos Anulados</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.Cant_Anulados </h5>
+                            <br />
+                            <div id="Div_Chart_Cant_Anulados" class="col-md-12" style="overflow:hidden; border: 1px solid #c1c1c1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="text-align:center" id="General1">
+                    <div class="card" id="General">
+                        <div class="card-header colorGrisOscuro Total_Requerimientos" style="height: 79px">
+                            <b>  Total de Requerimientos</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.Total </h5>
+                            <br />
+                            <div id="Div_Chart_Total" class="col-md-12" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="text-align:center" id="General1">
+                    <div class="card" id="General">
+                        <div class="card-header colorGrisOscuro DashCubiertos" style="height: 79px">
+                            <b>Total Cubiertos y Por Cubrir</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" id="">@ViewBag.Total_Cub </h5>
+                            
+                            <br />
+                            <div id="Div_Chart_Cant_Cubiertos" class="col-md-12" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                        </div>
+                    </div>
+                </div>                
+                <br />
+            </div>
+            <hr />
+            <div class="row justify-content-center" align="center">
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="colorGrisOscuro" style="overflow: hidden;">
+                        <br />
+                        <h2 class="colorTitulo" align="center">Estadisticas Requerimientos de Personal</h2>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row justify-content-center" align="center">
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="card shadow mb-4">
+                        <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                            <h6>Total Por Cargo</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2" id="Div_Chart_Total_Cargo"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="card shadow mb-4">
+                        <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                            <h6>Total Requerimientos Por Area</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2" id="Div_Chart_Total_Area"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="card shadow mb-4">
+                        <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                            <h6>Total Por Mes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2" id="Div_Chart_Total_Mes"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="card shadow mb-4">
+                        <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                            <h6>Total Por Encargado</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2" id="Div_Chart_Total_Encargado"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="card shadow mb-4">
+                        <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                            <h6>Total Por Motivo</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2 text-capitalize" id="Div_Chart_Total_Motivo"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="card shadow mb-4">
+                        <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                            <h6>Total Cargos por Área</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2 text-capitalize" id="Div_Chart_Total_CargosXArea"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                    <div class="card shadow mb-4">
+                        <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                            <h6>Total Cargos por Mes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-2 text-capitalize" id="Div_Chart_Total_CargosXMes"></div>
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="col-md-6" style="text-align:center" id="General1">
+                <div class="card" id="General">
+                    <div class="card-header colorGrisOscuro Chart_Total" style="overflow: hidden;  height: 79px">
+                        <b>  Total Por Cargo</b>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"> </h5>
+                        <br />
+                        <div id="" class="col-md-12" style="border: 1px solid #c1c1c1"></div>
+                    </div>
+                </div>
+            </div>*@
+            </div>
+        </div>
+
+    </div>
+
+</form>
+
+
+

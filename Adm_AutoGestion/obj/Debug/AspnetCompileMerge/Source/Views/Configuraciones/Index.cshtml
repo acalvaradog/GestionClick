@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Configuraciones>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<br />
+<br />
+<h2>Configuraciones</h2>
+<br />
+<br />
+
+<p>
+    @Html.ActionLink("Crear Nuevo", "Create")
+</p>
+<br />
+<div class = "table-responsive">
+<table class= "table table-hover table-sm">
+    <tr class="table-info">
+        <th>
+            @Html.DisplayNameFor(model => model.Parametro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Valor)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Parametro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Descripcion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Valor)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) 
+        </td>
+    </tr>
+}
+
+</table>
+</div>

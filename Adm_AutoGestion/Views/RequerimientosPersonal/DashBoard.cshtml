@@ -1,0 +1,386 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+
+@{
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]);
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+}
+<head>
+    <script src="~/Contents/js/RequerimientosPersonal_Consultas.js"></script>
+</head>
+<div id="loading" class="col-12 sticky-top">
+    <div class="col-12 d-flex justify-content-center" style="top:70px;position:absolute">
+        <div class="bg-opacity-50" style="padding:128px 200px 192px 200px;backdrop-filter:blur(5px)">
+            <img src="~/Contents/image/Spinner.gif" style="width:64px;position:absolute; margin-top:24px;" />
+            <div class="text-black">Cargando...</div>
+        </div>
+    </div>
+</div>
+
+<form>
+    <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Requerimientos de Personal</h4>
+            </div>
+
+
+        </div>
+        <div class="card-body" style="padding:9px; overflow:hidden;">
+            <div class="row justify-content-center wrap" align="center">
+
+                <div class="col-sm-3" style="text-align: center;" id="Solicitados">
+                    <div class="card" id="Solicitados">
+                        <div class="card-header colorGrisOscuro Chart_Titulo1" style="height: 79px">
+                            <b>  Requerimientos Solicitados </b>
+
+                        </div>
+                        <div class="card-body " style="align-content: center; ">
+                            <h5 class="card-title">@ViewBag.CntRdPSolicitado</h5>
+                            <br />
+                            <div id="Div_Chart_Solicitados" class="Chart_Circulos"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3" style="text-align: center;" id="Director">
+                    <div class="card" id="DirectorRdP">
+                        <div class="card-header colorGrisOscuro Chart_Titulo2" style="height:79px">
+                            <b> Aprobados Por el Director de Área</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPAprobadoDirectorArea</h5>
+                            <br />
+                            <div id="Div_Chart_Aprob_Director" class="Chart_Circulos"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3" style="text-align: center;" id="Gerencia">
+                    <div class="card" id="Gerencia">
+                        <div class="card-header Chart_Titulo3 colorGrisOscuro" style="height:79px">
+                            <b> Aprobados por Dirección Ejecutiva</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPAprobadoGerencia</h5>
+                            <br />
+                            <div id="Div_Chart_Apro_Gerencia" class="Chart_Circulos"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3" style="text-align:center" id="Seleccion">
+                    <div class="card" id="Seleccion">
+                        <div class="card-header Chart_Titulo4 colorGrisOscuro" style="height:79px ">
+                            <b>Requerimientos en Selección</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPSelección </h5>
+                            <br />
+                            <div id="Div_Chart_Cantidad_Seleccion" class="Chart_Circulos"></div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+            <div class="row justify-content-center" align="center">
+                <div class="col-sm-3" style="text-align:center" id="Cerrados">
+                    <div class="card" id="Seleccion">
+                        <div class="card-header colorGrisOscuro Chart_Cerrados Chart_Circulos" style="height: 79px">
+                            <b>Requerimientos Cerrados</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.Cant_Cerrados </h5>
+                            <br />
+                            <div id="Div_Chart_Cant_Cerrados" class="Chart_Circulos"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="text-align:center" id="Anulados">
+                    <div class="card" id="General1">
+                        <div class="card-header colorGrisOscuro Chart_Anulados" style="height: 79px">
+                            <b>Requerimientos Anulados</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.Cant_Anulados </h5>
+                            <br />
+                            <div id="Div_Chart_Cant_Anulados" class="Chart_Circulos Chart_Circulos"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="text-align:center" id="General">
+                    <div class="card" id="General2">
+                        <div class="card-header colorGrisOscuro Chart_Total" style="height: 79px">
+                            <b>  Total de Requerimientos</b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.Total </h5>
+                            <br />
+                            <div id="Div_Chart_Total" class="Chart_Circulos"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="text-align:center" id="GeneralCub">
+                    <div class="card" id="General3">
+                        <div class="card-header colorGrisOscuro DashCubiertos " style="height: 79px">
+                            <b>
+                                Total Seleccionados vs Pendientes por Seleccionar
+                            </b>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" id="">@ViewBag.Total_Cub </h5>
+
+                            <br />
+                            <div id="Div_Chart_Cant_Cubiertos" class="Chart_Circulos"></div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </div>
+
+            @if (funciones.Contains("RdPGestionHumana") || funciones.Contains("RdPGerencia"))
+            {
+                <hr />
+                <div class="row justify-content-center" align="center">
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="colorGrisOscuro" style="overflow: hidden;">
+                            <br />
+                            <h2 class="colorTitulo" align="center">Estadisticas Requerimientos de Personal</h2>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row justify-content-center" align="center">
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="card shadow mb-4">
+                            <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                <h6>Total Requerimientos Por Cargo</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2" id="Div_Chart_Total_Cargo" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="card shadow mb-4">
+                            <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                <h6>Total Requerimientos Por Area</h6>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="mb-2" id="Div_Chart_Total_Area" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="card shadow mb-4">
+                            <div class="card-header colorGrisOscuro Chart_Estadisticas" style="height: 79px">
+                                <h6>Total Requerimientos Por Mes</h6>
+                            </div>
+                            <div class="card-body">
+
+                                <div id="filter_pormes"></div>
+                                <div class="mb-2" id="Div_Chart_Total_Mes" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="card shadow mb-4">
+                            <div class="card-header colorGrisOscuro Chart_Estadisticas" style="height: 79px">
+                                <h6>Total Requerimientos Por Encargado</h6>
+                            </div>
+                            <div class="card-body">
+                                <br />
+                                <div class="mb-2" id="Div_Chart_Total_Encargado" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="card shadow mb-4">
+                            <div class="card-header colorGrisOscuro Chart_Estadisticas" style="height: 79px">
+                                <h6>Total Requerimientos Por Motivo</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-2 text-capitalize" id="Div_Chart_Total_Motivo" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12" style="text-align:center">
+
+                    </div>
+                    <br />
+                    <hr />
+                    <div class="row justify-content-center" align="center">
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="colorGrisOscuro" style="overflow: hidden;">
+                                <br />
+                                <h2 class="colorTitulo" align="center">Estadisticas Requerimientos de Personal Por Cargo</h2>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="card shadow mb-4">
+                            <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                <h6>Total Cargos por Área</h6>
+                            </div>
+                            <div class="card-body">
+                                <br />
+                                <div class="mb-2 text-capitalize" id="Div_Chart_Total_CargosXArea" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                        <div class="card shadow mb-4">
+                            <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                <h6>Total Cargos por Mes</h6>
+                            </div>
+                            <div class="card-body">
+                                <div id="filter_Cargospormes"></div>
+                                <div class="mb-2 text-capitalize" id="Div_Chart_Total_CargosXMes" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div style="display:none;">
+                    <hr />
+                    <div class="row justify-content-center" align="center">
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="colorGrisOscuro" style="overflow: hidden;">
+                                <br />
+                                <h2 class="colorTitulo" align="center">Estadisticas Requerimientos de Personal</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row justify-content-center" align="center">
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="card shadow mb-4">
+                                <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                    <h6>Total Requerimientos Por Cargo</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-2" id="Div_Chart_Total_Cargo" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="card shadow mb-4">
+                                <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                    <h6>Total Requerimientos Por Area</h6>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="mb-2" id="Div_Chart_Total_Area" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="card shadow mb-4">
+                                <div class="card-header colorGrisOscuro Chart_Estadisticas" style="height: 79px">
+                                    <h6>Total Requerimientos Por Mes</h6>
+                                </div>
+                                <div class="card-body">
+
+                                    <div id="filter_pormes"></div>
+                                    <div class="mb-2" id="Div_Chart_Total_Mes" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="card shadow mb-4">
+                                <div class="card-header colorGrisOscuro Chart_Estadisticas" style="height: 79px">
+                                    <h6>Total Requerimientos Por Encargado</h6>
+                                </div>
+                                <div class="card-body">
+                                    <br />
+                                    <div class="mb-2" id="Div_Chart_Total_Encargado" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="card shadow mb-4">
+                                <div class="card-header colorGrisOscuro Chart_Estadisticas" style="height: 79px">
+                                    <h6>Total Requerimientos Por Motivo</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-2 text-capitalize" id="Div_Chart_Total_Motivo" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12" style="text-align:center">
+
+                        </div>
+                        <br />
+                        <hr />
+                        <div class="row justify-content-center" align="center">
+                            <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                                <div class="colorGrisOscuro" style="overflow: hidden;">
+                                    <br />
+                                    <h2 class="colorTitulo" align="center">Estadisticas Requerimientos de Personal Por Cargo</h2>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="card shadow mb-4">
+                                <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                    <h6>Total Cargos por Área</h6>
+                                </div>
+                                <div class="card-body">
+                                    <br />
+                                    <div class="mb-2 text-capitalize" id="Div_Chart_Total_CargosXArea" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12" style="text-align:center" id="General1">
+                            <div class="card shadow mb-4">
+                                <div class="card-header colorGrisOscuro Chart_Estadisticas" style="overflow: hidden; height: 79px">
+                                    <h6>Total Cargos por Mes</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="filter_Cargospormes"></div>
+                                    <div class="mb-2 text-capitalize" id="Div_Chart_Total_CargosXMes" style="overflow: hidden; border: 1px solid #c1c1c1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</form>
+
+<script>
+    $(document).ready(function () {
+    $('#Solicitados').css('cursor', 'pointer');
+    $('#Director').css('cursor', 'pointer');
+    $('#Gerencia').css('cursor', 'pointer');
+    $('#Seleccion').css('cursor', 'pointer');
+    $('#Cerrados').css('cursor', 'pointer');
+    $('#Anulados').css('cursor', 'pointer');
+    $('#General').css('cursor', 'pointer');
+    $('#GeneralCub').css('cursor', 'pointer');
+
+    $('#Solicitados').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=1'; });
+    $('#Director').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=3'; });
+    $('#Gerencia').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=4'; });
+    $('#Seleccion').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=5'; });
+    $('#Cerrados').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=6'; });
+    $('#Anulados').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=7'; });
+    $('#General').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=0'; });
+    $('#GeneralCub').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=0'; });
+});
+
+</script>
+

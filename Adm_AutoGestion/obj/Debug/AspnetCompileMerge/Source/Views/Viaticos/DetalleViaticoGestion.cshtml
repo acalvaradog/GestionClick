@@ -1,0 +1,263 @@
+﻿@model Adm_AutoGestion.Models.Viaticos
+
+@{
+
+    Adm_AutoGestion.Models.Viaticos Item = ViewBag.Viaticos;
+
+}
+<div class="modal-body">
+    <div class="card">
+        <div class="container-fluid">
+            <br />
+            <form action="javascript:;" method="post" id="form" enctype="multipart/form-data">
+                <div class="form-group col-md-12">
+
+                    @*Primera Fila*@
+                    <div class="row justify-content-start">
+                        <div class="col-3">
+
+                            <label for="FechaRegistro">Fecha de Registro </label>
+                            @*<input type="text" class="form-control" value="" disabled="disabled" />*@
+                            @Html.TextBox("FechaRegistro", @Convert.ToDateTime(Item.FechaRegistro).ToString("dd/MM/yyyy"), htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            <br />
+                        </div>
+
+                    </div>
+                    @*Segunda Fila - Tabla*@
+                    <div class="row justify-content-start">
+                        <div class="col-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm">
+                                    <tr class="fondoDegradado text-white">
+                                        <th>
+                                            @*Numerto del proceso*@
+
+                                        </th>
+                                        <th>
+                                            Documento
+                                        </th>
+
+                                        <th>
+
+                                            Nombre
+                                        </th>
+                                        <th>
+
+                                            Cargo
+                                        </th>
+                                        <th>
+
+                                            Area
+                                        </th>
+                                        <th>
+
+                                            Codigo del Empleado
+                                        </th>
+                                        <th></th>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td>
+                                            @Item.Empleado.Documento
+                                        </td>
+
+                                        <td>
+                                            @Item.Empleado.Nombres
+                                        </td>
+                                        <td>
+                                            @Item.Empleado.Cargo
+                                        </td>
+                                        <td>
+                                            @Item.Empleado.Area
+                                        </td>
+                                        <td>
+                                            @Item.Empleado.NroEmpleado
+                                        </td>
+
+                                    </tr>
+
+
+                                </table>
+
+
+                            </div>                            <br />
+                        </div>
+                    </div>
+                    @*Tercera Fila*@
+                    <div class="row justify-content-start">
+
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Fecha de Viaje </label>
+
+
+                            @Html.TextBox("FechaInicio", @Convert.ToDateTime(Item.FechaInicio).ToString("dd/MM/yyyy"), htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+                        </div>
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Fecha de Retorno</label>
+
+                            @Html.TextBox("FechaFin", @Convert.ToDateTime(Item.FechaFin).ToString("dd/MM/yyyy"), htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+
+                        </div>
+                    </div>
+                    @*Cuarta Fila*@
+                    <div class="row justify-content-start">
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Destino </label>
+                            @Html.TextBox("DestinoViaticoID", Item.DestinoViatico.Nombre, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+
+                        </div>
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Total Días </label>
+                            <input type="text" class="form-control" value="" disabled="disabled" id="TotalDias" name="TotalDias" />
+
+
+
+
+                        </div>
+                    </div>
+                    @*quinta Fila*@
+                    @if (Item.Prorroga == true)
+                    {
+                        <div class="row justify-content-start">
+                            <div class="col-6" style="text-align:left">
+                                <br />
+                                <label>Solicitud Prorroga </label>
+                                @if (Item.Prorroga == false)
+                                {@Html.TextBox("Prorroga", "NO", htmlAttributes: new { @class = "form-control", disabled = "disabled" })}
+                                @if (Item.Prorroga == true)
+                                {@Html.TextBox("Prorroga", "SI", htmlAttributes: new { @class = "form-control", disabled = "disabled" })}
+                            </div>
+
+                            <div class="col-6" style="text-align:left">
+                                <br />
+                                <label>Numero de solicitud</label>
+
+                                @Html.TextBox("IdSolicitud", Item.IdSolicitud, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                @Html.TextBox("Id", Item.Id, htmlAttributes: new { @class = "form-control", disabled = "disabled", hidden = "hidden" })
+
+                            </div>
+
+
+
+                        </div>
+                    }
+                    @if (Item.Prorroga == false)
+                    {
+                        <div class="row justify-content-start" hidden="hidden">
+                            <div class="col-6" style="text-align:left" hidden="hidden">
+                                <br />
+                                <label hidden="hidden">Solicitud Prorroga </label>
+                                @if (Item.Prorroga == false)
+                                {@Html.TextBox("Prorroga", "NO", htmlAttributes: new { @class = "form-control", disabled = "disabled", hidden = "hidden" })}
+                                @if (Item.Prorroga == true)
+                                {@Html.TextBox("Prorroga", "SI", htmlAttributes: new { @class = "form-control", disabled = "disabled", hidden = "hidden" })}
+                            </div>
+
+                            <div class="col-6" style="text-align:left" hidden="hidden">
+                                <br />
+                                <label hidden="hidden">Numero de solicitud</label>
+
+                                @Html.TextBox("IdSolicitud", Item.IdSolicitud, htmlAttributes: new { @class = "form-control", disabled = "disabled", hidden = "hidden" })
+                                @Html.TextBox("Id", Item.Id, htmlAttributes: new { @class = "form-control", disabled = "disabled", hidden = "hidden" })
+
+                            </div>
+
+
+
+                        </div>
+                    }
+                    @* sexta fila*@
+                    <div class="row justify-content-start">
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Tipo Vehiculo</label>
+
+                            @Html.TextBox("Vehiculo", Item.Vehiculo, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+
+
+                        </div>
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Gastos Transporte</label>
+                            @Html.TextBox("GastosTransporte", Item.GastosTransporte, htmlAttributes: new { @class = "form-control", type = "number" })
+
+
+                        </div>
+                    </div>
+                    @*septima Fila*@
+                    <div class="row justify-content-start">
+
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Requiere Hospedaje </label>
+                            @if (Item.Hospedaje == false)
+                            {@Html.TextBox("Prorroga", "NO", htmlAttributes: new { @class = "form-control", disabled = "disabled" })}
+                            @if (Item.Hospedaje == true)
+                            {@Html.TextBox("Prorroga", "SI", htmlAttributes: new { @class = "form-control", disabled = "disabled" })}
+
+
+
+
+                        </div>
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Gastos de alimentacion</label>
+                            @Html.TextBox("GrastoAlimentacion", Item.GastoAlimentacion, htmlAttributes: new { @class = "form-control", type = "number" })
+
+
+                        </div>
+                    </div>
+                    @*octava fila*@
+                    <div class="row justify-content-start">
+                        <div class="col-6" style="text-align:left">
+                            <br />
+                            <label>Estado:</label>
+                            <select class="form-control" id="Estado" name="Estado">
+
+                                <option value="Seleccione...">Seleccione...</option>
+                                <option value="Aprobar">Aprobar</option>
+                                <option value="Denegar">Denegar</option>
+                            </select>
+
+                        </div>
+                        <div class="col-6" style="text-align:left">
+
+
+                        </div>
+                    </div>
+                    @*Boton*@
+                    <div class="row justify-content-start">
+                        <div class="col-12" style="text-align:center">
+                            <br />
+                            <button type="submit" id="AprobacionGestion" name="AprobacionGestion" class="bi bi-save btn btn-outline-primary mb-2" " onclick="javascript:return GestionViatico();"> Guardar </button>
+                            <br />
+                        </div>
+
+                    </div>
+                    <br />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var dias = TotalDias().toString;
+
+
+
+    });
+
+</script>

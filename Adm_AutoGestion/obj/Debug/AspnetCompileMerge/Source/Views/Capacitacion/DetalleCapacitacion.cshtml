@@ -1,0 +1,324 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Capacitacion>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "DetalleCapacitacion";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+<div class="container">
+
+    <form>
+        <div class="card">
+            <div class="card-header text-white fondoDegradado"><h4>Informe Capacitaciones</h4></div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Nombre Capacitación:</label>
+                        @*                     @Html.TextBox("Nombre", null, htmlAttributes: new { @class = "form-control", type = "text"})*@
+                        @Html.DropDownList("Nombre", new SelectList(ViewBag.Capacitacion, "Nombre", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Fecha Capacitación Desde:</label>
+                        @Html.TextBox("FechaCAP1", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Fecha Capacitación Hasta:</label>
+                        @Html.TextBox("FechaCAP2", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Empleado Registra:</label>
+                        @*@Html.TextBox("AreaEntrega",null,  htmlAttributes: new { @class = "form-control" } )*@
+                        @Html.DropDownList("EmpleadoRegistraId", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione..", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Empresa:</label>
+                        @*@Html.TextBox("EmpleadoCA",null,  htmlAttributes: new { @class = "form-control" } )*@
+                        @Html.DropDownList("Empresa", new SelectList(ViewBag.Empresa, "Codigo", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Sede:</label>
+                        @*@Html.TextBox("EmpleadoRE",null,  htmlAttributes: new { @class = "form-control" } )*@
+                        @Html.DropDownList("Sede", new SelectList(ViewBag.Sede, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                    </div>
+                    <div class="col-4 mt-3" style="text-align:left">
+                        <label for="sospechoso">Estado:</label>
+                        <select class="form-control" id="Estado" name="Estado">
+                            @*<option value="" selected></option>*@
+                            <option value="Todos">Todos</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Cerrado">Cerrado</option>
+                        </select>
+                    </div>
+                    <div class="col-4 mt-3" style="text-align:left">
+                        <label for="sospechoso">Nmr Capacitación:</label>
+                        @Html.TextBox("NmrCap", "", htmlAttributes: new { @class = "form-control", type = "number" })
+                    </div>
+                </div>
+                <br />
+
+                <br />
+
+                <!--Botones-->
+                <div class="row justify-content-start">
+                    <div class="col-md-12" style="text-align:center">
+                        <button type="submit" class="bi bi-search btn btn-outline-primary mb-2" style="font-size:16px" id="AddCap" onclick="@Url.Action("DetalleCapacitacion","Capacitacion")"> Buscar</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@*<div class = "table-responsive" style="padding-right: 100px;padding-left: 100px;">*@
+<div class="table-responsive">
+    <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+        <thead class="fondoDegradado" style="color: #fff">
+            <tr style="text-align:center">
+                <th>
+                    Nmr
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Empleado.Nombres)*@
+                    Nombre Empleado
+                </th>
+                <th>
+                    @* @Html.DisplayNameFor(model => model.Nombre)*@
+                    Nombre Capacitación
+                </th>
+                <th>
+                    @* @Html.DisplayNameFor(model => model.FechaCapacitacion)*@
+                    Fecha Capacitación
+                </th>
+                <th>
+                    @* @Html.DisplayNameFor(model => model.FechaRegistro)*@
+                    Fecha de Creación
+                </th>
+                <th>
+                    @* @Html.DisplayNameFor(model => model.HoraInicio)*@
+                    Hora de Inicio
+                </th>
+                <th>
+                    @* @Html.DisplayNameFor(model => model.HoraFin)*@
+                    Hora de Fin
+                </th>
+                <th>
+                    @*            @Html.DisplayNameFor(model => model.temas)*@
+                    Temas a Desarrollar
+                </th>
+                <th>
+                    Informacion Capacitación
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @* @Html.DisplayFor(modelItem => item.FechaCapacitacion)*@
+                    @Convert.ToDateTime(item.FechaCapacitacion).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaRegistro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraInicio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HoraFin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.temas)
+                </td>
+                <td style="text-align:center">
+                    @*     @Html.ActionLink("Visualizar", "Capacitacioninfo", new { Id=item.Id}, new { data_modalCapacitacion = "" })*@
+                    <a href='@Url.Action("Capacitacioninfo", "Capacitacion", new { id = item.Id }, null)' data-modalCapacitacion=''>
+                        <img src='@Url.Content("~/Contents/image/ojo.png")' / style="width:32px;height:32px">
+                    </a>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div class="modal fade in" id="modal_Capacitacion">
+    <div class="modal-dialog modal-xl " style="overflow-y: initial !important">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Informacion Capacitacion </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalCapacitacion" style=" height: 850px;
+    overflow-y: auto;">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function reloadPage() {
+        location.reload();
+    }
+    //$(document).ready(function () {
+    //    //var table = $('#Exportar_a_Excel').DataTable({
+    //    //    language: {
+    //    //        "sProcessing": "Procesando...",
+    //    //        "sLengthMenu": "Mostrar _MENU_ registros",
+    //    //        "sZeroRecords": "No se encontraron resultados",
+    //    //        "sEmptyTable": "Ningún dato disponible en esta tabla",
+    //    //        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    //    //        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+    //    //        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+    //    //        "sInfoPostFix": "",
+    //    //        "sSearch": "Buscar:",
+    //    //        "sUrl": "",
+    //    //        "sInfoThousands": ",",
+    //    //        "sLoadingRecords": "Cargando...",
+    //    //        "oPaginate": {
+    //    //            "sFirst": "Primero-",
+    //    //            "sLast": "Último",
+    //    //            "sNext": "  - Siguiente",
+    //    //            "sPrevious": "Anterior -  "
+    //    //        },
+    //    //        "oAria": {
+    //    //            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+    //    //            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    //    //        }
+    //    //    },
+
+    //    //    "pagingType": "simple",
+    //    //    dom: 'Brtip',
+
+    //    //    buttons: [
+    //    //    {
+
+    //    //        extend: 'excelHtml5',
+    //    //        text: 'Exportar a Excel',
+    //    //        filename: 'InformeCapacitaciones',
+    //    //        className: 'btn btn-primary d-block mx-auto',
+    //    //    },
+
+    //    //     {
+    //    //         extend: 'pdfHtml5',
+    //    //         //text: 'Exportar a Excel',
+    //    //         text: 'Exportar a Pdf',
+    //    //         filename: 'InformeCapacitaciones',
+    //    //         titleAttr: 'Exportar a PDF',
+    //    //         className: 'btn btn-danger'
+    //    //     }
+
+    //    //    ]
+    //    //});
+
+
+
+    //});
+    $(document).ready(function () {
+
+        var table = $('#Exportar_a_Excel').DataTable({
+            //$('#tabla').DataTable({
+
+
+
+
+            //"bFilter": true,
+            //"ordering": false,
+            //dom: 'Brtip',
+
+            dom: 'Brtip',
+            buttons: [
+                {
+
+
+
+                    extend: 'excelHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'InformeCapacitacion',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+
+
+                },
+                {
+                    extend: 'pdfHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-pdf"></i>',
+                    filename: 'InformeCapacitacion',
+                    titleAttr: 'Exportar a PDF',
+                    className: 'btn btn-danger'
+                },
+
+
+            ],
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+
+
+
+
+        });
+
+
+
+
+    })
+
+</script>
+
+
+

@@ -1,0 +1,230 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.RequerimientosDelPersonal>
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "InformeRdP";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]);
+    string ErrorAutorizacion = string.Format("{0}", Session["ErrorAutorizacion"]);
+    if (!string.IsNullOrWhiteSpace(ErrorAutorizacion)) { Session.Remove("ErrorAutorizacion"); }
+}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+
+
+
+
+
+    <form>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Informe de Requerimientos de Personal</h4>
+                </div>
+               
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Nmr Solicitud:</label>
+                        @Html.TextBox("NmrSolicitud", "", htmlAttributes: new { @class = "form-control", type = "number" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Fecha Requerimiento Desde:</label>
+                        @Html.TextBox("FechaRI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Fecha Requerimiento Hasta:</label>
+                        @Html.TextBox("FechaRF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    @{
+                        if (funciones.Contains("RdPGerencia") && funciones.Contains("RdPGestionHumana") && funciones.Contains("EncargadoContratacionRdP")|| funciones.Contains("EncargadoContratacionRdP") || funciones.Contains("RdPEncargadoSeleccionNovedad"))
+                        {
+                            <div class="col-4" style="text-align:left">
+                                <label for="sospechoso">Empleado Registra:</label>
+
+                                @Html.DropDownList("EmpleadoRegistraId", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione..", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                            </div>
+                            <div class="col-4" style="text-align:left">
+                                <label for="sospechoso">Empresa:</label>
+                                @Html.DropDownList("Sociedad", new SelectList(ViewBag.Empresa, "Id", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                            </div>
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+
+
+                    @*
+        <div class="col-4" style="text-align:left">
+            <label for="sospechoso">Sede:</label>
+            @Html.DropDownList("Sede", new SelectList( ViewBag.Sede, "Id", "Nombre"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker"} )
+        </div>
+                    *@
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Estado:</label>
+
+                        @Html.DropDownList("EstadoId", new SelectList(ViewBag.Estado, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+
+                    </div>
+
+                </div>
+                <br />
+
+                <br />
+
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary rounded-pill mb-2" onclick="@Url.Action("InformeRdP","RequerimientosPersonal")"> Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+<div class="table-responsive">
+    <div class="table-responsive">
+        <table class="table table-stripe dataTable" id="Tabla_Requerimientos_Personal">
+            <thead>
+                <tr >
+                    <th>
+                        Numero de Solicitud
+                    </th>
+                    <th>
+                        Nombre Empleado
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    @*<th>
+
+        </th>*@
+                    <th>
+                        Fecha de Creación
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th>
+                        Estado Requerimiento
+                    </th>
+                    <th>
+                        Estado Selección
+                    </th>
+                    <th>
+                        Motivo Solicitud
+                    </th>
+                    <th>
+                        Jornada
+                    </th>
+                    <th>
+                        Detalle Requerimiento
+                    </th>
+                    <th>
+                        Descargar
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="text-capitalize text-center">
+                @foreach (var item in Model)
+                {
+                    <tr class="text-center">
+                        <td>@item.Id</td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Convert.ToString(item.Empresa.Descripcion).ToLower()
+                        </td>                        
+                        <td>
+                            @Convert.ToDateTime(item.Fecha).ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Area).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cargo).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EstadoRdP.Nombre).ToString().ToLower()
+                        </td>
+                        <td>                            
+                            @Convert.ToString(item.EstadoSeleccionRdP.Nombre).ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MtvSolicitud.Nombre).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Jornada.Nombre)-Horas
+                        </td>
+                        <td style="text-align:center">
+                            <a class="fas fa-eye btn text-primary" href='@Url.Action("DetalleRequerimientoinfo", "RequerimientosPersonal", new { id = item.Id }, null)' data-modaldetalles=''></a>
+                        </td>
+                        <td>
+                            @if (item.Archivo == "" || item.Archivo == null)
+                            {
+                                <label>No hay Archivo</label> }
+                            else
+                            {
+                            @Html.ActionLink("Descargar Archivo", "Download1", new { archivo = item.Archivo })
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Detalles">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalles</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalDetalles">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Registros" data-backdrop="true" tabindex="-1" style="overflow-y:visible">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalRegistros">
+                <br />
+                <br />
+                <div class="card" style="text-align:center">
+                    <b>Cargando...</b>
+                </div>
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+

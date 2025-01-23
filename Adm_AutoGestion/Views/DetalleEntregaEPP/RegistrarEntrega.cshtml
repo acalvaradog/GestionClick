@@ -1,0 +1,184 @@
+﻿@model Adm_AutoGestion.Models.DetalleEntregaEPP
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "RegistrarEntrega";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "Primera Vez", Value = "Primera Vez" },
+        new ListItem { Text = "Pérdida", Value = "Pérdida" },
+        new ListItem { Text = "Vencimiento Vida Util", Value = "Vencimiento Vida Util" } ,
+        new ListItem { Text = "Deterioro del EPP", Value = "Deterioro del EPP" }
+        };
+}
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+        <div class="row justify-content-start">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title"> Registrar Entrega</h4>
+                        </div>
+                       
+                    </div>
+                    <div class="card-body">
+                        <div class="row justify-content-start">
+                            <div class="col-md-4" style="text-align:center">
+                                <img class="visible-xs" src="~/Contents/image/Elementos.png">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>
+                                            Numero Entrega
+                                        </label>
+                                        <div class="editor-field">
+                                            @Html.TextBox("NumeroEntrega", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = @ViewBag.Numero })
+                                            @Html.ValidationMessageFor(model => model.NumeroEntrega)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="editor-label">
+                                            Elemento de Proteccion Personal
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.DropDownList("EPP", new SelectList(ViewBag.Elementos, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                            @Html.ValidationMessageFor(model => model.EPP)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="editor-label">
+                                            @*@Html.LabelFor(model => model.MotivoEntrega)*@
+                                            Motivo Entrega
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.DropDownList("MotivoEntrega", new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.MotivoEntrega)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-2">
+                                        <div class="editor-label">
+                                            @*@Html.LabelFor(model => model.Cantidad)*@
+                                            Cantidad
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("Cantidad", null, htmlAttributes: new { @class = "form-control", type = "number", min = "1", pattern = "^[0-9]+" })
+                                            @Html.ValidationMessageFor(model => model.Cantidad)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <div class="editor-label">
+                                            @*@Html.LabelFor(model => model.EmpleadoId)*@
+                                            Empleado
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.DropDownList("EmpleadoId", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                            @Html.ValidationMessageFor(model => model.EmpleadoId)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <div class="editor-label">
+                                            Fecha Entrega
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("Fecha", null, htmlAttributes: new { @class = "form-control", @type = "date", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                                            @Html.ValidationMessageFor(model => model.Fecha)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <div class="editor-label">
+                                            Fecha Vencimiento
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("FechaFin", null, htmlAttributes: new { @class = "form-control", @type = "date", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                                            @Html.ValidationMessageFor(model => model.FechaFin)
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12 mb-3">
+                                        <div class="editor-label">
+                                            Observación
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextArea("Observacion", null, htmlAttributes: new { @class = "form-control", rows = "2" })
+                                            @Html.ValidationMessageFor(model => model.Observacion)
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-12" style="text-align:center">
+                                            <button type="button" class="bi bi-plus-square btn btn-outline-primary  rounded-pill mb-2" id="AddElemento" onclick="javascript: return AddRow('AddElemento', true );"> Agregar</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel-body mb-3">
+                                        <div class="panel panel-default">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead><tr ><th></th><th>Número Entrega</th><th>Fecha Registro</th><th>Fecha Vencimiento</th><th>Código</th><th>Elemento</th><th>Motivo</th><th>Cantidad</th><th>Empleado</th><th>Observación</th><th></th><th></th></tr></thead>
+                                                    <tbody id="AddItems1"></tbody>
+                                                    <tfoot><tr><td colspan="12"></td></tr></tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-start">
+                                        <div class="col-6 " style="text-align:end">
+                                            <button type="button" class="bi bi-save btn btn-outline-primary mb-2 rounded-pill" id="AddEPP" onclick="javascript: return SaveEPP();"> Guardar</button>
+                                        </div>
+                                        <div class="col-6">
+                                            @Html.ActionLink(" Atras", "ListaPorCompletar", "EntregaEPP", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary rounded-pill mb-2" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje">
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn btn-primary" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function reloadPage() {
+        location.replace("../../EntregaEPP/ListaPorCompletar")
+    }
+</script>

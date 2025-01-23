@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Perfil>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<br />
+<br />
+<br />
+<br />
+
+<h2>Perfiles</h2>
+<br />
+
+<p>
+    @Html.ActionLink("Crear Nuevo Perfil", "Create")
+</p>
+
+<br />
+
+<div class = "table-responsive">
+<table class= "table table-hover">
+    <tr class="table-info">
+        <th>
+            Grupo
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Funcion)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.GrupoId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Funcion)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) 
+        </td>
+    </tr>
+}
+
+</table>
+</div>

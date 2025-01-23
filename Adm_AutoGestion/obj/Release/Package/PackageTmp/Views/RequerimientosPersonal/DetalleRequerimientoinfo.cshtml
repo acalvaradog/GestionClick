@@ -1,0 +1,224 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+@{
+    Adm_AutoGestion.Models.RequerimientosDelPersonal Item = ViewBag.Requerimiento;
+}
+
+<script src="~/Contents/js/RequerimientosPersonal.js"></script>
+
+<div class="container-fluid" style="width:95%">
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <br />
+            <h2 style="text-align:center">Detalle del Requerimiento</h2>
+            <br />
+            <input id="Id" name="Id" value="@Model.Id" hidden readonly="true" />
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <label>Empresa</label>
+                        @Html.TextBox("EmpresaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Empresa.Descripcion })
+                    </div>
+                    <div class="col-6">
+                        <label>Motivo Solicitud</label>
+                        @Html.TextBox("MtvSolicitudID2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.MtvSolicitud.Nombre })
+                    </div>
+                    <div class="col-6">
+                        <label>Cargo</label>
+                        @Html.TextBox("Cargo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Area a la que Pertenece</label>
+                        @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Direccion a la que Pertenece</label>
+                        @Html.TextBox("Direccion", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Numero de Personas</label>
+                        @Html.TextBox("NumeroPresonas", null, htmlAttributes: new { @class = "form-control", @type = "number", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Sexo</label>
+                        @Html.TextBox("Sexo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+
+                    </div>
+
+
+
+
+                </div>
+
+                <hr />
+
+
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-hover ">
+                                <tr class="fondoDegradado text-white">
+
+                                    <th>
+                                        Empleado
+                                    </th>
+                                    <th>
+                                        Motivo Egreso
+                                    </th>
+                                </tr>
+                                @foreach (var item2 in Item.DetalleRequerimiento)
+                                {
+
+                                    <tr>
+
+                                        <td>
+
+                                            @item2.Empleado.Nombres
+
+                                        </td>
+                                        <td>
+
+                                            @item2.MotivoEgreso.Nombre
+
+                                        </td>
+
+
+                                    </tr>
+
+                                }
+
+
+                            </table>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+                <hr />
+
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <br />
+                        <label>Jornada </label>
+                        @Html.TextBox("JornadaRequeridaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Jornada.Nombre + " " + "Horas" })
+
+                        @* @Html.DropDownList("JornadaRequeridaId", new SelectList(ViewBag.Jornada, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Horario</label>
+                        @Html.TextBox("HorarioTrabajoId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Horario.Nombre })
+
+                        @*@Html.DropDownList("HorarioTrabajoId", new SelectList(ViewBag.Horario, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+
+                    <div class="col-6">
+                        <br />
+                        <label>Fecha Sugerida de Ingreso</label>
+                        @Html.TextBox("FechaSugeridaIngreso", null, htmlAttributes: new { @class = "form-control", @type = "date", required = "required", @Value = Model.FechaSugeridaIngreso, @readonly = "true" })
+                    </div>
+
+                    <div class="col-6">
+                        <br />
+                        <label>Tiempo de Contratacion</label>
+                        @Html.TextBox("Contratacion", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required", @readonly = "true" })
+                    </div>
+
+
+                </div>
+                <br />
+
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <br />
+                        <label>Justificación del Cargo</label>
+
+                        @Html.TextArea("JustificacionCargo", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+                    <div class="col-12">
+                        <br />
+                        <label>Requisitos adicionales</label>
+
+                        @Html.TextArea("RequisitosAdicionales", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+                    <div class="col-12">
+                        <br />
+                    </div>
+                    <br />
+
+                    <br />
+
+                    
+                    <input id="Accion" name="Accion" value="DetalleInfo" hidden readonly="true" />
+
+                </div>
+                <div style="text-align:center">
+                    @{
+                        if (@ViewBag.estado == "Anulado" && @ViewBag.creador == "Si")
+                        {                        
+                            <button type="button" class="btn btn-outline-primary mb-2" id="Anular" onclick="javascript: return ReactivarRdP1(@Item.Id);">Reactivar</button>
+                        }
+                        else
+                        {
+                                <input id="EstadoId" name="EstadoId" value="@ViewBag.estado" hidden readonly="true" />
+                        }
+                    }
+                    <a href="@Url.Action("Registros","RequerimientosPersonal", new { Id = Item.Id}, null)" data-registros='' class="bi bi-eye btn btn-outline-primary mb-2"> Ver Observaciones</a>
+                </div>
+            </div>
+            <br />
+
+        </div>
+    </div>
+</div>
+<br />
+
+<script>
+    //******************* Primero se muestra un mesaje de confirmacion antes de reactivar ****************
+    function ReactivarRdP1(Id) {
+        alertify.confirm("Recuerde revisar las observaciones antes de reactivar la solicitud.", function (e) {
+            if (e) {
+                ReactivarRdP(Id);
+            } else {
+            }
+        });
+    };
+    //************************** Si se desea se reactiva la solicitud  ************************************
+    function ReactivarRdP(Id) {
+
+        try {
+            var frmData = new FormData();
+            frmData.append("IdSolicitud", Id);
+            $.ajax({
+                url: "../RequerimientosPersonal/ReactivarSolicitud",
+                type: "POST",
+                data: frmData,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (json) {
+                    if (json.respuesta != "") {
+                        alertify.alert(json.respuesta);
+                        if (json.isRedirect) {
+                            setTimeout(function () { window.location.reload(true) }, 2000);
+                        }
+                    }
+                },
+                error: function (xhr, status, error) { alertify.alert("" + error); }
+
+            });
+        } catch (err) { alertify.alert("" + err); }
+
+    };
+        //******************************************************************* */
+</script>

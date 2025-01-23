@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<h2>Envio notificaciones</h2>
+<button onclick="EnviarNotificacion()">Enviar</button>
+Titulo<input type="text" id="txt_titulo" />
+Texto<input type="text" id="txt_texto" />
+Icono<input type="text" id="txt_icono" />
+Accion<input type="text" id="txt_accion" />
+<script>
+
+    function EnviarNotificacion() {
+    //var data = JSON.stringify({ 'area': 'area', 'fechainicial': '1', 'fechafinal': '1' });
+        var titulo = document.getElementById("txt_titulo").value;
+        var texto = document.getElementById("txt_texto").value;
+        var icono = document.getElementById("txt_icono").value;
+        var accion = document.getElementById("txt_accion").value;
+    try {
+        $.ajax({
+            url: "EnviarNotificacion",
+            data: { 'titulo': titulo, 'texto': texto, 'icono': icono, 'accion': accion },
+            type: "post",
+            success: function (e) {
+                if (e != undefined || e != null) {
+                    if (e == 'OK') {
+                        alertify.alert('Se ha enviado la encuesta');
+                        
+                    } else if (e == 'ERROR') {
+                        alertify.alert('Error al enviar encuesta');
+
+                    } else if (e == 'SINCORREO') {
+                        alertify.alert('No existe ');
+
+                    }
+                }
+            },
+            error: function (xhr, status, error) { alert(error); }
+        });
+    }
+    catch (e) { alert(e); }
+}
+
+    </script>

@@ -1,0 +1,144 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Dosimetria>
+@{
+    ViewBag.Title = "Registros de Dosimetría";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+            <h4 class="card-title">Registros de Dosimetría</h4>
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="row justify-content-start mt-3">
+            <div class="col-12" style="text-align:right"><button class="btn btn-outline-success" onclick="openCreateDialog()">Crear Nuevo Registro</button></div>
+            <div class="col-8">
+                <form method="get" class="form-inline">
+                    <div class="row">
+
+
+
+
+                        <div class="form-group col-md-6">
+                            <label for="EmpleadoId">Empleado:</label>
+                            <select name="EmpleadoId" id="EmpleadoId" class="form-control">
+                                <option value="">Todos</option>
+                                @foreach (var empleado in ViewBag.Empleados)
+                                {
+                                    <option value="@empleado.Id">@empleado.Nombres</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="SedeId">Sede:</label>
+                            <select name="SedeId" id="SedeId" class="form-control">
+                                <option value="">Todas</option>
+                                @foreach (var sede in ViewBag.Sedes)
+                                {
+                                    <option value="@sede.Id">@sede.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-12" style="text-align:center">
+                            @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                            <button type="submit" class="btn btn-outline-primary rounded-pill mb-2">Buscar</button>
+                        </div>
+                    </div>
+                    <br />
+                    @*<button type="submit" class="btn btn-primary">Buscar</button>*@
+                </form>
+            </div>
+
+        </div>
+        
+
+
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Empleado</th>
+                    <th>Sede</th>
+                    <th>Año</th>
+                    <th>Mes</th>
+                    <th>Valor Hp(10)</th>
+                    <th>Valor Hp(3)</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Empleado.Nombres</td>
+                        <td>@item.Sede.Nombre</td>
+                        <td>@item.Anio</td>
+                        <td>@item.Mes</td>
+                        <td>@item.ValorHp10</td>
+                        <td>@item.ValorHp3</td>
+                        <td>
+                            <button class="btn btn-outline-warning btn-sm" onclick="openEditDialog(@item.Id)">Editar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+  </div>
+@*<button class="btn btn-success" onclick="openCreateDialog()">Crear Nuevo Registro</button>*@
+
+<div id="dialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="dialogContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function openCreateDialog() {
+            $(".modal-title").text("Crear Nuevo Registro");
+            loadDialogContent("@Url.Action("Create")");
+        }
+
+        function openEditDialog(id) {
+            $(".modal-title").text("Editar Registro");
+           loadDialogContent("@Url.Action("Edit", new { id = "__id__" })".replace("__id__", id));
+        }
+
+        function loadDialogContent(url) {
+            $.get(url, function (data) {
+                $("#dialogContent").html(data);
+                $("#dialog").modal("show");
+            });
+        }
+
+        $(document).on("submit", "#createEditForm", function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.post(form.attr("action"), form.serialize(), function (response) {
+                if (response.success) {
+                    location.reload();
+                } else {
+                    alert("Ocurrió un error. Por favor, verifica los datos.");
+                }
+            });
+        });
+    </script>
+}
+

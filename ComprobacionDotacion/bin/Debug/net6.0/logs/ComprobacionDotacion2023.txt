@@ -1,0 +1,41 @@
+2023-06-30 12:30:21.578 -05:00 [INF] Ejecucion
+2023-06-30 13:33:05.270 -05:00 [INF] Ejecucion
+2023-06-30 13:35:48.960 -05:00 [INF] Ejecucion
+2023-06-30 13:35:59.595 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 13:40:54.445 -05:00 [ERR] Error al ejecutar la comprobación de dotación
+2023-06-30 14:11:08.028 -05:00 [INF] Ejecucion
+2023-06-30 14:11:08.837 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 15:01:05.937 -05:00 [INF] Ejecucion
+2023-06-30 15:01:06.466 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 15:02:46.691 -05:00 [ERR] Error al ejecutar la comprobación de dotación: System.Threading.Tasks.TaskCanceledException: The request was canceled due to the configured HttpClient.Timeout of 100 seconds elapsing.
+ ---> System.TimeoutException: The operation was canceled.
+ ---> System.Threading.Tasks.TaskCanceledException: The operation was canceled.
+ ---> System.IO.IOException: Unable to read data from the transport connection: La operación de E/S se anuló por una salida de subproceso o por una solicitud de aplicación..
+ ---> System.Net.Sockets.SocketException (995): La operación de E/S se anuló por una salida de subproceso o por una solicitud de aplicación.
+   --- End of inner exception stack trace ---
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource<System.Int32>.GetResult(Int16 token)
+   at System.Net.Http.HttpConnection.InitialFillAsync(Boolean async)
+   at System.Net.Http.HttpConnection.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnection.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendAsync>g__Core|5_0(HttpRequestMessage request, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendAsync>g__Core|5_0(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   --- End of inner exception stack trace ---
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpClient.HandleFailure(Exception e, Boolean telemetryStarted, HttpResponseMessage response, CancellationTokenSource cts, CancellationToken cancellationToken, CancellationTokenSource pendingRequestsCts)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at System.Net.Http.Json.HttpClientJsonExtensions.GetFromJsonAsyncCore[T](Task`1 taskResponse, JsonSerializerOptions options, CancellationToken cancellationToken)
+   at ComprobacionDotacion.Services.ActualizarDotacion.ActualizacionDotacion() in C:\Users\Carlos\source\repos\FoscalDev\GestionDePersonal_V2\ComprobacionDotacion\Services\ActualizarDotacion.cs:line 26
+2023-06-30 15:07:35.934 -05:00 [INF] Ejecucion
+2023-06-30 15:07:36.381 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 15:28:39.922 -05:00 [INF] Ejecucion
+2023-06-30 15:28:40.368 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 15:45:14.359 -05:00 [INF] Ejecucion
+2023-06-30 15:45:14.817 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 15:50:02.062 -05:00 [INF] Ejecucion
+2023-06-30 15:50:02.690 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 15:53:32.852 -05:00 [INF] Comprobación terminada correctamente

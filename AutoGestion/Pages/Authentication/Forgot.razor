@@ -1,0 +1,54 @@
+﻿@page "/pages/authentication/forgot-password"
+@layout LoginLayout
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+@if (_loading)
+{
+    <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+
+}else{
+<MudText Typo="Typo.h4" GutterBottom="true">Olvido su contraseña?</MudText>
+
+<MudText Typo="Typo.subtitle2">Ingrese su nro de documento de identidad, su contraseña será enviada a su correo electrónico.</MudText>
+
+<MudTextField T="string" Label="Nro Documento" Variant="Variant.Outlined" Class="my-4" @bind-Value="@nrodocumento"></MudTextField>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary"  Size="Size.Large" FullWidth="true"  Class="mt-3" OnClick="EnviarContraseña">Recordar Contraseña</MudButton>
+}
+
+@code {
+    private string nrodocumento { get; set; }
+    private bool _loading { get; set; }
+    private async void EnviarContraseña()
+    {
+        if (nrodocumento == "" || nrodocumento == null) return;
+        _loading = true;
+        string[] respuesta = await Http.GetFromJsonAsync<string[]>($"api/recordatoriopass/{nrodocumento}");
+        _loading = false;
+        switch (respuesta[0])
+        {
+            case "3":
+                await JS.ShowMessage("Atención!", "No se Encontró  colaborador con ese nro de documento", "warning");
+                break;
+
+            case "1":
+                await JS.ShowMessage("Atención!", $"Se ha enviado a su correo electrónico {respuesta[1]} la contraseña para ingreso", "success");
+                Navigation.NavigateTo("");
+                break;
+
+            case "0":
+                await JS.ShowMessage("Atención!", $"Ocurrio un  error el enviar recordatorio, por favor envie solicitud por medio de gestor", "error");
+                break;
+
+            case "2":
+                await JS.ShowMessage("Atención!", $"No tiene registrado un correo electrónico para envió de recordatorio, por favor solicite por medio de Gestor el reinicio de su contraseña y recuerde actualizar sus datos.", "error");
+                break;
+
+        }
+
+        StateHasChanged();
+    }
+    }

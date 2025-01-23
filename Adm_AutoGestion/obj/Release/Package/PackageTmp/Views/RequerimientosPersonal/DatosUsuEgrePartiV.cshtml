@@ -1,0 +1,21 @@
+﻿
+@using System.Web.UI.WebControls;
+<div class="row modal-body text-capitalize">
+    <div class="col-8 " id="">
+        <label for="Nombre"><strong>Nombre</strong></label>
+        <p class="col-8" type="text" name="Nombre" id="Nombre" value="" disabled>@ViewBag.DatosUsuSalNom </p>
+    </div>
+    <div class="col-md-4 mb-2" id="">
+        <label for="FecContra"><strong>Fecha Contratación</strong></label>
+        <p class="col-md-4" id="FecContra" name="FecContra" value="" disabled>@ViewBag.DatosUsuSalFec </p>
+    </div>
+    <br />
+    <div class="col-md-12 mb-2" id="">
+        <label for="Cargo"><strong>Cargo</strong></label>
+        <p class="col-md-12" id="Cargo2" name="Cargo2" value="" disabled>@ViewBag.DatosUsuSalCar</p>
+    </div>
+
+</div>
+<div class="modal-footer ">
+    <button type="button" class="btn btn-outline-primary" onclick="Cerrar_Modal()">Cerrar</button>
+</div>

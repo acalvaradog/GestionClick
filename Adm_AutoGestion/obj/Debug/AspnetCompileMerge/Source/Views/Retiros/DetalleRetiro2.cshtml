@@ -1,0 +1,161 @@
+﻿@model Adm_AutoGestion.Models.Retiros
+
+<div class="container">
+
+
+<fieldset>
+  
+<div class="row justify-content-start">
+
+<div class="col-12" style="padding-top: 15px; padding-bottom: 15px;>
+    <div class="card ">
+   @* <div class="card-header text-white" style="background-color:#0B9ACF">Datos Basicos del Empleado</div>*@
+        <div class="card-body">
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="display-label">
+                         <strong>@Html.DisplayNameFor(model => model.CodigoEmpleado)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.CodigoEmpleado)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display-label">
+                         <strong>Nombre Empleado</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.Empleado.Nombres)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="display-label">
+                         <strong>@Html.DisplayNameFor(model => model.AreaPersonal)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.AreaPersonal)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display-label">
+                         <strong>@Html.DisplayNameFor(model => model.MotivoCancelacion)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.Motivos.Nombre)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="display-label">
+                         <strong>@Html.DisplayNameFor(model => model.TipoContrato)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.TipoContrato)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display-label">
+                         <strong>@Html.DisplayNameFor(model => model.InicioContrato)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.InicioContrato)
+                        @*@Convert.ToDateTime(model.InicioContrato).ToString("dd/MM/yyyy")*@
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="display-label">
+                        <strong> @Html.DisplayNameFor(model => model.FechaTerminacion)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.FechaTerminacion)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display-label">
+                         <strong>@Html.DisplayNameFor(model => model.Observacion)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.Observacion)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="display-label">
+                        <strong> @Html.DisplayNameFor(model => model.Fecha)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.Fecha)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display-label">
+                       <strong>  @Html.DisplayNameFor(model => model.UsuarioRegistra)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.EmpleadoRegistra.Nombres)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="display-label">
+                       <strong>  @Html.DisplayNameFor(model => model.FechaModifica)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.FechaModifica)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display-label">
+                       <strong>  @Html.DisplayNameFor(model => model.UsuarioModifica)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.EmpleadoModif.Nombres)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <div class="display-label">
+                        <strong> @Html.DisplayNameFor(model => model.Liquidacion)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.Liquidacion)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="display-label">
+                        <strong> @Html.DisplayNameFor(model => model.Estado)</strong>
+                    </div>
+                    <div class="display-field">
+                        @Html.DisplayFor(model => model.Estado)
+                    </div>
+                </div>
+            </div>
+           
+
+        </div>
+    </div>
+
+</div>
+</div>
+
+    
+  
+</fieldset>
+
+
+
+</div>

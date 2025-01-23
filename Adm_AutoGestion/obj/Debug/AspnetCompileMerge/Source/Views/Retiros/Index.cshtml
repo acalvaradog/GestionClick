@@ -1,0 +1,394 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Retiros>
+@using System.Web.UI.WebControls;
+<script src="~/Contents/js/retiros.js"></script>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]);
+    string message = string.Format("{0}", Session["message"]);
+    string listado = string.Format("{0}", Session["Motivos"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    if (message == "Ok")
+    {
+
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Exitoso</h4>
+            <hr>
+            <p class="mb-0">Los datos fueron guardados correctamente.</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+        </div>
+
+
+    }
+    else
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <hr>
+            <p class="mb-0">A ocurrido un error. No fue posible realizar el registro.</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+        </div>
+
+    }
+
+    Session.Remove("message");
+}
+
+
+<h2 class="colorTitulo text-center mt-2">Retiros</h2>
+<form>
+
+    <div class="card">
+        <div class="card-header text-white fondoDegradado mb-2">Buscar</div>
+        <div class="card-body">
+
+            <div class="row justify-content-start">
+                <div class="col-6" style="text-align:center">
+                    <label for="tit1"><strong>Fecha Registro</strong></label>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row justify-content-start">
+                                <div class="col-6" style="text-align:left">
+                                    <label for="CodigoEmpleado">Fecha Inicial</label>
+                                    @Html.TextBox("IniContraFI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                                </div>
+                                <div class="col-6" style="text-align:left">
+                                    <label for="CodigoEmpleado">Fecha Final</label>
+                                    @Html.TextBox("IniContraFF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" style="text-align:center">
+                    <label for="tit1"><strong>Fecha Terminación</strong></label>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row justify-content-start">
+                                <div class="col-6" style="text-align:left">
+                                    <label for="CodigoEmpleado">Fecha Inicial</label>
+                                    @Html.TextBox("FechaTermFI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                                </div>
+                                <div class="col-6" style="text-align:left">
+                                    <label for="CodigoEmpleado">Fecha Final</label>
+                                    @Html.TextBox("FechaTermFF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-3">
+                    <label for="CodigoEmpleado"><strong>Codigo Empleado</strong></label>
+                    @Html.TextBox("CodigoEmpleado", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-3">
+                    <label for="MotivoCancelación"><strong>Nombre Empleado</strong></label>
+                    @Html.TextBox("NombreEmpleado", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-3">
+                    <label for="sospechoso"><strong>Motivo Cancelación</strong></label>
+                    @Html.TextBox("MotivoCancelacion", null, htmlAttributes: new { @class = "form-control" })
+
+                </div>
+                <div class="col-3">
+                    <label for="sospechoso"><strong>Tipo Contrato</strong></label>
+                    @Html.TextBox("TipoContrato", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+
+            <br />
+            <div class="row justify-content-start">
+                @* <div class="col-3">
+                        <label for="sospechoso"><strong>Cargo</strong></label>
+                         @Html.DropDownList("Cargo", (List<SelectListItem>)ViewBag.Cargos ,"Seleccione el Cargo", htmlAttributes: new {  @class = "form-control"} )
+                    </div>*@
+                <div class="col-3">
+                    <label for="CodigoEmpleado"><strong>Liquidación</strong></label>
+                    <select class="form-control" id="Liquidacion" name="Liquidacion">
+                        <option value="">Seleccione...</option>
+                        <option value="SI">SI</option>
+                        <option value="NO">NO</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label for="estado"><strong>Estado</strong></label>
+                    <select class="form-control" id="Estado" name="Estado">
+                        <option value="">Seleccione...</option>
+                        <option value="RETIRO VIGENTE">RETIRO VIGENTE</option>
+                        <option value="RETIRO ANULADO">RETIRO ANULADO</option>
+                    </select>
+                </div>
+                <div class="col-3">
+
+                    @if (funciones.Count > 0)
+                    {
+                        <label for="estado"><strong>Empresa</strong></label>
+                        if (funciones.Contains("Consultar2EmpresasRetiros"))
+                        {
+                            <select class="form-control" id="Empresa" name="Empresa">
+                                <option value="">Seleccione...</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>
+
+                        }
+                        else
+                        {
+                            if (ViewBag.Empresa == "1000")
+                            {
+                                @Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", @value = "1000", @readonly = "true" })
+                            }
+                            else
+                            {
+                                @Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", @value = "2000", @readonly = "true" })
+                            }
+                        }
+
+                    }
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("Index","Retiros")"> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-hover table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr class="fondoDegradado align-middle text-white">
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.CodigoEmpleado)*@
+                        Codigo Empleado
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.AreaPersonal)*@
+                        Area Personal
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.MotivoCancelacion)*@
+                        Motivo Cancelacion
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.TipoContrato)*@
+                        Tipo Contrato
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.InicioContrato)*@
+                        Inicio Contrato
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.FechaTerminacion)*@
+                        Fecha Terminacion
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Observacion)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Liquidacion)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado)
+                    </th>
+
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.UsuarioRegistra)*@
+                        Usuario Registra
+                    </th>
+                    <th>
+                        Fecha Registro
+                    </th>
+                    <th>
+                        Envio Encuesta
+                    </th>
+                    <th>
+                        Respuesta Encuesta
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodigoEmpleado)
+                        </td>
+                        <td>
+                            @*@Html.ActionLink(@item.Empleado.Nombres, "Details", "Empleado", new { id = item.IdEmpleado }, new { target = "_blank" })*@
+                            @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.IdEmpleado }, new { data_modal = "" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AreaPersonal)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Motivos.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TipoContrato)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.InicioContrato)*@
+                            @Convert.ToDateTime(item.InicioContrato).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.FechaTerminacion)*@
+                            @Convert.ToDateTime(item.FechaTerminacion).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Cargo)
+                        </td>
+                        @* <td>
+                                @Html.DisplayFor(modelItem => item.Observacion)
+                            </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Liquidacion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Empresa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpleadoRegistra.Nombres)
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td id="@Html.DisplayFor(modelItem => item.Id)">
+                            @*@Html.DisplayFor(modelItem => item.VacacionesAdelantadas)*@
+                            @if (item.Estado == "RETIRO VIGENTE")
+                            {
+                                if (item.EnvioEncuesta == "SI")
+                                {
+                                    <a href="javascript:Confirmar(@Html.DisplayFor(modelItem => item.Id));" style="color:green;">Reenviar Encuesta</a>
+                                }
+                                else
+                                {
+                                    <a href="javascript:Confirmar(@Html.DisplayFor(modelItem => item.Id));" style="color:#FF0000;">Enviar Encuesta</a>
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RespuestaEncuesta)
+                        </td>
+                        <td>
+                            @* @Html.ActionLink("Ver Detallado", "DetalleRetiro", new { id=item.Id }) *@
+                            @Html.ActionLink("Ver Detallado", "DetalleRetiro2", new { id = item.Id }, new { data_modal1 = "" })
+                        </td>
+                        <td>
+                            @Html.ActionLink(" Editar", "Edit", new { id = item.Id }, new { target = "_blank", @class = "bi bi-pencil-square btn btn-outline-primary mb-2" })
+                            @*    @Html.ActionLink("Editar", "Edit", new { Id=item.Id }, new { data_modal11 = "" })*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade in" id="modal_Retiro">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalle del Retiro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal1">
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_EditarRetiros">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Editar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal11">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+                {
+
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'informe.xlsx',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+                }
+            ]
+        });
+
+    });
+</script>

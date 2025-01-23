@@ -1,0 +1,73 @@
+﻿@model Adm_AutoGestion.Models.Eventos
+
+@using (Html.BeginForm())
+{
+    <div class="m-3">
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label>Asunto</label>
+                <input name="Asunto" id="Asunto" type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <label>Mensaje</label>
+                <input name="Texto" id="Texto" type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div>
+            <input id="eventoId" hidden value="@ViewBag.Id" />
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12">
+                <button class="bi bi-send btn btn-outline-primary mb-2" onclick="javascript: EnviarCorreo(); return false;"> Enviar Correo</button>
+            </div>
+        </div>
+
+
+    </div>
+}
+<script>
+    function EnviarCorreo() {
+        try {
+            var id = $("#eventoId").val();
+            var Asunto = $("#Asunto").val();
+            var Texto = $("#Texto").val();
+
+            if (Asunto == "") {
+                throw 'Se requiere el asunto del correo.';
+            }
+            if (Texto == "") {
+                throw 'Se requiere el texto del correo';
+            }
+
+            var frmData = new FormData();
+            frmData.append("Asunto", Asunto);
+            frmData.append("Texto", Texto);
+            frmData.append("id", id);
+
+            $.ajax({
+                url: "/Eventos/EnvioCorreo",
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: frmData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == "true") {
+                        alertify.confirm('Los correos se enviaron correctamente.', function () { location.replace('EventosRegistrados'); });
+                    } else {
+                        alertify.alert(result)
+                    }
+                }
+            });
+        } catch (err) {
+            alertify.alert(err);
+        }
+    }
+</script>

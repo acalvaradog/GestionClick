@@ -1,0 +1,9 @@
+2023-06-30 16:22:54.227 -05:00 [INF] Ejecucion
+2023-06-30 16:22:54.671 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 16:26:21.695 -05:00 [INF] Comprobación terminada correctamente
+2023-06-30 16:38:11.581 -05:00 [INF] Ejecucion
+2023-06-30 16:38:11.994 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 16:45:03.150 -05:00 [INF] Comprobación terminada correctamente
+2023-06-30 16:54:54.468 -05:00 [INF] Ejecucion
+2023-06-30 16:54:54.943 -05:00 [INF] Ejecutando comprobación de dotación
+2023-06-30 16:56:40.027 -05:00 [INF] Comprobación terminada correctamente

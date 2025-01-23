@@ -1,0 +1,211 @@
+﻿
+
+
+@model List<Adm_AutoGestion.DTO.ReporteDosimetriaViewModelDTO>
+
+@{
+    ViewBag.Title = "Reporte de Dosimetría";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<div class="card">
+    <div class="card-header colorTitulo mb-3"><h5>Reporte de Dosimetría</h5></div>
+    <div class="card-body">
+
+        <form method="get" action="@Url.Action("ReporteDosimetria", "Dosimetria")">
+            <div class="row">
+                <!-- Año -->
+                <div class="form-group col-md-2">
+                    <label for="Anio">Año:</label>
+                    <select id="Anio" name="anio" class="form-control" required>
+                        <option value="">Seleccione un año</option>
+                        @for (int i = 2024; i <= 2030; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Mes -->
+                <div class="form-group col-md-2">
+                    <label for="Mes">Mes:</label>
+                    <select id="Mes" name="mes" class="form-control">
+                        <option value="">Todos</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Empleado -->
+                <div class="form-group col-md-4">
+                    <label for="EmpleadoId">Empleado:</label>
+                    <select id="EmpleadoId" name="empleadoId" class="form-control">
+                        <option value="">Todos</option>
+                        @foreach (var empleado in ViewBag.Empleados)
+                        {
+                            <option value="@empleado.Id">@empleado.Nombres</option>
+                        }
+                    </select>
+                </div>
+
+
+
+                <!-- Sede -->
+                <div class="form-group col-md-4">
+                    <label for="sedeId">Sede</label>
+                    <select name="sedeId" id="sedeId" class="form-control">
+                        <option value="">Todas</option>
+                        @foreach (var sede in ViewBag.Sedes as List<Adm_AutoGestion.Models.Sede>)
+                        {
+                            <option value="@sede.Id">@sede.Nombre</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <br />
+            <!-- Botón de búsqueda -->
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                    <button type="submit" class="btn btn-outline-primary rounded-pill mb-2">Buscar</button>
+                </div>
+            </div>
+
+            @*<div class="form-group col-md-4">
+            <button type="submit" class="btn btn-primary mt-4">Buscar</button>
+        </div>*@
+
+        </form>
+        <br />
+
+
+        @if (Model.Count > 0)
+        {
+            <table id="Exportar_a_Excel" class="table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Empleado</th>
+                        <th>Sede</th>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <th>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</th>
+                        }
+                        <th>Total Anual (Hp10)</th>
+                        <th>Total Anual (Hp3)</th>
+                        <th>Acumulado Total (Hp10)</th>
+                        <th>Acumulado Total (Hp3)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.NombreEmpleado</td>
+                            <td>@item.NombreSede</td>
+                            @foreach (var mes in item.ValoresPorMes)
+                            {
+                                <td>
+                                    <p>Hp10: @mes.ValorHp10</p>
+
+
+                                    @if (mes.ValorHp3 > 0)
+                                    {
+                                        <p>Hp3: @mes.ValorHp3</p>
+                                    }
+                                </td>
+                            }
+                            <td>@item.TotalAnualHp10</td>
+
+                            <td>@item.TotalAnualHp3</td>
+
+                            <td>@item.TotalAcumuladoHp10</td>
+                            <td>@item.TotalAcumuladoHp3</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        }
+        else if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">
+                @ViewBag.Error
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No se encontraron registros.
+            </div>
+        }
+
+    </div>
+</div>
+@section scripts{
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+
+            $('#Exportar_a_Excel').DataTable({
+
+                columnDefs: [
+                    { targets: [0], visible: true, searchable: true, orderable: true },
+                    { targets: [1], visible: true, searchable: true, orderable: true },
+                    { targets: [2], visible: true, searchable: false, orderable: false },
+                    { targets: [3], visible: true, searchable: false, orderable: false },
+                    { targets: [4], visible: true, searchable: false, orderable: false },
+                    { targets: [5], visible: true, searchable: false, orderable: false },
+                    { targets: [6], visible: true, searchable: false, orderable: false },
+                    { targets: [7], visible: true, searchable: false, orderable: false },
+                    { targets: [8], visible: true, searchable: false, orderable: false },
+                    { targets: [9], visible: true, searchable: false, orderable: false },
+                    { targets: [10], visible: true, searchable: true, orderable: true },
+                    { targets: [11], visible: true, searchable: true, orderable: true },
+                    { targets: [12], visible: true, searchable: true, orderable: true },
+
+                ],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                select: true,
+                dom: 'Bfrtip',
+                buttons: [
+
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i>',
+                        filename: 'Informe_Permisos.xlsx',
+                        titleAttr: 'Exportar a Excel',
+                        className: 'btn btn-success'
+                    },
+
+                ]
+            });
+
+        });
+    </script>
+}

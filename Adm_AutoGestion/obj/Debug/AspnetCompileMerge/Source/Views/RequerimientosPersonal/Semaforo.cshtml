@@ -1,0 +1,291 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.RequerimientosDelPersonal>
+
+@{
+    ViewBag.Title = "Semaforo";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container-fluid" style="width:90%">
+    <br />
+    <div style="text-align:center">
+<h2 class="colorTitulo">Semáforo</h2>
+        </div>
+    <br />
+
+
+   <div class="row justify-content-start" style="align-content:center;">
+       <div class="col-2"></div>
+       <div  class="col-2"></div>
+       <div class="col-4">
+  <div class="card" style="background:#bee5eb;border:4px solid #585858; -moz-border-radius: 40%;-webkit-border-radius: 40%; border-radius: 30px 40px;">      
+        <div class="card-body" >
+             <div class="row justify-content-center">
+            <form method="post">
+           
+                <div class="col-4" style="text-align:center">
+              
+                    <input type="text" readonly="true" value="verde" id="color" name="color" hidden/>
+                    <button type = "submit" id = "color2" class = "btn circulo2" style="background-color:#3BDA52; color:black; "  onclick = "@Url.Action("Semaforo","RequerimientosPersonal")"><b>@ViewBag.Verde</b></button>
+                </div>
+         
+            </form>
+            <form method="post">
+          
+                <div class="col-4" style="text-align:center">
+                  
+                     <input type="text" readonly="true" value="amarillo" id="color" name="color" hidden/>
+                    <button type = "submit" id = "color3" class = "btn circulo2" style="background-color:#FFF44A; color:black; "  onclick = "@Url.Action("Semaforo","RequerimientosPersonal")"><b>@ViewBag.Amarillo</b></button>
+                </div>
+        
+            </form>
+            <form method="post">
+           
+                <div class="col-4" style="text-align:center">
+              
+                    <input type="text" readonly="true" value="rojo" id="color" name="color" hidden/>
+                    <button type = "submit" class = "btn circulo2" style="background-color:#F14242; color:black "  onclick = "@Url.Action("Semaforo","RequerimientosPersonal")"><b>@ViewBag.Rojo</b></button>
+                </div>
+      
+            </form>
+            <form method="post">
+           
+                <div class="col-4" style="text-align:center">
+           
+                    <input type="text" readonly="true" value="" id="color" name="color" hidden/>
+                    <button type = "submit" class = "btn circulo2" style="background-color:#B2BABB; color:black "  onclick = "@Url.Action("Semaforo","RequerimientosPersonal")"><b>@ViewBag.Total</b></button>
+                </div>
+         
+            </form>
+            </div>
+
+        </div>
+    </div>
+           </div>
+       <div class="col-2"></div>
+       <div class="col-2"></div>
+     </div>
+   <br />
+<div class="container-fluid">
+<div class = "table-responsive">
+
+<table class= "table table-hover " id ="Exportar_a_Excel">
+    <tr class="fondoDegradado text-white">
+        <th>
+
+        </th>
+        <th>
+            Cant. dias Transcurridos
+        </th>
+        <th>
+            Nmr Solicitud
+        </th>
+         <th>
+            @*@Html.DisplayNameFor(model => model.Empleado.Documento)*@
+            <label>Empleado Registra</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Empresa.Codigo)*@
+            <label>Empresa</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.EstadoRdP.Nombre)*@
+            <label>Estado</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Horario.Nombre)*@
+            <label>Horario</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Jornada.Nombre)*@
+            <label>Jornada</label>
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.MtvSolicitud.Nombre)*@
+            <label>Motivo Solicitud</label>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cargo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Area)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Direccion)
+        </th>
+        <th>
+           @* @Html.DisplayNameFor(model => model.NumeroPresonas)*@
+            N° Personas
+        </th>
+      
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+        @*    <div style="width: 60px; height: 60px; -moz-border-radius: 50%; -webkit-border-radius: 50%;border-radius: 50%; background: #5cb85c;"></div>*@
+        @if(item.Color=="verde"){
+            <div class="circulo" style="background:#3BDA52"></div>}
+            @if(item.Color=="amarillo"){
+            <div class="circulo" style="background:#FFF44A"></div>}
+            @if(item.Color=="rojo"){
+            <div class="circulo" style="background:#F14242"></div>}
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.Tiempo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empresa.Codigo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoRdP.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Horario.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Jornada.Nombre) -Horas
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MtvSolicitud.Nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cargo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Area)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Direccion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumeroPresonas)
+        </td>
+        
+        <td>
+            
+        </td>
+    </tr>
+}
+
+</table>
+       </div>
+ </div>
+</div>
+<style>
+    .circulo {
+     width: 40px;
+     height: 40px;
+     /*border:2px solid black;*/
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+    
+}
+    .circulo2 {
+     width: 70px;
+     height: 70px;
+     /*border:4px solid white;*/
+     -moz-border-radius: 50%;
+     -webkit-border-radius: 50%;
+     border-radius: 50%;
+    
+}
+
+
+    
+</style>
+<script>
+    function reloadPage() {
+        location.reload();
+    }
+    $(document).ready(function () {
+
+        var table = $('#Exportar_a_Excel').DataTable({
+            //$('#tabla').DataTable({
+
+
+
+
+            //"bFilter": true,
+            //"ordering": false,
+            //dom: 'Brtip',
+
+            dom: 'Brtip',
+            buttons: [
+           {
+
+
+
+               extend: 'excelHtml5',
+               //text: 'Exportar a Excel',
+               text: '<i class="fas fa-file-excel"></i>',
+               filename: 'InformeCapacitacion',
+               titleAttr: 'Exportar a Excel',
+               className: 'btn btn-success'
+
+
+           },
+            {
+                extend: 'pdfHtml5',
+                //text: 'Exportar a Excel',
+                text: '<i class="fas fa-file-pdf"></i>',
+                filename: 'InformeCapacitacion',
+                titleAttr: 'Exportar a PDF',
+                className: 'btn btn-danger'
+            },
+
+
+            ],
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+
+
+
+
+        });
+
+
+
+
+    })
+
+</script>

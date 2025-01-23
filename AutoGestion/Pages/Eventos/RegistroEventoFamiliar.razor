@@ -1,0 +1,301 @@
+﻿@page "/Eventos/RegistroEventoFamiliar/{eventoId}"
+@using Autogestion.Shared.DTO.Eventos
+@inject HttpClient Http
+@using System.Text.Json
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@inject NavigationManager Navigation
+@using AutoGestion.Helpers
+@inject IJSRuntime JS
+@using System.ComponentModel.DataAnnotations
+@inject IDialogService DialogService
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}else{
+    var eventoid = Convert.ToInt32(eventoId);
+    foreach(var i in evento)
+    {
+        if (i.Id == eventoid)
+        {
+            if (empleado != null && i.Estado == "Cerrado")
+            {
+                <MudPaper Class="pa-6 ma-6 bg-error text-black bg-opacity-75">EVENTO CERRADO<br><br>Este evento ya cerró</MudPaper>
+            }
+            else if (empleado != null && i.DirigidoA == "Trabajadores")
+            {
+                <MudPaper Class="pa-6 ma-6 bg-error text-black bg-opacity-75">EVENTO PARA TRABAJADORES<br><br>Este evento es para trabajadores, no se pueden registrar familiares aquí</MudPaper>
+            }
+            else if (empleado != null && i.DirigidoA == "General")
+            {
+                <MudPaper Class="pa-6 ma-6 bg-error text-black bg-opacity-75">EVENTO GENERAL<br><br>Este evento es general, no se pueden registrar familiares aquí</MudPaper>
+            }
+            else if (empleado != null)
+            {
+                <MudPaper hidden="@IsHidden2" Class="pa-6 ma-6 bg-info text-black bg-opacity-75"><div class="d-flex align-items-start justify-content-between"><div>RECORDATORIO<br><br>Para registrar nuevos familiares, diríjase al menú lateral 'Mis Datos' y luego al submenú 'Familiares'.</div><div class="d-flex align-items-start"><MudIconButton Class="pa-0" OnClick="@OcultarPaper2" Icon="@Icons.Material.Filled.Close" Color="Color.Surface"></MudIconButton></div></div></MudPaper>
+            }
+            @if (i.ParentescoPermitido != "Todos" && i.EdadLimite >= 1)
+            {
+                if (i.ParentescoPermitido == "NucleoFamiliar")
+                {
+                    prnt = "personas del núcleo familiar";
+                }
+                if (i.ParentescoPermitido == "Hijos")
+                {
+                    prnt = "hijos del empleado";
+                }
+                <MudPaper hidden="@IsHidden" Class="pa-6 ma-6 bg-primary text-black bg-opacity-50"><div class="d-flex align-items-start justify-content-between"><div>ATENCIÓN<br><br>Este evento solo permite inscribir a @prnt, con edad máxima de @i.EdadLimite. Por lo tanto puede que no se muestren algunos de sus familiares aquí.</div><div class="d-flex align-items-start"><MudIconButton Class="pa-0" OnClick="@OcultarPaper" Icon="@Icons.Material.Filled.Close" Color="Color.Surface"></MudIconButton></div></div></MudPaper>
+            }
+            @*else if (i.ParentescoPermitido != "Todos" && i.EdadLimite == 0)
+            {
+                if (i.ParentescoPermitido == "NucleoFamiliar")
+                {
+                    prnt = "personas del núcleo familiar";
+                }
+                if (i.ParentescoPermitido == "Hijos")
+                {
+                    prnt = "hijos del empleado";
+                }
+                <MudPaper hidden="@IsHidden" Class="pa-6 ma-6 bg-primary text-black bg-opacity-50"><div class="d-flex align-items-start justify-content-between"><div>ATENCIÓN<br><br>Este evento solo permite inscribir a @prnt. Por lo tanto puede que no se muestren algunos de sus familiares aquí.</div><div class="d-flex align-items-start"><MudIconButton Class="pa-0" OnClick="@OcultarPaper" Icon="@Icons.Material.Filled.Close" Color="Color.Surface"></MudIconButton></div></div></MudPaper>
+            }*@
+            if (i.DirigidoA == "Ambos" && i.EmpInscrito == false && i.EstaInscritoOtraFecha == null)
+            {
+                <MudButton Class="ml-6" Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(args => InscribirEmpleado(i.Id))">Inscribirme</MudButton>
+                <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Error" Placement="Placement.Right" Text="No estás inscrito al evento">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Error">Borrar Inscripción</MudButton>
+                </MudTooltip>
+            }
+            else if (i.DirigidoA == "Ambos" && i.EmpInscrito == false && i.EstaInscritoOtraFecha == false)
+            {
+                <MudButton Class="ml-6" Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(args => InscribirEmpleado(i.Id))">Inscribirme</MudButton>
+                <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Error" Placement="Placement.Right" Text="No estás inscrito al evento">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Error">Borrar Inscripción</MudButton>
+                </MudTooltip>
+            }
+            else if (i.DirigidoA == "Ambos" && i.EmpInscrito == true)
+            {
+                <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Info" Placement="Placement.Right" Text="Ya estás inscrito a este evento">
+                    <MudButton Class="ml-6" Variant="Variant.Outlined" Color="Color.Primary">Inscrito</MudButton>
+                </MudTooltip>
+                <MudButton Variant="Variant.Outlined" Color="Color.Error" OnClick="@(args => BorrarInscripcionEmpleado(i.Id))">Borrar Inscripción</MudButton>
+            }
+            else if (i.DirigidoA == "Ambos" && i.EmpInscrito == false && i.EstaInscritoOtraFecha == true)
+            {
+                <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Info" Placement="Placement.Right" Text="Ya estás inscrito a este evento en otra fecha">
+                    <MudButton Class="ml-6" Variant="Variant.Outlined" Color="Color.Primary">Inscribirse</MudButton>
+                </MudTooltip>
+                <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Error" Placement="Placement.Right" Text="No estás inscrito a este evento">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Error">Borrar Inscripción</MudButton>
+                </MudTooltip>
+            }
+        }
+    }
+
+    //************TABLA LISTA DE FAMILIARES************//
+    <MudContainer>
+        <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Primary">Familiares</MudText> </MudCardHeader>
+        <MudCard Class="mb-5">
+            <MudTable Items="@ListaFamiliar" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Nombre Completo</MudTh>
+                    <MudTh>Documento</MudTh>
+                    <MudTh>Tipo Doc.</MudTh>
+                    <MudTh>Parentesco</MudTh>
+                    <MudTh>Fecha de Nac.</MudTh>
+                    <MudTh>Edad</MudTh>
+                    <MudTh></MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Nombre Completo" Class="text-capitalize">@context.PrimerNombre @context.SegundoNombre @context.PrimerApellido @context.SegundoApellido</MudTd>
+                    <MudTd DataLabel="Documento">@context.Documento</MudTd>
+                    <MudTd DataLabel="Tipo Doc.">@context.TipoDocumento</MudTd>
+                    <MudTd DataLabel="Parentesco">@context.Parentesco</MudTd>
+                    <MudTd DataLabel="Fecha de Nac.">@context.FechaNacimiento?.ToString("dd/MM/yyyy")</MudTd>
+                    <MudTd DataLabel="Edad">@context.Edad</MudTd>
+                    @if (context.Inscrito == false && context.EstaInscritoOtraFecha == true)
+                    {
+                        <MudTd><MudTooltip ShowOnClick="true" ShowOnHover="true" Text="Ya está inscrito a este evento en otra fecha" Color="Color.Info" Placement="Placement.Top"><MudButton Color="Color.Primary" Variant="Variant.Outlined">Inscribir</MudButton></MudTooltip></MudTd>
+                        <MudTd><MudTooltip ShowOnClick="true" ShowOnHover="true" Text="No está inscrito a esta fecha" Color="Color.Error" Placement="Placement.Top"><MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Outlined"></MudIconButton></MudTooltip></MudTd>
+                    }
+                    else if (context.Inscrito == true)
+                    {
+                        <MudTd><MudTooltip ShowOnClick="true" ShowOnHover="true" Text="Ya está inscrito" Color="Color.Info" Placement="Placement.Top"><MudButton Color="Color.Primary" Variant="Variant.Outlined">Inscrito</MudButton></MudTooltip></MudTd>
+                        <MudTd><MudTooltip ShowOnClick="true" ShowOnHover="true" Text="Borrar Inscripción" Color="Color.Error" Placement="Placement.Top"><MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(args=>BorrarInscripcionFamiliar(context.Id,eventoId))" Variant="Variant.Outlined"></MudIconButton></MudTooltip></MudTd>
+                    }
+                    else
+                    {
+                        <MudTd><MudButton Color="Color.Primary" OnClick="@(args=>Modal(context.Id,eventoId))" Variant="Variant.Outlined">Inscribir</MudButton></MudTd>
+                        <MudTd><MudTooltip ShowOnClick="true" ShowOnHover="true" Text="No está inscrito" Color="Color.Error" Placement="Placement.Top"><MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Variant="Variant.Outlined"></MudIconButton></MudTooltip></MudTd>
+                    }
+                    </RowTemplate>
+            </MudTable>
+        </MudCard>
+    </MudContainer>
+}
+
+@code {
+    private bool IsHidden { get; set; } = false;
+    private bool IsHidden2 { get; set; } = false;
+    private string prnt { get; set; }
+    DetalleEventosDTO model = new DetalleEventosDTO();
+    private EmpleadoReturnSapDTO? empleado { get; set; }
+    private List<EventosDTO>? evento;
+    private List<FamiliarDTO>? ListaFamiliar;
+    private bool _loading;
+    private string TipoDocumento;
+    private string Parentesco;
+    FamiliarDTO Familiar = new FamiliarDTO();
+    [Parameter]
+    public string eventoId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        var actedad = await Http.GetFromJsonAsync<bool>($"api/CalcularEdad/{empleado.Id}");
+        ListaFamiliar = await Http.GetFromJsonAsync<List<FamiliarDTO>>($"api/Eventos/ListarEventoFamiliares/{empleado.Id}/{eventoId}");
+        evento = await Http.GetFromJsonAsync<List<EventosDTO>>($"api/Eventos/EventosAgendados/{empleado.Id}");
+        _loading = false;
+        StateHasChanged();
+    }
+
+    public async void BorrarInscripcionEmpleado(int EventoId)
+    {
+        var Respuesta = await Http.GetFromJsonAsync<bool>($"api/Eventos/BorrarInscripcionEmpleado/{empleado.Id}/{EventoId}");
+
+        if (Respuesta == true)
+        {
+            await JS.ShowMessage("Inscripción", "Se ha borrado su inscripción con éxito", "success");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+        }
+        else
+        {
+            await JS.ShowMessage("Error", "El evento ya comenzó, no puede borrar su inscripción", "error");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+        }
+    }
+
+    public async void InscribirEmpleado(int EventoId)
+    {
+        model.EventosId = EventoId;
+        model.EmpleadoId = empleado.Id;
+        model.Observaciones = "";
+        //Console.WriteLine("MODELO " + model.EmpleadoId);
+
+        var Respuesta = await Http.PostAsJsonAsync<DetalleEventosDTO>($"api/Eventos/GuardarEventoEmpleado/", model);
+
+        if (Respuesta.IsSuccessStatusCode)
+        {
+            var codigoRespuesta = await Respuesta.Content.ReadFromJsonAsync<string>();
+
+            if (codigoRespuesta == "true")
+            {
+                await JS.ShowMessage("Consulte en Eventos Agendados", "Se ha inscrito con éxito", "success");
+                Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+            }
+            else if (codigoRespuesta == "EstaInscritoEventoConcurrente")
+            {
+                await JS.ShowMessage("Error", "Ya está inscrito a otra fecha del evento", "error");
+                Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+            }
+            else if (codigoRespuesta == "Inscrito")
+            {
+                await JS.ShowMessage("Error", "Ya está inscrito a este evento", "error");
+                Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+            }
+            else if (codigoRespuesta == "SinCupos")
+            {
+                await JS.ShowMessage("Error", "No hay cupos disponibles para este evento", "error");
+                Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+            }
+            else if (codigoRespuesta == "FechaLimite")
+            {
+                await JS.ShowMessage("Error", "Ya cerraron las inscripciones al evento", "error");
+                Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+            }
+            else if (codigoRespuesta == "false")
+            {
+                await JS.ShowMessage("Error", "Ha ocurrido un error", "error");
+                Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+            }
+        }
+    }
+
+    public async void BorrarInscripcionFamiliar(int FamiliarId,string EventoId)
+    {
+        var Respuesta = await Http.GetFromJsonAsync<bool>($"api/Eventos/BorrarInscripcionFamiliar/{FamiliarId}/{EventoId}");
+
+        if (Respuesta == true)
+        {
+            await JS.ShowMessage("Inscripción", "Se ha borrado su inscripción con éxito", "success");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+        }
+        else
+        {
+            await JS.ShowMessage("Error", "El evento cerró inscripciones, no puede borrar su inscripción", "error");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{EventoId}");
+        }
+    }
+
+    public void OcultarPaper()
+    {
+        IsHidden = true;
+        StateHasChanged();
+    }
+    public void OcultarPaper2()
+    {
+        IsHidden2 = true;
+        StateHasChanged();
+    }
+    //---MODAL-DIALOG--//
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+    private DialogOptions dialogOptions = new() { FullWidth = true };
+    private bool visible;
+    private int NmrViatico;
+    async Task Modal(int FamiliarId, string eventoId)
+    {
+        Familiar.Id = FamiliarId;
+        var parameters = new DialogParameters { ["FamiliarId"] = Familiar.Id, ["eventoId"] = eventoId};
+
+        var dialog = await DialogService.ShowAsync<ConfirmacionInscripcionFamiliarDialog>("Inscripción", parameters);
+        var result = await dialog.Result;
+        Console.WriteLine("result1 " + result);
+        var result2 = Convert.ToString(result.Data);
+        Console.WriteLine("result2 " + result2);
+        if (result2 == "true")
+        {
+            await JS.ShowMessage("Cambio guardado", "Se ha inscrito correctamente", "success");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{eventoId}");
+            //Navigation.NavigateTo(Navigation.Uri, true, true);
+        }
+        else if (result2 == "EstaInscritoEventoConcurrente")
+        {
+            await JS.ShowMessage("Error", "Ya está inscrito a otra fecha del evento", "error");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{eventoId}");
+        }
+        else if (result2 == "Inscrito")
+        {
+            await JS.ShowMessage("Error", "Ya está inscrito a este evento", "error");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{eventoId}");
+        }
+        else if(result2 == "SinCupos")
+        {
+            await JS.ShowMessage("Error", "No hay cupos disponibles para este evento", "error");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{eventoId}");
+        }
+        else if (result2 == "FechaLimite")
+        {
+            await JS.ShowMessage("Error", "Ya cerraron las inscripciones al evento", "error");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{eventoId}");
+        }
+        else if (result2 == "false")
+        {
+            await JS.ShowMessage("Cancelado", "No se registró ningún cambio", "error");
+            Navigation.NavigateTo($"reload/Eventos.RegistroEventoFamiliar.{eventoId}");
+        }
+    }
+}

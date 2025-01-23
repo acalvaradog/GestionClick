@@ -1,0 +1,48 @@
+﻿@inject HttpClient Http
+@using Autogestion.Shared.DTO.Reconocimiento
+@using Autogestion.Shared.DTO.Empleado
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager Navigation
+
+
+<MudDialog MaxWidth="MaxWidth.Large"  Class="custom-muddialog">
+    
+    <DialogContent>
+        <MudImage Src="@imageDataURL" Alt="Imagen Ampliada" Class="imagen-ampliada" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@CerrarModal">Cerrar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string imageDataURL { get; set; }
+    [Parameter] public DialogOptions DialogOptions { get; set; }
+
+
+    private void CerrarModal()
+    {
+        MudDialog.Close(DialogResult.Ok(false));
+    }
+
+    
+}
+
+<style>
+    /* Estilos personalizados para MudDialog */
+    .custom-muddialog {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        height:100%;
+    }
+
+    .imagen-ampliada {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+    }
+</style>

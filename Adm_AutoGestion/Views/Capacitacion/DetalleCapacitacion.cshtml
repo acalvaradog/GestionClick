@@ -1,0 +1,439 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Capacitacion>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Informe plan de formación";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+@using (Html.BeginForm("DetalleCapacitacion", "Capacitacion", FormMethod.Get))
+{
+
+    <div class="card">
+
+
+
+        <div class="card-header text-white fondoDegradado"><h4 class="">Informe plan de formación</h4></div>
+        <div class="card-body">
+            <div class="row mt-3 justify-content-start">
+
+                <div class="col-4">
+                    <label>Año</label>
+                    <select id="Year" name="Year" class="form-control selectpicker">
+                        <option value="2024" @(Request.QueryString["Year"] == "2024" ? "selected" : "")>2024</option>
+                        <option value="2025" @(Request.QueryString["Year"] == "2025" ? "selected" : "")>2025</option>
+                        <option value="2026" @(Request.QueryString["Year"] == "2026" ? "selected" : "")>2026</option>
+                        <option value="2027" @(Request.QueryString["Year"] == "2027" ? "selected" : "")>2027</option>
+                        <option value="2028" @(Request.QueryString["Year"] == "2028" ? "selected" : "")>2028</option>
+                        <option value="2029" @(Request.QueryString["Year"] == "2029" ? "selected" : "")>2029</option>
+                        <option value="2030" @(Request.QueryString["Year"] == "2030" ? "selected" : "")>2030</option>
+                        <option value="2031" @(Request.QueryString["Year"] == "2031" ? "selected" : "")>2031</option>
+                        <option value="2032" @(Request.QueryString["Year"] == "2032" ? "selected" : "")>2032</option>
+                        <option value="2033" @(Request.QueryString["Year"] == "2033" ? "selected" : "")>2033</option>
+                    </select>
+                </div>
+
+                <div class="col-4">
+                    <label>Empresa</label>
+                    @Html.DropDownList("Empresa", new SelectList(ViewBag.Empresa, "Codigo", "Descripcion", Request.QueryString["Empresa"]), null, htmlAttributes: new { @class = "form-control selectpicker" })
+                </div>
+                <div class="col-4">
+                    <label>Tipo de PEC</label>
+                    @Html.DropDownList("TipoPEC", new SelectList(ViewBag.TipoPEC, "Id", "Valor", Request.QueryString["TipoPEC"]), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", onchange = "javascript: checkPrimerFiltro();" })
+                </div>
+
+            </div>
+
+            <div id="DivArea" class="row justify-content-start" style="display: none;">
+                <div class="col-4">
+                    <label>Area</label>
+                    @Html.DropDownList("Area", new SelectList(ViewBag.AreasF, "Value", "Text", Request.QueryString["Area"]), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", onchange = "javascript: checkSegundoFiltro();" })
+                </div>
+            </div>
+
+            <div id="DivPICO" class="row justify-content-start" style="display: none;">
+                <div class="col-4">
+                    <label>Programa Cultura Organizacional</label>
+                    @Html.DropDownList("PICO", new SelectList(ViewBag.PICO, "Id", "Valor", Request.QueryString["PICO"]), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", onchange = "javascript: checkSegundoFiltro();" })
+                </div>
+            </div>
+
+            <div id="DivBoton" class="row justify-content-center mt-3" style="display: none;">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <button type="submit" class="bi bi-search btn btn-outline-primary  rounded-pill mb-2"> Buscar</button>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="table-responsive">
+                <table class="table table-striped" id="Exportar_a_Excel">
+                    <thead >
+                        <tr style="text-align:center">
+                            <th>
+                                Fecha de Creación
+                            </th>
+                            <th>
+                                Mes
+                            </th>
+                            <th>
+                                Tipo PEC
+                            </th>
+                            <th>
+                                Empresa
+                            </th>
+                            <th>
+                                Gestor Educativo
+                            </th>
+                            <th>
+                                Docentes
+                            </th>
+                            <th>
+                                Area PEC
+                            </th>
+                            <th>
+                                Programa Cultura Organizacional
+                            </th>
+                            <th>
+                                Nombre de acción de formación
+                            </th>
+                            <th>
+                                Objetivos
+                            </th>
+                            <th>
+                                Temas
+                            </th>
+                            <th>
+                                Modalidad
+                            </th>
+                            <th>
+                                Dirigido a
+                            </th>
+                            <th>
+                                Dependencias
+                            </th>
+                            <th>
+                                Proveedor
+                            </th>
+                            <th>
+                                Requerimiento institucional
+                            </th>
+                            <th>
+                                Descripción del requerimiento
+                            </th>
+                            <th>
+                                Requiere presupuesto
+                            </th>
+                            <th>
+                                Valor de la acción formativa
+                            </th>
+                            <th>
+                                Total Sesiones
+                            </th>
+                            <th>
+                                Total de horas
+                            </th>
+                            <th>
+                                Total personas inscritas
+                            </th>
+                            <th>
+                                Total asistentes
+                            </th>
+                            <th>
+                                Meta Eficacia
+                            </th>
+                            <th>
+                                % de cumplimiento AF
+                            </th>
+                            <th>
+                                % de cobertura (Asistentes)
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="align-middle text-center">
+                            <td>
+                                @Html.DisplayFor(i => item.FechaRegistro)
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.Mes).ToString("MM/MMMM")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.TipoPEC)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Empresa)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Empleado.Nombres)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Docente)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Empleado.AreaDescripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.ProgramaInstitucional)
+                            </td>
+                            <td class="sesion">
+                                @Html.DisplayFor(i => item.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Objetivo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.temas)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Modalidad2)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.DirigidoA)
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.Dependencias))
+                                {
+                                    <button class="btn-toggle btn btn-outline-primary mb-2">Ver dependencias</button>
+                                    <ul style="display:none;">
+                                        @foreach (var dependencia in item.Dependencias.Split('%'))
+                                        {
+                                            <li>@dependencia.Trim()</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <div>No hay dependencias</div>
+                                }
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Proveedor)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.RequerimientoInstitucional)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.EspecificacionReq)
+                            </td>
+                            <td>
+                                @(item.PresupuestoRequerido ? "SI" : "NO")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Presupuesto)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.TotalSesiones)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.TotalHoras)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.CtnProgramados)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.CtnAsistentes)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.MetaEficacia)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.Cobertura)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(i => item.PorcentajeCobertura)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+}
+    <style>
+        .dataTables_wrapper .top {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+
+    <script>
+        document.querySelectorAll('.btn-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const list = button.nextElementSibling;
+                list.style.display = list.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.sesion').each(function () {
+                var textoActual = $(this).text();
+                var textoNuevo = textoActual.replace(/ - Sesion 1/, '');
+                $(this).text(textoNuevo);
+            });
+        });
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        var areasF = @Html.Raw(ViewBag.AreasFJson);
+        var areasFU = @Html.Raw(ViewBag.AreasFUJson);
+
+        $('#Empresa').change(function() {
+            var empresa = $(this).val();
+            var areas = [];
+
+            if (empresa === "1000") {
+                areas = areasF;
+            } else if (empresa === "2000") {
+                areas = areasFU;
+            }
+
+            var $areaSelect = $('#Area');
+            $areaSelect.empty();
+            $areaSelect.append($('<option>').text('Seleccione...').val(''));
+
+            $.each(areas, function(index, area) {
+                $areaSelect.append($('<option>').text(area.Text).val(area.Value));
+            });
+
+            $('#Area').selectpicker('refresh');
+        });
+    });
+    </script>
+
+    <script>
+        function checkPrimerFiltro() {
+            var tipopec = $('#TipoPEC :selected').val();
+            var divarea = $('#DivArea');
+            var divpico = $('#DivPICO');
+            var divboton = $('#DivBoton');
+
+            if (tipopec == "1") {
+                divarea.show("fast");
+                divpico.hide("fast");
+                //$('#PICO').val('').change();
+                //$('#PICO').selectpicker('refresh');
+            }
+            if (tipopec == "2") {
+                divarea.hide("fast");
+                divpico.show("fast");
+                //$('#Area').val('').change();
+                //$('#Area').selectpicker('refresh');
+            }
+            if (tipopec == "3") {
+                divarea.hide("fast");
+                divpico.hide("fast");
+                //$('#PICO').val('').change();
+                //$('#PICO').selectpicker('refresh');
+                //$('#Area').val('').change();
+                //$('#Area').selectpicker('refresh');
+                divboton.show("fast");
+            }
+            if (tipopec == "") {
+                divarea.hide("fast");
+                divpico.hide("fast");
+                //$('#PICO').val('').change();
+                //$('#PICO').selectpicker('refresh');
+                //$('#Area').val('').change();
+                //$('#Area').selectpicker('refresh');
+                divboton.hide("fast");
+            }
+
+        }
+
+        function checkSegundoFiltro() {
+            var area = $('#Area :selected').val();
+            var pico = $('#PICO :selected').val();
+            var tipopec = $('#TipoPEC :selected').val();
+            var divboton = $('#DivBoton');
+
+
+            if (area != "" || pico != "") {
+                divboton.show("fast");
+            } else {
+                divboton.hide("fast");
+            }
+
+            if (tipopec == "3") {
+                divboton.show("fast");
+            }
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            checkPrimerFiltro();
+            checkSegundoFiltro();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#Exportar_a_Excel').DataTable({
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+
+                dom: '<"top"Blf>rt<"bottom"ip><"clear">',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i>',
+                        filename: 'ReportePEC',
+                        titleAttr: 'Exportar a Excel',
+                        className: 'btn btn-success',
+                        exportOptions: {
+                            format: {
+                                body: function (data, row, column, node) {
+                                    if (column === 13) {
+                                        var text = $(node).find('ul li').map(function () {
+                                            return $(this).text();
+                                        }).get().join('\n');
+                                        return text;
+                                    }
+                                    return data;
+                                }
+                            }
+                        }
+                    },
+
+                ],
+                order: [[1, 'asc']],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+
+
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+            });
+        })
+
+    </script>

@@ -1,0 +1,173 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Vacaciones>
+
+@{
+    ViewBag.Title = "ExportarInforme";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+
+    <br />
+    <h2 class="colorTitulo" style="text-align:center">Exportar Histórico Vacaciones</h2>
+
+
+    <form>
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">Buscar</div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-6" style="text-align:left">
+                        <label for="sospechoso">Area:</label>
+                        @Html.DropDownList("Area", new SelectList(ViewBag.Opciones, "Value", "Text"), "Seleccione el Area", htmlAttributes: new { @class = "form-control" })
+                    </div>
+
+
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("ExportaInforme","Vacaciones")"> Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+<br />
+<br />
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr class="fondoDegradado text-white">
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Documento
+                    </th>
+                    <th>
+                        Codigo Empleado
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th>
+                        Correo
+                    </th>
+                    <th>
+                        Telefono
+                    </th>
+                    <th>
+                        Modo Trabajo
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Fechas  Último  Periodo
+                    </th>
+                    <th>
+                        Cantidad Dias Pendientes
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <FONT SIZE=4>@Html.DisplayFor(modelItem => item.Empleado.Nombres)</FONT>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Documento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Cargo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Correo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Telefono)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.ModoTrabajo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Empresa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Periodo)
+                        </td>
+                        <td>
+                            <div style="text-align:center">
+                                <h4>
+                                    <span class="badge badge-success">@Html.DisplayFor(modelItem => item.CantDiasPendientes)</span>
+                                </h4>
+                            </div>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+                {
+
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'Informe_Empleados.xlsx',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+                }
+            ]
+        });
+
+
+
+    });
+
+</script>

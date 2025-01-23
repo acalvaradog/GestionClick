@@ -1,0 +1,413 @@
+﻿@page "/viaticos/create"
+@using Autogestion.Shared.DTO.Viaticos;
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4" >Solicitar Viático</MudText>
+@if (_loading)
+{  
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+    
+}else
+{
+    <EditForm Model="@Viatico" OnInvalidSubmit="GuardarViatico">
+        <MudCard Class="card mt-3">
+            <MudCardContent>
+                <MudGrid Class="row align-end">
+                    @* <MudIconButton Icon="@Icons.Material.Filled.QuestionMark" Color="Color.Warning" OnClick="OnButtonClicked">></MudIconButton>*@
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Prorroga</MudInputLabel>
+                        <MudSelect T="string" Label="" @bind-Value="prorroga" SelectedValuesChanged="Habilitar">
+                            <MudSelectItem T="string" Value="@("Si")" />
+                            <MudSelectItem T="string" Value="@("No")" />
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Numero de Solicitud</MudInputLabel>
+                        <MudSelect T="int" Text="Seleccione..." Label="" @bind-Value="NmrSolicitud" Disabled="disable">
+                            <MudSelectItem T="int" Value="0">Seleccione...</MudSelectItem>
+
+                            @if (listViaticos != null)
+                            {
+
+                                @foreach (var viatico in listViaticos)
+                                {
+
+                                    <MudSelectItem T="int" Value="@viatico.Id"><b>Nmr Solicitud:</b> @viatico.Id,<b> Fecha de Viaje:</b> @viatico.FechaInicio?.ToString("dd/MM/yyyy"),<b> Destino:</b> @viatico.Destino</MudSelectItem>
+                                }
+                            }
+
+                        </MudSelect>
+                    </MudItem>
+
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Destino</MudInputLabel>
+                        <MudSelect T="int" Text="Seleccione..." @bind-Value="destino" Label="">
+                            <MudSelectItem T="int" Value="0">Seleccione...</MudSelectItem>
+                            @if (listDestinos != null)
+                            {
+                                @foreach (var destino in listDestinos)
+                                {
+                                    <MudSelectItem T="int" Value="@destino.Id">@destino.Nombre</MudSelectItem>
+                                }
+                            }
+                        </MudSelect>
+                    </MudItem>
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Fecha de Viaje</MudInputLabel>
+                        <MudDatePicker Label="" @bind-Date="Viatico.FechaInicio" PickerClosed="Verificar">Seleccione</MudDatePicker>
+                    </MudItem>
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Fecha de Retorno</MudInputLabel>
+                        <MudDatePicker Label="" @bind-Date="Viatico.FechaFin" PickerClosed="Verificar">Seleccione</MudDatePicker>
+                    </MudItem>
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Gastos Alimentación (incluye transporte interno/taxis)</MudInputLabel>
+                        <MudNumericField Label="" @bind-Value="Viatico.GastoAlimentacion" T="int" Disabled AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudNumericField>
+                     </MudItem>
+                     <MudItem Class="col-md-4">
+                         <MudInputLabel ForId="Viatico.GastosTransporte">Gastos de Transporte de Ida y Vuelta</MudInputLabel>
+                         <MudNumericField Label="" @bind-Value="Viatico.GastosTransporte" T="int" Disabled Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudNumericField>
+                     </MudItem>
+                     <MudItem Class="col-md-4">
+                         <MudInputLabel ForId="">Tipo de Vehiculo</MudInputLabel>
+                         <MudSelect T="VehiculoDTO" Label="" ValueChanged="value => Ver2(value)">
+                             @if (listVehiculos != null)
+                            {
+
+                                @foreach (var opcion in listVehiculos)
+                                {
+                                    <MudSelectItem T="VehiculoDTO" Value="@opcion">@opcion.Nombre</MudSelectItem>
+                                }
+                            }
+
+
+
+                        </MudSelect>
+
+                    </MudItem>
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Placa</MudInputLabel>
+                        <MudTextField Label="" @bind-Value="Placa" Placeholder="Placa del vehiculo" Disabled="PlacaD" />
+                    </MudItem>
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>¿ Requiere Hospedaje ?</MudInputLabel>
+                        <MudSelect T="string" Label="" @bind-Value="hospedaje">
+                            <MudSelectItem T="string" Value="@("Si")" />
+                            <MudSelectItem T="string" Value="@("No")" />
+
+                        </MudSelect>
+
+                    </MudItem>
+                    <MudItem Class="col-md-4">
+                        <MudInputLabel>Total Gastos</MudInputLabel>
+                        <MudNumericField Label="" @bind-Value="Viatico.Total" T="int" Disabled Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.AttachMoney"></MudNumericField>
+                     </MudItem>
+
+                     <MudItem Class="col-md-12">
+                         <MudTextField T="string" Label="Motivo del viaje" Variant="Variant.Outlined" @bind-Text="Viatico.MtvViaje" Lines="3" Placeholder="Definir el motivo del Viaje" />
+                     </MudItem>
+
+
+
+                 </MudGrid>
+             </MudCardContent>
+             <MudCardActions Class="d-flex mt-3 justify-content-center">
+                 <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="" OnClick="@GuardarViatico" Disabled="Desabilitar">Guardar</MudButton>
+             </MudCardActions>
+             <DataAnnotationsValidator />
+         </MudCard>
+     </EditForm>
+    
+}
+
+@code {
+    MudListItem selectedItem;
+    object selectedValue = 1;
+    private List<DestinoViaticoDTO>? listDestinos;
+    private List<ViaticosDTO>? listViaticos;
+    private string[] listval;
+    private List<VehiculoDTO>? listVehiculos;
+    private EmpleadoDTO? empleado { get; set; }
+    //private VehiculoDTO Vehi { get; set; } = new VehiculoDTO();
+    private VehiculoDTO? consulta { get; set; } = new VehiculoDTO();
+    bool Desabilitar = false;
+    private bool PlacaD = true;
+    private bool disable = true;
+    private int destino { get; set; }
+    private int NmrSolicitud{ get; set; }
+    //private string vehiculo { get; set; } = "Seleccione...";
+    private string prorroga { get; set; } = "Seleccione...";
+    private string hospedaje { get; set; } = "Seleccione...";
+    private string Placa { get; set; } = "";
+    private DateTime HOY { get; set; } = DateTime.Today;
+    public bool _loading = true;
+    private int MinDiasConfig = 0;
+
+    DateTime aa = Convert.ToDateTime("01/01/0001 0:00:00");
+    DateTime fechauno;
+    DateTime fechados;
+    DateTime FechaInicialValida;
+    int val1;
+    int val2;
+    int val3;
+    //int val4;
+
+    ViaticosDTO Viatico = new ViaticosDTO();
+
+
+    async Task Ver2(VehiculoDTO a)
+    {
+
+        consulta = await Http.GetFromJsonAsync<VehiculoDTO>($"api/Viaticos/ConsultaVehiculo/{a.id}");
+        Viatico.GastosTransporte = consulta.Valor;
+        if (consulta.Nombre=="Propio" || consulta.Nombre =="Acompañante")
+        {
+            PlacaD = false;
+        }else
+        {
+            PlacaD = true;
+        }
+        Console.WriteLine("Entra Vehiculo");
+        Total();
+    }
+
+    private async void Verificar()
+    {
+
+        fechauno = Convert.ToDateTime(Viatico.FechaInicio);
+        fechados = Convert.ToDateTime(Viatico.FechaFin);
+        //Console.WriteLine("FechaInicio: " + fechauno);
+        //Console.WriteLine("FechaFin: "+ fechados);
+
+        val1 =Convert.ToInt32( listval[0]);
+        Console.WriteLine("val1: "+listval[0]);
+        val2 = Convert.ToInt32(listval[1]);
+        Console.WriteLine("val2: "+listval[1]);
+        //val3 = Convert.ToInt32(listval[2]);
+        //Console.WriteLine("val3: "+listval[2]);
+
+        if (fechauno <= FechaInicialValida)
+        {
+            await JS.ShowMessage("Error en la Fecha", "La fecha de Inicio no puede ser menor o igual a la fecha " + Convert.ToDateTime(FechaInicialValida).ToString("dd/MM/yyyy"), "warning"); //Console.WriteLine("La fecha FIN no puede ser menor que la fecha de Inicio");
+
+        }
+
+        TimeSpan difFechas = fechados - fechauno;
+        //Console.WriteLine("dif fechas: "+difFechas);
+        int dias = difFechas.Days + 1;
+        //Console.WriteLine("dias: "+dias);
+        if (fechauno > fechados) 
+        {
+            await JS.ShowMessage("Error en la Fecha", "La fecha de Retorno no puede ser menor que la fecha de Viaje", "warning"); //Console.WriteLine("La fecha FIN no puede ser menor que la fecha de Inicio");
+        }
+        if ( aa != fechauno && aa!= fechados)
+        {
+            //val4 = (dias / val3) + 1;
+            //Console.WriteLine("val4: "+val4);
+            if (dias == 1) { Viatico.GastoAlimentacion = (val2 * dias); }
+            if (dias >= 2) { Viatico.GastoAlimentacion = val1 + (val2 * dias); }
+            //if (val4 >= 2) { Viatico.GastoAlimentacion = (val1 * val4) + (val2 * dias); }
+
+        }
+        Viatico.Total = Viatico.GastoAlimentacion + Viatico.GastosTransporte;
+        Total();
+    }
+    private void Total ()
+    {
+
+        Viatico.Total = Viatico.GastoAlimentacion + Viatico.GastosTransporte;
+
+    }
+
+    private void Habilitar()
+    {
+        if (prorroga == "Si")
+        {
+
+            disable = false;
+        }
+        if (prorroga=="No")
+        {
+            disable = true;
+        }
+
+        OnButtonClicked();
+        Console.WriteLine("Entra");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        MinDiasConfig = await Http.GetFromJsonAsync<int>($"api/Viaticos/MinDiasViaticos");
+        Viatico.FechaInicio = HOY.AddDays(MinDiasConfig + 1);
+        FechaInicialValida = HOY.AddDays(MinDiasConfig);
+        listViaticos = await Http.GetFromJsonAsync<List<ViaticosDTO>>($"api/Viaticos/Viticoslist/{empleado.Id}");
+        listDestinos = await Http.GetFromJsonAsync<List<DestinoViaticoDTO>>($"api/Viaticos/ConsultaDestinos/{"Activo"}");
+        listval = await Http.GetFromJsonAsync<string[]> ($"api/Viaticos/ValoresViatico");
+        listVehiculos = await Http.GetFromJsonAsync<List<VehiculoDTO>>($"api/Viaticos/ConsultaVehiculos");
+        _loading = false;
+    }
+
+    private async void GuardarViatico()
+    {
+        _loading = true;
+        Desabilitar = true;
+        string validador = "OK";
+        string respuesta="";
+        Console.WriteLine("" + consulta.Nombre);
+        try
+        {
+            fechauno = Convert.ToDateTime(Viatico.FechaInicio);
+            fechados = Convert.ToDateTime(Viatico.FechaFin);
+            Viatico.DestinoViaticoID = destino;
+            Viatico.Vehiculo = consulta.Nombre;
+            Viatico.Placa = Placa;
+
+            if(prorroga == "Seleccione...")
+            {
+                respuesta = "Prorroga <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            if (Viatico.MtvViaje == "" || Viatico.MtvViaje==null)
+            {
+                respuesta = "Motivo de viaje <br/> " + respuesta;
+                validador = "Denegar";
+
+
+            }
+            if(hospedaje=="Seleccione...")
+            {
+                respuesta = "Hospedaje <br/> " + respuesta;
+                validador = "Denegar";
+
+
+
+            }
+            else
+            {
+                if (hospedaje == "Si")
+                {
+                    Viatico.Hospedaje = true;
+                }
+                else
+                {
+                    Viatico.Hospedaje = false;
+                }
+
+            }
+            if (Viatico.Vehiculo == "Seleccione..." || Viatico.Vehiculo=="" || Viatico.Vehiculo==null )
+            {
+                respuesta = "Vehículo <br/> " + respuesta;
+                validador = "Denegar";
+
+
+            }
+            if (PlacaD == false && Placa == "" && (Viatico.Vehiculo=="Propio" || Viatico.Vehiculo =="Acompañante"))
+            {
+                respuesta = "Placa <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            Console.WriteLine(PlacaD +"-"+Placa);
+
+            if (fechados != aa)
+            {
+                if (fechauno > fechados)
+                {
+                    respuesta = "La fecha de Retorno no puede ser menor que la fecha de Viaje <br/> " + respuesta;
+                    validador = "Denegar";
+
+
+                }
+            }
+            else
+            {
+                respuesta = "Fecha de Retorno <br/> " + respuesta;
+                validador = "Denegar";
+
+            }
+
+            if (fechauno <= FechaInicialValida)
+            {
+                respuesta = "La fecha de Inicio no puede ser menor o igual a la fecha " + Convert.ToDateTime(FechaInicialValida).ToString("dd/MM/yyyy") +"<br/> " + respuesta;
+                validador = "Denegar";
+
+
+            }
+            if (Viatico.DestinoViaticoID == 0)
+            {
+                respuesta = "Destino <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            if (prorroga == "Si")
+            {
+                Viatico.Prorroga = true;
+                if (NmrSolicitud == 0)
+                {
+                    respuesta = "Número Solicitud <br/> " + respuesta;
+                    validador = "Denegar";
+                }
+                else
+                {
+                    Viatico.IdSolicitud = NmrSolicitud;
+                }
+            }
+            else
+            { Viatico.Prorroga = false; }
+
+            if(validador=="OK"){
+
+                Viatico.EmpleadoId =Convert.ToInt32(empleado.Id);
+                var guardado = await Http.PostAsJsonAsync<ViaticosDTO>($"api/Viaticos/GuardarViatico/", Viatico);
+
+                if (guardado.IsSuccessStatusCode)
+                {
+                    Desabilitar = false;
+                    _loading = false;
+                    await JS.ShowMessage("Tenga en cuenta que en caso de cancelar el viaje, si se la ha consignado ya el importe deberá hacer la devolución del mismo", "El Viatico fue registrado de manera exitosa", "success");
+
+                    NavManager.NavigateTo("viaticos/create", true);
+                    //NavManager.NavigateTo("/viaticos/listaviaticos");                                                              
+                }
+
+
+            } else
+            {
+                Desabilitar = false;
+                _loading = false;
+                await JS.ShowMessage("Error", "Hacen falta los siguientes datos: <br/> " + respuesta, "warning");
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Desabilitar = false;
+            _loading = false;
+            await JS.ShowMessage("Error:", "Hacen falta los siguientes datos: " + respuesta, "warning");
+            
+        }
+       
+        
+    }
+
+     [Inject] private IDialogService DialogService { get; set; }
+
+    string state = "Message box hasn't been opened yet";
+
+
+    private async void OnButtonClicked()
+    {
+        bool? result = await DialogService.ShowMessageBox(
+            "Tenga en Cuenta",
+            "La prorroga es el proceso mediante el cual se extiende la ultima solicitud de viático solicitada",
+          yesText: "OK", cancelText: "Cerrar"); 
+        //state = result == null ? "Continuar":";
+        StateHasChanged();
+    }
+
+}

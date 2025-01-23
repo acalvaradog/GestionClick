@@ -1,0 +1,69 @@
+﻿@page "/Cursos/Certificados/{courseid:int}/{userid:int}"
+@inject NavigationManager Navigation
+@using Autogestion.Shared.DTO.Cursos;
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject IDialogService DialogService
+
+@if (_loading){
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    <MudContainer>
+        <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Primary">Certificados del curso @if (curso?.Count != 0){ @curso?.First().fullname.ToUpper().ToString()}</MudText> </MudCardHeader>
+            <MudCard Class="mb-5">
+                @if (Certificado.Count == 0)
+            {
+                <MudText Class="p-3">No se encontraron certificados de este curso</MudText>
+            }
+            else
+            {
+                <MudTable Items="@Certificado" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+                    <HeaderContent>
+                        <MudTh>Certificados</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd><MudLink Href="@context.certificate_url">Ver certificado en EduFoscal</MudLink></MudTd>
+                    </RowTemplate>
+                </MudTable>
+            }
+        </MudCard>
+    </MudContainer>
+}
+
+@code {
+
+    [Parameter]
+    public int courseid { get; set; }
+    [Parameter]
+    public int userid { get; set; }
+    private bool _loading;
+    private List<CertificadoDTO>? Certificado = new List<CertificadoDTO>();
+    private List<CursoModdleDTO>? curso;
+    private EmpleadoReturnSapDTO? empleado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        if (empleado == null)
+        {
+            await JS.ShowMessage("Debe volver a iniciar sesión en el aplicativo", "Sesión Expirada", "error");
+
+            Navigation.NavigateTo("pages/authentication/login", true);
+        }
+
+        Certificado = await Http.GetFromJsonAsync<List<CertificadoDTO>>($"api/EduFoscal/GetCertificadosxCursoxUsuario/{userid}/{courseid}");
+
+        curso = await Http.GetFromJsonAsync<List<CursoModdleDTO>>($"api/EduFoscal/GetCursosxCursoId/{courseid}");
+
+
+        _loading = false;
+        StateHasChanged();
+    }
+}

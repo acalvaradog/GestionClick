@@ -1,0 +1,96 @@
+﻿@model Adm_AutoGestion.Models.EstructuraJerarquica
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "1000", Value = "1000" },
+        new ListItem { Text = "2000", Value = "2000" }
+
+        };
+}
+
+
+<div class="container">
+
+    <h2 class="colorTitulo text-center">Estructura Jerarquica</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row justify-content-start">
+                <div class="col-4" style="text-align:center">
+                    <img class="mt-5" src="~/Contents/image/lider.png">
+                </div>
+                <div class="col-8">
+                    <div class="card ">
+                        <div class="card-header text-white fondoDegradado">Datos</div>
+                        <div class="card-body">
+                            <div class="row justify-content-start">
+                                <div class="col-12">
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Sociedad)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Sociedad", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                                        @Html.ValidationMessageFor(model => model.Sociedad)
+                                    </div>
+                                    <br />
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Area)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                                        @*@Html.DropDownList("Area", new SelectList( ViewBag.Area, "Value", "Text"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker", data_live_search="true"} )*@
+                                        @Html.ValidationMessageFor(model => model.Area)
+                                    </div>
+                                    <br />
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Jefe)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownList("Jefe", new SelectList(ViewBag.Empleado, "NroEmpleado", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "8" })
+                                        @Html.ValidationMessageFor(model => model.Jefe)
+                                    </div>
+                                    <br />
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Superior)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownList("Superior", new SelectList(ViewBag.Empleado, "NroEmpleado", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "8" })
+                                        @Html.ValidationMessageFor(model => model.Superior)
+                                    </div>
+                                    <br />
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Director)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownList("Director", new SelectList(ViewBag.Empleado, "NroEmpleado", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "8" })
+                                        @Html.ValidationMessageFor(model => model.Director)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-12" style="text-align:center">
+                                <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                                @Html.ActionLink(" Atras", "Index", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary mb-2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </fieldset>
+    }
+
+</div>

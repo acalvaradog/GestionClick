@@ -1,0 +1,76 @@
+﻿
+@using Autogestion.Shared.DTO.Noticia
+@using MudBlazor
+@inject Microsoft.Extensions.Configuration.IConfiguration config
+@inject IDialogService DialogService
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@using AutoGestion.Componentes
+<MudCard Class="noticia-card">
+    <MudCardContent>
+        <!-- Título de la Noticia -->
+        <MudText Typo="Typo.h5" Class="titulo">@Noticia.Titulo</MudText>
+
+        <!-- Contenido HTML -->
+        <div class="contenido-html">
+            @((MarkupString)Noticia.Contenido)
+        </div>
+
+        <!-- Información de Autor y Fecha -->
+        <MudText Typo="Typo.caption" Color="Color.Secondary" Class="meta-info">
+            Publicado el @Noticia.Publicacion.ToString("dd/MM/yyyy") por @Noticia.Autor
+        </MudText>
+    </MudCardContent>
+
+    <!-- Carrusel para Imágenes -->
+    @if (Noticia.Imagenes?.Count > 0)
+    {
+        <MudCarousel Class="imagenes-carousel" AutoCycle="false" TData="object">
+            @foreach (var imagen in Noticia.Imagenes)
+            {
+                <MudCarouselItem>
+                    <div class="imagen-container" @onclick="() => AbrirImagen(imagen.ImagenUrl)">
+                        <MudImage Src="@($"{@config["Api:ApiURL"]}{imagen.ImagenUrl}")"
+                        Alt="Imagen de noticia"
+                        Class="noticia-imagen" />
+                    </div>
+                </MudCarouselItem>
+            }
+        </MudCarousel>
+    }
+</MudCard>
+
+
+
+
+
+@code {
+    [Parameter] public NoticiaDTO Noticia { get; set; }
+    private readonly DialogOptions _dialogOptions = new() { FullWidth = true };
+    private bool isModalOpen = false; // Estado para abrir o cerrar el modal
+    private string selectedImageUrl = ""; // URL de la imagen seleccionada
+
+    private async Task AbrirImagen(string imagenUrl)
+    {
+        selectedImageUrl = $"{config["Api:ApiURL"]}{imagenUrl}";
+       var options = new DialogOptions
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            };
+        // var dialog =  DialogService.ShowAsync<ImagenNoticia>("Reconocimiento", options);
+
+
+        // Mostrar el diálogo y pasarle la URL de la imagen al momento de abrirlo
+        DialogService.Show<ImagenNoticia>("Imagen Ampliada", new DialogParameters
+        {
+            { "imageDataURL", selectedImageUrl } // Pasar la URL de la imagen al diálogo
+        } ,options);
+
+    }
+    // Función para cerrar el modal
+    private void CerrarModal()
+    {
+        isModalOpen = false;
+    }
+}

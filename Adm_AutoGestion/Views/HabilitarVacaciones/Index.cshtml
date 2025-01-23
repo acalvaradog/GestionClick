@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.HabilitarVacaciones>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+
+
+<div class="card">
+
+   
+
+
+       <div class="row justify-content-start mt-3">
+    <div class="col-12">
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Capacitaciones Abiertas</h4>
+            </div>
+
+        </div>
+        <div class="col-8" style="text-align:right"> @Html.ActionLink(" Crear Habilitación", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary rounded-pill mb-2" })</div>
+
+
+    </div>
+        
+
+
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <tr >
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+                        Nombre Empleado
+                    </th>
+                    <th>
+                        Menor a 6 Dias
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Anticipadas)
+                    </th>
+                    <th>
+                        En Dinero
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UsuarioRegistra)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                        </td>
+                        <td class="text-primary">
+                            @*@Html.DisplayFor(modelItem => item.DiasMayor6)*@
+                            @if (item.DiasMayor6 == "SI")
+                            {
+                                @*<img src="~/Contents/image/check.png">*@
+                                <i class="fas fa-check-circle" style="font-size:24px; text-align:center"></i>
+                            }
+                            else
+                            {
+
+                                <i class="fas fa-ban" style="font-size:24px; text-align:center"></i>
+                            }
+                        </td>
+                        <td class="text-primary">
+                            @*@Html.DisplayFor(modelItem => item.Anticipadas)*@
+                            @if (item.Anticipadas == "SI")
+
+                            {
+                                <i class="fas fa-check-circle style="font-size:24px; text-align:center"" ></i>
+
+                            }
+                            else
+                            {
+
+                                <i class="fas fa-ban" style="font-size:24px; text-align:center"></i>
+                            }
+                        </td>
+                        <td class ="text-primary  style: text-align:center">
+                            @if (item.Pagadas == "SI")
+                            {
+                                @*<img src="~/Contents/image/check.png">*@
+                                <i class="fas fa-check-circle " style="font-size:24px;"></i>
+
+                            }
+                            else
+                            {
+                                <i class="fas fa-ban"></i>
+
+                                @*<img src="~/Contents/image/cerrar.png">*@
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado2.Nombres)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.Id }) 
+                            @*@Html.ActionLink("Eliminar", "Delete", new { id = item.Id })*@
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    </div>
+    </div>

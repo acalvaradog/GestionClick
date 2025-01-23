@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "Adm_AutoGestion\\Adm_AutoGestion.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "AutoGestion\\AutoGestion.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

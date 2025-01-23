@@ -1,0 +1,43 @@
+﻿@model Adm_AutoGestion.Models.Tercero
+
+
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                @*<strong><h3>QR</h3></strong>*@
+                <div> <img id="img_qr" src="" style="height:300px;width:300px" /> </div>
+                @*@Html.TextBox("QR", Model.QRPrestamo, htmlAttributes: new { @class = "form-control", autocomplete = "off"})*@
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    
+     //$("img_qr").src = "data:image/png;base64," + QR;
+      $(document).ready(function () {
+
+        GenerarQR(@Html.DisplayFor(model => model.Id));
+
+    });
+
+    function GenerarQR( id ){
+
+
+        try {
+            $.ajax({
+                url: "@Url.Action("ObtenerQRTercero")",
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("img_qr").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+</script>

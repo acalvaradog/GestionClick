@@ -1,0 +1,242 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleCapacitacion>
+
+@{
+    ViewBag.Title = "DetallesCapacitacion";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="modal fade" id="modal_Lista_Encuestas" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Encuestas </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="contentModalEncuestas">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h5 style="color: #012970">Asistentes</h5></div>
+    <br />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped " id="tbl_asistentes">
+                <thead>
+                    <tr>
+                        <!--<th>-->
+                        @*@Html.DisplayNameFor(model => model.Id)*@
+                        @*  Nmr*@
+                        <!--</th>-->
+                        <th>
+                            Nombre
+                        </th>
+                        @*  <th>
+                                @Html.DisplayNameFor(model => model.EmpleadoId)
+                            </th>*@
+                        <th>
+                            @* @Html.DisplayNameFor(model => model.FechaFirma)*@
+                            Fecha Firma
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Estado)*@
+                            Estado
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Cargo)*@
+                            Cargo
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Area)*@
+                            Area
+                        </th>
+                        <th>
+                            @*   @Html.DisplayNameFor(model => model.EsTercero)*@
+                            Tercero
+                        </th>
+                        @*        <th>
+                                @Html.DisplayNameFor(model => model.TerceroId)
+                            </th>*@
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.SedeId)*@
+                            Empresa
+                        </th>
+                        @*<th>Envio Encuesta</th>
+                        <th>Respuesta Encuesta</th>*@
+                        <th>Anular</th>
+                        <th>FIRMA DE ASISTENCIA PRUEBAS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td hidden>
+                                      @Html.DisplayFor(modelItem => item.CapacitacionId)
+                                </td>*@
+                            <td>
+                                @if (item.EsTercero == "NO")
+                                {@item.Empleado2.Nombres}
+                            else
+                            {@item.Tercero2.Nombres}
+                            </td>
+                            @* <td>
+                                    @Html.DisplayFor(modelItem => item.EmpleadoId)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaFirma)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Estado)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cargo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Area)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EsTercero)
+                            </td>
+                            @* <td>
+                                    @Html.DisplayFor(modelItem => item.TerceroId)
+                                </td>*@
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.SedeId)*@
+                                @if (item.EsTercero == "SI")
+                                {
+                                    @item.NombreEmpresaTercera;
+                                }
+                                @if (item.EsTercero == "NO")
+                                {
+                                    @item.Sociedad2;
+                                }
+                                @if (item.EsTercero == "ESTUDIANTE")
+                                {
+                                    @item.Universidad;
+                                }
+                            </td>
+                            @*<td>
+                                @if (item.EnvioEncuesta == "SI")
+                                {
+                                    <a href='@Url.Action("MostrarListaEncuestas", "Capacitacion", new { id = item.CapacitacionId, page = 2 }, null)' data-modalEncuestas='' , style="color:green;">Reenviar Encuesta</a>
+                                }
+                                else
+                                {
+                                    <a href='@Url.Action("MostrarListaEncuestas", "Capacitacion", new { id = item.CapacitacionId, page = 2 }, null)' data-modalEncuestas='' , style="color:#FF0000;">Enviar Encuesta</a>
+
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RespuestaEncuesta)
+                            </td>*@
+                            <td>
+                                <a href="javascript:AnularRegistro1('@Html.DisplayFor(modelItem => item.Id)')";>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="icon-32" viewBox="0 0 24 24">
+                                        <path opacity="0.4" fill-rule="evenodd" d="M6.146 6.146a.5.5 0 0 1 .708 0L8 7.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 8l1.147 1.146a.5.5 0 0 1-.708.708L8 8.707 6.854 9.854a.5.5 0 0 1-.708-.708L7.293 8 6.146 6.854a.5.5 0 0 1 0-.708" />
+                                        <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                                        <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+                                    </svg>
+                                    @*<img src="~/Contents/image/anular.png" alt="AnularRegistro" />*@
+                                </a>
+                            </td>
+                            <td>
+                                <button class="btn btn-outline-primary rounded-pill mb-2" onclick="javascript: return FirmaPrueba(@item.Id);">FIRMAR</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!--Botones-->
+    <div class="row justify-content-start">
+        <div class="col-md-12 ms-3">
+            @Html.ActionLink(" Atras", "ListaPorCompletar", "Capacitacion", null, new { @class = "bi bi-box-arrow-in-left  btn btn-outline-primary rounded-pill mb-2", style = "font-size:16px" })
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje">
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn btn-primary" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function FirmaPrueba(id) {
+        var Data = new FormData();
+        Data.append("Id", id);
+
+        $.ajax({
+            url: '@Url.Action("FirmaPruebas","Capacitacion")',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: Data,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "true") {
+                    alertify.alert('Firma guardada correctamente', function () { location.reload(); });
+                }
+            }
+        });
+    }
+
+    function AnularRegistro1(id) {
+        alertify.confirm("Esta Seguro que Desea anular el registro?", function (e) {
+            if (e) {
+
+                AnularRegistro(id);
+            } else {
+
+            }
+        });
+    }
+
+    function AnularRegistro(id) {
+        try {
+            $.ajax({
+                url: '@Url.Action("AnularRegistro", "DetalleCapacitacion")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+
+        }
+        catch (e) { alert(e); }
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+
+</script>

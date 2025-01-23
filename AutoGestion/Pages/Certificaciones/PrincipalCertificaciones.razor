@@ -1,0 +1,72 @@
+﻿@page "/PrincipalCertificaciones"
+@using AutoGestion.Pages.Certificaciones
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@inject HttpClient Http
+<MudGrid>
+    @if (_loading==true)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+        
+    }else
+    {
+        @if (Anuncio != "" && Anuncio.Contains("No se encuentra el parametro establecido") == false && Anuncio.Contains("Error al consultar parametro:") ==false)
+        {
+            <MudItem xs="12" sm="12">
+                @* ANUNCIOS CERTIFICACIONES *@
+                <MudPaper Class="pa-12 ma-2" Elevation="3" Style="@($"color:{Theme.Palette.Dark}; background:{Colors.Amber.Lighten4};")">
+
+                    <MudText><pre class="contenedor-pre">@(Anuncio)</pre></MudText>
+                    
+                </MudPaper>
+            </MudItem>
+            
+        }
+        
+        <MudItem xs="12" sm="6">
+            <DesprendiblePago></DesprendiblePago>
+        </MudItem>
+       @*  <MudItem xs="12" sm="6">
+            <CertificadoIngresos></CertificadoIngresos>
+        </MudItem> *@
+        <MudItem xs="12" sm="6">
+            <CertificadoLaboral></CertificadoLaboral>
+        </MudItem>
+        
+    }
+
+
+
+</MudGrid>
+
+<style>
+    .contenedor-pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+    }
+</style>
+    
+
+@code {
+    private MudTheme Theme = new MudTheme();
+    private string Anuncio { get; set; } = "";
+    public bool _loading = true;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        if (datosempleado.BUKRS =="1000")
+        {
+            Anuncio = await Http.GetFromJsonAsync<string>(($"api/ConsultarConfiguracion/{"MENSG_CERTIFICACIONES1000"}"));
+        }
+        if (datosempleado.BUKRS == "2000")
+        {
+            Anuncio = await Http.GetFromJsonAsync<string>(($"api/ConsultarConfiguracion/{"MENSG_CERTIFICACIONES2000"}"));
+        }
+        
+        _loading = false;
+    }
+
+    }

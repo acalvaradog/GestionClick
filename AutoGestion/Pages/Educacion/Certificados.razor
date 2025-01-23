@@ -1,0 +1,212 @@
+﻿@page "/Educacion/MisCertificados"
+@inject NavigationManager Navigation
+@using Autogestion.Shared.DTO.TalentoHumano
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject IDialogService DialogService
+@using Microsoft.AspNetCore.Components.Forms
+@using MudBlazor
+@inject Microsoft.Extensions.Configuration.IConfiguration config
+@using System.Text.RegularExpressions
+@using System.Text
+
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}else{
+
+    <MudContainer>
+        <MudCardHeader><MudText Color="Color.Primary" Typo="Typo.h5">Subir certificado</MudText></MudCardHeader>
+
+        <MudPaper hidden="@IsHidden" Class="pa-6 ma-6 bg-primary text-black bg-opacity-50"><div class="d-flex align-items-start justify-content-between"><div><b>Importante</b><br><br>Solo se permiten archivos PDF con un limite de peso de 10 Mb (Megabytes) y evite usar carácteres especiales en el nombre del archivo</div><div class="d-flex align-items-start"><MudIconButton Class="pa-0" OnClick="@OcultarPaper" Icon="@Icons.Material.Filled.Close" Color="Color.Surface"></MudIconButton></div></div></MudPaper>
+
+        <MudCard Class="p-3 mb-5">
+            <EditForm Model="model" OnValidSubmit="UploadFile">
+
+                @* <MudTextField TextChanged="ValidateForm" Class="mb-2" @bind-Value="Titulo" Label="Titulo del certificado" T="string" Required="true" Immediate="true" /> *@
+
+                <MudSelect T="string" @bind-Value="selectedCurso" Label="Selecciona un curso" Required="true" Immediate="true" Class="mb-2">
+                    @foreach (var curso in cursosNormativa)
+                    {
+                        <MudSelectItem T="string" Value="curso.Titulo">@curso.Titulo</MudSelectItem>
+                    }
+                </MudSelect>
+
+                <MudDatePicker @bind-Date="FechaCaducidad" Label="Fecha de Caducidad" Required="true" Class="mb-2" PickerVariant="PickerVariant.Dialog" OpenTo="OpenTo.Year" Rounded="true" MinDate="DateTime.Today"/>
+
+                <MudFileUpload Context="file" FilesChanged="HandleSelected" T="IBrowserFile" Accept=".pdf">
+                    <ButtonTemplate>
+                        <MudButton HtmlTag="label" Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.CloudUpload" for="@file" >
+                            Seleccionar archivo
+                        </MudButton>
+                    </ButtonTemplate>
+                </MudFileUpload>
+    
+                @if (selectedFile != null)
+                {
+                    <MudText Class="mt-3" Typo="Typo.body1">Archivo seleccionado: @selectedFile.Name</MudText>
+                    
+                }
+                <MudButton Class="mt-3" Variant="Variant.Outlined" Color="Color.Primary" ButtonType="ButtonType.Submit">Subir</MudButton>
+    
+            </EditForm>
+        </MudCard>
+    
+    </MudContainer>
+    
+    
+    <MudContainer Class="mt-5">
+        <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Primary">Mis certificados</MudText> </MudCardHeader>
+        <MudCard Class="mt-5 mb-5">
+            <MudTable Items="@Certificado" @ref="_tabla" RowsPerPage="10" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Titulo del curso</MudTh>
+                    <MudTh>Archivo</MudTh>
+                    <MudTh>Estado</MudTh>
+                    <MudTh>Observación</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Titulo del certificado">@context.Titulo</MudTd>
+                    <MudTd DataLabel="Archivo">
+                        <MudButton Target="_blank" Href="@($"{@config["Configuraciones:URLAnexosCertificados"]}/{context.Archivo}")" Variant="Variant.Outlined" Color="Color.Primary">Ver Archivo</MudButton>
+                    </MudTd>
+                    <MudTd DataLabel="Estado">@context.Estado</MudTd>
+                    <MudTd DataLabel="Observación">@context.Observacion</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudPagination SelectedChanged="PageChanged" Count="@((_tabla.GetFilteredItemsCount() + _tabla.RowsPerPage - 1) / _tabla.RowsPerPage)" Class="pa-4" />
+                </PagerContent>
+            </MudTable>
+        </MudCard>
+    </MudContainer>
+}
+
+@code {
+    private MudForm form;
+    private bool IsHidden { get; set; } = false;
+    private string? FileName;
+    private IBrowserFile? selectedFile;
+    private bool isFormInvalid = true;
+    private MudTable<CertificadosDTO> _tabla;
+    private List<CertificadosDTO>? Certificado;
+    private bool _loading;
+    private EmpleadoReturnSapDTO? empleado { get; set; }
+    private List<CursosNormativaDTO>? cursosNormativa;
+    private string selectedCurso;
+    private DateTime? FechaCaducidad;
+    CertificadosDTO model = new CertificadosDTO();
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        if (empleado == null)
+        {
+            await JS.ShowMessage("Debe volver a iniciar sesión en el aplicativo", "Sesión Expirada", "error");
+
+            Navigation.NavigateTo("pages/authentication/login", true);
+        }
+        Certificado = await Http.GetFromJsonAsync<List<CertificadosDTO>>($"api/TalentoHumano/MisCertificados/{empleado.Id}");
+        cursosNormativa = await Http.GetFromJsonAsync<List<CursosNormativaDTO>>("api/TalentoHumano/ListarCursosNormativa");
+        _loading = false;
+        StateHasChanged();
+    }
+
+    private async Task HandleSelected(IBrowserFile files)
+    {
+
+        selectedFile = files;
+
+        if (selectedFile != null)
+        {
+
+            if (selectedFile.ContentType != "application/pdf")
+            {
+                await JS.ShowMessage("Error", "El archivo debe ser de tipo PDF", "warning");
+                selectedFile = null;
+                isFormInvalid = true;
+                form.Reset();
+                return;
+            }
+
+            if (selectedFile.Size > 10 * 1024 * 1024)
+            {
+                await JS.ShowMessage("Error", "El archivo no debe superar los 10 MB", "warning");
+                selectedFile = null;
+                isFormInvalid = true;
+                form.Reset();
+                return;
+            }
+
+        }
+    }
+
+    public void OcultarPaper()
+    {
+        IsHidden = true;
+        StateHasChanged();
+    }
+
+    private async Task UploadFile()
+    {
+        var isValid = true;
+
+        if (selectedCurso == null)
+        {
+            await JS.ShowMessage("Formulario incompleto","El curso es obligatorio.","warning");
+            isValid = false;
+        }
+
+        if (FechaCaducidad == null){
+            await JS.ShowMessage("Formulario incompleto", "La fecha de vencimiento es obligatoria", "warning");
+            isValid = false;
+        }
+
+        if (selectedFile == null)
+        {
+            await JS.ShowMessage("Formulario incompleto", "No hay archivo seleccionado.", "warning");
+            isValid = false;
+        }
+
+        if (isValid)
+        {
+            var content = new MultipartFormDataContent();
+            var streamContent = new StreamContent(selectedFile.OpenReadStream(10 * 1024 * 1024));
+            streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(selectedFile.ContentType);
+
+            //Normalizar y limpiar el nombre del archivo
+            string normalizedFileName = selectedFile.Name.Normalize(NormalizationForm.FormD);
+            string cleanFileName = Regex.Replace(normalizedFileName, @"[^a-zA-Z0-9\s.!@$^&*()\-\/]+", "");
+
+            content.Add(streamContent, "file", cleanFileName);
+            content.Add(new StringContent(empleado.Id.ToString()), "EmpleadoId");
+            content.Add(new StringContent(selectedCurso), "Titulo");
+            var fechaCaducidadString = FechaCaducidad.Value.ToString("yyyy-MM-dd");
+            content.Add(new StringContent(fechaCaducidadString), "FechaCaducidad");
+
+            var response = await Http.PostAsync($"api/TalentoHumano/SubirArchivo", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await JS.ShowMessage("Certificado subido", "Se ha subido su certificado con éxito", "success");
+                Navigation.NavigateTo("reload/Educacion.MisCertificados");
+            }
+            else
+            {
+                await JS.ShowMessage("Error", "Se produjo un error al subir el archivo", "error");
+                Navigation.NavigateTo("reload/Educacion.MisCertificados");
+            }
+        }
+
+    }
+
+    private void PageChanged(int i)
+    {
+        _tabla.NavigateTo(i - 1);
+    }
+}

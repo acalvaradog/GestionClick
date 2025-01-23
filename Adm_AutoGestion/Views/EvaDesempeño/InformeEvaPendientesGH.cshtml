@@ -1,0 +1,343 @@
+﻿@model IEnumerable<Adm_AutoGestion.Controllers.Api.EvaDesempenoController.RestEmp>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "InformeEvaPendientesGH";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+
+@{    var Retroalimentacíon = new List<ListItem> {
+        new ListItem { Text = "Si", Value = "True" },
+        new ListItem { Text = "Si", Value = "false" },
+
+        };
+    string LINKEVADESH = ViewBag.LinkEvadesh;
+}
+
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Mensaje:</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+    Session.Remove("message");
+}
+
+<h4 class="colorTitulo" style="text-align:center">Informe Evaluacion de Desempeño Gestión Humana</h4>
+<br />
+
+
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">
+                <a class="card-link text-white" data-toggle="collapse" href="#collapse1">Consultar</a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                    @*<div class="col-md-6">
+            <div class="form-group">
+
+                Fecha Solicitud Desde: @Html.TextBox("FechaInicio", null, null, new { @class = "form-control form-control-sm", @type = "date" })
+            </div>
+        </div>*@
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Período: @Html.DropDownList("PeriodosParametros", new SelectList(ViewBag.PeriodosParametros, "Año", "Año"), "--Seleccione--", new { @class = "form-control form-control-sm selectpicker", data_live_search = "true" })
+
+                            @*@Html.TextBox("FechaFin", null, null, new { @class = "form-control form-control-sm", @type = "date" })*@
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Empleado:  @Html.DropDownList("Empleados", new SelectList(ViewBag.Empleados, "Id", "Nombres"), "--Seleccione--", new { @class = "form-control form-control-sm selectpicker", data_live_search = "true" })
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            TipoPrueba:
+                            @Html.DropDownList("TipoPrueba", new SelectList(ViewBag.TipoPrueba, "codigo", "tipo"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Estado prueba Jefe:
+                            @Html.DropDownList("TipoPresentacion2", new SelectList(ViewBag.Estados, "Codigo", "Descripcion"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Estado Autoevaluación:
+                            @Html.DropDownList("TipoPresentacionAUT", new SelectList(ViewBag.Estados, "Codigo", "Descripcion"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Area:
+                            @Html.DropDownList("Areas", new SelectList(ViewBag.Areas), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm selectpicker", data_live_search = "true" })
+                        </div>
+                    </div>
+                    <div class="col-md-6" hidden>
+                        <div class="form-group">
+
+                            Confirmación Retroalimentación Empleado:
+                            @Html.DropDownList("RetroEmp", new SelectList(Retroalimentacíon, "Value"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-12" style="text-align: center">
+                        <div class="form-group">
+                            <br />
+                            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Generar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-hover display dataTable table-sm" id="Informe_evaDesempeño" name ="Informe_evaDesempeño">
+            <thead>
+                <tr class="fondoDegradado text-white">
+                    <td>Sociedad </td>
+                    <th>Nmr Empleado </th>
+                    <th>
+                        Nombres
+                    </th>
+                    <th>
+                        Área
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th>
+                        Estado Evaluación Jefe
+                    </th>
+                    <th>
+                       Estado Autoevaluación
+                    </th>
+                    <th>
+                        Periodo Actual
+                    </th>
+                    <th>
+                        Retroalimentación Jefe
+                    </th>
+                    <th>
+                        Fecha Retroalimentación Jefe
+                    </th>
+                    <th>
+                        Retroalimentación Empleado
+                    </th>
+                    <th>
+                        Fecha Retroalimentación Empleado
+                    </th>
+                    @*<th>
+            EvaEntrenamiento
+        </th>
+        <th>
+            Ultima Fecha Entrenamiento
+        </th>*@
+                    <th>
+                        Ir a Evaluación
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Empleado.Empresa </td>
+                        <td>@item.Empleado.NroEmpleado </td>
+                        <td>
+                            <label> @item.Empleado.Nombres</label>
+                        </td>
+                        <td>
+                            <label> @item.Empleado.AreaDescripcion</label>
+                        </td>
+                        <td>
+                            <label> @item.Empleado.Cargo</label>
+                        </td>
+                        <td>
+
+                            <label> @item.EstadoPNombre</label>
+                        </td>
+                        <td>
+
+                            <label> @item.EstadoANombre</label>
+                        </td>
+                        <td>
+                            <label>@item.Año</label>
+                        </td>
+                        <td>
+
+                            @if (item.RetroalimentacionJefe == false)
+                            {
+
+
+                                <label> No Retroalimentado</label>
+                            }
+                            else
+                            {<label> Retroalimentado</label>
+                            }
+
+                        </td>
+                        <td>
+
+                            <label> @item.FechaRTA_Jefe </label>
+                        </td>
+                        <td>
+
+                            @if (item.RetroalimentacionEmp == false)
+                            {
+
+
+                                <label> No Retroalimentado</label>
+                            }
+                            else
+                            {<label> Retroalimentado</label>
+                            }
+                        </td>
+                        <td>
+
+                            <label> @item.FechaRTA_EMP </label>
+                        </td>
+                        @*<td>
+
+            <label> @item.EvaEntrenamiento</label>
+        </td>
+        <td>
+            @if (item.FecharegistroEntrenamiento == new DateTime())
+            {
+                <label>Sin registros Recientes</label>
+            }
+            else
+            {
+                <label> @Convert.ToDateTime(item.FecharegistroEntrenamiento).ToString("dd/MM/yyyy")</label>
+            }
+
+        </td>*@
+                        <td>
+                            <a class="btn close bi bi-book-half text-primary mr-4" href="http://@LINKEVADESH" target="_blank"></a>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<br />
+
+
+@*<style>
+    table > tbody > tr > td {
+        vertical-align: middle !important;
+    }
+
+    .btn-group, .btn-group-vertical {
+        position: absolute !important;
+    }
+</style>*@
+
+
+
+
+@*<script>
+
+    $(document).ready(function () {
+
+        var table = $('#Informe_evaDesempeño').DataTable({
+            //$('#tabla').DataTable({
+
+
+            //"bFilter": true,
+            //"ordering": false,
+
+            buttons: [
+                {
+
+
+
+                    extend: 'excelHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'InformePrestamos.xlsx',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+
+
+                },
+                {
+                    extend: 'pdfHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-pdf"></i>',
+                    filename: 'InformePrestamos.xlsx',
+                    titleAttr: 'Exportar a PDF',
+                    className: 'btn btn-danger'
+                },
+
+
+            ],
+            dom: 'Brtip',
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+
+
+
+
+        });
+
+
+
+
+    })
+</script>*@

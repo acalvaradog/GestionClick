@@ -1,0 +1,43 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+@using System.Web.UI.WebControls;
+
+@{
+  var Item = ViewBag.Id;
+  var page = ViewBag.Page;
+}
+
+<div class="container" style="width:90%">
+    <br />
+
+<div class="row justify-content-start">
+      <div class="col-12" >
+                        <div class="editor-label">
+                              Encuestas
+                         </div>
+                         <div class="editor-field">
+                              @Html.DropDownList("Encuesta", new SelectList( ViewBag.lista, "Valor", "Descripcion"),"Seleccione...", htmlAttributes: new {  @class = "form-control js-example-basic-single select2-selection select2-selection--single" ,data_live_search="true", @Value = "", Id = "Encuesta"} )
+                              
+                         </div>
+                        <input type="hidden" id="id" name="id" value="@Item" />
+                        <input type="hidden" id="page" name="page" value="@page" />
+
+          <br />
+           <div class="row justify-content-center">
+               <div class ="col-12" style="text-align:center">
+                   <button type = "button" class = "bi bi-send btn btn-outline-primary mb-2"  onclick = "javascript: return ConfirmarEnc(@Item,@page);" > Enviar Encuesta</button>
+               </div>
+          </div>
+       <br />
+             
+
+       </div>
+    </div>
+
+</div>
+
+<script >
+    $('.js-example-basic-single').select2({ width: '100%' });
+</script>
+<style type="text/css">
+    .select2-container .select2-selection--single {box-sizing: border-box;cursor: pointer;display: block;height: 38px;-webkit-user-select: none;padding-top:5px;}
+</style>

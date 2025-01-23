@@ -1,0 +1,488 @@
+﻿@page "/personal/account"
+@inject NavigationManager Navigation
+@inject ISnackbar Snackbar
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
+@using Autogestion.Shared.DTO.Empleado
+@using AutoGestion.Theme
+@using Blazored.LocalStorage
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@using AutoGestion.Pages.Eventos
+@using AutoGestion.Pages.HojaVida
+@*@using AutoGestion.Pages.HojaVida*@
+@inject HttpClient Http
+@if (_loading) {
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+
+}else{
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Mis Datos</MudText>
+@if (datosempleado != null) { 
+<MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6">
+    <MudTabPanel Text="General">
+        <MudGrid>
+            <MudItem xs="12" sm="4" md="3">
+                <MudCard Elevation="25">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText>Datos Colaborador</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <div class="d-flex justify-center mb-4">
+                            <MudAvatar Image="@imageDataURL" Style="height:100px; width:100px;">
+                                @if(AvatarImageLink == null)
+                                {
+                                    <MudIcon Icon="@AvatarIcon" Size="Size.Large"></MudIcon>
+                                }
+                            </MudAvatar>
+                                
+                        </div>
+                        <MudText Align="Align.Center">@datosempleado.ENAME</MudText>
+                        <MudText Align="Align.Center">@datosempleado.CARGO</MudText>
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex justify-center">
+                        <MudButton OnClick="DeletePicture" Color="@AvatarButtonColor">@AvatarButtonText</MudButton>
+                    </MudCardActions>
+                </MudCard>
+            </MudItem>
+            <MudItem xs="12" sm="8" md="9">
+                <MudCard Elevation="25">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText>Datos Básicos</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudGrid Class="d-flex align-start">
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="datosempleado.ENAME" Label="Nombres" Variant="Variant.Outlined" ReadOnly=true Disabled=true/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="datosempleado.CARGO" Label="Cargo" Variant="Variant.Outlined" ReadOnly=true Disabled=true />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="datosempleado.PERNR" Label="Codigo" Variant="Variant.Outlined" HelperText="Codigo SAP para empleados" ReadOnly=true Disabled=true/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="datosempleado.AREA" Label="Area" Variant="Variant.Outlined" ReadOnly=true Disabled=true />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="datosempleado.GBDAT" Label="Fecha Nacimiento" Variant="Variant.Outlined" ReadOnly=true Disabled=true />
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                <MudTextField @bind-Value="datosempleado.EPS" Label="Eps" Variant="Variant.Outlined" ReadOnly=true   Disabled=true/>
+                            </MudItem>
+                            <MudItem xs="12" md="6">
+                                        <MudTextField @bind-Value="datosempleado.RH" Label="RH" Variant="Variant.Outlined" ReadOnly=true Disabled=true />
+                            </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="datosempleado.Correo" Label="Correo" Variant="Variant.Outlined" />
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="datosempleado.CorreoPersonal" Label="Correo Personal" Variant="Variant.Outlined" />
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="datosempleado.Telefono" Label="Teléfono" Variant="Variant.Outlined" />
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="datosempleado.Barrio" Label="Barrio" Variant="Variant.Outlined" />
+                                </MudItem>
+                                    <MudItem xs="12" md="6">
+                                        @* <MudTextField @bind-Value="datosempleado.Municipio" Label="Municipio" Variant="Variant.Outlined" /> *@
+                                        <MudSelect T="DepartamentoDTO" Value="DepartamentoVar" Text="Seleccione..." Label="Departamento" ValueChanged="value => ObtenerMunicipios(value)" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                                            
+                                            @if (Departamentos != null)
+                                            { 
+                                             @*    @if (datosempleado.MunicipioId == 0 || datosempleado.MunicipioId == null)
+                                                {
+                                                    <MudSelectItem T="DepartamentoDTO" Value="@InicialDep">Selecc</MudSelectItem>
+
+                                                } *@
+                                                @foreach (var Dep in Departamentos)
+                                                {
+                                                    <MudSelectItem T="DepartamentoDTO" Value="@Dep">@Dep.Nombre</MudSelectItem>
+                                                }
+                                            }
+                                        </MudSelect>
+                                    </MudItem>
+                                <MudItem xs="12" md="6">
+                                    @* <MudTextField @bind-Value="datosempleado.Municipio" Label="Municipio" Variant="Variant.Outlined" /> *@
+                                        <MudSelect T="MunicipioDTO" @bind-Value="MunicipioEmpleado" Label="Municipio" Disabled="DeshabilitarMunicipio" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                                            @* <MudSelectItem T="int?" Value="0" >Seleccione...</MudSelectItem> *@
+                                            @if (ListMunicipio != null)
+                                            {
+                                               
+                                                @foreach (MunicipioDTO Tipo in ListMunicipio)
+                                                {
+                                                    <MudSelectItem T="MunicipioDTO" Value="@Tipo">@Tipo.Nombre</MudSelectItem>
+                                                }
+                                            }
+                                        </MudSelect>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="datosempleado.Direccion" Label="Dirección" Variant="Variant.Outlined" />
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                    <MudTextField @bind-Value="datosempleado.Estrato" Label="Estrato" Variant="Variant.Outlined" InputType="InputType.Number"/>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                        <MudSelect T="int?" Text="Seleccione..." @bind-Value="datosempleado.TipoViviendaId" Label="Tipo Vivienda" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                                            @if (ListTipovivienda != null)
+                                            {
+                                                @foreach (TipoViviendaDTO Tipo in ListTipovivienda)
+                                                {
+                                                    <MudSelectItem T="int?" Value="@Tipo.Id">@Tipo.Nombre</MudSelectItem>
+                                                }
+                                            }
+                                        </MudSelect>
+                                </MudItem>
+                                <MudItem xs="12" md="6">
+                                        <MudInputLabel>
+                                            ¿Realiza usted desplazamientos laborales conduciendo vehículo automotor (motocicleta o carro) de su propiedad?
+                                            <MudTooltip Color="Color.Info" Placement="Placement.Top" Arrow="true" Style="max-width: 300px; " Text="Entiéndase como desplazamiento laboral aquellos realizados por razones organizativas o de otra índole, en donde por objeto de sus funciones u orden de un superior debe presentarse, durante su jornada laboral a un destino concreto distinto de su lugar habitual de trabajo. No se incluye los desplazamientos desde la casa al lugar de trabajo o viceversa.">
+                                                @* <MudButton Variant="Variant.Outlined" Color="Color.Primary">Inscrito</MudButton> *@
+                                                @* <MudFab StartIcon="" Icon="" Color="Color.Info" /> *@
+                                                <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Small" Color="Color.Info" />
+                                            </MudTooltip>
+                                        </MudInputLabel>
+
+                                        <MudRadioGroup @bind-SelectedOption="@datosempleado.DesplazamientosLaborales">
+                                            <MudRadio Option="@("SI")" Color="Color.Tertiary">Si</MudRadio>
+                                            <MudRadio Option="@("NO")" Color="Color.Secondary">NO</MudRadio>
+                                        </MudRadioGroup>
+                                 </MudItem>
+
+                        </MudGrid>
+       
+                    </MudCardContent>
+                    <hr>
+                            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Login" Color="Color.Primary" Size="Size.Large" FullWidth="true" OnClick="Guardar">Guardar</MudButton>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    </MudTabPanel>
+    @* <MudTabPanel Text="Vacaciones" hidden="" >
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                            @if (Historialvacaciones != null)
+                            {
+                                <MudText>Días por disfrutar @Historialvacaciones[1]</MudText>
+                            }
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha Inicial</th>
+                                <th scope="col">Fecha Final</th>
+                                <th scope="col">Cantidad Días por disfrutar</th>
+                                <th scope="col">Cantidad Días Disfrutados</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+             
+                            @if (Historialvacaciones != null)
+                            {
+                           
+                                    @((MarkupString)Historialvacaciones[0])
+                                
+                            }
+                  </tbody>
+              </table>
+           
+            </MudCardContent>
+        </MudCard>
+    </MudTabPanel> *@
+    <MudTabPanel Text="Seguridad">
+        <MudForm @ref="form">
+            <MudCard>
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText>Cambiar Contraseña</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" md="6">
+                            <MudTextField T="string" Label="Nueva Contraseña" Variant="Variant.Outlined" @bind-Value="@contraseñanueva" InputType="InputType.Password" @ref="pwField1" Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true" RequiredError="Password is required!" />
+                        </MudItem>
+                        <MudItem xs="12" md="6">
+                                    <MudTextField T="string" Label="Confirmación Contraseña" Variant="Variant.Outlined" @bind-Value="@contraseñaconfirmar" InputType="InputType.Password" Validation="@(new Func<string, string>(PasswordMatch))" />
+                        </MudItem>
+                        <MudItem xs="12">
+                            <MudTextField T="string" Label="Contraseña Actual" Variant="Variant.Outlined" @bind-Value="@contraseñaactual" InputType="InputType.Password" />
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+                <MudCardActions Class="pb-4 pl-4">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="@(() => SaveChanges())">Cambiar Contraseña</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudForm>
+    </MudTabPanel>
+
+    <MudTabPanel Text="Familiares">
+        <RegistroFamiliar></RegistroFamiliar>
+    </MudTabPanel>
+            <MudTabPanel Text="Soportes">
+                <HojaDeVida></HojaDeVida>
+            </MudTabPanel>
+</MudTabs>
+}
+}
+@code {
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    public string AvatarImageLink { get; set; } = "https://media-exp1.licdn.com/dms/image/C4D03AQGNO7uV7fRi7Q/profile-displayphoto-shrink_200_200/0/1531753989819?e=1614816000&v=beta&t=t2IEQlTyem3aFB1sQXFHrDGt0yMsNkPu7jDmMPoEbLg";
+    public string AvatarIcon { get; set; }
+    public string AvatarButtonText { get; set; } = "Cambiar Imagen";
+    public Color AvatarButtonColor { get; set; } = Color.Error;
+    public bool _loading = true;
+    public string imageDataURL { get; set; }
+    private EmpleadoDTO empleado { get; set; } 
+    string[] Historialvacaciones;
+    private string contraseñanueva { get; set; }
+    private string contraseñaactual { get; set; }
+    private string contraseñaconfirmar { get; set; }
+    private int TipoVivienda { get; set; } = 0;
+    private bool DeshabilitarMunicipio { get; set; } = true;
+    private DepartamentoDTO? DepartamentoVar { get; set; }
+    private List<TipoViviendaDTO> ListTipovivienda { get; set; } = new List<TipoViviendaDTO>();
+    private List<DepartamentoDTO> Departamentos { get; set; } = new List<DepartamentoDTO>();
+    private List<MunicipioDTO> ListMunicipio { get; set; } = new List<MunicipioDTO>();
+    private MunicipioDTO? MunicipioEmpleado { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        datosempleado= await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        if (datosempleado == null) Navigation.NavigateTo("pages/authentication/login");
+        if (datosempleado.TipoViviendaId!=null)
+        {
+            TipoVivienda = Convert.ToInt32(datosempleado.TipoViviendaId);
+        }
+
+        var foto = await localStore.GetItemAsync<string>("Foto");
+
+        if (foto != null)
+        {
+            foto = foto.Replace("\"", "");
+            imageDataURL = $"data:image/png;base64,{foto}";
+
+        }
+        _loading = true;
+        var vacaciones = await Http.GetFromJsonAsync<string>($"api/Historial/{datosempleado.PERNR}");
+        ListTipovivienda = await Http.GetFromJsonAsync<List<TipoViviendaDTO>>($"api/Trabajador/ObtenerTipoVivienda"); 
+        Departamentos = await Http.GetFromJsonAsync<List<DepartamentoDTO>>($"api/Trabajador/Departamentos");
+
+        ListMunicipio = await Http.GetFromJsonAsync<List<MunicipioDTO>>($"api/Trabajador/ObtenerMunicipios/{0}");
+        if (datosempleado.MunicipioId != null && datosempleado.MunicipioId != 0)
+        {
+            DeshabilitarMunicipio = false;
+            var Mun = ListMunicipio.Where(x => x.Id == datosempleado.MunicipioId).FirstOrDefault();
+            if(Mun!=null)
+            {
+                // ListMunicipio = await Http.GetFromJsonAsync<List<MunicipioDTO>>($"api/Trabajador/ObtenerMunicipios/{Mun.Id}");
+                DepartamentoVar = Departamentos.Where(x => x.Id == Mun.DepartamentoId).FirstOrDefault();
+                MunicipioEmpleado = Mun;
+            }
+
+        }
+        Historialvacaciones = vacaciones.Split(';');
+        _loading = false;
+        StateHasChanged();
+    }
+
+    async Task ObtenerMunicipios(DepartamentoDTO Item)
+    {
+        DepartamentoVar = Item;
+        ListMunicipio = await Http.GetFromJsonAsync<List<MunicipioDTO>>($"api/Trabajador/ObtenerMunicipios/{Item.Id}");
+        DeshabilitarMunicipio = false;
+    }
+
+    void DeletePicture()
+    {
+        if(!String.IsNullOrEmpty(AvatarImageLink))
+        {
+            AvatarImageLink = null;
+            AvatarIcon = Icons.Material.Outlined.SentimentVeryDissatisfied;
+            AvatarButtonText = "Upload Picture";
+            AvatarButtonColor = Color.Primary;
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+
+        if(contraseñaconfirmar != contraseñanueva)
+
+        {
+            Snackbar.Add("Contraseña nueva y su confirmación deben coincidir", Severity.Error, config =>
+        {
+            config.ShowCloseIcon = false;
+        }); 
+
+
+        }
+
+        string[] respuesta = await Http.GetFromJsonAsync<string[]>($"api/cambiopass/{datosempleado.DOCUMENTO}/{contraseñaactual}/{contraseñanueva}");
+        _loading = false;
+        switch (respuesta[0])
+        {
+            case "1":
+                Snackbar.Add("Se ha cambiado la contraseña", Severity.Success, config =>
+       {
+           config.ShowCloseIcon = false;
+       });
+                break;
+            case "2":
+                Snackbar.Add("la contraseña actual no es valida", Severity.Error, config =>
+       {
+           config.ShowCloseIcon = false;
+       });
+                break;
+            case "0":
+                Snackbar.Add("Ocurrio un  error cambiar contraseña", Severity.Error, config =>
+       {
+           config.ShowCloseIcon = false;
+       });
+                break;
+        }
+
+    }
+
+    MudForm form;
+    MudTextField<string> pwField1;
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Password is required!";
+            yield break;
+        }
+        if (pw.Length < 8)
+            yield return "la contraseña debe tener mas de 8 caracteres";
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return "la contraseña debe contener una letra mayuscula";
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return "la contraseña debe contener una letra minuscula";
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return "a contraseña debe contener al menos un digito";
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (pwField1.Value != arg)
+            return "Passwords don't match";
+        return null;
+    }
+
+    private async Task Guardar()
+
+    {
+        try
+        {
+
+
+            _loading = true;
+            empleado = new EmpleadoDTO();
+            empleado.Id = datosempleado.Id;
+            empleado.Telefono = datosempleado.Telefono;
+            empleado.Correo = datosempleado.Correo;
+            empleado.CorreoPersonal = datosempleado.CorreoPersonal;
+            empleado.Barrio = datosempleado.Barrio;
+            if(MunicipioEmpleado!=null)
+            {
+                empleado.MunicipioId = MunicipioEmpleado.Id;
+            }
+            
+            empleado.Estrato = datosempleado.Estrato;
+            empleado.Direccion = datosempleado.Direccion;
+            empleado.TipoViviendaId = datosempleado.TipoViviendaId;
+            empleado.DesplazamientosLaborales = datosempleado.DesplazamientosLaborales;
+
+            if ((datosempleado.Correo == null || datosempleado.Correo == "") && (datosempleado.CorreoPersonal == null || datosempleado.CorreoPersonal == ""))
+
+            {
+                _loading = false;
+                await JS.ShowMessage("Error", "Debe ingresar al menos un correo electronico", "error");
+                return;
+            }
+            string Validador = "";
+            if ((empleado.Barrio == "" || empleado.Barrio == null))
+            {
+                Validador += " Barrio <br/>";
+
+            }
+            if ((empleado.MunicipioId == 0 || empleado.MunicipioId == null))
+            {
+                Validador += " Municipio <br/>";
+
+            }
+            if ((empleado.Estrato == "" || empleado.Estrato == null))
+            {
+                Validador += " Estrato <br/>";
+
+            }
+            if ((empleado.Direccion == "" || empleado.Direccion == null))
+            {
+                Validador += " Dirección <br/>";
+
+            }
+            if ((empleado.TipoViviendaId == 0 || empleado.TipoViviendaId == null))
+            {
+                Validador += " Tipo de Vivienda <br/>";
+
+            }
+            if (Validador!="")
+            {
+                _loading = false;
+                await JS.ShowMessage("Error", "Debe ingresar los siguientes datos: <br/>" + Validador, "error");
+                return;
+
+            }
+            if (datosempleado.DesplazamientosLaborales == "" || datosempleado.DesplazamientosLaborales ==null)
+            {
+                _loading = false;
+                await JS.ShowMessage("Error", "Es necesario saber si realiza desplazamientos laborales" + Validador, "error");
+                return;
+            }
+            var response = await Http.PostAsJsonAsync<EmpleadoDTO>($"api/empleado", empleado);
+            if (response.IsSuccessStatusCode)
+            {
+                var respuesta = await response.Content.ReadFromJsonAsync<string>();
+
+
+                if (respuesta == "1")
+
+                {
+                    await localStore.SetItemAsync("User", datosempleado);
+                    await JS.ShowMessage("Actualización", "se han actualizado los datos", "success");
+                }
+                else
+
+                {
+
+                    await JS.ShowMessage("Error", "No se han podido actualizar los datos", "error");
+
+                }
+            }
+
+            _loading = false;
+        }
+        catch (Exception ex)
+        {
+            _loading = false;
+                await JS.ShowMessage("Error", ""+ ex.Message, "error");
+            Console.WriteLine(ex.Message);
+        }
+
+    }
+} 

@@ -1,0 +1,265 @@
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.exe
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.deps.json
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.runtimeconfig.json
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.CommandLine.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Http.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Debug.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventLog.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventSource.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.AssemblyReference.cache
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfoInputs.cache
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfo.cs
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CoreCompileInputs.cache
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CopyComplete
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\refint\EvaDesempeñoActualizacion.dll
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.genruntimeconfig.cache
+C:\Users\Larcade\Documents\1-Repositorio Foscal\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\ref\EvaDesempeñoActualizacion.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.exe
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.deps.json
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.runtimeconfig.json
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.CommandLine.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Http.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Debug.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventLog.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventSource.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.AssemblyReference.cache
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfoInputs.cache
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfo.cs
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CoreCompileInputs.cache
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CopyComplete
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\refint\EvaDesempeñoActualizacion.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.genruntimeconfig.cache
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\ref\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.exe
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.deps.json
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.runtimeconfig.json
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.CommandLine.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Http.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Debug.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventLog.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventSource.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Autogestion.Shared.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\bin\Debug\net6.0\Autogestion.Shared.pdb
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.AssemblyReference.cache
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfoInputs.cache
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfo.cs
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CoreCompileInputs.cache
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.sourcelink.json
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesem.AC9E8946.Up2Date
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\refint\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.genruntimeconfig.cache
+C:\Users\AAlvarado\source\repos\FoscalDev\GestionDePersonal_V2\EvaDesempeñoActualizacion\obj\Debug\net6.0\ref\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.exe
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.deps.json
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.runtimeconfig.json
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.CommandLine.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Http.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Console.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Debug.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventLog.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventSource.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Json.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Autogestion.Shared.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Autogestion.Shared.pdb
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.AssemblyReference.cache
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfoInputs.cache
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfo.cs
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CoreCompileInputs.cache
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesem.AC9E8946.Up2Date
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\refint\EvaDesempeñoActualizacion.dll
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.genruntimeconfig.cache
+C:\Users\AAlvarado\source\repos\acalvaradog\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\ref\EvaDesempeñoActualizacion.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.exe
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.deps.json
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.runtimeconfig.json
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Abstractions.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.CommandLine.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Json.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Configuration.UserSecrets.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Http.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Configuration.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Console.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.Debug.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventLog.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Logging.EventSource.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Microsoft.Extensions.Primitives.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Serilog.Sinks.File.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.DiagnosticSource.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Diagnostics.EventLog.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\System.Text.Json.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Autogestion.Shared.dll
+C:\GestionClick\EvaDesempeñoActualizacion\bin\Debug\net6.0\Autogestion.Shared.pdb
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.AssemblyReference.cache
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.GeneratedMSBuildEditorConfig.editorconfig
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfoInputs.cache
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.AssemblyInfo.cs
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CoreCompileInputs.cache
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.csproj.CopyComplete
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.dll
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\refint\EvaDesempeñoActualizacion.dll
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.pdb
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\EvaDesempeñoActualizacion.genruntimeconfig.cache
+C:\GestionClick\EvaDesempeñoActualizacion\obj\Debug\net6.0\ref\EvaDesempeñoActualizacion.dll

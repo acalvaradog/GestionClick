@@ -1,0 +1,73 @@
+﻿@page "/PreguntasFrecuentes/Temas"
+@using Autogestion.Shared.DTO.PreguntasFrecuentes;
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager Navigation
+@inject HttpClient Http
+@using System.Text.Json
+@inject IDialogService DialogService
+<!DOCTYPE html>
+  <html>
+      <body>
+<MudText Typo="Typo.h4" Color="Color.Primary" Class="mb-4" Align="Align.Center"><b>Temas de Interes</b></MudText>
+ <MudGrid Class="justify-content-center">
+@foreach (var item in ListTemasPre)
+{
+        <MudItem Class="col-lg-4" xs="12" sm="12" md="6" xl="4" >
+            <MudCard Class="card" Style="height: auto" >
+            <br />
+                <MudCardHeader Class="justify-content-center" >
+                <MudText Typo="Typo.h6" Color="Color.Primary" Align="Align.Center">
+                        <MudLink OnClick="@(args=>OpenDialog(item.Id ,item.Tema))">@item.Tema</MudLink>
+                </MudText>
+
+            </MudCardHeader>
+           @*  <MudCardContent>
+               
+
+
+            </MudCardContent> *@
+            <br />
+        </MudCard>
+        </MudItem>
+
+    
+
+}
+</MudGrid>
+</body>
+</html>
+
+@* <MudCard Class="card mt-3">
+    <MudCardContent>
+
+    </MudCardContent>
+</MudCard> *@
+
+@code {
+
+    private List<TemaPreguntas>? ListTemasPre = new List<TemaPreguntas>();
+    //---MODAL-DIALOG--//
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } 
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+    private DialogOptions dialogOptions = new() { FullWidth = true };
+    private bool visible;
+    private int NmrViatico;
+    private void OpenDialog(int ? Id , string? Tema)
+    {
+        var parameters = new DialogParameters { ["IdTema"] = Id, ["TituloModal"] = Tema };
+        
+        var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        DialogService.Show<DialogPreguntas>("Simple Dialog", parameters, options);
+    }
+
+    //-----------------//
+
+    protected override async Task OnInitializedAsync()
+    {
+        ListTemasPre = await Http.GetFromJsonAsync<List<TemaPreguntas>>($"api/TemaPreguntas/ObtenerTemas");
+
+    }
+
+}

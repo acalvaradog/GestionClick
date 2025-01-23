@@ -1,0 +1,116 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+@{
+
+    Adm_AutoGestion.Models.Capacitacion Item = ViewBag.Capacitacion;
+}
+
+<div class="container" style="max-width: 90%;">
+    <br />
+
+    <form action="javascript:;" method="post" id="form" enctype="multipart/form-data">
+        <div class="row justify-content-start">
+            <div class="col-2">
+                No. Acción de Formación
+                <input type="text" disabled value="@Item.Id" class="form-control" id="NmrCapacitacion" />
+
+            </div>
+
+        </div>
+        <br />
+        <div class="row justify-content-start">
+            <div class="col-4">
+                <br />
+                <div><label>Cobertura</label></div>
+                <div>
+                    <input class="form-control" type="text" id="Cobertura" disabled value="@ViewBag.Cobertura %" />
+                </div>
+            </div>
+            <div class="col-4">
+                <br />
+                <div><label>Cantidad de Asistentes</label></div>
+                <div>
+                    <input class="form-control" type="number" id="CtnAsistentes" disabled value="@ViewBag.Asistentes" />
+                </div>
+            </div>
+            <div class="col-4">
+                <br />
+                <div><label>Cantidad de Inscritos</label></div>
+                <div>
+                    <input class="form-control" type="number" id="CtnProgramados" disabled value="@ViewBag.programados" />
+                </div>
+            </div>
+
+            <!--<div class="col-4">
+            <br />
+            <div>
+                <label>
+                    Conocimientos
+                </label>
+            </div>-->
+            @* <input type="text" class="form-control"/>
+                <!--@Html.TextBox("Conocimientos", null, htmlAttributes: new { @class = "form-control", id = "conocimientos", name = "conocimientos", onchange = "javascript:dessabledconcocimientos();" })
+                    </div>
+
+                    <div class="col-4">
+                        <br />
+                        <div>
+                            <label>
+                                Competencia
+                            </label>
+                        </div>
+                        <div>
+                            @Html.DropDownList("Competencia", new SelectList(ViewBag.Competencia, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", id = "competencia", name = "competencia", onchange = "javascript:desabledcompetencia();" })
+                            @Html.ValidationMessageFor(model => model.CompetenciaLaboral)
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <br />
+                        <div><label>Cultura Organizacional</label></div>
+                        <div>
+                            @Html.DropDownList("CulturaO", new SelectList(ViewBag.Cultura, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", id = "cultura", name = "cultura", onchange = "javascript:desabledcultura();" })
+                            @Html.ValidationMessageFor(model => model.CulturaOrganizacional)
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <br />
+                        <div><label>Medición eficación</label></div>
+                        <div>
+                            <select class="form-control" id="Medicion" name="Medicion" onchange="javascript:mostrarInputCierreCap();">
+                                <option selected>Seleccione...</option>
+                                <option>SI</option>
+                                <option>NO</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-4" hidden id="oculto1">
+                        <br />
+                        <label id="MetaE">Meta eficacia</label>
+                        <input class="form-control" type="text" id="MetaE2" />
+                    </div>
+                    <div class="col-4" hidden id="oculto2">
+                        <br />
+                        <label id="ResultadoM1">Resultado medición</label>
+                        <input class="form-control" type="text" id="ResultadoM2" />
+                    </div>
+                    <div class="col-4" hidden id="oculto3">
+                        <br />
+                        <label id="Metodologia1">Metodología</label>
+                        @Html.DropDownList("Metodologia2", new SelectList(ViewBag.Metodologia, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Metodologia2)
+                    </div>
+            *@
+
+        </div>
+        <div class="row justify-content-start" style="text-align:center">
+            <div class="col-12">
+                <br />
+                <button type="submit" id="Cerrar" class="bi bi-save btn btn-outline-primary rounded-pill mb-2" onclick="javascript: return CerrarCapacitacion();"> Guardar</button>
+            </div>
+        </div>
+
+        <br />
+    </form>
+    <br />
+</div>
+

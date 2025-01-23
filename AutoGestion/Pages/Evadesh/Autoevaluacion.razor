@@ -1,0 +1,301 @@
+﻿
+@page "/Evadesh/Autoevaluacion"
+@using Autogestion.Shared.DTO.Evadesh;
+@using Autogestion.Shared.DTO.Empleado;
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+<MudText Typo="Typo.h4" Color="Color.Primary" Class="mb-4" Align="Align.Center">Evaluación de Desempeño</MudText>
+<br/>
+<EditForm Model="@AutoEvaluacionDTO" OnInvalidSubmit="GuardarRegistro">
+    <MudGrid Class="justify-content-center">
+        @if (Loading_ ==true )
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+            @* <MudItem Class="col-md-6">
+
+                <MudCard>
+                    <br />
+                    <MudCardHeader>
+                        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">Autoevaluación Periódo de Entrenamiento</MudText>
+
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @if (DisabledForm == false)
+                        {
+
+                            <MudTextField T="string" FullWidth="true" Variant="Variant.Outlined" @bind-Text="AutoEvaluacionDTO.Autoevaluacion" Lines="2" Placeholder="No hay registros pendientes por Calificar" Disabled="true" />
+                        }
+                        else
+                        {
+
+                            <MudTextField T="string" FullWidth="true" Variant="Variant.Outlined" @bind-Text="AutoEvaluacionDTO.Autoevaluacion" Lines="2" Placeholder="Describa como le ha parecido su periodo de entrenamiento" MaxLength="250" />
+                        }
+
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex mt-3 justify-content-center">
+                        <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="" OnClick="@GuardarRegistro" Disabled="DisabledBot">Guardar</MudButton>
+                    </MudCardActions>
+                    <DataAnnotationsValidator />
+                    <br />
+                </MudCard>
+
+            </MudItem> *@
+        }
+        else
+        {
+        @if (periodos.Count == 0 && DisabledBot != false && SeguimientosPendientes.Count == 0)
+        {
+            <MudItem Class="col-md-3">
+            </MudItem>
+            <MudItem Class="col-md-6">
+                <MudCard>
+                    <br />
+                    <MudText Typo="Typo.h6" Color="Color.Error" Align="Align.Center">No hay acciones pendientes por realizar</MudText>
+                    <br />
+                </MudCard>
+            </MudItem>
+            <MudItem Class="col-md-3">
+            </MudItem>
+            
+        }
+       
+       
+        @if (periodos.Count > 0)
+        {
+            @foreach(var periodo in periodos)
+                {           
+                <MudItem Class="col-md-6">
+                <MudCard>
+                    <br />
+                    <MudCardHeader>
+                        <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+                            Retroalimentación Evaluación @TIPOEVA
+                        </MudText>
+
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudInputLabel>¿Le ha sido retroalimentado el resultado de su desempeño del período @Convert.ToDateTime(periodo.fechaincio).ToString("dd/MM/yyyy") al @Convert.ToDateTime(periodo.fechafinal).ToString("dd/MM/yyyy")?</MudInputLabel>
+
+                        <MudCheckBox @bind-Checked="@periodo.Retroalimentacion">Si</MudCheckBox>
+
+                    </MudCardContent>
+                    <MudCardActions Class="d-flex mt-3 justify-content-center">
+                        <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="" OnClick="@(args=>GuardarRegistroRetroalimetacion(periodo))" Disabled="DisabledForm">Guardar</MudButton>
+                    </MudCardActions>
+                    <br />
+                </MudCard>
+            </MudItem>
+                }
+        }
+        <br />
+            <MudDivider />
+        @if (SeguimientosPendientes.Count>0)
+        {
+            @foreach (var item in SeguimientosPendientes)
+            {
+
+                <MudItem Class="col-md-6">
+                    <MudCard>
+                        <br />
+                        <MudCardHeader>
+                            <MudText Typo="Typo.h5" Color="Color.Primary" Align="Align.Center">
+                                Retroalimentación Seguimiento @Convert.ToDateTime(item.Fecha.Value).ToString("dd/MM/yyyy")
+                            </MudText>
+
+                        </MudCardHeader>
+                        <MudCardContent>
+                            <MudInputLabel> ¿Se ha realizado la retroalimentación del siguiente seguimiento?: "@item.Descripcion"</MudInputLabel>
+                         
+                                     @if (item.Cumplimiento == false)
+                                    {
+                                        <br/>
+                                    <MudInputLabel>Seguimiento el cual: "No ha cumplido"</MudInputLabel>
+                                    }
+                                    else if (item.Cumplimiento == true)
+                                    {
+                                    <br />
+                                    <MudInputLabel>Seguimiento el cual: "Si ha cumplido"</MudInputLabel>
+                                    }else
+                                    {
+                                    <MudInputLabel>Seguimiento el cual: "No ha sido evaluado"</MudInputLabel>
+                                    }
+
+                                <MudRadioGroup @bind-SelectedOption="item.TEXTO">
+                                <MudRadio Option="@("SI")" Color="Color.Tertiary">SI</MudRadio>
+                                <MudRadio Option="@("NO")" Color="Color.Secondary">NO</MudRadio>
+                             </MudRadioGroup>
+                                <MudItem Class="col-md-12">
+                                    <MudTextField T="string" Label="Observación" Variant="Variant.Outlined" @bind-Text="item.Observacion_Emp" Lines="3" Placeholder="Puede dejear sus observaciones acerca del seguimiento" />
+                                </MudItem>
+
+                        </MudCardContent>
+                        <MudCardActions Class="d-flex mt-3 justify-content-center">
+                            <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="" OnClick="@(args=>GuardarRegistroRetroalimetacionSeguimiento(item))" Disabled="DisabledForm">Guardar</MudButton>
+                        </MudCardActions>
+                        <br />
+                    </MudCard>
+                </MudItem>
+            }
+            
+        }
+        }
+     </MudGrid>
+</EditForm>
+@code {
+
+    private EmpleadoReturnSapDTO? empleado { get; set; }
+    bool DisabledForm = false;
+    bool DisabledBot = false;
+    bool Loading_ =true;
+    int NmrEmp =0;
+    evaluacion_otrosDTO AutoEvaluacionDTO = new evaluacion_otrosDTO();
+    Justify justification = Justify.FlexStart;
+    string TIPOEVA = "";
+    public bool Retroalimentacion { get; set; } = false;
+    encuestadores_x_empleado EncXEmp = new encuestadores_x_empleado();
+    List<Periodos> periodos = new List<Periodos>();
+    List<Seguimientos_x_Registro> SeguimientosPendientes = new List<Seguimientos_x_Registro>();
+    public string? Socializado_Seg { get; set; } 
+
+
+    private async void GuardarRegistro()
+    {
+        Loading_ = true;
+        bool validador = true;
+        string respuesta = "";
+        if (AutoEvaluacionDTO.Autoevaluacion == "" || AutoEvaluacionDTO.Autoevaluacion == null)
+        {
+            validador = false;
+            respuesta = "Descripción del Periodo de entrenamiento";
+        }
+
+        AutoEvaluacionDTO.CodEmp = NmrEmp;
+        if (validador)
+        {
+            var guardado = await Http.PostAsJsonAsync<evaluacion_otrosDTO>($"api/EvaDesempeño/GuardarRegistro/", AutoEvaluacionDTO);
+            if (guardado.IsSuccessStatusCode)
+            {
+                Loading_ = false;
+                await JS.ShowMessage("Registro Guadado", "Su observación fue registrada de manera exitosa", "success");
+
+                NavManager.NavigateTo("Evadesh/Autoevaluacion", true);
+            }
+        }else
+        {
+            Loading_ = false;
+            await JS.ShowMessage("Error", "Hacen falta los siguientes datos: <br/> " + respuesta, "warning");
+
+        }
+        Console.WriteLine("Entra al Guardar");
+    }
+    private async void GuardarRegistroRetroalimetacion(Periodos ItemSelect)
+    {
+        Loading_ = true;
+        bool validador = true;
+        string respuesta = "";
+        if (ItemSelect.Retroalimentacion == false)
+        {
+            validador = false;
+            respuesta = "Se debe marcar el si se ha realizado la retroalimentación";
+        }
+        if (NmrEmp!=0){
+
+            if (validador == true)
+            {
+                string t="";
+                EncXEmp.codigoempleado = NmrEmp;
+                EncXEmp.periodo = ItemSelect.codigo;
+                EncXEmp.RetroalimentacionEmp = ItemSelect.Retroalimentacion;
+                Console.WriteLine(EncXEmp);
+                var guardado = await Http.PostAsJsonAsync<encuestadores_x_empleado>($"api/EvaDesempeño/GuardarRetroalimentacionEmp", EncXEmp);
+                if (guardado.IsSuccessStatusCode)
+                {
+                    Loading_ = false;
+                    await JS.ShowMessage("Registro Guadado", "Su observación fue registrada de manera exitosa", "success");
+
+                    NavManager.NavigateTo("Evadesh/Autoevaluacion", true);
+                }
+            }
+            else
+            {
+                Loading_ = false;
+                await JS.ShowMessage("Error", "Se han encontrado las siguientes inconcistencias: <br/> " + respuesta, "warning");
+
+            }
+        }
+        Loading_ = false;
+        Console.WriteLine("Entra al Guardar");
+    }
+
+    private async void GuardarRegistroRetroalimetacionSeguimiento(Seguimientos_x_Registro ItemSelect)
+    {
+        Loading_ = true;
+        var validador = true;
+        var respuesta = "";
+        if (ItemSelect.Observacion_Emp == null || ItemSelect.Observacion_Emp=="")
+        {
+            //OPCIONAL  
+        }
+        if (ItemSelect.TEXTO == null || ItemSelect.TEXTO == "")
+        {
+
+            validador = false;
+            respuesta = "¿Ha sido retroalimentado el seguimiento?";
+        }
+
+        if (validador==true)
+        {
+            ItemSelect.Fecha_SocEmp = DateTime.Now;
+            if (ItemSelect.TEXTO == "SI")
+            {
+                ItemSelect.Socializado_Emp = Convert.ToBoolean (true);
+            
+            }
+            if (ItemSelect.TEXTO == "NO")
+            {
+                ItemSelect.Socializado_Emp =Convert.ToBoolean (false);
+            }
+            var guardado = await Http.PostAsJsonAsync<Seguimientos_x_Registro>($"api/EvaDesempeño/GuardarRegistroSegSoc", ItemSelect);
+            if (guardado.IsSuccessStatusCode)
+            {
+                Loading_ = false;
+                await JS.ShowMessage("Registro Guadado", "Su observación fue registrada de manera exitosa", "success");
+
+                NavManager.NavigateTo("Evadesh/Autoevaluacion", true);
+            }
+
+        }else
+        {
+            Loading_ = false;
+            await JS.ShowMessage("Error", "Hacen falta los siguientes datos: <br/> " + respuesta, "warning");
+        }
+
+
+        Loading_ = false;
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        empleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        // Console.WriteLine("Entra al iniciar" + DisabledForm + "/" + empleado.PERNR);
+        NmrEmp = Convert.ToInt32(empleado.PERNR);
+        DisabledForm = await Http.GetFromJsonAsync<bool>($"api/EvaDesempeño/ConsultarUltimaEva/{empleado.PERNR}");
+        periodos = await Http.GetFromJsonAsync < List<Periodos>>($"api/EvaDesempeño/ConsultarPeriodoP/{empleado.PERNR}");
+        SeguimientosPendientes = await Http.GetFromJsonAsync<List<Seguimientos_x_Registro>>($"api/EvaDesempeño/ConsultarseguimientosPSoc/{empleado.PERNR}");
+        // if (periodo.TipoPeriodo == 1) { TIPOEVA = "Periódica"; }
+        // else { TIPOEVA = "Entrenamieno"; }
+        // Console.WriteLine("Entra al iniciar2" + DisabledForm + "/" + empleado.PERNR);
+        if (DisabledForm == false)
+        {
+            DisabledBot = true;
+
+        }
+        Loading_ = false;
+
+       
+    }
+}

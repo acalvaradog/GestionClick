@@ -1,0 +1,57 @@
+﻿@using Autogestion.Shared.DTO.Empleado
+
+<div class="modal fade show" id="myModal" style="display:block; "
+     aria-modal="true" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="empleadoModalLabel">Seleccionar Empresa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <MudTable Items="@Empleados" Hover="true" Bordered="true" Striped="true">
+                    <HeaderContent>
+                        <MudTh>Id</MudTh>
+                        <MudTh>Empresa</MudTh>
+                        <MudTh>Codigo</MudTh>
+                        <MudTh>Puesto</MudTh>
+                        <MudTh>Seleccionar</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>@context.Id</MudTd>
+                        <MudTd>@context.BUKRS</MudTd>
+                        <MudTd>@context.PERNR</MudTd>
+                        <MudTd>@context.CARGO</MudTd>
+                        <MudTd>
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="() => SelectEmpleado(context)">
+                                Seleccionar
+                            </MudButton>
+                        </MudTd>
+                    </RowTemplate>
+                </MudTable>
+            </div>
+            <div class="modal-footer">
+           
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@code {
+    [Parameter]
+    public List<EmpleadoReturnSapDTO> Empleados { get; set; }
+
+    [Parameter]
+    public EventCallback<EmpleadoReturnSapDTO> OnClose { get; set; }
+
+    private void SelectEmpleado(EmpleadoReturnSapDTO empleado)
+    {
+        OnClose.InvokeAsync(empleado);
+        StateHasChanged();
+    }
+
+
+}

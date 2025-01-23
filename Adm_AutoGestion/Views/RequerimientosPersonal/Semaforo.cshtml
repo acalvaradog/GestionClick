@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.RequerimientosDelPersonal>
+
+@{
+    ViewBag.Title = "Semaforo";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<head>
+    <script src="~/Contents/js/dataTables.responsive.min.js"></script>
+</head>
+<div class="card">
+
+    <div class="card-header text-white fondoDegradado"><h4>Semáforo Requerimientos en Proceso</h4></div>
+    <div class="card-body">
+
+
+
+
+        <div class="row justify-content-center text-center" style="align-content:center; ">
+
+            <div class="col-2 Circulo_Semaforo1" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Menos de 10 Días de Solicitado" style="cursor:pointer; background-image: url('../Contents/image/Semaforo1.png'); ">
+                <h3 id="color2" class="text-success " style="margin-top: 50%;">@ViewBag.Verde</h3>
+            </div>
+            <div class="col-2 Circulo_Semaforo2" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Entre 10 Días y 20 Días de Solicitado" style="cursor: pointer; background-image: url('../Contents/image/Semaforo2.png'); ">
+                <h3 id="color2" class="text-warning " style="margin-top: 50%;">@ViewBag.Amarillo</h3>
+
+            </div>
+            <div class="col-2 Circulo_Semaforo3" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Mas de 20 Días de Solicitado" style="cursor: pointer; background-image: url('../Contents/image/Semaforo3.png'); ">
+                <h3 id="color2 " class="text-danger " style="margin-top: 50%;">@ViewBag.Rojo</h3>
+            </div>
+            <div class="col-2 Circulo_Semaforo5" style="background-image: url('../Contents/image/Semaforo5.png'); "></div>
+            <div class="col-2 Circulo_Semaforo4" data-bs-placement="bottom" data-bs-toggle="tooltip" title="Total de Requerimientos en Proceso" style="cursor: pointer; background-image: url('../Contents/image/Semaforo4.png'); ">
+                <h3 id="color2" class="text-primary " style="margin-top: 50%;">@ViewBag.Total</h3>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+<div class="container-fluid">
+    <div class="table-responsive">
+
+        <table class=" table table striped " id="Tabla_Semaforo">
+            <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        Cant. dias
+                    </th>
+                    <th>
+                        N° Solicitud
+                    </th>
+                    <th>
+                        Empleado Registra
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Horario
+                    </th>
+                    <th>
+                        Jornada
+                    </th>
+                    <th>
+                        Motivo Solicitud
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Cargo)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Area)
+                    </th>
+                    <th>
+                        Dirección
+                    </th>
+                    <th>
+                        N° Personas
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="text-capitalize text-center">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (item.Color == "verde")
+                            {
+                                <div class="circulo_tabla1 "></div>}
+                            @if (item.Color == "amarillo")
+                            {
+                                <div class="circulo_tabla2"></div>}
+                            @if (item.Color == "rojo")
+                            {
+                                <div class="circulo_tabla3"></div>}
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tiempo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empresa.Codigo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EstadoRdP.Nombre).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Horario.Nombre).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Jornada.Nombre) - Horas
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MtvSolicitud.Nombre).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cargo).ToString().ToLower()
+                        </td>
+                        <td>
+
+                            @Convert.ToDateTime(item.Fecha).ToShortDateString()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Area).ToString().ToLower()
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Direccion).ToString().ToLower()
+                        </td>
+                        <td>
+                            <p class="badge-light"> @Html.DisplayFor(modelItem => item.NumeroPresonas)</p>
+                        </td>
+
+                        <td>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

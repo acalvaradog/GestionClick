@@ -1,0 +1,117 @@
+﻿@model Adm_AutoGestion.Models.Eventos
+@using System.Web.UI.WebControls;
+
+
+<script src="~/Contents/js/Eventos.js"></script>
+<div class="container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <div class="row mb-3 mt-5">
+            <div class="col-12">
+                <img style="width:inherit;height:250px;" src="~/AnexosEventos/@Model.Imagen" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <label>Fecha de Publicacion</label>
+                <div class="col-4">
+                    <input class="form-control" style="width:100%" disabled value="@Convert.ToDateTime(Model.FechaPublicacion).ToString("dd 'de' MMMM 'del' yyyy H:mm tt")" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <label>Nombre del Evento</label>
+                @Html.EditorFor(model => model.NombreEvento, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-4">
+                <label>Tipo de Evento</label>
+                @if (Model.TipoEvento == "2")
+                {
+                    <input class="form-control" id="TipoEvento" disabled value="Continuo">
+                }
+                else if (Model.TipoEvento == "3")
+                {
+                    <input class="form-control" id="TipoEvento" disabled value="Concurrente" />
+                }
+                else
+                {
+                    <input class="form-control" id="TipoEvento" disabled value="Unico" />
+                }
+
+            </div>
+
+            <div class="col-5">
+                <label>Dirigido A</label>
+                @Html.EditorFor(model => model.DirigidoA, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+            </div>
+
+            <div class="col-3">
+                <label>Cupo</label>
+                @if (Model.DirigidoA == "General")
+                {
+                    @Html.EditorFor(model => model.Cupo, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.Cupo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Cupo, "", new { @class = "text-danger" })
+                }
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-3">
+                <label>Hora de Inicio</label>
+                <input type="time" name="HoraInicio" id="HoraInicio" class="form-control" value="@Convert.ToDateTime(Model.HoraInicio).ToString("HH:mm")" />
+                @Html.ValidationMessageFor(model => model.HoraInicio, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-3">
+                <label>Hora de Finalización</label>
+                <input type="time" name="HoraFin" id="HoraFin" class="form-control" value="@Convert.ToDateTime(Model.HoraFin).ToString("HH:mm")" />
+                @Html.ValidationMessageFor(model => model.HoraFin, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-3">
+                <label>Fecha Inicio</label>
+                <input type="date" name="FechaInicio" id="FechaInicio" class="form-control" onchange="javascript:cambiarFechaFinDetalles();" value="@Convert.ToDateTime(Model.FechaInicio).ToString("yyyy-MM-dd")" />
+                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="col-3">
+                <label>Fecha de Finalización</label>
+                @if (Model.TipoEvento == "2")
+                {
+                    <input type="date" name="FechaFin" id="FechaFin" class="form-control" value="@Convert.ToDateTime(Model.FechaFin).ToString("yyyy-MM-dd")" />
+                    @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+                }
+                else
+                {
+                    <input type="date" class="form-control" id="FechaFin" value="@Convert.ToDateTime(Model.FechaFin).ToString("yyyy-MM-dd")" disabled />
+                }
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <label>Descripción</label>
+                @Html.TextAreaFor(model => model.Descripcion, new { @class = "form-control", @rows = "4", @style = "display:flex;width:100%" })
+                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="bi bi-plus-square btn btn-outline-primary me-3 mb-2"> Guardar</button>
+                <button type="button" class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" data-bs-dismiss="modal"> Atras</button>
+            </div>
+        </div>
+    }
+</div>

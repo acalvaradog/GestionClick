@@ -1,0 +1,144 @@
+﻿@page "/chat"
+@page "/chat/{ContactId:int}"
+@inject IJSRuntime JS
+@inject HttpClient Http
+@if (_loading)
+{
+ <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />   
+}
+
+    <div style="margin-bottom: 10px;">
+    <MudPaper Elevation="25">
+        <MudToolBar>
+            <MudTooltip Text="@(_expanded ? "Ocultar Chats" : "Ver Chats")">
+            <MudIconButton Icon="@Icons.Material.Outlined.Chat" Color="Color.Inherit" Class="mr-5" OnClick="OnExpandCollapseClick">
+           
+            </MudIconButton>
+            </MudTooltip>
+
+            <MudTooltip Text="@(dialogOpen ? "Ocultar Lista" : "Agregar Contacto")">
+                <MudIconButton Icon="@Icons.Material.Outlined.Contacts" Color="Color.Inherit" Class="mr-5" OnClick="@(() => ShowUserSelectionDialog())">
+
+                </MudIconButton>
+                    </MudTooltip>
+ 
+        </MudToolBar>
+    </MudPaper>
+</div>
+<div class="d-flex flex-grow-1 flex-row" style="margin-bottom: 10px;">
+    <MudPaper Elevation="25" Class="py-4 flex-grow-1">
+        <MudToolBar Dense="true">
+           
+            @if (ContactId < 1)
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.Person" Style="margin-right:10px"></MudIcon>
+                <MudText Typo="Typo.h6">chat</MudText>
+            }
+            else
+            {
+                <MudIcon Icon="@Icons.Material.Outlined.ChatBubble" Color="Color.Primary" Style="margin-right:10px"></MudIcon>
+                <MudText Typo="Typo.subtitle1">@ContactEmail</MudText>
+            }
+
+        </MudToolBar>
+        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+            @foreach (var message in messages)
+            {
+                <div class="d-flex flex-row my-2">
+                   
+                        @if (datosempleado.ENAME == @message.FromEmpleado.Nombres)
+                    
+                    {
+                        <div class="d-flex justify-content-end">
+                            @*   <MudAvatar Color="Color.Primary" Style="height:50px; width:50px;">@message.FromEmpleado.Nombres.Substring(0,1)</MudAvatar> *@
+                        </div>
+                       
+                            <div class="ml-auto mr-4">
+                                <MudText Typo="Typo.subtitle2">Tú</MudText>
+                                <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedDate.ToString("dd MMM, yyyy hh:mm tt")</MudText>
+                                    <MudText Typo="Typo.body2" Style="padding: 10px; background-color: var(--mud-palette-lines-default); border-radius: 7px; margin-top: 3px;">@message.Message</MudText>
+                                </div>
+
+                    }
+                    else
+                    {
+                        <div class="mr-4">
+                            <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;" >@message.FromEmpleado.Nombres.Substring(0, 1)</MudAvatar>
+                            </div>
+                        <div>
+                            <MudText Typo="Typo.subtitle2">@message.FromEmpleado.Nombres</MudText>
+                                <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.CreatedDate.ToString("dd MMM, yyyy hh:mm tt")</MudText>
+                                <MudText Typo="Typo.body2" Style=" padding: 10px;background-color: var(--mud-palette-background-grey);border-radius: 10px;margin-top:3px">@message.Message</MudText>
+                            </div>
+                    }
+               
+                    </div>
+            }
+        </div>
+        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+            <MudTextField T="string" Placeholder="Ingrese su mensaje..." DisableUnderLine="true" Class="mt-n2 mx-4"
+                          @bind-Value="CurrentMessage" For="@(()=> CurrentMessage)" OnKeyPress="@(e => HandleKeyPress(e))" Immediate=true />
+            <MudButton OnClick="SubmitAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Primary" ButtonType="ButtonType.Button">Send</MudButton>
+        </MudPaper>
+    </MudPaper>
+
+
+
+        @if (_expanded)
+        
+        {
+            <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+                <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+                    <MudList Clickable="true">
+                        @foreach (var user in ChatUsers)
+                        {
+                            <MudListItem Class="pa-0 px-2" OnClick="@(() => LoadUserChat(user.Id.Value))">
+                                <div class="d-flex flex-row mt-n1 mb-n1">
+                                    <div class="mr-4">
+                                        <MudBadge Class="my-2">
+                                            @if (user.Id.Value == ContactId)
+                                            {
+                                                <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@user.Nombres.ToUpper().FirstOrDefault()</MudAvatar>
+                                            }
+                                            else
+                                            {
+                                                <MudAvatar Color="Color.Dark" Style="height:50px; width:50px;">@user.Nombres.ToUpper().FirstOrDefault()</MudAvatar>
+                                            }
+                                        </MudBadge>
+                                    </div>
+                                    <div>
+                                        <MudText Typo="Typo.body2" Class="mt-3 mb-n2">@user.Nombres</MudText>
+                                            <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@user.Id</MudText>
+                                        </div>
+                                    </div>
+                                </MudListItem>
+                        }
+                    </MudList>
+                </div>
+
+            </MudPaper>
+        }
+
+  
+
+    @if (dialogOpen)
+    {
+            <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+        <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+
+            <MudList Clickable="true">
+        @foreach (var user in Users)
+        {
+            <MudListItem  OnClick="@(() => SelectUser(user))">
+                <MudText>@user.Nombres</MudText>
+                </MudListItem>
+        }
+    </MudList>
+ 
+        </div>
+            </MudPaper>
+}
+
+
+</div>
+

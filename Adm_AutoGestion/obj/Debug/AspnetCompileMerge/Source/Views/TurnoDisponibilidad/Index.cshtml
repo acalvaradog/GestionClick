@@ -1,0 +1,275 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.TurnoDisponibilidad>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+
+@if(!string.IsNullOrWhiteSpace(message)) { 
+
+if(message == "Ok"){
+
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Exitoso</h4>
+            <hr>
+            <p class="mb-0">Los datos fueron guardados correctamente.</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+        </div>
+
+
+}else{
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <hr>
+            <p class="mb-0">A ocurrido un error. No fue posible realizar el registro.</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+        </div>
+
+}
+
+Session.Remove("message"); }
+
+<div class="container">
+<br />
+<h2 style="text-align:center">Turnos de Disponibilidad</h2>
+<br />
+<br />
+
+<form>
+
+<div class="card">
+  <div class="card-header text-white" style="background-color:#0B9ACF" >Buscar</div>
+    <div class="card-body">
+      
+    <div class="row justify-content-start">
+            <div class="col-6">
+                <label for="CodigoEmpleado"><strong>Empleado</strong></label>
+                    @Html.DropDownList("Empleado", new SelectList( ViewBag.Empleado, "Nombres", "Nombres"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker" ,data_live_search="true"} )
+                </div>
+            <div class="col-3">
+                <label for="fechainicio"><strong>Fecha Inicio Desde</strong></label>
+                @Html.TextBox("FechaIni", "{0:d}",  htmlAttributes: new { @class = "form-control" , type = "date"} )
+               
+            </div>
+            <div class="col-3">
+                <label for="fechafin"><strong>Fecha Inicio Hasta</strong></label>
+                @Html.TextBox("FechaFin", "{0:d}",  htmlAttributes: new { @class = "form-control", type = "date" } )
+            </div>
+          </div>
+     
+          <br />
+          <div class="row justify-content-start">
+            <div class="col-3">
+                <label for="fechaRI"><strong>Fecha Registro Desde</strong></label>
+                @Html.TextBox("FechaRIni", "{0:d}",  htmlAttributes: new { @class = "form-control" , type = "date"} )
+               
+            </div>
+            <div class="col-3">
+                <label for="fechaRF"><strong>Fecha Registro Hasta</strong></label>
+                @Html.TextBox("FechaRFin", "{0:d}",  htmlAttributes: new { @class = "form-control", type = "date" } )
+            </div>
+            <div class="col-3">
+                <label for="horasextra"><strong>Horas Extras</strong></label>
+                <select class="form-control" id="Extras" name="Extras">
+                  <option value="">Seleccione...</option>
+                  <option value="SI">SI</option>
+                  <option value="NO">NO</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label for="Liquida"><strong>Liquidación</strong></label>
+                <select class="form-control" id="Liquidacion" name="Liquidacion">
+                  <option value="">Seleccione...</option>
+                  <option value="SI">SI</option>
+                  <option value="NO">NO</option>
+                </select>
+            </div>
+            
+          </div>
+
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-3">
+                    <label for="estado"><strong>Area</strong></label>
+                    @Html.DropDownList("Area", new SelectList( ViewBag.Opciones, "Value", "Text"),"Seleccione...", htmlAttributes: new {  @class = "form-control" } )
+                </div>
+                <div class="col-3">
+                    <label for="estado"><strong>Estado</strong></label>
+                    <select class="form-control" id="Estado" name="Estado">
+                      <option value="">Seleccione...</option>
+                      <option value="Registrado">Registrado</option>
+                      <option value="Recibido G.H">Recibido G.H</option>
+                      <option value="Anulado">Anulado</option>
+                    </select>
+                </div>
+                
+            </div>
+
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type = "submit" id = "Search" class="btn" style="background-color:#96D44D; color:white; "  onclick = "@Url.Action("Index","TurnoDisponibilidad")">Buscar</button>
+                </div>
+            </div>
+
+
+
+
+   </div>
+</div>
+</div>
+
+<br />
+<br />
+
+<div class="container-fluid">
+<div class = "table-responsive">
+<table class= "table table-hover table-sm" id ="Exportar_a_Excel">
+<thead>
+    <tr class="table-info">
+        <th>
+            Trabajador
+        </th>
+        <th>
+            Codigo
+        </th>
+        <th>
+           Cargo
+        </th>
+        <th>
+           Area
+        </th>
+        <th>
+            Fecha Registro
+        </th>
+        <th>
+            Fecha Inicio
+        </th>
+        <th>
+            Fecha Fin
+        </th>
+        <th>
+            Hora Inicio
+        </th>
+        <th>
+            Hora Fin
+        </th>
+        <th>
+            Horas Extras
+        </th>
+        <th>
+            Cantidad Horas Extras
+        </th>
+        <th>
+            Liquidado
+        </th>
+        <th>
+            Estado
+        </th>
+        
+    </tr>
+</thead>
+
+<tbody>
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Empleado.Nombres)*@
+            @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.TrabajadorId }, new { data_modal = "" })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.Cargo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.Area)
+        </td>
+        <td>
+            @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @*@Convert.ToDateTime(item.HoraInicio).ToString("dd/MM/yyyy")*@
+            @Html.DisplayFor(modelItem => item.HoraInicio)
+        </td>
+        <td>
+            @*//@Convert.ToDateTime(item.HoraFin).ToString("dd/MM/yyyy")*@
+            @Html.DisplayFor(modelItem => item.HoraFin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Extras)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantExtras)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Liquidado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado)
+        </td>
+        
+    </tr>
+}
+</tbody>
+</table>
+</div>
+</div>
+
+
+<script>
+ $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+			{
+
+			    extend: 'excelHtml5',
+			    text: 'Exportar a Excel',
+			    filename: 'InformeTurnosDisponibilidad',
+			    className: 'btn btn-primary d-block mx-auto',
+			}
+            ]
+        });
+
+
+
+ });
+
+ </script>

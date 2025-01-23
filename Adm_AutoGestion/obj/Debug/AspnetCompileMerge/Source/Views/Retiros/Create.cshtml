@@ -1,0 +1,220 @@
+﻿@model Adm_AutoGestion.Models.Retiros
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+    string Nombres = string.Format("{0}", Session["Nombres"]);
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "SI", Value = "SI" },
+        new ListItem { Text = "NO", Value = "NO" }
+        };
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+    Session.Remove("message");
+}
+
+
+<h2 class="colorTitulo text-center mt-2">Retiros</h2>
+
+<form action="~/Retiros/Create">
+    <div class="card ">
+        <div class="card-header text-white fondoDegradado">Buscar</div>
+        <div class="card-body">
+            <div class="row mt-3 justify-content-start">
+                <div class="col-6">
+                    <div class="row justify-content-start">
+                        <div class="col-3">
+                            <label for="NroEmpleado" class="control-label  ">Codigo Empleado: </label>
+                        </div>
+                        <div class="col-9">
+                            <input type="number" class="form-control" id="Id" name="Id" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2" style="text-align:left">
+                    <button class="bi bi-search btn btn-outline-primary mb-2" type="submit"> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@using (Html.BeginForm("Create", "Retiros"))
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+        <div class="card ">
+            <div class="card-header text-white fondoDegradado">Datos Basicos del Empleado</div>
+            <div class="card-body">
+                <div class="row mt-3 justify-content-start">
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Nombre
+                        </div>
+                        <div class="editor-field">
+                            <input type="text" class="form-control" id="Nom" value="@Nombres" desabled="desabled" readonly />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Telefono
+                        </div>
+                        <div class="editor-field">
+                            <input type="text" class="form-control" id="Telefono" name="Telefono" value="@ViewBag.Telefono" />
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Correo Institucional
+                        </div>
+                        <div class="editor-field">
+                            <input type="text" class="form-control" id="CorreoI" name="CorreoI" value="@ViewBag.CorreoI" />
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Correo Personal
+                        </div>
+                        <div class="editor-field">
+                            <input type="text" class="form-control" id="CorreoP" name="CorreoP" value="@ViewBag.CorreoP" />
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Cargo
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBox("Cargo", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true", value = "@ViewBag.Cargo" })
+                            @*@Html.ValidationMessageFor(model => model.Cargo, null, new { @class = "text-danger" })*@
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Area Personal
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBox("AreaPersonal", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.AreaPersonal, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Inicio Contrato
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBox("InicioContrato", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.InicioContrato, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Tipo Contrato
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBox("TipoContrato", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.TipoContrato, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Fecha Terminacion
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextBox("FechaTerminacion", "{0:d}", htmlAttributes: new { @class = "form-control", autocomplete = "off", type = "date" })
+                            @Html.ValidationMessageFor(model => model.FechaTerminacion, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="editor-field">
+                        @Html.TextBox("CodigoEmpleado", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", type = "hidden" })
+                        @Html.ValidationMessageFor(model => model.CodigoEmpleado)
+                    </div>
+
+                    <div class="col-6 mt-3">
+                        <div class="editor-label">
+                            Motivo Cancelacion
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.TextBox("MotivoCancelacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" } )*@
+                            @Html.DropDownListFor(model => model.MotivoCancelacion, new SelectList(Model.ListadoMotivos, "Id", "Nombre"), "Seleccione Motivo", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.MotivoCancelacion, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <div class="editor-label">
+                            Liquidacion
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.TextBox("Liquidacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" } )*@
+                            @Html.DropDownListFor(model => model.Liquidacion, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Liquidacion, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <div class="editor-label">
+                            Observacion
+                        </div>
+                        <div class="editor-field">
+                            @Html.TextArea("Observacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Observacion, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-6" style="text-align:end">
+                    <button type="submit" class="bi bi-plus-square btn btn-outline-primary mb-2" id="create"> Crear</button>
+                </div>
+                <div class="col-6">
+                    @Html.ActionLink("Atras", "Index", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary mb-2" })
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+
+<script>
+
+    $(function () {
+        $('form').on('submit', function () {
+            $("#create").attr("disabled", true);
+        })
+    });
+
+</script>

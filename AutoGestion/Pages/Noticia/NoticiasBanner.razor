@@ -1,0 +1,121 @@
+﻿@page "/noticiabanner"
+@using Autogestion.Shared.DTO.Incapacidad
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.Empleado
+@using Autogestion.Shared.DTO.Noticia
+@using System.Globalization;
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+    @if (ListNoticia.Count > 0)
+    {
+        <MudPaper Elevation="25" Class="pa-4" Style="height:100%">
+             <h3>Noticias</h3>
+        <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object" >
+                @foreach (var item in ListNoticia)
+            {
+                    <MudCarouselItem Transition="Transition.Custom" CustomTransitionEnter="backInDown" CustomTransitionExit="rotateOut">
+                        <div class="d-flex justify-content-center align-items-center" style="height:100%;background: linear-gradient(90deg, rgba(118,111,227,1) 0%, rgba(63,63,230,1) 12%, rgba(0,212,255,1) 100%);">
+                        <div class="text-center">
+                            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.StackOverflow" Color="@Color.Success" Size="@Size.Large" />
+                            <MudElement HtmlTag="@htmlTag">
+                                @item.Titulo 
+                            </MudElement>
+
+                            @item.Contenido
+
+                        </div>
+                    </div>
+                </MudCarouselItem>
+            }
+        </MudCarousel>
+        </MudPaper>
+    }
+}
+<style type="text/css">
+
+    .bounceIn {
+        opacity: 0;
+        animation-delay: 0.5s;
+        animation-duration: 0.5s;
+        animation-name: bounceIn;
+        animation-fill-mode: forwards;
+    }
+
+    .bounceOut {
+        animation-duration: 0.5s;
+        animation-name: bounceOut;
+        animation-fill-mode: forwards;
+    }
+
+    .backInDown {
+        opacity: 0;
+        animation-delay: 0.5s;
+        animation-duration: 0.5s;
+        animation-name: backInDown;
+        animation-fill-mode: forwards;
+    }
+
+    .backOutDown {
+        animation-duration: 0.5s;
+        animation-name: backOutDown;
+        animation-fill-mode: forwards;
+    }
+
+    .rotateIn {
+        opacity: 0;
+        animation-delay: 0.5s;
+        animation-duration: 0.5s;
+        animation-name: rotateIn;
+        animation-fill-mode: forwards;
+    }
+
+    .rotateOut {
+        animation-duration: 0.5s;
+        animation-name: rotateOut;
+        animation-fill-mode: forwards;
+    }
+
+</style>
+@code {
+    private string AnimationEntrance = "bounceIn";
+    private string AnimationExit = "bounceOut";
+    private string htmlTag = "h3";
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    private List<NoticiaDTO> ListNoticia { get; set; } = new List<NoticiaDTO>();
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            _loading = true;
+            ListNoticia = await Http.GetFromJsonAsync<List<NoticiaDTO>>($"api/Noticia/ListarNoticias");
+
+
+            _loading = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            _loading = false;
+            throw;
+        }
+   
+        StateHasChanged();
+    }
+}

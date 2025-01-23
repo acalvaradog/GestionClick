@@ -1,0 +1,82 @@
+﻿@model Adm_AutoGestion.Models.SeguimientoSintomas
+@using System.Web.UI.WebControls;
+
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@{var ListItems = new List<ListItem> { 
+        new ListItem { Text = "Error de Digitación", Value = "Error de Digitación" }, 
+        new ListItem { Text = "Consulta a EPS", Value = "Consulta a EPS" }, 
+        new ListItem { Text = "Patología de Base con síntomas crónicos o de larga data", Value = "Patología de Base con síntomas crónicos o de larga data" } 
+        };
+}
+
+
+<br />
+<br />
+<h2>Seguimiento de Sintomas</h2>
+<br />
+<br />
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+  <div class="container">
+    <div class="row">
+     <div class="col-sm-6">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Plan)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Plan)*@
+            @Html.DropDownListFor(model => model.Plan, new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control"})
+            @Html.ValidationMessageFor(model => model.Plan)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Observacion)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Observacion)*@
+            @Html.TextArea("Observacion", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Observacion)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Fecha)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Fecha)*@
+            @Html.TextBox("Fecha", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+            @Html.ValidationMessageFor(model => model.Fecha)
+        </div>
+
+        @*<div class="editor-label">
+            @Html.LabelFor(model => model.EmpleadoId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EmpleadoId)
+            @Html.ValidationMessageFor(model => model.EmpleadoId)
+        </div>*@
+    </div>
+   </div>
+  </div>
+<br />
+<br />
+        <p>
+             <input type="hidden" id="Id" name="Id" value="@ViewBag.Id" />
+             <input type="hidden" id="EmpleadoId" name="EmpleadoId" value="@ViewBag.EmpleadoId" />
+            <input type="submit" value="Crear" class="btn btn-primary"  />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

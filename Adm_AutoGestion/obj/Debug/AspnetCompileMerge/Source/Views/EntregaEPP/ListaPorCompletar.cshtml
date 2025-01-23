@@ -1,0 +1,336 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EntregaEPP>
+
+@{
+    ViewBag.Title = "ListaPorCompletar";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Nota!</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+
+
+<h2 class="colorTitulo text-center mt-3">Mis Actas Abiertas</h2>
+
+<div class="table-responsive">
+    <table class="table table-hover table-sm">
+        <tr class="fondoDegradado align-middle text-white">
+            <th>
+                @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+                Empleado
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sociedad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>QR</th>
+            <th>Registrar Entrega</th>
+            <th>Entrega Realizada</th>
+            <th>Cerrar Acta</th>
+            <th>Anular Acta</th>
+            <th>Enviar Notificacion</th>
+            <th>Pendientes por Firmar</th>
+            <th>Generar Impresion</th>
+            <th>Generar Link</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                    @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sociedades.Descripcion)
+                    @*@if(item.Sociedad == "1"){
+                          <p>Fundación Oftalmologica de Santander</p>
+                        }else{
+                         <p>Fundación Fosunab</p>
+                        }*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                @* <td>
+                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+
+                    </td>*@
+                <td>
+
+                    <a href="javascript:GenerarQR('@Html.DisplayFor(modelItem => item.Id)','@Html.DisplayFor(modelItem => item.Fecha)','@Html.DisplayFor(modelItem => item.EmpleadoId)');" style="color:#FF0000;"><img src="~/Contents/image/codigo-qr.png" alt="GenerarQR" /></a>
+
+                </td>
+                <td>
+                    @*@Html.ActionLink("Registrar Entrega", "RegistrarEntrega", "DetalleEntregaEPP", new { id = item.Id }, null)*@
+                    <a href='@Url.Action("RegistrarEntrega", "DetalleEntregaEPP", new { id = item.Id }, null)'>
+                        <img src='@Url.Content("~/Contents/image/anadir-evento.png")' />
+                    </a>
+                </td>
+                <td>
+                    <a href='@Url.Action("DetalleActa", "DetalleEntregaEPP", new { id = item.Id }, null)'>
+                        <img src='@Url.Content("~/Contents/image/entrega-realizada.png")' />
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:CerrarActa1('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                        <img src='@Url.Content("~/Contents/image/secure-data.png")' />
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:AnularActa1('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                        <img src="~/Contents/image/anular.png" alt="AnularActa" />
+                    </a>
+                </td>
+                <td>
+                    @if (item.cantifirmados == "0")
+                    {
+                    }
+                    else
+                    {
+                        <a href="javascript:EnviarEmailFirma('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                            <img src="~/Contents/image/sobre.png" alt="EnviarEmailFirma" />
+                        </a>
+                        @Html.DisplayFor(modelItem => item.cantifirmados)
+                    }
+                </td>
+                <td>
+                    <a href='@Url.Action("PendientePorFirmar", "EntregaEPP", new { id = item.Id }, null)' data-modal2=''>
+                        <img src="~/Contents/image/firma.png" alt="PendientesPorFirmar" />
+                    </a>
+                </td>
+                <td>
+                    <a href='@Url.Action("GenerarImpresionPDF", "EntregaEPP", new { id = item.Id, fecha = item.Fecha, empleado = item.EmpleadoId }, null)'>
+                        <img src="~/Contents/image/pdf.png" alt="GenerarPdf" />
+                    </a>
+                </td>
+                <td>
+                    <a href="javascript:CrearLink('@Html.DisplayFor(modelItem => item.Id)')">
+                        <img src="~/Contents/image/buscador.png" alt="GenerarLink" />
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="popupqr" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><label id="Label1" style="white-space: pre-wrap;"></label></p>
+                <img id="ItemPreview" src="" style="height:200px;width:200px" />
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje">
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn btn-primary" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade in" id="modal_Pendienteporfirma">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pendientes por Firmar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+    function GenerarQR(id,fecha,idempleado){
+        $('#popupqr').modal('show');
+
+        document.getElementById("ItemPreview").src = "../Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: '@Url.Action("ObtenerQr", "EntregaEPP")',
+                data: { 'id': id, 'fecha': fecha, 'empleado':idempleado},
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("ItemPreview").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+
+    function EnviarEmailFirma(id) {
+
+        $('#popupqr').modal('show');
+        document.getElementById("ItemPreview").src = "~/Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: '@Url.Action("EnviarEmailFirma", "EntregaEPP")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    $('#popupqr').modal('hide');
+                    if (e != null) {
+
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+    function AnularActa1(id) {
+
+        alertify.confirm("Esta Seguro que Desea anular el Acta?", function (e) {
+            if (e) {
+
+                AnularActa(id);
+            } else {
+
+            }
+        });
+    }
+
+    function AnularActa(id) {
+
+
+        try {
+            $.ajax({
+                url: '@Url.Action("AnularActa", "EntregaEPP")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+
+        }
+        catch (e) { alert(e); }
+
+
+    }
+
+    function CerrarActa1(id) {
+
+        alertify.confirm("Esta Seguro que Desea cerrar el Acta?", function (e) {
+            if (e) {
+
+                CerrarActa(id);
+            } else {
+
+            }
+        });
+    }
+
+    function CerrarActa(id) {
+
+
+        try {
+            $.ajax({
+                url: '@Url.Action("CerrarActa", "EntregaEPP")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    function CrearLink(id)
+    {
+
+        var URLactual = location.origin;
+        var pr = location.pathname;
+        var url = pr.split('/');
+        var ruta = URLactual + "/" + url[1] + "/DetalleEntregaEPP/DetalleActa2/" + id
+        alert(ruta);
+    }
+
+</script>

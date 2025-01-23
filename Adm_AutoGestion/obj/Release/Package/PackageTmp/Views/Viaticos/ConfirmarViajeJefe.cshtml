@@ -1,0 +1,43 @@
+﻿
+
+@model Adm_AutoGestion.Models.Viaticos
+
+@{
+
+    int Item = ViewBag.ViaticosId;
+
+    var respuesta = ViewBag.respuesta; 
+}
+<br />
+<form method="post" action="ConfirmarViajeJefe2" >
+    <div class="card">
+        <div class="card-body">
+
+            <input type="number" id="Id" name="Id"  class="form-control" value="@Item" hidden>
+            <div class="row justify-content-center">
+                <div class="col-12" style="text-align:center">
+                    <label>¿ El empleado ha realizado el viaje de la solicitud ?</label>
+                    <br />
+                    <br />
+                    <input type="radio" class="form-check-input" id="ViajeRealizado" name="ViajeRealizado" value="Si" required>
+                    <label for="Si"> Si  </label>
+                    <input type="radio" class="form-check-input" id="ViajeRealizado" name="ViajeRealizado" value="No">
+                    <label for="No"> No  </label><br>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:left">
+                    <label> Observaciones </label>
+                    @Html.TextArea("Observaciones", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", required = true })
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12" style="text-align:center">
+                    <br />
+                    <button type="submit" id="CHECKJEFE" name="CHECKJEFE" class="bi bi-save btn btn-outline-primary mb-1"> Guardar </button>
+                </div>
+            </div>
+        </div>
+        </div>
+</form>

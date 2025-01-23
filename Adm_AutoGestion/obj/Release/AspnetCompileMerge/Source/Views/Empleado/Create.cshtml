@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Empleado>
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<br />
+<h2>Crear Empleado</h2>
+<br />
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+<div class="container">
+    <div class="row">
+     <div class="col-sm-5">
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Documento)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Documento)*@
+            @Html.TextBox("Documento", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Documento)
+        </div>
+
+        <div class="editor-label">
+            @*@Html.LabelFor(model => model.NroEmpleado)*@
+            Numero Empleado
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.NroEmpleado)*@
+            @Html.TextBox("NroEmpleado", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.NroEmpleado)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombres)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Nombres)*@
+            @Html.TextBox("Nombres", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Nombres)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Correo)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Correo)*@
+            @Html.TextBox("Correo", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Correo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Empresa)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Empresa)*@
+            @Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Empresa)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Telefono)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Telefono)*@
+             @Html.TextBox("Telefono", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Telefono)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Superior)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Superior)*@
+            @Html.TextBox("Superior", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Superior)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Contraseña)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Contraseña)*@
+            @Html.TextBox("Contraseña", null, htmlAttributes: new { @class = "form-control"} )
+            @Html.ValidationMessageFor(model => model.Contraseña)
+        </div>
+      </div>
+   </div>
+  </div>
+<br />
+<br />
+
+        <p>
+            <input type="submit" value="Crear" class="btn btn-primary" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Atras", "Index")
+</div>
+
+

@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<script src="~/Contents/js/DashboardJefe.js"></script>
+
+<h2 class="colorTitulo text-center mt-3">Dashboard Casos Pendientes por Gestionar</h2>
+
+<form>
+    <div class="card mt-3">
+
+        <div class="card-body">
+            <div class="row justify-content-center" align="center">
+
+                <div class="col-md-3" align="center" id="activos">
+                    <div class="card" id="Vacaciones">
+                        <div class="card-header bg-info colorGrisOscuro">
+                            Vacaciones
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntVacaciones</h5>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" align="center" id="anulados">
+                    <div class="card" id="Incapacidades">
+                        <div class="card-header bg-warning colorGrisOscuro">
+                            Incapacidades
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntIncapacidades</h5>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" align="center" id="cerrados">
+                    <div class="card" id="Permisos">
+                        <div class="card-header bg-danger colorGrisOscuro">
+                            Permisos
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntPermisos</h5>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" align="center" id="RJ">
+                    <div class="card" id="Procesos">
+                        <div class="card-header bg-success colorGrisOscuro">
+                            Procesos Disciplinarios
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntProcesosDisc </h5>
+
+                        </div>
+                    </div>
+                </div>
+           
+                <div class="col-md-3" align="center"  id="viaticos">
+                    <div class="card" id="VPendientes">
+                        <div class="card-header bg-body colorGrisOscuro">
+                            Viaticos
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntViaticos</h5>
+
+                        </div>
+                    </div>
+                </div>
+           
+                 
+            </div>
+            </div>
+
+    </div>
+</form>
+

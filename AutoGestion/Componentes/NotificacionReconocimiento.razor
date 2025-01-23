@@ -1,0 +1,148 @@
+﻿@inject HttpClient Http
+@using Autogestion.Shared.DTO.Reconocimiento
+@using Autogestion.Shared.DTO.Empleado
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager Navigation
+
+
+<MudDialog MaxWidth="MaxWidth.Large"  Class="custom-muddialog">
+    
+    <DialogContent>
+        @if (notifications != null)
+        {
+            @foreach (var reconocimiento in notifications)
+            {
+                <MudCard Class="mb-4">
+                    <MudPaper Class="d-flex flex-row" Elevation="0" Style="@($"background-image: url('{fondoDataURL}'); background-size: cover; background-repeat: no-repeat; background-color: rgba(255, 255, 255, 0.9);")">
+                    @* <div style="display: flex; justify-content: center;" Class="pt-5 mb-3 pb-6 mt-3">
+                        <img src="@imageDataURL" style="max-width: 70%; max-height: 390px; width: auto; height: auto; object-fit: contain;">
+                    </div> *@
+                     <MudImage Src="@imageDataURL" Width="200" Height="380" Alt="Swedish Farm House" Elevation="25" Class="rounded-lg ma-4" />
+                    <MudCardContent Class="d-flex justify-center align-content-center flex-column flex-grow-1 gap-4 pr-6 mr-6">
+                        <MudText Typo="Typo.h5" Style="color: #FFFFFF;" Class="text-center">@reconocimiento.TipoTexto</MudText>
+                        <MudText Typo="Typo.body2" Style="color: #FFFFFF;" Class="text-center">@reconocimiento.Observaciones</MudText>
+                        <MudText Typo="Typo.body2" Style="color: #FFFFFF;" Class="text-center">@Convert.ToDateTime(reconocimiento.Fecha).ToString("dd/MMM/yyyy")</MudText>
+                    </MudCardContent>
+
+                    <MudCardActions Class="pr-5 mr-5">
+                        
+                        <MudIconButton Icon="@Icons.Material.TwoTone.MarkChatRead" Style="color: #CCCCCC;" aria-label="delete" OnClick="() => MarkAsRead(reconocimiento.Id)">Marcar Como Leido</MudIconButton>
+                    </MudCardActions>
+                    </MudPaper>
+                </MudCard>
+            }
+            
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="@CerrarModal">Cerrar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string detalleHorasExtraParamsJson { get; set; }
+    [Parameter] public DialogOptions DialogOptions { get; set; }
+    private List<ReconocimientoDTO> notifications = new List<ReconocimientoDTO>();
+    private EmpleadoReturnSapDTO DatosEmpleado = new EmpleadoReturnSapDTO();
+    private int notificacioncount { get; set; } = 0;
+    public string imageDataURL;
+    public string ImagenFondo { get; set; } = "premio";
+    public string fondoDataURL;
+
+    private void CerrarModal()
+    {
+        MudDialog.Close(DialogResult.Ok(false));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        DatosEmpleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+        try
+        {
+            if (DatosEmpleado != null)
+            {
+                await LoadNotification();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task LoadNotification()
+    {
+        try
+        {
+
+
+            notifications = await Http.GetFromJsonAsync<List<ReconocimientoDTO>>($"api/Reconocimiento/GetNotifications/{DatosEmpleado.Id}");
+            notificacioncount = notifications.Count;
+            foreach (var reconocimiento in notifications)
+            {
+                var foto = await Http.PostAsJsonAsync<string>($"api/Reconocimiento/obtenerimagen/{reconocimiento.TipoImagen}", $"{reconocimiento.TipoImagen}");
+                var stringfoto = "";
+
+                if (foto.IsSuccessStatusCode)
+                {
+                    stringfoto = await foto.Content.ReadAsStringAsync();
+                    if (stringfoto != null)
+                    {
+                        stringfoto = stringfoto.Replace("\"", "");
+                        // Asignar la URL de la imagen a la propiedad imageDataURL
+                        imageDataURL = $"data:image/png;base64,{stringfoto}";
+                    }
+                }
+                
+            }
+            var fondo = await Http.PostAsJsonAsync<string>($"api/Reconocimiento/obtenerfondo/{ImagenFondo}", $"{ImagenFondo}");
+            var stringfondo = "";
+
+            if (fondo.IsSuccessStatusCode)
+            {
+                stringfondo = await fondo.Content.ReadAsStringAsync();
+                if (stringfondo != null)
+                {
+                    stringfondo = stringfondo.Replace("\"", "");
+                    // Asignar la URL de la imagen a la propiedad imageDataURL
+                    fondoDataURL = $"data:image/png;base64,{stringfondo}";
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+    private async Task MarkAsRead(int id)
+    {
+
+        var marcado = await Http.DeleteAsync($"api/Reconocimiento/DeleteReconocimiento/{id}");
+
+        if (marcado.IsSuccessStatusCode)
+        {
+            await LoadNotification();
+
+            await InvokeAsync(StateHasChanged);
+            if (notificacioncount < 1) CerrarModal();
+
+        }
+    }
+}
+
+<style>
+    /* Estilos personalizados para MudDialog */
+    .custom-muddialog {
+        /* Agrega estilos según tus preferencias */
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+    }
+</style>

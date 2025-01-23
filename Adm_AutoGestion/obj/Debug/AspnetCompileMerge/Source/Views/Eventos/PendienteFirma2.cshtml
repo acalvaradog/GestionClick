@@ -1,0 +1,311 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleEventos>
+
+@{
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<script src="~/Contents/js/html5-qrcode.js"></script>
+
+
+<div class="card m-3">
+    <div class="card-header colorTitulo mb-3">
+        <h5>Pendientes for Firmar</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+                <table class="table table-hover table-responsive-sm table-bordered" id="tbl_pendientefirma2">
+                    @if (ViewBag.EsFamiliar != false)
+                    {
+                        <thead>
+                            <tr class="text-center fondoDegradado text-white align-middle" style="font-size:1.5em">
+                                <th colspan="6">Datos del Familiar</th>
+                                <th colspan="3">Datos del Trajabador</th>
+                                <th colspan="1"></th>
+                            </tr>
+                            <tr class="text-center align-middle fondoDegradado text-white">
+                                <th>
+                                    Nombre Completo
+                                </th>
+                                <th>
+                                    Fecha Firma
+                                </th>
+                                <th>
+                                    Tipo de Documento
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Edad
+                                </th>
+                                <th>
+                                    Observaciones
+                                </th>
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Firma Manual
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var i in Model)
+                            {
+                                <tr class="text-center">
+                                    <td class="text-capitalize" name="nombreFamiliar">
+                                        @Html.DisplayFor(item => i.Familiar.PrimerNombre)
+                                        @Html.DisplayFor(item => i.Familiar.SegundoNombre)
+                                        @Html.DisplayFor(item => i.Familiar.PrimerApellido)
+                                        @Html.DisplayFor(item => i.Familiar.SegundoApellido)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.FechaFirma)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Familiar.TipoDocumento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Familiar.Documento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Familiar.Edad)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Observaciones)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Nombres)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Documento)
+                                    </td>
+                                    <td>
+                                        <a href="javascript:firmaManual(@i.Id,@i.EventosId)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <thead>
+                            <tr class="text-center align-middle fondoDegradado text-white">
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Fecha Firma
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    Firma Manual
+                                </th>
+                                <th>
+                                    Firma QR
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var i in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Nombres)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.FechaFirma)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Documento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                    </td>
+                                    <td>
+                                        <a href="javascript:firmaManual(@i.Id,@i.EventosId)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary" href="javascript:abrirQR(@i.EventosId,@i.EmpleadoId);">
+                                            <i class="bi bi-qr-code-scan" data-bs-placement="top" data-bs-toggle="tooltip" title="Leer QR"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+            </div>
+    </div>
+</div>
+
+<!-- Modal Leer QR-->
+<div class="modal fade in" role="dialog" id="modal_LeerQR">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Leer QR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalLeerQR">
+                <div id="reader" width="600px">
+
+                </div>
+                <div id="result">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function firmaManual(id, idevento) {
+
+        var Data = new FormData();
+        Data.append("id", id);
+
+        $.ajax({
+            url: "/Eventos/FirmaManual",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: Data,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "true") {
+                    alertify.confirm('Firma guardada correctamente', function () { location.replace('/Eventos/PendienteFirma2/' + idevento); });
+                } else {
+                    alertify.alert(result, function () { location.replace('/Eventos/PendienteFirma2/' + idevento); });
+                }
+            }
+        });
+    }
+
+
+    var idevento;
+    var idempleado;
+
+    function abrirQR(id, ide) {
+        $('#modal_LeerQR').modal('show');
+        idevento = id;
+        idempleado = ide;
+    }
+
+    const scanner = new Html5QrcodeScanner('reader', {
+        qrbox: {
+            width: 250,
+            height: 250,
+        },
+        fps: 20,
+    });
+
+    scanner.render(success, error);
+
+    function success(result) {
+        document.getElementById('result').innerHTML = `
+            <p>${result}</p>`;
+
+        var Data = new FormData();
+        Data.append("idevento", idevento);
+        Data.append("result", result);
+        Data.append("idempleado", idempleado);
+
+        $.ajax({
+            url: "/Eventos/FirmaQR",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: Data,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "true") {
+                    alertify.confirm('Firma guardada correctamente', function () { location.replace('/Eventos/PendienteFirma2/' + idevento); });
+                } else {
+                    alertify.alert(result, function () { location.replace('/Eventos/PendienteFirma2/' + idevento); });
+                }
+            }
+        });
+        scanner.clear();
+        document.getElementById('reader').remove();
+    }
+
+    function error(err) {
+        console.error(err);
+    }
+
+    $(document).ready(function () {
+        var nombreF = document.getElementsByName('nombreFamiliar');
+
+        for (let i = 0; i < nombreF.length; i++) {
+            if (nombreF[i].innerText == "") {
+                nombreF[i].style.color = "red";
+                nombreF[i].innerText = "Familiar Borrado";
+            }
+        }
+    })
+
+    $(document).ready(function () {
+
+        var table = $('#tbl_pendientefirma2').DataTable({
+
+            /*"bFilter": false,*/
+
+            responsive: false,
+
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+            //bFilter": false,
+            pageLength: 5,
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+        });
+
+
+
+    })
+</script>

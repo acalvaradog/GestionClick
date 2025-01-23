@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Noticia>
+
+@{
+    ViewBag.Title = "Noticias";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="card">
+
+    <div class="card-header  colorTitulo mb-3 d-flex align-items-center justify-content-center">
+        <h2>Noticias</h2>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="col-12" style="text-align:right"><button class="btn btn-outline-success" onclick="window.location.href='@Url.Action("CrearNoticia", "Noticia")'">Crear Nueva Noticia</button></div>
+        <div class="col-8">
+
+            <form method="get" class="form-inline">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label for="FechaPublicacion">Fecha de publicación:</label>
+                        <input type="date" name="FechaPublicacion" id="FechaPublicacion" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="Activo">Activo:</label>
+                        <select name="Activo" id="Activo" class="form-control">
+                            <option value="">Todos</option>
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                        <button type="submit" class="btn btn-outline-primary rounded-pill mb-2">Buscar</button>
+                    </div>
+                </div>
+                <br />
+               
+            </form>
+        </div>
+
+        <hr />
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Fecha de publicación</th>
+                    <th>Activo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var noticia in Model)
+                {
+                    <tr>
+                        <td>@noticia.Titulo</td>
+                        <td>@noticia.Publicacion.ToString("dd/MM/yyyy")</td>
+                        <td>@(noticia.Activo ? "Activo" : "Inactivo")</td>
+                        <td>
+                            <a href="@Url.Action("EditarNoticia", "Noticia", new { id = noticia.Id })" class="btn btn-outline-warning btn-sm">Editar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        // Esta función abrirá el formulario de creación en una nueva ventana
+        function openCreateDialog() {
+            window.location.href = '@Url.Action("CrearNoticia", "Noticia")';
+        }
+
+        // Esta función abrirá el formulario de edición en una nueva ventana
+        function openEditDialog(id) {
+            window.location.href = '@Url.Action("EditarNoticia", "Noticia", new { id = "__id__" })'.replace("__id__", id);
+        }
+    </script>
+}

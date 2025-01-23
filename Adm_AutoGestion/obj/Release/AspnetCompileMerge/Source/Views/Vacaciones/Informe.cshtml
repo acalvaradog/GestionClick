@@ -1,0 +1,120 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Vacaciones>
+
+@{
+    ViewBag.Title = "Informe";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<br />
+<br />
+<h2>Informe</h2>
+<br />
+
+<form>
+<div class="card">
+  <div class="card-header text-white bg-info mb-3" >Buscar</div>
+    <div class="card-body">
+      
+      <div class="form-inline" role="form">
+                <div class ="form-group">
+                <label for="sospechoso">Fecha Inicio:</label>&nbsp&nbsp
+                @Html.TextBox("FechaIni", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+                <label for="sospechoso">Fecha Fin:</label>&nbsp&nbsp
+                @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group col-sm-5">
+                @Html.TextBox("Empleado",null,  htmlAttributes: new { @class = "form-control col-sm-12", placeholder = "Nombre Empleado" } )
+                </div></div>
+                <br />
+    <div class="form-inline" role="form">
+                <div class ="form-group col-sm-4">
+                 <label for="exampleFormControlSelect1">Estado: </label>&nbsp&nbsp
+                <select class="form-control col-sm-9" id="Estado" name="Estado">
+                  <option value="0">Seleccionar...</option>
+                  <option value="3">Recibir</option>
+                  <option value="4">Confirmar</option>
+                  <option value="5">Rechazar</option>
+                </select>
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+               <button type = "submit" id = "Search" class = "btn btn-primary"  onclick = "@Url.Action("Informe","Vacaciones")">Buscar</button>
+               </div>
+          
+      </div>
+     
+  </div>
+</div>
+
+
+
+<br />
+<br />
+
+<div class = "table-responsive">
+<table class= "table table-hover">
+    <tr class="table-info">
+        <th>
+            @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+            Nombre Empleado
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.FechaInicial)*@
+            Fecha Inicial
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.CantDiasSolicitados)*@
+            Cant. Dias Solicitados
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.CantDiasPendientes)*@
+            Cant. Dias Pendientes
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.EstadoId)*@
+            Estado
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adjunto)
+        </th>
+        @*<th></th>*@
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.FechaInicial)*@
+            @Convert.ToDateTime(item.FechaInicial).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantDiasSolicitados)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantDiasPendientes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Adjunto)*@
+            @Html.ActionLink("Descargar Archivo", "Download", new { archivo=item.Adjunto })
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) 
+        </td>*@
+    </tr>
+}
+
+</table>
+</div>

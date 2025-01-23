@@ -1,0 +1,63 @@
+﻿@model Adm_AutoGestion.Models.PDAnexos
+@using System.Web.UI.WebControls;
+
+
+@{
+    ViewBag.Title = "NotasCreate";
+    //Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.ProcesoDisciplinario Item = ViewBag.Proceso;
+}
+
+<div class="container">
+    <form action="javascripts:;" enctype="multipart/form-data" method="post">
+        <div class="container">
+            <input type="text" value="@ViewBag.Proceso.Id" id="IdProceso" name="IdProceso" disabled hidden />
+
+            <br />
+
+            <div class="container-fluid">
+                <!--contenido-->
+                <div class="row">
+                    <div class="col-6">
+                        <label class="bi bi-upload btn btn-outline-primary">
+                            <span id="labelFile"> Subir Anexo</span>
+                            <input type="file" id="Anexo" hidden onchange="mostrarNombreArchivo();" />
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="panel-body">
+                <br />
+                <div class="panel panel-default" style="text-align:center">
+                    <button class="bi bi-save btn btn-outline-primary mb-2" id="AddP" onclick="javascript: return SaveAnexo();"> Guardar</button>
+                </div>
+            </div>
+
+        </div>
+        <br>
+    </form>
+</div>
+
+
+
+<div class="modal fade" id="processState" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body text-center"> <img src="~/Contents/image/Spinner.gif"> Espere....</div>
+
+        </div>
+    </div>
+</div> 
+
+<script>
+    function mostrarNombreArchivo() {
+        var file = $("#Anexo").get(0).files;
+        var archivo = file[0];
+        var texto = document.getElementById('labelFile');
+
+        texto.innerHTML = " Archivo subido: " + archivo.name;
+
+    }
+</script>

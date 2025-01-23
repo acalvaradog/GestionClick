@@ -1,0 +1,179 @@
+﻿@inject HttpClient Http
+@inject IJSRuntime JS
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavigationManager
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.TalentoHumano;
+@using Autogestion.Shared.DTO.Empleado
+
+<script>
+    function AbrirUrl(url) {
+        window.open(url, "_blank")
+    }
+</script>
+
+<MudDialog>
+    <DialogContent>
+        <div class="row">
+
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@Cursos.Nombre" Label="Nombre" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Cursos.Responsable))
+            {
+                <div class="col-md-4 mt-3">
+                    <MudTextField @bind-Value="@Cursos.Responsable" Label="Gestor Educativo" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-4 mt-3">
+                    <MudTextField @bind-Value="@Cursos.ResponsablePrograma" Label="Lider del Programa" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+                </div>
+            }
+
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@Modalidad" Label="Modalidad" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+            </div>
+
+        </div>
+
+        <div class="row mt-3">
+
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@Cursos.FechaCapacitacion" Format="D" Label="Fecha" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@HoraInicio" Label="Hora Inicio" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@HoraFin" Label="Hora Fin" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+            </div>
+
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@Cursos.AreaObjetivo" Label="Area Objetivo" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+
+            </div>
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@Cursos.Proveedor" Label="Proveedor" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+
+            </div>
+            <div class="col-md-4 mt-3">
+                <MudTextField @bind-Value="@Cursos.RequerimientoInstitucional" Label="Requerimiento Institucional" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+
+            </div>
+        </div>
+
+        <div class="row mt-3">
+
+            @if (Cursos.Modalidad == "1" || Cursos.Modalidad == "3")
+            {
+                <div class="col-md-4 mt-3">
+                    <MudTextField @bind-Value="@Cursos.Ciudad" Label="Ciudad" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+                </div>
+                <div class="col-md-4 mt-3">
+                    <MudTextField @bind-Value="@Cursos.Lugar" Label="Lugar" Variant="Variant.Outlined" Margin="Margin.Dense" ReadOnly></MudTextField>
+                </div>
+            }
+        </div>
+        
+
+        @if (Cursos.FechaCapacitacion == DateTime.Today)
+        {
+
+            var inicio = Cursos.HoraInicio;
+            var fin = Cursos.HoraFin;
+
+            DateTime horaInicio;
+            DateTime horaFin;
+            DateTime ahora = DateTime.Now;
+
+            horaInicio = DateTime.ParseExact(inicio, "HH:mm", null);
+            horaFin = DateTime.ParseExact(fin, "HH:mm", null);
+
+            if (ahora >= horaInicio && ahora <= horaFin)
+            {
+                <div class="row mt-3">
+
+                    <div class="col-md-6 mt-3">
+                        <MudTextField @bind-Value="@Cursos.EvaluacionConocimiento" Label="Evaluacion de Conocimientos" Variant="Variant.Outlined" Margin="Margin.Dense" onclick="AbrirUrl(this.value)" ReadOnly></MudTextField>
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <MudTextField @bind-Value="@Cursos.EncuestaSatisfaccion" Label="Encuesta Satisfaccion" Variant="Variant.Outlined" Margin="Margin.Dense" onclick="AbrirUrl(this.value)" ReadOnly></MudTextField>
+                    </div>
+
+                </div>
+            }
+        }
+
+        <div class="row mt-3 mb-2">
+            <div class="col-12 mt-3">
+                <MudTextField @bind-Value="@Docentes" Label="Docentes" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" ReadOnly></MudTextField>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-2">
+            <div class="col-12 mt-3">
+                <MudTextField @bind-Value="@Cursos.Objetivo" Label="Objetivos" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" ReadOnly></MudTextField>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-2">
+            <div class="col-12 mt-3">
+                <MudTextField @bind-Value="@Cursos.temas" Label="Temas" Variant="Variant.Outlined" Margin="Margin.Dense" Lines="5" ReadOnly></MudTextField>
+            </div>
+        </div>
+
+    </DialogContent>
+
+</MudDialog>
+
+@code {
+    private bool _loading;
+    private string Modalidad;
+    private string Docentes;
+    private string HoraInicio;
+    private string HoraFin;
+    CapacitacionDTO? Cursos = new CapacitacionDTO();
+
+    [Parameter] public int IdCap { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _loading = true;
+        Cursos = await Http.GetFromJsonAsync<CapacitacionDTO>($"api/TalentoHumano/Detalles/{IdCap}");
+        Modalidad = ConvertirTexto(Cursos.Modalidad);
+        Docentes = Cursos.Docente.Replace(",", "\n").Trim();
+        HoraInicio = Convert.ToDateTime(Cursos.HoraInicio).ToString("hh:mm tt");
+        HoraFin = Convert.ToDateTime(Cursos.HoraFin).ToString("hh:mm tt");
+
+        _loading = false;
+        StateHasChanged();
+    }
+
+    private string ConvertirTexto(string Valor)
+    {
+        switch (Valor)
+        {
+            case "1":
+                return "Presencial";
+            case "2":
+                return "Virtual con conectividad";
+            case "3":
+                return "Híbrida";
+            case "4":
+                return "Virtual plataforma externa";
+            default:
+                return "Otro";
+        }
+    }
+
+}

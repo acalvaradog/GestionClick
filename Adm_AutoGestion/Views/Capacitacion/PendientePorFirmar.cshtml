@@ -1,0 +1,98 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleCapacitacion>
+
+<div class="container-fluid" style="padding-right: 50px;padding-left: 50px;">
+    <br />
+
+    <br />
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <tr class="fondoDegradado text-white">
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Id)*@
+                    @*  Nmr*@
+                </th>
+                <th>
+                    Nombre
+                </th>
+                @*  <th>
+                        @Html.DisplayNameFor(model => model.EmpleadoId)
+                    </th>*@
+                <th>
+                    @* @Html.DisplayNameFor(model => model.FechaFirma)*@
+                    Fecha Firma
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Estado)*@
+                    Estado
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Cargo)*@
+                    Cargo
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Area)*@
+                    Area
+                </th>
+                <th>
+                    @*   @Html.DisplayNameFor(model => model.EsTercero)*@
+                    Tercero
+                </th>
+                @*        <th>
+                        @Html.DisplayNameFor(model => model.TerceroId)
+                    </th>*@
+                <th>
+                    @*@Html.DisplayNameFor(model => model.SedeId)*@
+                    Sede
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @*  @Html.DisplayFor(modelItem => item.Id)*@
+                    </td>
+                    <td>
+                        @if (item.EsTercero == "NO")
+                        {@item.Empleado2.Nombres}
+                    else
+                    {@item.Tercero2.Nombres}
+                </td>
+                @*        <td>
+                        @Html.DisplayFor(modelItem => item.EmpleadoId)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaFirma)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cargo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EsTercero)
+                </td>
+                @*        <td>
+                        @Html.DisplayFor(modelItem => item.TerceroId)
+                    </td>*@
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.SedeId)*@
+                    @item.Sede2.Nombre
+                </td>
+                <td>
+                    @*       @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+                </td>
+            </tr>
+        }
+
+        </table>
+    </div>
+    <br />
+</div>

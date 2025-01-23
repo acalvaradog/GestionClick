@@ -1,0 +1,48 @@
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.deps.json
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.dll
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.AssemblyReference.cache
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfoInputs.cache
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfo.cs
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.dll
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.deps.json
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.AssemblyReference.cache
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfoInputs.cache
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfo.cs
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.CoreCompileInputs.cache
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\alvaror\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.deps.json
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.dll
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.AssemblyReference.cache
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfoInputs.cache
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfo.cs
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.dll
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\Usuario\source\repos\FoscalDev\GestionDePersonal_V2\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.deps.json
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.dll
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.pdb
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfoInputs.cache
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfo.cs
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.CoreCompileInputs.cache
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.sourcelink.json
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.dll
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll

@@ -1,0 +1,314 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.ProcesoDisciplinario>
+
+@{
+    ViewBag.Title = "DetalleProcesoDisciplinario";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+
+<br />
+<br />
+<div align="center">
+<h2>Informe Procesos Disciplinarios</h2>
+</div>
+<br />
+    <form>
+<div class="card">
+  <div class="card-header text-white bg-info mb-3" >Buscar</div>
+    <div class="card-body">
+        <div class="row justify-content-start">
+            <div class="col-6" style="text-align:left">
+                <label for="sospechoso">Empleado Creador del Proceso:</label>
+                @*@Html.TextBox("EmpleadoCA",null,  htmlAttributes: new { @class = "form-control" } )*@
+                @Html.DropDownList("EmpleadoCP", new SelectList( ViewBag.Empleado, "Id", "Nombres"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker" ,data_live_search="true"} )
+            </div>
+            <div class="col-6" style="text-align:left">
+                <label for="sospechoso">Empleado Implicado en el Proceso</label>
+                @*@Html.TextBox("EmpleadoRE",null,  htmlAttributes: new { @class = "form-control" } )*@
+                @Html.DropDownList("EmpleadoI", new SelectList( ViewBag.Empleado, "Id", "Nombres"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker" ,data_live_search="true"} )
+            </div>
+        </div>
+        <br />
+        <div class="row justify-content-start">
+            <div class="col-4" style="text-align:center">
+                <label for="sospechoso">Fecha Proceso Desde:</label>
+                @Html.TextBox("FechaProcesoI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+            </div>
+            <div class="col-4" style="text-align:center">
+              <label for="sospechoso">Fecha Proceso Hasta:</label>
+                @Html.TextBox("FechaProcesoF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+            </div>
+                        <div class="col-4" style="text-align:left">
+                 <label for="Estado">Estado del Proceso:</label>
+            <select class="form-control" id="Estado" name="Estado">
+                <option selected>Todos</option>
+                     <option>Activo</option>
+                      <option>Cerrado</option>
+                      <option>Anulado</option>
+                      <option>Remitido a Juridica</option>
+                 </select>
+                </div>
+        </div>
+     
+        <div class="row justify-content-start">
+            <div class="col-12" style="text-align:center">
+                <br />
+                <button type = "submit" id = "Search" class = "btn" style="background-color:#96D44D; color:white; "  onclick = "@Url.Action("DetalleProcesoDisciplinario","ProcesoDisciplinario")">Buscar</button>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+    </form>
+    </div>
+<br />
+<br />
+
+
+<div class="container-fluid" style=" padding-right: 100px;padding-left: 100px;">
+<div class = "table-responsive">
+<table class= "table table-hover display dataTable table-sm" id ="Exportar_a_Excel">
+<thead>
+    <tr class="table-info">
+
+        <th>
+            Fecha Registro
+        </th>
+        <th>
+            Empleado Registra
+        </th>
+        <th>
+            Empleados Implicados
+        </th>
+        <th>
+            Fundamentos
+        </th>
+        <th>
+            Pretensión
+        </th>
+        <th>
+            Respuesta Juridica
+        </th>
+        <th>
+            Estado
+        </th>
+        <th>
+            Anexos
+        </th>
+        <th>
+            Pruebas
+        </th>
+    
+    </tr>
+</thead>
+<tbody>
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+       
+            @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+        </td>
+    <td>
+           @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoRegistraId }, new { data_modal = "" })
+        </td>
+        <td>
+            <!--Empleados Implicados-->
+           @Html.ActionLink("Ver Empleados", "Implicado1", new { Id = item.Id,Id2=item.EmpleadoRegistraId }, new { data_modal7 = "" })
+       @*       @Html.DisplayFor(modelItem => item.PDTrabajador.EmpleadoId)*@
+        </td>
+        <td>
+            @Html.ActionLink("Ver", "Fundamentos", new { id = item.Id }, new { data_modal13 = "" })
+            @*@Html.DisplayFor(modelItem => item.Fundamentos)*@
+        </td>
+        <td>
+            @Html.ActionLink("Ver", "Pretencion", new { id = item.Id }, new { data_modal12 = "" })
+            @*@Html.DisplayFor(modelItem => item.Pretencion)*@
+        </td>  
+        <td>
+                    @if (item.RespuestaJuridica == "" || item.RespuestaJuridica==null)
+            {
+            <div style="color:#FF0000;">
+            <label>No hay Respuesta</label>
+            </div>
+            }else {
+                @Html.DisplayFor(modelItem => item.RespuestaJuridica)
+            }
+        </td>
+
+                 
+ 
+        <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+  @*          @if(item.Estado == "Anulado"){
+            <div style="color:#FF0000;">
+            @Html.DisplayFor(modelItem => item.Estado)
+            </div>
+            }else {
+            @Html.DisplayFor(modelItem => item.Estado)
+            }*@
+        </td>
+        <td>
+            <!--Anexos del proceso disciplinario-->
+          @Html.ActionLink("Ver Anexos", "Anexo1", new { Id=item.Id,Id2=item.EmpleadoRegistraId }, new { data_modal5 = "" })
+        </td>
+        <td>
+            <!--Pruebas acerca del proceso-->
+           @Html.ActionLink("Ver Pruebas", "Prueba1", new { Id=item.Id ,Id2=item.EmpleadoRegistraId}, new { data_modal6 = "" })
+    
+        </td>
+
+    </tr>
+}  
+</tbody>
+</table>
+</div>
+
+</div>
+
+<div class="modal fade in" id="modal_Implicados">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h5 class="modal-title text-white">Empleados Implicados en el proceso</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id ="contentModal7">
+       <br />
+        <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade in" id="modal_Pruebas">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h5 class="modal-title text-white">Pruebas del Proceso</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id ="contentModal6">
+       <br />
+        <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade in" id="modal_Anexos">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h5 class="modal-title text-white">Anexos del Proceso</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id ="contentModal5">
+       <br />
+        <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade in" id="modal_Pretencion">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h5 class="modal-title text-white">Pretencion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id ="contentModal12">
+       <br />
+        <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade in" id="modal_Fundamento">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h5 class="modal-title text-white">Fundamentos </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id ="contentModal13">
+       <br />
+        <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+
+    <script>
+
+        function reloadPage() {
+            location.reload();
+        }
+        $(document).ready(function () {
+            var table = $('#Exportar_a_Excel').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+
+                "pagingType": "simple",
+                dom: 'Brtip',
+
+                buttons: [
+                {
+
+                    extend: 'excelHtml5',
+                    text: 'Exportar a Excel',
+                    filename: 'InformeProcesosDisciplinarios',
+                    className: 'btn btn-primary d-block mx-auto',
+                }
+                ]
+            });
+
+
+
+        });
+    </script>
+
+

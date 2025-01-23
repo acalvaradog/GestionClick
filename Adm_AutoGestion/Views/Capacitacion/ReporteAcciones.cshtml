@@ -1,0 +1,274 @@
+﻿@model IEnumerable<Adm_AutoGestion.Controllers.CapacitacionController.ModeloReporteAccion>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Reporte Acciones";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@using (Html.BeginForm("ReporteAcciones", "Capacitacion", FormMethod.Get))
+{
+    <div class="card">
+        <div class="card-header text-white fondoDegradado">
+            <h4>Reporte acciones formativas</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mt-3 align-items-end">
+
+                <div class="col-3">
+                    <label>Año</label>
+                    <select id="Year" name="Year" class="form-control selectpicker">
+                        <option value="2024" @(Request.QueryString["Year"] == "2024" ? "selected" : "")>2024</option>
+                        <option value="2025" @(Request.QueryString["Year"] == "2025" ? "selected" : "")>2025</option>
+                        <option value="2026" @(Request.QueryString["Year"] == "2026" ? "selected" : "")>2026</option>
+                        <option value="2027" @(Request.QueryString["Year"] == "2027" ? "selected" : "")>2027</option>
+                        <option value="2028" @(Request.QueryString["Year"] == "2028" ? "selected" : "")>2028</option>
+                        <option value="2029" @(Request.QueryString["Year"] == "2029" ? "selected" : "")>2029</option>
+                        <option value="2030" @(Request.QueryString["Year"] == "2030" ? "selected" : "")>2030</option>
+                        <option value="2031" @(Request.QueryString["Year"] == "2031" ? "selected" : "")>2031</option>
+                        <option value="2032" @(Request.QueryString["Year"] == "2032" ? "selected" : "")>2032</option>
+                        <option value="2033" @(Request.QueryString["Year"] == "2033" ? "selected" : "")>2033</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <label>Periodo</label>
+                    <select id="Periodo" name="Periodo" class="form-control selectpicker">
+                        <option value="1" @(Request.QueryString["Periodo"] == "1" ? "selected" : "")>Primer Trimestre</option>
+                        <option value="2" @(Request.QueryString["Periodo"] == "2" ? "selected" : "")>Segundo Trimestre</option>
+                        <option value="3" @(Request.QueryString["Periodo"] == "3" ? "selected" : "")>Tercer Trimestre</option>
+                        <option value="4" @(Request.QueryString["Periodo"] == "4" ? "selected" : "")>Cuarto Trimestre</option>
+                        <option value="5" @(Request.QueryString["Periodo"] == "5" ? "selected" : "")>Año</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <label>Tipo de personal</label>
+                    <select id="Personal" name="Personal" class="form-control selectpicker">
+                        <option value="1" @(Request.QueryString["Personal"] == "1" ? "selected" : "")>Empleados</option>
+                        <option value="5" @(Request.QueryString["Personal"] == "5" ? "selected" : "")>Terceros</option>
+                        <option value="6" @(Request.QueryString["Personal"] == "6" ? "selected" : "")>Estudiantes</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <label>Empresa</label>
+                    <select id="Empresa" name="Empresa" class="form-control selectpicker">
+                        <option value="1000" @(Request.QueryString["Empresa"] == "1000" ? "selected" : "")>FOSCAL</option>
+                        <option value="2000" @(Request.QueryString["Empresa"] == "2000" ? "selected" : "")>FOSUNAB</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3 justify-content-center">
+                <div class="col-2">
+                    <button type="submit" class="bi bi-search btn btn-outline-primary mb-2" style="font-size:16px"> Filtrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+<hr />
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="row mt-3">
+
+            <span>Cantidad de acciones formativas realizadas: <b>@ViewBag.CantidadSI</b></span>
+            <br />
+            <span>Cantidad de acciones formativas no realizadas: <b>@ViewBag.CantidadNO</b></span>
+            <br />
+            <span>Cantidad de acciones formativas realizadas de EduFoscal: <b>@ViewBag.CantidadSIEduF</b></span>
+            <br />
+            <span>Cantidad de acciones formativas no realizadas de EduFoscal: <b>@ViewBag.CantidadNOEduF</b></span>
+            <br />
+            <span>Cantidad total de horas de acciones formativas realizadas: <b>@ViewBag.CantidadTotalHorasFormacion</b></span>
+        </div>
+
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+        <thead class="fondoDegradado" style="color: #fff">
+            <tr style="text-align:center">
+                <th>
+                    Acción de formación
+                </th>
+                <th>
+                    Tipo de PEC
+                </th>
+                <th>
+                    Area
+                </th>
+                <th>
+                    Realizada
+                </th>
+                <th>
+                    Horas
+                </th>
+                <th>
+                    Reporte Asistencia
+                </th>
+            </tr>
+        </thead>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="sesion">
+                    @Html.DisplayFor(i => item.Accion)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => item.TipoPEC)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => item.Area)
+                </td>
+                <td class="text-center">
+                    @(item.Ejecutada ? "SI" : "NO")
+                </td>
+                <td>
+                    @(item.Ejecutada ? item.TotalHoras : 0)
+                </td>
+                <td>
+                    <a class="btn btn-outline-primary mb-2" href='@Url.Action("ReporteAsistentes", "Capacitacion", new { id = item.Id }, null)' data-modalReporteAsistentes=''>
+                        Ver reporte
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div class="modal fade in" id="modal_ReporteAsistentes">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Reporte Asistentes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalReporteAsistentes">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .dataTables_wrapper .top {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: false });
+        $("a[data-modalReporteAsistentes]").on("click", function (e) {
+            openmodalReporteAsistentes(this.href);
+            return false;
+        });
+
+        $('#modal_modalReporteAsistentes').on('hidden.bs.modal', function () {
+            $('#contentModalReporteAsistentes').html('');
+
+        })
+
+    });
+
+    function openmodalReporteAsistentes(url) {
+        $('#contentModalReporteAsistentes').load(url, function () {
+            $('#modal_ReporteAsistentes').modal('show');
+
+        });
+    }
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.sesion').each(function () {
+            var textoActual = $(this).text();
+            var textoNuevo = textoActual.replace(/ - Sesion 1/, '');
+            $(this).text(textoNuevo);
+        });
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        var table = $('#Exportar_a_Excel').DataTable({
+            //$('#tabla').DataTable({
+            //"bFilter": true,
+            //"ordering": false,
+            //dom: 'Brtip',
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+            //bFilter": false,
+            pageLength: 5,
+            dom: '<"top"Blf>rt<"bottom"ip><"clear">',
+            buttons: [
+                {
+
+
+
+                    extend: 'excelHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'ReporteAcciones',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+
+
+                },
+                //{
+                //    extend: 'pdfHtml5',
+                //    //text: 'Exportar a Excel',
+                //    text: '<i class="fas fa-file-pdf"></i>',
+                //    filename: 'InformeCapacitacion',
+                //    titleAttr: 'Exportar a PDF',
+                //    className: 'btn btn-danger'
+                //},
+
+
+            ],
+            order: [[3, 'desc']],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+        });
+    })
+
+</script>

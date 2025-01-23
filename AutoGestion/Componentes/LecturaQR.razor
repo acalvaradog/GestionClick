@@ -1,0 +1,52 @@
+﻿@using BlazorBarcodeScanner.ZXing.JS
+
+@*<BlazorBarcodeScanner.ZXing.JS.BarcodeReader />*@
+
+<div class="modal fade show" id="myModal" style="display:block; "
+     aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body ">
+
+                <BlazorBarcodeScanner.ZXing.JS.BarcodeReader Title="Lector QR"
+                                                             StartCameraAutomatically="true"
+                                                             ShowStart="false"
+                                                             ShowReset="false"
+                                                             ShowToggleTorch="false"
+                                                             ShowVideoDeviceList="true"
+                                                             VideoWidth="300"
+                                                             VideoHeight="200"
+                                                             OnBarcodeReceived="LocalReceivedBarcodeText"
+                                                             ShowResult="false" />
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @onclick=@Cerrar>OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    [Parameter]
+    public EventCallback<string> OnClose { get; set; }
+    private string LocalBarcodeText;
+    private bool IsOpen = true;
+    private void LocalReceivedBarcodeText(BarcodeReceivedEventArgs args)
+    {
+        this.LocalBarcodeText = args.BarcodeText;
+        OnClose.InvokeAsync(this.LocalBarcodeText);
+        StateHasChanged();
+    }
+
+    private Task Cerrar()
+
+    {
+        return OnClose.InvokeAsync("");
+
+    }
+}

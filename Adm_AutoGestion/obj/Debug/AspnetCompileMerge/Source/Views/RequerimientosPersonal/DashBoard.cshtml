@@ -1,0 +1,100 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+
+@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<br />
+<h2 class="colorTitulo">Dashboard</h2>
+<br />
+<form>
+    <div class="card">
+
+        <div class="card-body">
+            <div class="row" style="text-align:center">
+
+                <div class="col-md-2" style="text-align:center" id="Solicitados1">
+                    <div class="card" id="Solicitados">
+                        <div class="card-header bg-info colorGrisOscuro">
+                            Requerimientos Solicitados
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPSolicitado</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="text-align:center" id="Director1">
+                    <div class="card" id="Director">
+                        <div class="card-header bg-warning colorGrisOscuro">
+                            Rquerimientos Aprobados <br /> Por el Director
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPAprobadoDirectorArea</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="text-align:center" id="Gerencia1">
+                    <div class="card" id="Gerencia">
+                        <div class="card-header bg-danger colorGrisOscuro">
+                            Requerimientos Aprobados <br /> por Gerencia
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPAprobadoGerencia</h5>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2" style="text-align:center" id="Seleccion1">
+                    <div class="card" id="Seleccion">
+                        <div class="card-header bg-success colorGrisOscuro">
+                            Requerimientos en Selección
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.CntRdPSelección </h5>
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-2" style="text-align:center" id="General1">
+                    <div class="card" id="General">
+                        <div class="card-header bg-ligth colorGrisOscuro">
+                            Total de Requerimientos
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@ViewBag.Total </h5>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="text-align:center">
+
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#Solicitados').css('cursor', 'pointer');
+        $('#Director').css('cursor', 'pointer');
+        $('#Gerencia').css('cursor', 'pointer');
+        $('#Seleccion').css('cursor', 'pointer');
+        $('#General').css('cursor', 'pointer');
+
+        $('#Solicitados').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=1'; });
+        $('#Director').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=3'; });
+        $('#Gerencia').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=4'; });
+        $('#Seleccion').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=5'; });
+        $('#General').click(function () { window.location.href = 'InformeRdP?NmrSolicitud=&FechaRI=&FechaRF=&EmpleadoRegistraId=&Sociedad=&EstadoId=0'; });
+    });
+
+</script>
+

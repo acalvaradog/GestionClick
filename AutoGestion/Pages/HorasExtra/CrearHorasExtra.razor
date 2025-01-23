@@ -1,0 +1,1298 @@
+﻿@page "/horasextra/crearhorasextra"
+
+@using Autogestion.Shared.DTO.HorasExtra;
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@using System.Text.Json
+
+
+@inject IJSRuntime JS
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@using System.Globalization
+@using BootstrapBlazor.Components
+
+
+
+
+
+
+
+<MudText Typo="Typo.h5" MudBlazor.Color="Color.Surface" Class="mb-4">Registro Horas Extra</MudText>
+
+@if (_loading)
+{
+    <MudProgressLinear MudBlazor.Color="Color.Primary" Indeterminate="true" MudBlazor.Size="Size.Small" Class="my-7" />
+}
+else
+{
+    @if (empleado != null)
+    {
+        <EditForm Model="@DetalleHorasExtra" OnValidSubmit="@AgregarRegistro">
+            <DataAnnotationsValidator />
+
+            @if (Terminos != "" && Terminos != null && Terminos.Contains("No se encuentra el parametro establecido") == false && Terminos.Contains("Error al consultar parametro:") == false)
+            {
+                <MudItem xs="12" sm="12">
+                    @* TERMINOS Y CONDICIONES MODULO DE HORAS EXTRAS *@
+                    <MudPaper Class="pa-12 ma-2" Elevation="3" Style="@($"color:{Theme.Palette.Dark}; background:{Colors.Amber.Lighten4};")">
+
+
+                        <MudInputLabel>
+                            <MudText><pre class="contenedor-pre">@(Terminos)</pre></MudText>
+                            @*  <MudTooltip Color="Color.Info" Placement="Placement.Top" Arrow="true" Style="max-width: 300px; " Text="Entiéndase como desplazamiento laboral aquellos realizados por razones organizativas o de otra índole, en donde por objeto de sus funciones u orden de un superior debe presentarse, durante su jornada laboral a un destino concreto distinto de su lugar habitual de trabajo. No se incluye los desplazamientos desde la casa al lugar de trabajo o viceversa.">
+                <MudIcon Icon="@Icons.Material.Filled.Info" Size="Size.Small" Color="Color.Info" />
+                </MudTooltip> *@
+                        </MudInputLabel>
+
+                        <MudRadioGroup @bind-SelectedOption="@TerminosVar" Class="d-flex align-content-center flex-wrap flex-grow-1 gap-4">
+                            <MudRadio Option="true" Color="MudBlazor.Color.Tertiary">Si</MudRadio>
+                            <MudRadio Option="false" Color="MudBlazor.Color.Secondary">NO</MudRadio>
+                        </MudRadioGroup>
+
+
+
+                    </MudPaper>
+                </MudItem>
+
+            }
+
+
+            <MudCard Class="mb-5">
+                <MudCardContent>
+                    <MudGrid>
+                        <MudHidden T="int" @bind-Value="DetalleHorasExtra.Id" />
+                        <MudItem xs="4" sm="3">
+                            <MudDatePicker Label="Fecha" @bind-Date="DetalleHorasExtra.Fecha" Mask="@(new DateMask("0000-00-00"))" DateFormat="yyyy-MM-dd" Placeholder="ISO Date" PickerClosed="Verificar">Seleccione</MudDatePicker>
+                        </MudItem>
+                        @* <MudItem xs="12" sm="3">
+                <MudTimePicker Label="Hora Desde" @bind-Time="timeDesde" Step="15" @bind-Date="DetalleHorasExtra.HoraDesde" PickerClosed="Verificar" />
+                </MudItem>
+                <MudItem xs="12" sm="3">
+                <MudTimePicker Label="Hora Hasta" @bind-Time="timeHasta" Step="15" @bind-Date="DetalleHorasExtra.HoraHasta" PickerClosed="Verificar" />
+                </MudItem> *@
+                        <MudItem xs="12" sm="3">
+                            <MudSelect T="TimeSpan?" Text="Seleccione..." @bind-Value="timeDesde" Label="Hora Desde" SelectedValuesChanged="Verificar2">
+
+                                @foreach (var opcion in HorasDelDía)
+                                {
+                                    
+                                    <MudSelectItem T="TimeSpan?" Value="@opcion"> @opcion</MudSelectItem>
+                                }
+
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="3">
+                            <MudSelect T="TimeSpan?" Text="Seleccione..." @bind-Value="timeHasta" Label="Hora Hasta" SelectedValuesChanged="Verificar2">
+                                @foreach (var opcion in HorasDelDía)
+                                {
+                                    <MudSelectItem T="TimeSpan?" Value="@opcion"> @opcion</MudSelectItem>
+                                }
+
+                            </MudSelect>
+                        </MudItem>
+
+                        <MudItem xs="12" sm="3">
+                            <MudSelect T="int" Text="Seleccione..." @bind-Value="DetalleHorasExtra.MotivoTrabajoHEId" Label="Motivo">
+                                <MudSelectItem T="int" Value="0">Seleccione...</MudSelectItem>
+                                @if (motivoTrabajoHEDTO != null)
+                                {
+                                    @foreach (var opcion in motivoTrabajoHEDTO)
+                                    {
+                                        <MudSelectItem T="int" Value="@opcion.Id">@opcion.Descripcion</MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="12" md="22">
+                            <MudTextField T="string" @bind-Value="DetalleHorasExtra.ObservacionesMotivo" Label="Motivo Observaciones" Variant="Variant.Text" Lines="5" />
+
+                        </MudItem>
+
+                    </MudGrid>
+
+                </MudCardContent>
+
+                @if (detalleHorasExtraDTO.Count > 0) 
+                {
+                    
+
+                    <MudCardActions Class="d-flex mt-3 justify-content-center">
+                    <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Outlined" Class="" Disabled = "true" OnClick="@AgregarRegistro">Agregar</MudButton  >
+                    </MudCardActions>
+
+                } 
+                else
+
+                 {
+
+                    <MudCardActions Class="d-flex mt-3 justify-content-center">
+                    <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Outlined" Class="" OnClick="@AgregarRegistro">Agregar</MudButton>
+                    </MudCardActions>
+
+                    }
+        </MudCard>
+        </EditForm>
+
+        //************TABLA LISTA DE FAMILIARES************//
+        <MudContainer>
+        <MudCardHeader><MudText Typo="Typo.h5" Color="MudBlazor.Color.Surface">Horas Extra Registradas</MudText> </MudCardHeader>
+        <MudCard Class="mb-5">
+        <MudTable Items="@detalleHorasExtraDTO" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="MudBlazor.Color.Info">
+        <HeaderContent>
+        <MudTh>Fecha</MudTh>
+        <MudTh>Hora Desde</MudTh>
+        <MudTh>Hora Hasta</MudTh>
+        <MudTh>Horas Diurnas</MudTh>
+        <MudTh>Horas Nocturnas</MudTh>
+        <MudTh>Horas Diurnas Festivo</MudTh>
+        <MudTh>Horas Nocturnas Festivo</MudTh>
+        <MudTh>Total</MudTh>
+        <MudTh>Motivo</MudTh>
+        <MudTh>Observaciones</MudTh>
+
+
+        <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+
+        <MudTd DataLabel="Fecha">@Convert.ToDateTime(context.Fecha).ToString("dd/MM/yyyy")</MudTd>
+        <MudTd DataLabel="Hora Desde">@Convert.ToDateTime(context.HoraDesde).ToString("h:mm tt")</MudTd>
+        <MudTd DataLabel="Hora Hasta">@Convert.ToDateTime(context.HoraHasta).ToString("h:mm tt")</MudTd>
+        @* @if (context.MotivoTrabajoHEId == 1)
+        {
+        <MudTd DataLabel="Motivo">Fallo en el sistema</MudTd>
+        }
+        else if (context.MotivoTrabajoHEId == 2)
+        {
+        <MudTd DataLabel="Motivo">Emergencia</MudTd>
+        }
+        else if (context.MotivoTrabajoHEId == 3)
+        {
+        <MudTd DataLabel="Motivo">Proyectos urgentes</MudTd>
+        }  *@
+        <MudTd DataLabel="LiquidacionDiurna">@context.LiquidacionDiurna</MudTd>
+        <MudTd DataLabel="LiquidacionNocturna">@context.LiquidacionNocturna</MudTd>
+        <MudTd DataLabel="LiquidacionDiurnaFestivo">@context.LiquidacionDiurnaFestivo</MudTd>
+        <MudTd DataLabel="LiquidacionNocturnaFestivo">@context.LiquidacionNocturnaFestivo</MudTd>
+        <MudTd DataLabel="TotalHoras">@context.TotalHoras</MudTd>
+        <MudTd DataLabel="Motivo">@context.MotivoDescripcion</MudTd>
+        <MudTd DataLabel="ObservacionesMotivo">@context.ObservacionesMotivo</MudTd>
+
+        <MudTd>
+        <MudTooltip Text="Borrar Registro" MudBlazor.Color="Color.Primary" MudBlazor.Placement="Placement.Top">
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(async () => await EliminarRegistro(context.Id))"></MudIconButton>
+        </MudTooltip>
+        </MudTd>
+
+
+
+        </RowTemplate>
+        </MudTable>
+
+        </MudCard>
+        @if(detalleHorasExtraDTO != null && detalleHorasExtraDTO.Any())
+               {
+
+        <MudGrid>
+
+
+        <MudItem xs="12" sm="12">
+        <SignaturePad OnResult="OnResult" SignatureAlertText="Favor registrar Firma" SaveBase64BtnTitle="Guardar" ClearBtnTitle="Limpiar" EnableUndoBtn="false" EnableChangeColorBtn="false" SignAboveLabel="Firma" EnableAlertJS="false" />
+
+
+
+        </MudItem>
+        </MudGrid>
+        }
+
+
+
+                    @*   <MudCardActions Class="d-flex mt-3 justify-content-center">
+        @if (detalleHorasExtraDTO != null && detalleHorasExtraDTO.Any())
+        {
+        <MudButton Variant="Variant.Filled" DisableElevation="true" MudBlazor.Color="Color.Primary" Class="" OnClick="@GuardarDetalleHorasExtra" Disabled="@isGrabarDisabled">Grabar</MudButton>
+        }
+        </MudCardActions> *@
+
+
+                    </MudContainer>
+
+
+    }
+}
+
+
+
+
+
+
+@code {
+
+    //private EmpleadoReturnSapDTO? empleado { get; set; }
+    //private List<DetalleHorasExtraDTO>? ListaDetalleHorasExtra;
+    private MudTheme Theme = new MudTheme();
+    private DetalleHorasExtraDTO DetalleHorasExtra = new DetalleHorasExtraDTO();
+    private List<DetalleHorasExtraDTO> registros = new List<DetalleHorasExtraDTO>();
+    TimeSpan? timeDesde = new TimeSpan(00, 00, 00);
+    TimeSpan? timeHasta = new TimeSpan(00, 00, 00);
+
+    private int nextId = 1;
+    private int idGenerado;
+    private DateTime Hoy = new DateTime();
+
+
+    private List<MotivoTrabajoHEDTO>? tipoDocumentos;
+    private List<TimeSpan?> HorasDelDía = new List<TimeSpan?>();
+    private bool TerminosVar;
+
+    bool fixed_header = true;
+    bool fixed_footer = false;
+    private string infoFormat = "{first_item}-{last_item} of {all_items}";
+    private string searchString1 = "";
+    private MudTable<DetalleHorasExtraDTO> _table;
+    private bool _loading;
+    private EmpleadoDTO datosempleado { get; set; }
+    private DetalleHorasExtraDTO ViaticoMod = new DetalleHorasExtraDTO();
+
+    private HashSet<DetalleHorasExtraDTO> selectedItems = new HashSet<DetalleHorasExtraDTO>();
+    private IEnumerable<DetalleHorasExtraDTO>? ListDetalleHorasExtraDTO = new List<DetalleHorasExtraDTO>();
+
+
+
+    MudListItem selectedItem;
+    object selectedValue = 1;
+
+
+    private string Terminos = "";
+
+    private List<HorasExtraDTO>? listHorasExtra;
+    private string[] listval;
+
+
+    private List<MotivoTrabajoHEDTO>? motivoTrabajoHEDTO;
+    private List<DetalleHorasExtraDTO>? detalleHorasExtraDTO;
+    private string MotivoTrabajoHEDTO;
+
+
+
+    DateTime fecha;
+    DateTime HoraDesde;
+    DateTime HoraHasta;
+    DateTime aa = Convert.ToDateTime("01/01/0001 0:00:00");
+
+
+    private EmpleadoDTO? empleado { get; set; }
+
+
+    //private VehiculoDTO Vehi { get; set; } = new VehiculoDTO();
+    private MotivoTrabajoHEDTO? consulta { get; set; } = new MotivoTrabajoHEDTO();
+
+
+
+
+
+
+    private TimeSpan HoraDiurnaInicio;
+    private TimeSpan HoraDiurnaFin;
+    private TimeSpan HoraNocturnaInicio;
+    private TimeSpan HoraNocturnaFin;
+    private List<DiasFestivosDTO> diasFestivos;
+    private string UnidadOrganizativa;
+    private bool isGrabarDisabled = false;
+
+    HorasExtraDTO HorasExtra = new HorasExtraDTO();
+    MotivoTrabajoHEDTO MotivoTrabajoHE = new MotivoTrabajoHEDTO();
+    //
+    // Método para obtener el valor de diurna desde la API
+    public string? Result { get; set; }
+
+
+    private async void Verificar()
+    {
+        fecha = Convert.ToDateTime(DetalleHorasExtra.Fecha);
+        HoraDesde = DateTime.Now.Date + timeDesde.GetValueOrDefault();
+        HoraHasta = DateTime.Now.Date + timeHasta.GetValueOrDefault();
+        aa = Convert.ToDateTime(DetalleHorasExtra.Fecha);
+
+        if (fecha < DateTime.Now.AddMonths(-2))
+        {
+            await JS.ShowMessage("Error en la Fecha", "No se pueden registrar fechas más de dos meses antes de la fecha actual", "warning");
+        }
+
+        if (fecha > DateTime.Now)
+        {
+            await JS.ShowMessage("Error en la Fecha", "No se pueden registrar fechas futuras o superiores a la actual", "warning"); //Console.WriteLine("La fecha FIN no puede ser menor que la fecha de Inicio");
+        }
+        // if (HoraHasta == HoraDesde)
+        // {
+        //     await JS.ShowMessage("Error en la Fecha", "Hora Desde y Hora Hasta no pueden ser iguales", "warning"); //Console.WriteLine("La fecha FIN no puede ser menor que la fecha de Inicio");
+
+        // }
+
+    }
+
+
+    private async Task OnResult(string result)
+    {
+        Result = result;
+
+        if (Result != null || Result != "")
+
+        {
+
+            GuardarDetalleHorasExtra();
+
+
+        }
+        else
+        {
+            JS.ShowMessage("Error", "Debe registrar la firma <br/> ", "warning");
+
+        }
+
+
+        StateHasChanged();
+
+    }
+
+    private async void Verificar2()
+    {
+        HoraDesde = DateTime.Now.Date + timeDesde.GetValueOrDefault();
+        HoraHasta = DateTime.Now.Date + timeHasta.GetValueOrDefault();
+        Hoy = DateTime.Now;
+        fecha = Convert.ToDateTime(DetalleHorasExtra.Fecha);
+        if (HoraHasta == HoraDesde)
+        {
+            await JS.ShowMessage("Error en la hora", "Hora Desde y Hora Hasta no pueden ser iguales", "warning");
+
+        }
+        if (fecha == Hoy.Date)
+        {
+            if (HoraDesde.Hour > Hoy.Hour || (HoraDesde.Hour == Hoy.Hour && HoraDesde.Minute > Hoy.Minute))
+            {
+                await JS.ShowMessage("Error en la hora", "La hora no puede ser mayor de la hora actual", "warning");
+
+            }
+
+            if (HoraHasta.Hour > Hoy.Hour || (HoraHasta.Hour == Hoy.Hour && HoraHasta.Minute > Hoy.Minute))
+            {
+                await JS.ShowMessage("Error en la hora", "La hora no puede ser mayor de la hora actual", "warning");
+
+            }
+
+        }
+    }
+    //
+    private void LimpiarFormulario()
+    {
+        HorasExtra = new HorasExtraDTO();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        System.Console.WriteLine("" + empleado.Id);
+        System.Console.WriteLine("" + empleado.AreaDescripcion);
+        detalleHorasExtraDTO = registros;
+        // En tu código de cliente Blazor
+        await ObtenerValorDiurna();
+        await ObtenerValorNocturno();
+        diasFestivos = await Http.GetFromJsonAsync<List<DiasFestivosDTO>>("api/HorasExtra/DiasFestivos");
+        UnidadOrganizativa = await Http.GetStringAsync($"api/HorasExtra/ObtenerUnidadOrganizativa/{empleado.Id}");
+        Terminos  = await Http.GetFromJsonAsync<string>($"api/ConsultarConfiguracion/{"TERMINOSTD"}");
+        DateTime ValorInicial = new DateTime(2000, 1, 1, 00, 00, 00);
+        DateTime ValorMaximo = new DateTime(2000, 1, 1, 23, 30, 00);
+        int horas = ValorInicial.Hour;
+        int minutos = ValorInicial.Minute;
+        while (ValorInicial <= ValorMaximo)
+        {
+
+            // string Valor = ValorInicial.ToString("HH:mm");
+            int Hora = ValorInicial.Hour;
+            int Minutos = ValorInicial.Minute;
+            TimeSpan? Valor = new TimeSpan(Hora, Minutos, 0);
+            HorasDelDía.Add(Valor);
+            ValorInicial = ValorInicial.AddMinutes(30);
+
+        }
+
+        var ValidarSena = await Http.GetFromJsonAsync<bool>($"api/HorasExtra/ValidarSena/{empleado.Id}");
+        if (ValidarSena)
+        {
+            await MostrarMensajeError();
+            return;
+        }
+        motivoTrabajoHEDTO = await Http.GetFromJsonAsync<List<MotivoTrabajoHEDTO>>($"api/HorasExtra/MotivoTrabajoHE");
+        _loading = false;
+        StateHasChanged();
+
+
+
+        //ListaDetalleHorasExtra = await Http.GetFromJsonAsync<List<DetalleHorasExtraDTO>>($"api/HorasExtra/ListarDetalleHorasExtra/{DetalleHorasExtra.HorasExtraId}");
+
+    }
+
+    private async Task MostrarMensajeError()
+    {
+        JS.ShowMessage("Error", "Los aprendices Sena no pueden hacer Horas Extra: <br/> ", "warning");
+    }
+
+
+    private async Task AgregarRegistro()
+    {
+        string validador = "OK";
+        string respuesta = "";
+        try
+        {
+            Hoy = DateTime.Now;
+            UnidadOrganizativa = UnidadOrganizativa.Trim('"');
+            if (DetalleHorasExtra.Fecha == aa && await EsAreaPermitida(UnidadOrganizativa))
+            {
+                // VALIDACION CUANDO EL AREA PUEDE REGISTRAR MAS DE 2 HORAS EXTRAS AL DIA
+                if ((HoraHasta <= HoraDesde && (HoraHasta.Hour == 0 && HoraHasta.Minute != 0)) || (HoraHasta <= HoraDesde && (HoraHasta.Hour != 0)))
+                {
+                    //respuesta = "Hora Desde no puede ser mayor que Hora Hasta <br/>" + respuesta;
+                    //validador = "Denegar";
+                    DateTime xfecha1 = Convert.ToDateTime(DetalleHorasExtra.Fecha);
+                    float countDiurnas = 0;
+                    float countDiurnasFestivo = 0;
+                    float countNocturnas = 0;
+                    float countNocturnasFestivo = 0;
+                    //dos fechas en cuenta si es que se pasa del dia
+                    DateTime xfecha2 = xfecha1.AddDays(1);
+
+
+                    float xhoras = Convert.ToInt32(HoraDesde.Hour);
+                    float xminutos = Convert.ToInt32(HoraDesde.Minute);
+                    float xhoras2 = Convert.ToInt32(HoraHasta.Hour);
+                    float xminutos2 = Convert.ToInt32(HoraHasta.Minute);
+                    xfecha1 = xfecha1.AddHours(xhoras);
+                    xfecha1 = xfecha1.AddMinutes(xminutos);
+                    xfecha2 = xfecha2.AddHours(xhoras2);
+                    xfecha2 = xfecha2.AddMinutes(xminutos2);
+
+                    // fecha1 = fecha1.AddHours(Convert.ToInt32(HoraDesde.Hour));
+                    // fecha2 = fecha2.AddHours(Convert.ToInt32(HoraHasta.Hour));
+                    while (xfecha1 < xfecha2)
+                    {
+                        var DiaFestivo = diasFestivos.Where(x => x.festivo == xfecha1.Date).FirstOrDefault();
+                        bool esDiaFestivo = false;
+                        if (DiaFestivo != null)
+                        {
+                            esDiaFestivo = true;
+                        }
+                        var rsD = EsDiurna(xfecha1);
+                        if (rsD == true && xfecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countDiurnas = countDiurnas + 0.5f;
+                        }
+                        if (rsD == true && (xfecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countDiurnasFestivo = countDiurnasFestivo + 0.5f;
+                        }
+                        var rsN = EsNocturna(xfecha1);
+                        if (rsN == true && xfecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countNocturnas = countNocturnas + 0.5f;
+                        }
+                        if (rsN == true && (xfecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countNocturnasFestivo = countNocturnasFestivo + 0.5f;
+                        }
+                        xfecha1 = xfecha1.AddMinutes(30);
+                    }
+                    DetalleHorasExtra.LiquidacionDiurna = countDiurnas;
+                    DetalleHorasExtra.LiquidacionDiurnaFestivo = countDiurnasFestivo;
+                    DetalleHorasExtra.LiquidacionNocturna = countNocturnas;
+                    DetalleHorasExtra.LiquidacionNocturnaFestivo = countNocturnasFestivo;
+                    DetalleHorasExtra.TotalHoras = countDiurnas + countDiurnasFestivo + countNocturnas + countNocturnasFestivo;
+                }
+                else
+                {
+                    DateTime fecha1 = Convert.ToDateTime(DetalleHorasExtra.Fecha);
+                    float countDiurnas = 0;
+                    float countDiurnasFestivo = 0;
+                    float countNocturnas = 0;
+                    float countNocturnasFestivo = 0;
+                    //dos fechas en cuenta si es que se pasa del dia
+                    DateTime fecha2 = fecha1;
+                    float horas = Convert.ToInt32(HoraDesde.Hour);
+                    float minutos = Convert.ToInt32(HoraDesde.Minute);
+                    float horas2 = Convert.ToInt32(HoraHasta.Hour);
+                    float minutos2 = Convert.ToInt32(HoraHasta.Minute);
+                    fecha1 = fecha1.AddHours(horas);
+                    fecha1 = fecha1.AddMinutes(minutos);
+                    fecha2 = fecha2.AddHours(horas2);
+                    fecha2 = fecha2.AddMinutes(minutos2);
+                    if (HoraHasta <= HoraDesde && (HoraHasta.Hour == 0 && HoraHasta.Minute == 0))
+                    {
+                        fecha2 = fecha2.AddDays(1);
+
+                    }
+
+                    while (fecha1 < fecha2)
+                    {
+                        var DiaFestivo = diasFestivos.Where(x => x.festivo == fecha1.Date).FirstOrDefault();
+                        bool esDiaFestivo = false;
+                        if (DiaFestivo != null)
+                        {
+                            esDiaFestivo = true;
+                        }
+                        bool rsD = EsDiurna(fecha1);
+                        if (rsD == true && fecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countDiurnas = countDiurnas + 0.5f;
+                        }
+                        if (rsD == true && (fecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countDiurnasFestivo = countDiurnasFestivo + 0.5f;
+                        }
+                        bool rsN = EsNocturna(fecha1);
+                        if (rsN == true && fecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countNocturnas = countNocturnas + 0.5f;
+                        }
+                        if (rsN == true && (fecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countNocturnasFestivo = countNocturnasFestivo + 0.5f;
+                        }
+                        fecha1 = fecha1.AddMinutes(30);
+                    }
+                    DetalleHorasExtra.LiquidacionDiurna = countDiurnas;
+                    DetalleHorasExtra.LiquidacionDiurnaFestivo = countDiurnasFestivo;
+                    DetalleHorasExtra.LiquidacionNocturna = countNocturnas;
+                    DetalleHorasExtra.LiquidacionNocturnaFestivo = countNocturnasFestivo;
+                    DetalleHorasExtra.TotalHoras = countDiurnas + countDiurnasFestivo + countNocturnas + countNocturnasFestivo;
+                }
+
+            }
+            else
+            {
+                // VALIDACION PARA LAS AREAS NO AUTORIZADAS A REGISTAR MAS DE 2 HORAS POR DIA
+                if ((HoraHasta <= HoraDesde && (HoraHasta.Hour == 0 && HoraHasta.Minute != 0)) || (HoraHasta <= HoraDesde && (HoraHasta.Hour != 0)))
+                {
+                    //------------------- SE REALIZA LA APROXIMACIÓN AL SIGUIENTE DIA------------------//
+
+                    DateTime zfecha1 = Convert.ToDateTime(DetalleHorasExtra.Fecha);
+                    // INICIALIZAR VARIABLES
+                    float countDiurnas = 0; float countDiurnasFestivo = 0; float countNocturnas = 0;
+                    float countNocturnasFestivo = 0; float horasdiauno = 0; float horasdiados = 0;
+
+                    //dos fechas en cuenta si es que se pasa del dia
+                    DateTime zfecha2 = zfecha1.AddDays(1);
+                    float zhoras = HoraDesde.Hour;
+                    float zminutos = HoraDesde.Minute;
+                    float zhoras2 = HoraHasta.Hour;
+                    float zminutos2 = HoraHasta.Minute;
+
+                    zfecha1 = zfecha1.AddHours(zhoras); zfecha1 = zfecha1.AddMinutes(zminutos);
+                    zfecha2 = zfecha2.AddHours(zhoras2); zfecha2 = zfecha2.AddMinutes(zminutos2);
+
+                    DateTime fecha2dos = zfecha1.Date + HoraHasta.TimeOfDay;
+                    DateTime hora1 = zfecha1.Date.AddHours(23).AddMinutes(59).AddSeconds(0);
+                    DateTime hora2 = zfecha2.Date.AddHours(0).AddMinutes(0).AddSeconds(0);
+
+                    var zfecha1Formateada = System.Net.WebUtility.UrlEncode(zfecha1.ToString("yyyy-MM-ddTHH:mm:ss"));
+                    var zfecha2Formateada = System.Net.WebUtility.UrlEncode(zfecha2.ToString("yyyy-MM-ddTHH:mm:ss"));
+                    //----- VALIDAR QUE LAS HORAS REGISTRADAS NO SEAN MAYOR A 2
+                    while (zfecha1 < hora1)
+                    {
+                        hora1 = hora1.AddMinutes(-30);
+                        horasdiauno = horasdiauno + 0.5f;
+
+                    }
+                    if (horasdiauno > 2)
+                    {
+
+                        respuesta = "No se pueden solicitar más de 2 horas diarias. <br/> " + respuesta;
+                        validador = "Denegar";
+                    }
+                    while (hora2 < zfecha2)
+                    {
+                        hora2 = hora2.AddMinutes(30);
+                        horasdiados = horasdiados + 0.5f;
+
+                    }
+                    if (horasdiados > 2)
+                    {
+
+                        respuesta = "No se pueden solicitar más de 2 horas diarias. <br/> " + respuesta;
+                        validador = "Denegar";
+                    }
+                    //---VALIDACIÓN SEGUN LOS REGISTROS ANTERIORES EN LA DB + EL REGISTRO ACTUAL
+
+                    var url = $"api/HorasExtra/ValidarRegistro/{empleado.Id}?fecha1={zfecha1Formateada}&fecha2={zfecha2Formateada}";
+                    ContructorHE_DTO? ResultadoFinalz = await Http.GetFromJsonAsync<ContructorHE_DTO>(url);
+
+                    if (ResultadoFinalz.HayRegistroValido)
+                    {
+                        respuesta = "No se puede grabar horas extras para esta fecha debido a que cuenta con registros con más de 2 horas. <br/>" + respuesta;
+                        validador = "Denegar";
+                        throw new Exception();
+                    }
+                    //---
+
+
+                    var fechaAnterior = zfecha1.Date.AddDays(-1);
+                    List<DetalleHorasExtraDTO> registrosAnteriores = registros
+                    .Where(d => d.Fecha == fechaAnterior)
+                    .ToList();
+                    var fechaPosterior = zfecha1.Date.AddDays(1);
+                    List<DetalleHorasExtraDTO> vregistrosPosteriores = registros
+                    .Where(d => d.Fecha == fechaPosterior)
+                    .ToList();
+                    List<DetalleHorasExtraDTO> registroSeleccionado = registros
+                    .Where(d => d.Fecha == zfecha1.Date)
+                    .ToList();
+                    bool hayRegistroValido = false;
+                    // float sumaTotalAnterior = 0; // Cantidad de horas Dia Anterior (El valor no se tiene en cuenta)
+                    float sumaTotal = 0; // Cantidad de horas del Dia Seleccionado
+                    float sumaTotalDespues = 0; // Cantidad de horas del Dia Posterior
+
+                    // VALIDAR REGISTROS ANTERIORES A LA FECHA DEL REGISTRO ACTUAL
+                    if (!hayRegistroValido && registrosAnteriores.Any())
+                    {
+                        // VALIDAR REGISTROS DEL DIA ANTERIOR AL REGISTRO
+                        foreach (var i in registrosAnteriores)
+                        {
+                            var horadesdeAnteriores = i.HoraDesde;
+                            var horahastaAnteriores = i.HoraHasta;
+                            TimeSpan horaDesdeAnterior = TimeSpan.ParseExact(horadesdeAnteriores, "hh\\:mm", CultureInfo.InvariantCulture);
+                            TimeSpan horaHastaAnterior = TimeSpan.ParseExact(horahastaAnteriores, "hh\\:mm", CultureInfo.InvariantCulture);
+                            DateTime fechaHoraDesdeAnterior = i.Fecha?.Date ?? DateTime.MinValue;
+                            fechaHoraDesdeAnterior = fechaHoraDesdeAnterior.Add(horaDesdeAnterior);
+
+                            if (horaHastaAnterior < horaDesdeAnterior)
+                            {
+                                fechaHoraDesdeAnterior = fechaHoraDesdeAnterior.AddDays(1);
+                                DateTime fechaHoraHastaAnterior = i.Fecha?.Date ?? DateTime.MinValue;
+                                fechaHoraHastaAnterior = fechaHoraHastaAnterior.Add(horaHastaAnterior);
+                                TimeSpan medianocheAnterior = fechaHoraDesdeAnterior.Date.AddHours(24) - fechaHoraDesdeAnterior.Date;
+                                TimeSpan diferenciaDesdeMedianocheAnteriores = medianocheAnterior - horaDesdeAnterior;
+                                float horasAntesMedianocheAnteriores = Math.Abs((float)diferenciaDesdeMedianocheAnteriores.TotalHours);
+                                float horasDespuesMedianocheAnteriores = (float)(fechaHoraHastaAnterior - fechaHoraHastaAnterior.Date).TotalHours;
+                                sumaTotal = sumaTotal + horasDespuesMedianocheAnteriores;
+
+                                if (horasDespuesMedianocheAnteriores > 2 || sumaTotal > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+                            }
+                        }
+                    }
+                    // VALIDAR REGISTROS DE LA FECHA DEL REGISTRO ACTUAL
+                    if (!hayRegistroValido && registroSeleccionado.Any())
+                    {
+                        foreach (var j in registroSeleccionado)
+                        {
+                            var horadesdeSeleccionado = j.HoraDesde;
+                            var horahastaSeleccionado = j.HoraHasta;
+                            TimeSpan horaDesdeSeleccionado = TimeSpan.ParseExact(horadesdeSeleccionado, "hh\\:mm", CultureInfo.InvariantCulture);
+                            TimeSpan horaHastaSeleccionado = TimeSpan.ParseExact(horahastaSeleccionado, "hh\\:mm", CultureInfo.InvariantCulture);
+
+                            DateTime fechaHoraDesdeSeleccionado = j.Fecha?.Date ?? DateTime.MinValue;
+                            fechaHoraDesdeSeleccionado = fechaHoraDesdeSeleccionado.Add(horaDesdeSeleccionado);
+
+
+                            if (horaHastaSeleccionado < horaDesdeSeleccionado)
+                            {
+
+                                fechaHoraDesdeSeleccionado = fechaHoraDesdeSeleccionado.AddDays(1);
+                                DateTime fechaHoraHastaSeleccionado = j.Fecha?.Date ?? DateTime.MinValue;
+                                fechaHoraHastaSeleccionado = fechaHoraHastaSeleccionado.Add(horaHastaSeleccionado);
+                                TimeSpan medianocheSeleccionado = fechaHoraDesdeSeleccionado.Date.AddHours(24) - fechaHoraDesdeSeleccionado.Date;
+                                TimeSpan diferenciaDesdeMedianocheSeleccionado = medianocheSeleccionado - horaDesdeSeleccionado;
+                                float horasAntesMedianocheSeleccionado = Math.Abs((float)diferenciaDesdeMedianocheSeleccionado.TotalHours);
+                                float horasDespuesMedianocheSeleccionado = (float)(fechaHoraHastaSeleccionado - fechaHoraHastaSeleccionado.Date).TotalHours;
+                                sumaTotal = sumaTotal + horasAntesMedianocheSeleccionado;
+                                if (horasAntesMedianocheSeleccionado > 2 || sumaTotal > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+
+                            }
+                            else
+                            {
+                                DateTime HoraDesdeSeleccionado = zfecha1.Date + horaDesdeSeleccionado;
+                                DateTime HoraHastaSeleccionado = zfecha1.Date + horaHastaSeleccionado;
+                                while (HoraDesdeSeleccionado < HoraHastaSeleccionado)
+                                {
+                                    sumaTotal = sumaTotal + 0.5f;
+                                    HoraDesdeSeleccionado = HoraDesdeSeleccionado.AddMinutes(30);
+                                }
+
+                                if (sumaTotal > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+                            }
+                        }
+
+                    }
+                    // VALIDAR REGISTROS POSTERIORES A LA FECHA DEL REGISTRO ACTUAL
+                    if (!hayRegistroValido && vregistrosPosteriores.Any())
+                    {
+
+                        foreach (var x in vregistrosPosteriores)
+                        {
+                            var horadesdePosterior = x.HoraDesde;
+                            var horahastaPosterior = x.HoraHasta;
+                            TimeSpan horaDesdePosterior = TimeSpan.ParseExact(horadesdePosterior, "hh\\:mm", CultureInfo.InvariantCulture);
+                            TimeSpan horaHastaPosterior = TimeSpan.ParseExact(horahastaPosterior, "hh\\:mm", CultureInfo.InvariantCulture);
+
+                            DateTime fechaHoraDesdePosterior = x.Fecha?.Date ?? DateTime.MinValue;
+                            fechaHoraDesdePosterior = fechaHoraDesdePosterior.Add(horaDesdePosterior);
+
+                            if (horaHastaPosterior < horaDesdePosterior)
+                            {
+                                fechaHoraDesdePosterior = fechaHoraDesdePosterior.AddDays(1);
+                                DateTime fechaHoraHastaPosterior = x.Fecha?.Date ?? DateTime.MinValue;
+                                fechaHoraHastaPosterior = fechaHoraHastaPosterior.Add(horaHastaPosterior);
+
+                                TimeSpan medianochePosterior = fechaHoraDesdePosterior.Date.AddHours(24) - fechaHoraDesdePosterior.Date;
+                                TimeSpan diferenciaDesdeMedianochePosterior = medianochePosterior - horaDesdePosterior;
+                                float horasAntesMedianochePosterior = Math.Abs((float)diferenciaDesdeMedianochePosterior.TotalHours);
+                                float horasDespuesMedianochePosterior = (float)(fechaHoraHastaPosterior - fechaHoraHastaPosterior.Date).TotalHours;
+                                sumaTotalDespues = sumaTotalDespues + horasAntesMedianochePosterior;
+                                if (horasAntesMedianochePosterior > 2 || sumaTotalDespues > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+                            }
+                            else
+                            {
+                                DateTime HoraDesdePosteriores = zfecha1.Date + horaDesdePosterior;
+                                DateTime HoraHastaPosteriores = zfecha1.Date + horaHastaPosterior;
+
+                                while (HoraDesdePosteriores < HoraHastaPosteriores)
+                                {
+                                    sumaTotalDespues = sumaTotalDespues + 0.5f;
+                                    HoraDesdePosteriores = HoraDesdePosteriores.AddMinutes(30);
+                                }
+                                if (sumaTotalDespues > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+                            }
+                        }
+
+                    }
+
+                    //-------- SUMA TOTAL HORAS DE LOS REGRISTROS ANTERIORES Y EL REGISTRO ACTUAL----------//
+                    sumaTotal = sumaTotal + ResultadoFinalz.HorasdiaunoDB;
+                    if (sumaTotal > 2)
+                    {
+                        hayRegistroValido = true;
+                    }
+
+                    sumaTotalDespues = sumaTotalDespues + ResultadoFinalz.HorasdiaPosterior;
+                    if (sumaTotalDespues > 2)
+                    {
+                        hayRegistroValido = true;
+                    }
+
+
+                    if (hayRegistroValido)
+                    {
+                        respuesta = "No se puede grabar horas extras para esta fecha debido a que cuenta con registros con más de 2 horas. <br/>" + respuesta;
+                        validador = "Denegar";
+                    }
+
+                    // --------------CLASIFICACIÓN DE LAS HORAS ENTRE DIURNA- NOCTURNA- N*FESTIVA- D*FESTIVA
+                    while (zfecha1 < zfecha2)
+                    {
+                        var DiaFestivo = diasFestivos.Where(x => x.festivo == zfecha1.Date).FirstOrDefault();
+                        bool esDiaFestivo = false;
+                        if (DiaFestivo != null)
+                        {
+                            esDiaFestivo = true;
+                        }
+                        var rsD = EsDiurna(zfecha1);
+                        if (rsD == true && zfecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countDiurnas = countDiurnas + 0.5f;
+                        }
+                        if (rsD == true && (zfecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countDiurnasFestivo = countDiurnasFestivo + 0.5f;
+                        }
+                        var rsN = EsNocturna(zfecha1);
+                        if (rsN == true && zfecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countNocturnas = countNocturnas + 0.5f;
+                        }
+                        if (rsN == true && (zfecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countNocturnasFestivo = countNocturnasFestivo + 0.5f;
+                        }
+                        zfecha1 = zfecha1.AddMinutes(30);
+                    }
+                    DetalleHorasExtra.LiquidacionDiurna = countDiurnas;
+                    DetalleHorasExtra.LiquidacionDiurnaFestivo = countDiurnasFestivo;
+                    DetalleHorasExtra.LiquidacionNocturna = countNocturnas;
+                    DetalleHorasExtra.LiquidacionNocturnaFestivo = countNocturnasFestivo;
+                    DetalleHorasExtra.TotalHoras = countDiurnas + countDiurnasFestivo + countNocturnas + countNocturnasFestivo;
+
+
+                }
+                else
+                {
+                    ////------------------- NO HAY APROXIMACIÓN AL SIGUIENTE DÍA --------------------- //
+                    DateTime yfecha1 = Convert.ToDateTime(DetalleHorasExtra.Fecha);
+                    //-------------------- INICIALIZAR VARIABLES-----------------
+                    float countDiurnas = 0; float countNocturnasFestivo = 0;
+                    float countDiurnasFestivo = 0; float countNocturnas = 0;
+
+                    //dos fechas en cuenta si es que se pasa del dia
+                    DateTime yfecha2 = yfecha1;
+                    float yhoras = Convert.ToInt32(HoraDesde.Hour); float yminutos = Convert.ToInt32(HoraDesde.Minute);
+                    float yhoras2 = Convert.ToInt32(HoraHasta.Hour); float yminutos2 = Convert.ToInt32(HoraHasta.Minute);
+
+                    yfecha1 = yfecha1.AddHours(yhoras); yfecha1 = yfecha1.AddMinutes(yminutos);
+
+                    yfecha2 = yfecha2.AddHours(yhoras2); yfecha2 = yfecha2.AddMinutes(yminutos2);
+
+                    var yfecha1Formateada = System.Net.WebUtility.UrlEncode(yfecha1.ToString("yyyy-MM-ddTHH:mm:ss"));
+                    var yfecha2Formateada = System.Net.WebUtility.UrlEncode(yfecha2.ToString("yyyy-MM-ddTHH:mm:ss"));
+
+                    if (HoraHasta <= HoraDesde && (HoraHasta.Hour == 0 && HoraHasta.Minute == 0))
+                    {
+                        yfecha2 = yfecha2.AddDays(1);
+
+                    }
+
+                    var url = $"api/HorasExtra/ValidarRegistro/{empleado.Id}?fecha1={yfecha1Formateada}&fecha2={yfecha2Formateada}";
+
+                    ContructorHE_DTO? ResultadoFinaly = await Http.GetFromJsonAsync<ContructorHE_DTO>(url);
+
+                    if (ResultadoFinaly.HayRegistroValido)
+                    {
+                        respuesta = "No se puede grabar horas extras para esta fecha debido a que cuenta con registros con más de 2 horas. <br/>" + respuesta;
+                        validador = "Denegar";
+                        throw new Exception();
+                    }
+
+
+
+                    var fechaAnterior = yfecha1.Date.AddDays(-1);
+                    var registrosAnteriores = registros
+                    .Where(d => d.Fecha == fechaAnterior)
+                    .ToList();
+                    var fechaPosterior = yfecha1.Date.AddDays(1);
+                    var registrosPosteriores = registros
+                    .Where(d => d.Fecha == fechaPosterior)
+                    .ToList();
+                    var registroSeleccionado = registros
+                    .Where(d => d.Fecha == yfecha1.Date)
+                    .ToList();
+                    bool hayRegistroValido = false;
+                    // float horasdia = 0;
+                    // float suma = 0;
+                    float SumaTotalRegistroActual = 0;//SUMA DE LAS HORAS DE LA DB Y LOS REGISTRO EN LA TABLA ACTUAL DEL REGISTRO SELECCIONADO
+                    float sumaTotal = 0;
+                    // VALIDAR REGISTROS ANTERIORES A LA FECHA DEL REGISTRO ACTUAL
+                    if (!hayRegistroValido && registrosAnteriores.Any())
+                    {
+                        foreach (var i in registrosAnteriores)
+                        {
+                            var horadesdeAnteriores = i.HoraDesde;
+                            var horahastaAnteriores = i.HoraHasta;
+                            TimeSpan horaDesdeAnterior = TimeSpan.ParseExact(horadesdeAnteriores, "hh\\:mm", CultureInfo.InvariantCulture);
+                            TimeSpan horaHastaAnterior = TimeSpan.ParseExact(horahastaAnteriores, "hh\\:mm", CultureInfo.InvariantCulture);
+                            DateTime fechaHoraDesdeAnterior = i.Fecha?.Date ?? DateTime.MinValue;
+                            fechaHoraDesdeAnterior = fechaHoraDesdeAnterior.Add(horaDesdeAnterior);
+
+                            if (horaHastaAnterior < horaDesdeAnterior)
+                            {
+                                fechaHoraDesdeAnterior = fechaHoraDesdeAnterior.AddDays(1);
+                                DateTime fechaHoraHastaAnterior = i.Fecha?.Date ?? DateTime.MinValue;
+                                fechaHoraHastaAnterior = fechaHoraHastaAnterior.Add(horaHastaAnterior);
+                                TimeSpan medianocheAnterior = fechaHoraDesdeAnterior.Date.AddHours(24) - fechaHoraDesdeAnterior.Date;
+                                TimeSpan diferenciaDesdeMedianocheAnteriores = medianocheAnterior - horaDesdeAnterior;
+                                float horasAntesMedianocheAnteriores = Math.Abs((float)diferenciaDesdeMedianocheAnteriores.TotalHours);
+                                float horasDespuesMedianocheAnteriores = (float)(fechaHoraHastaAnterior - fechaHoraHastaAnterior.Date).TotalHours;
+                                sumaTotal = sumaTotal + horasDespuesMedianocheAnteriores;
+
+                                if (horasDespuesMedianocheAnteriores > 2 || sumaTotal > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+                            }
+                        }
+                    }
+                    // VALIDAR REGISTROS DE LA FECHA DEL REGISTRO ACTUAL
+                    if (!hayRegistroValido && registroSeleccionado.Any())
+                    {
+                        foreach (var j in registroSeleccionado)
+                        {
+                            var horadesdeSeleccionado = j.HoraDesde;
+                            var horahastaSeleccionado = j.HoraHasta;
+                            TimeSpan horaDesdeSeleccionado = TimeSpan.ParseExact(horadesdeSeleccionado, "hh\\:mm", CultureInfo.InvariantCulture);
+                            TimeSpan horaHastaSeleccionado = TimeSpan.ParseExact(horahastaSeleccionado, "hh\\:mm", CultureInfo.InvariantCulture);
+
+                            DateTime fechaHoraDesdeSeleccionado = j.Fecha?.Date ?? DateTime.MinValue;
+                            fechaHoraDesdeSeleccionado = fechaHoraDesdeSeleccionado.Add(horaDesdeSeleccionado);
+
+                            if (horaHastaSeleccionado < horaDesdeSeleccionado)
+                            {
+                                fechaHoraDesdeSeleccionado = fechaHoraDesdeSeleccionado.AddDays(1);
+                                DateTime fechaHoraHastaSeleccionado = j.Fecha?.Date ?? DateTime.MinValue;
+                                fechaHoraHastaSeleccionado = fechaHoraHastaSeleccionado.Add(horaHastaSeleccionado);
+                                TimeSpan medianocheSeleccionado = fechaHoraDesdeSeleccionado.Date.AddHours(24) - fechaHoraDesdeSeleccionado.Date;
+                                TimeSpan diferenciaDesdeMedianocheSeleccionado = medianocheSeleccionado - horaDesdeSeleccionado;
+                                float horasAntesMedianocheSeleccionado = Math.Abs((float)diferenciaDesdeMedianocheSeleccionado.TotalHours);
+                                float horasDespuesMedianocheSeleccionado = (float)(fechaHoraHastaSeleccionado - fechaHoraHastaSeleccionado.Date).TotalHours;
+                                sumaTotal = sumaTotal + horasAntesMedianocheSeleccionado;
+                                if (horasAntesMedianocheSeleccionado > 2 || sumaTotal > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+                            }
+                            else
+                            {
+                                DateTime HoraDesdeSeleccionado = yfecha1.Date + horaDesdeSeleccionado;
+                                DateTime HoraHastaSeleccionado = yfecha1.Date + horaHastaSeleccionado;
+                                while (HoraDesdeSeleccionado < HoraHastaSeleccionado)
+                                {
+                                    sumaTotal = sumaTotal + 0.5f;
+                                    HoraDesdeSeleccionado = HoraDesdeSeleccionado.AddMinutes(30);
+                                }
+                                if (sumaTotal > 2)
+                                {
+                                    hayRegistroValido = true;
+                                }
+                            }
+                        }
+
+                    }
+
+                    if (DetalleHorasExtra.TotalHoras > 2)
+                    {
+                        respuesta = "No se pueden solicitar más de 2 horas diarias. <br/> " + respuesta;
+                        validador = "Denegar";
+                    }
+
+                    //-------- SUMA TOTAL HORAS DE LOS REGISTROS ANTERIORES Y EL REGISTRO ACTUAL----------//
+                    SumaTotalRegistroActual = sumaTotal + ResultadoFinaly.HorasdiaunoDB;
+                    if (SumaTotalRegistroActual > 2)
+                    {
+                        hayRegistroValido = true;
+                    }
+
+
+                    // --------------CLASIFICACIÓN DE LAS HORAS ENTRE DIURNA- NOCTURNA- N*FESTIVA- D*FESTIVA
+                    while (yfecha1 < yfecha2)
+                    {
+                        var DiaFestivo = diasFestivos.Where(x => x.festivo == yfecha1.Date).FirstOrDefault();
+                        bool esDiaFestivo = false;
+                        if (DiaFestivo != null)
+                        {
+                            esDiaFestivo = true;
+                        }
+                        var rsD = EsDiurna(yfecha1);
+                        if (rsD == true && yfecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countDiurnas = countDiurnas + 0.5f;
+                        }
+                        if (rsD == true && (yfecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countDiurnasFestivo = countDiurnasFestivo + 0.5f;
+                        }
+                        var rsN = EsNocturna(yfecha1);
+                        if (rsN == true && yfecha1.DayOfWeek != DayOfWeek.Sunday && !esDiaFestivo)
+                        {
+                            countNocturnas = countNocturnas + 0.5f;
+                        }
+                        if (rsN == true && (yfecha1.DayOfWeek == DayOfWeek.Sunday || esDiaFestivo))
+                        {
+                            countNocturnasFestivo = countNocturnasFestivo + 0.5f;
+                        }
+                        yfecha1 = yfecha1.AddMinutes(30);
+                    }
+                    DetalleHorasExtra.LiquidacionDiurna = countDiurnas;
+                    DetalleHorasExtra.LiquidacionDiurnaFestivo = countDiurnasFestivo;
+                    DetalleHorasExtra.LiquidacionNocturna = countNocturnas;
+                    DetalleHorasExtra.LiquidacionNocturnaFestivo = countNocturnasFestivo;
+                    DetalleHorasExtra.TotalHoras = countDiurnas + countDiurnasFestivo + countNocturnas + countNocturnasFestivo;
+
+
+                    if (hayRegistroValido)
+                    {
+                        respuesta = "No se puede grabar horas extras para esta fecha debido a que cuenta con registros con más de 2 horas. <br/>" + respuesta;
+                        validador = "Denegar";
+
+                    }
+                }
+            }
+
+
+            // if (HoraHasta == HoraDesde)
+            // {
+
+
+            //     respuesta = "Hora Desde y Hora Hasta no pueden ser iguales <br/> " + respuesta;
+            //     validador = "Denegar";
+            // }
+
+            if (DetalleHorasExtra.Fecha == Hoy.Date)
+            {
+                if (HoraDesde.Hour > Hoy.Hour || (HoraDesde.Hour == Hoy.Hour && HoraDesde.Minute > Hoy.Minute))
+                {
+                    respuesta = "La Hora Desde no puede ser mayor de la hora actual" + respuesta;
+                    validador = "Denegar";
+
+                }
+
+                if (HoraHasta.Hour > Hoy.Hour || (HoraHasta.Hour == Hoy.Hour && HoraHasta.Minute > Hoy.Minute))
+                {
+                    respuesta = "La Hora  Hasta no puede ser mayor de la hora actual" + respuesta;
+                    validador = "Denegar";
+                }
+
+            }
+
+            if (DetalleHorasExtra.MotivoTrabajoHEId == 0)
+            {
+                respuesta = "Campo motivo vacío <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            if (fecha < DateTime.Now.AddMonths(-2))
+            {
+                respuesta = "No se permite el registro de horas extras con fecha superior a 2 meses desde su realización <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            if (DetalleHorasExtra.Fecha > DateTime.Now)
+            {
+                respuesta = "No se pueden registrar fechas futuras o superiores a la actual <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            // if (DetalleHorasExtra.MotivoTrabajoHEId == 4 || DetalleHorasExtra.MotivoTrabajoHEId == 5)
+            // {
+                if (string.IsNullOrWhiteSpace(DetalleHorasExtra.ObservacionesMotivo))
+                {
+                    respuesta = "El campo observaciones es obligatorio<br/> " + respuesta;
+                    validador = "Denegar";
+                }
+            // }
+
+
+            if (validador == "OK")
+            {
+                var totalHoras = CalcularTotalHoras(timeDesde?.ToString("hh\\:mm"), timeHasta?.ToString("hh\\:mm"));
+
+                DetalleHorasExtra.HoraDesde = timeDesde?.ToString("hh\\:mm");
+                DetalleHorasExtra.HoraHasta = timeHasta?.ToString("hh\\:mm");
+
+                DetalleHorasExtra.Id = nextId++;
+                DetalleHorasExtra.MotivoDescripcion = motivoTrabajoHEDTO.Where(x => x.Id == DetalleHorasExtra.MotivoTrabajoHEId).Select(x => x.Descripcion).FirstOrDefault();
+
+                registros.Add(DetalleHorasExtra);
+                DetalleHorasExtra = new DetalleHorasExtraDTO();
+                timeDesde = new TimeSpan(00, 00, 00);
+                timeHasta = new TimeSpan(00, 00, 00);
+            }
+            else
+            {
+                await JS.ShowMessage("Error", "Error al realizar registro: <br/> " + respuesta, "warning");
+
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Console.WriteLine(ex.Message);
+            await JS.ShowMessage("Error", "Error al realizar registro: <br/> " + respuesta, "warning");
+        }
+
+    }
+    private async Task<bool> EsAreaPermitida(string UnidadOrganizativa)
+    {
+        try
+        {
+            var AreasHE = "AreasHE";
+            var response = await Http.GetStringAsync($"api/HorasExtra/AreasHE/{AreasHE}");
+            var codigos = JsonSerializer.Deserialize<List<string>>(response);
+            return codigos.Contains(UnidadOrganizativa);
+        }
+        catch (Exception ex)
+        {
+
+            System.Console.WriteLine($"Error al verificar el área permitida: {ex.Message}");
+            return false;
+        }
+    }
+
+    private async Task ObtenerValorDiurna()
+    {
+        var LiquidacionDiurna = "LiquidacionDiurna";
+        var response = await Http.GetStringAsync($"api/HorasExtra/LiquidacionDiurna/{LiquidacionDiurna}");
+        var responseObject = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+
+        if (responseObject != null && responseObject.ContainsKey("HoraInicio") && responseObject.ContainsKey("HoraFin"))
+        {
+            HoraDiurnaInicio = TimeSpan.Parse(responseObject["HoraInicio"]);
+            HoraDiurnaFin = TimeSpan.Parse(responseObject["HoraFin"]);
+
+            // Puedes almacenar el TimeSpan directamente
+
+        }
+    }
+    private async Task ObtenerValorNocturno()
+    {
+        var LiquidacionNocturna = "LiquidacionNocturna";
+        var response = await Http.GetStringAsync($"api/HorasExtra/LiquidacionDiurna/{LiquidacionNocturna}");
+        var responseObject = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+
+        if (responseObject != null && responseObject.ContainsKey("HoraInicio") && responseObject.ContainsKey("HoraFin"))
+        {
+            HoraNocturnaInicio = TimeSpan.Parse(responseObject["HoraInicio"]);
+            HoraNocturnaFin = TimeSpan.Parse(responseObject["HoraFin"]);
+
+            // Puedes almacenar el TimeSpan directamente
+
+        }
+    }
+    private bool EsDiurna(DateTime hora)
+    {
+        DateTime fecha = Convert.ToDateTime(hora.Date);
+
+
+        var rangoDiurnoInicio = fecha + HoraDiurnaInicio;
+        var rangoDiurnoFin = fecha + HoraDiurnaFin;
+
+
+        return hora >= rangoDiurnoInicio && hora <= rangoDiurnoFin;
+
+    }
+    private bool EsNocturna(DateTime hora)
+    {
+        DateTime fecha = Convert.ToDateTime(hora.Date);
+        var rangoNocturnaInicio = fecha + HoraNocturnaInicio;
+        var rangoNocturnaFin = fecha + HoraNocturnaFin;
+
+        return hora >= rangoNocturnaInicio || hora <= rangoNocturnaFin;
+
+    }
+    private async Task EliminarRegistro(int Id)
+    {
+        var registroAEliminar = registros.FirstOrDefault(r => r.Id == Id);
+        if (registroAEliminar != null)
+        {
+            registros.Remove(registroAEliminar);
+
+        }
+
+    }
+
+
+
+
+    private TimeSpan CalcularTotalHoras(string horaDesde, string horaHasta)
+    {
+        var horaDesdeDt = DateTime.Parse(horaDesde);
+        var horaHastaDt = DateTime.Parse(horaHasta);
+        var totalHoras = horaHastaDt - horaDesdeDt;
+
+        return totalHoras;
+    }
+
+
+
+
+
+    private async void GuardarDetalleHorasExtra()
+    {
+        _loading = true;
+        string validador = "OK";
+        string respuesta = "";
+        float? countTotalDiurnas = 0;
+        float? countTotalNocturnas = 0;
+        float? countTotalDiurnasFestivo = 0;
+        float? countTotalNocturnasFestivo = 0;
+        float? countTotalHoras = 0;
+        try
+        {
+            isGrabarDisabled = true;
+            // if (TerminosVar == true)
+            // {
+            if (validador == "OK")
+            {
+                //vincular regisros OnInisializate
+                HorasExtra.EmpleadoId = Convert.ToInt32(empleado.Id);
+
+                HorasExtra.FechaDeRegistro = DateTime.Now;
+                HorasExtra.Estado = 1;
+                foreach (DetalleHorasExtraDTO item in detalleHorasExtraDTO)
+                {
+                    countTotalDiurnas = countTotalDiurnas + item.LiquidacionDiurna;
+                    countTotalNocturnas = countTotalNocturnas + item.LiquidacionNocturna;
+                    countTotalDiurnasFestivo = countTotalDiurnasFestivo + item.LiquidacionDiurnaFestivo;
+                    countTotalNocturnasFestivo = countTotalNocturnasFestivo + item.LiquidacionNocturnaFestivo;
+                    countTotalHoras = countTotalHoras + item.TotalHoras;
+                }
+                HorasExtra.TotalLiquidacionDiurna = countTotalDiurnas;
+                HorasExtra.TotalLiquidacionNocturna = countTotalNocturnas;
+                HorasExtra.TotalLiquidacionDiurnaFestivo = countTotalDiurnasFestivo;
+                HorasExtra.TotalLiquidacionNocturnaFestivo = countTotalNocturnasFestivo;
+                HorasExtra.TotalHoras = countTotalHoras;
+                HorasExtra.Terminos = TerminosVar;
+                HorasExtra.Firma = Result;
+
+                var guardadoHorasExtra = await Http.PostAsJsonAsync<HorasExtraDTO>($"api/HorasExtra/GuardarHorasExtra/{HorasExtra}", HorasExtra);
+                if (guardadoHorasExtra.IsSuccessStatusCode)
+                {
+                    var response = await guardadoHorasExtra.Content.ReadFromJsonAsync<IdGeneradoResponse>();
+                    idGenerado = response.IdGenerado;
+                    foreach (DetalleHorasExtraDTO item in registros)
+                    {
+                        item.HorasExtraId = idGenerado;
+                    }
+                    //Datos tipo post
+                    var guardado = await Http.PostAsJsonAsync<List<DetalleHorasExtraDTO>>("api/HorasExtra/GuardarDetalleHorasExtra", registros);
+
+                    if (guardado.IsSuccessStatusCode)
+                    {
+
+                        await JS.ShowMessage("Ok", "Las Horas Extra fueron registrado de manera exitosa", "success");
+                        LimpiarFormulario();
+                        _loading = false;
+                        registros.Clear();
+                        isGrabarDisabled = false;
+                        StateHasChanged();
+                    }
+                }
+
+
+            }
+            else
+            {
+                await JS.ShowMessage("Error", "Hacen falta los siguientes datos: <br/> " + respuesta, "warning");
+
+            }
+            // }
+            // else
+            // {
+            //     await JS.ShowMessage("Error", "No se han aceptado los terminos", "warning");
+            //     _loading = false;
+            //     isGrabarDisabled = false;
+            //     StateHasChanged();
+
+            // }
+
+        }
+        catch (Exception ex)
+        {
+            await JS.ShowMessage("Error:", "Hacen falta los siguientes datos: " + respuesta + ex, "warning");
+        }
+    }
+
+    public class IdGeneradoResponse
+    {
+        public int IdGenerado { get; set; }
+    }
+
+        }

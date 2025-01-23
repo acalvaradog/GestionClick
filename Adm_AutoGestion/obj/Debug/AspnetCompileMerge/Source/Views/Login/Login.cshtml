@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "Login";
+
+}
+@{
+    string Error = string.Format("{0}", Session["message"]);
+    if (!string.IsNullOrWhiteSpace(Error)) { Session.Remove("message"); }
+    string item = Request.ServerVariables["accion"];
+
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]);
+    string ErrorAutorizacion = string.Format("{0}", Session["ErrorAutorizacion"]);
+    if (!string.IsNullOrWhiteSpace(ErrorAutorizacion)) { Session.Remove("ErrorAutorizacion"); }
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center" style="background: linear-gradient(90deg, #07ABDF 10%, #426AB0 90%);">
+    <br />
+    @if (ErrorAutorizacion != "")
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Falta autorización!</h4>
+            <p>@ErrorAutorizacion</p>
+            <hr>
+            <p class="mb-0">Para mayor información consulte con su administrador</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+        </div>
+    }
+    <!--Header -->
+    <div class="d-flex align-items-center justify-content-between fond">
+        <a href="~/Login/Index" class="logo d-flex align-items-center">
+            <img src="~/Contents/image/Logoauto.png" alt="">
+            <span class="d-none d-lg-block" style="color:#fff">&nbsp Gestión Personal</span>
+        </a>
+    </div><!-- End Logo -->
+</header>
+
+
+@if (Error != "")
+{
+
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error!</h4>
+        <hr>
+        <p class="mb-0">@Error</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+}
+
+<div style="max-width:580px!important;" class="container col-sm-8 col-md-8 col-lg-4 mt-5 align-items-center justify-content-center">
+    @*<div class="container">*@
+    <form action="~/Login/Validar" method="post">
+        <div class="panel panel-info center-block">
+            <div class="card  border-info mb-3 shadow p-3 mb-5" style="max-width: 35rem;">
+                <br />
+                <div class="panel-heading" align="center">
+                    <h2 style="color:#07ABDF">Bienvenido!!!</h2>
+                </div>
+                <br />
+
+
+                <div class="form-horizontal" align="center">
+                    <img src="~/Contents/image/icono.png">
+                    <div class="form-group">
+                        <br />
+                        <label class="control-label col-sm-5">Nro de Documento </label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" autofocus="autofocus" id="alias" name="alias" value="" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-5">Contraseña </label>
+                        <div class="col-sm-5">
+                            <input type="password" class="form-control" autofocus="autofocus" name="password" value="" />
+                        </div>
+                    </div>
+                    <input type="text" class="form-control" autofocus="autofocus" id="accion" name="accion" value="@item" hidden="hidden" />
+
+                    <div class="form-group">
+                        <hr />
+
+                        <div class="col-sm-10">
+                            <div class="text-center">
+                                <button type="submit" id="loginAccedr" class="btn btn-outline-primary mb-2">Ingresar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        //$("#alias").input(function () {
+        //var valores = window.location.search;
+        //});
+
+        document.getElementById('alias').addEventListener('input', validar);
+
+    });
+
+    function validar() {
+        var valores1 = window.location.search;
+        var params = new URLSearchParams(location.search);
+        var contract = params.get('accion');
+        $("#accion").val(contract);
+
+    }
+</script>

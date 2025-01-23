@@ -1,0 +1,250 @@
+﻿@model Adm_AutoGestion.Models.ProcesoDisciplinario
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+ <form action="javascripts:;" enctype="multipart/form-data" method="post">
+<div class="container">
+    <br />
+     <div class="row">
+    <div class="col-8">
+        <br />
+        <h2>Registro Proceso Disciplinario</h2>
+  </div>
+   
+<div class="col-3">
+     <br />
+      Fecha:  @Html.TextBox("FechaRegistro", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+</div>
+         </div>
+<div class="container">
+   
+    <br />
+       <div class="card">
+  <div class="card-header text-white bg-info mb-3" >Empleados implicados</div>
+    <div class="card-body">
+      <div class="form-inline" role="form">
+       <div class="container-fluid">
+        <div class="form-row">
+          <div class="col-sm">
+             <div class ="form-group">   
+                <div class="container-fluid">
+  
+                 <!--contenido-->
+                      <div class="editor-field">
+                        @Html.DropDownList("EmpleadoRegistraId", new SelectList( ViewBag.Empleado, "nomcodigo", "Nombres"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker",data_width = "45%",data_live_search="true"} )
+                        @Html.ValidationMessageFor(model => model.EmpleadoRegistraId)
+                           &nbsp; &nbsp; &nbsp;<button type = "button"  class="btn btn-info" id="Addformc2" onclick = "javascript: return AddRow2('Addemp', true );" >Agregar</button>
+                     </div>
+                 
+                 
+         
+
+                </div>
+
+                </div>
+                          <div class="panel-body">
+                  <div class = "panel panel-default">                        
+                    <div class = "table-responsive">
+                         <br />
+                      <table class = "table table-hover">                                
+                         <thead><tr class = "table-info"><th></th><th>Nombre</th><th>Cargo</th><th>Area</th></tr></thead>
+                         <tbody id = "AddItemsemp"></tbody>
+                         <tfoot><tr><td colspan = "4"></td></tr></tfoot>
+                       </table>
+                     </div>
+                   </div> 
+                 </div>
+               </div>
+             </div>
+           </div>
+          </div>
+        </div>
+        </div>
+     <div class="row">
+
+<div class="col-3">
+
+        <div class="editor-label">
+            @*@Html.LabelFor(model => model.FechaRegistro)
+            Fecha Registro*@
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.FechaRegistro)*@
+             @*@Html.TextBox("FechaRegistro", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})*@
+         </div>
+        </div>
+
+
+    <div class="col-12">
+
+
+        <div class="editor-label">
+            <br />
+            @Html.LabelFor(model => model.Fundamentos)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.CantidadDias)*@
+            @Html.TextArea("Fundamentos", null, htmlAttributes: new { @class = "form-control", rows="4", cols="20" } )
+            @Html.ValidationMessageFor(model => model.Fundamentos)
+        </div>
+        <br />
+    </div>
+         <div class="col-12">
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Pretencion)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.CantidadDias)*@
+            @Html.TextArea("Pretension", null, htmlAttributes: new { @class = "form-control" , rows="4", cols="20" } )
+            @Html.ValidationMessageFor(model => model.Pretencion)
+            <br />
+        </div>
+    </div>
+    </div>
+<div class="card">
+  <div class="card-header text-white bg-info mb-3" >Adjuntar Pruebas</div>
+    <div class="card-body">
+      <div class="form-inline" role="form">
+       <div class="container-fluid">
+      
+           <br />
+            <div class="panel-body">
+                  <div class = "panel panel-default">                        
+   
+                      <form action="javascripts:;" enctype="multipart/form-data" method="post">
+                       <div class = "table-responsive">
+                      <table class = "table table-hover" " id="pruebat">                                
+                         <thead><tr class = "table-info"><th>N</th><th>Tipo Prueba</th><th>Archivo</th></tr></thead>
+                         <tbody id = "bodyprueba"></tbody>
+                        
+                       </table>
+                             <button id="add" class="btn btn-info">Añadir fila</button>
+                           <button id="del" class="btn btn-info">Eliminar fila</button>
+                     </div>
+                          </form>
+                   </div> 
+                 </div>
+      </div>
+    </div>
+  </div>
+</div> 
+ <br />
+    <!--Anexos-->
+     <div class="card">
+  <div class="card-header text-white bg-info mb-3" >Anexos</div>
+    <div class="card-body">
+      <div class="form-inline" role="form">
+       <div class="container-fluid">
+        <div class="form-row">
+          <div class="col-sm">
+             <div class ="form-group">   
+                <div class="editor-label">
+                   
+                 <!--contenido-->
+
+    
+                </div>
+                </div>
+      
+                  <form action="javascripts:;" enctype="multipart/form-data" method="post">
+                       <div class = "table-responsive">
+                      <table class = "table table-hover" " id="Tanexos">                                
+                         <thead><tr class = "table-info"><th>N</th><th>Archivo</th></tr></thead>
+                         <tbody id = "bodyanexos"></tbody>
+                        
+                       </table>
+                             <button id="adda" class="btn btn-info">Añadir fila</button>
+                           <button id="del2" class="btn btn-info">Eliminar fila</button>
+                 </div>
+                          </form>
+                 </div>
+               </div>
+             </div>
+           </div>
+          </div>
+        </div>
+      <div class="col-12 " style="text-align:center">
+          <br />
+        <button type = "button" class = "btn btn-lg" id="AddPD" style="background-color:#96D44D; color:white" onclick = "javascript: return SavePD();" >Guardar</button>
+     </div>
+
+        </div>
+
+    </div>
+  </form>  
+<script type="text/javascript">
+    function reloadPage() {
+        location.replace("../../ProcesoDisciplinario/DetalleProcesoDisciplinario")
+    }
+
+    window.onload = function () {
+        var fecha = new Date(); //Fecha actual
+        var mes = fecha.getMonth() + 1; //obteniendo mes
+        var dia = fecha.getDate(); //obteniendo dia
+        var ano = fecha.getFullYear(); //obteniendo año
+        if (dia < 10)
+            dia = '0' + dia; //agrega cero si el menor de 10
+        if (mes < 10)
+            mes = '0' + mes //agrega cero si el menor de 10
+        document.getElementById("FechaRegistro").value = ano + "-" + mes + "-" + dia;
+    }
+
+    $(document).ready(function () {
+        $("#FechaRegistro").prop('disabled', true);
+        $("#Emp").prop('disabled', true);
+      
+        var contp = 0;
+        $("#add").click(function () {
+            contp++;
+            var fila = '<tr class ="selected" id="fila' + contp + '"><td>' + contp + '</td> <td><select  name="select" class="btn btn-ligth dropdown-toggle"  id="TipoPrueba' + contp + '"><option selected >Seleccione...</option>  <option value="documental" >Documental</option>' +
+                      '<option value="testimonial">Testimonial</option></select></td><td><input type="file" class="form-control-file" id="Prueba' + contp + '"></td></tr>';
+            
+
+            $("#pruebat").append(fila);
+        });
+
+        var conta = 0;
+        $("#adda").click(function () {
+            conta++;
+            var fila = '<tr class ="selected" id="fila' + conta + '"><td>' + conta + '</td><td><input type="file" class="form-control-file" id="anexo' + conta + '"></td></tr>';
+
+
+            $("#Tanexos").append(fila);
+        });
+
+        /**
+         * Funcion para eliminar la ultima columna de la tabla.
+         * Si unicamente queda una columna, esta no sera eliminada
+         */
+        $("#del").click(function () {
+            // Obtenemos el total de columnas (tr) del id "tabla"
+            var trs = $("#bodyprueba tr").length;
+            if (trs >= 1) {
+            
+                // Eliminamos la ultima columna
+                $("#bodyprueba tr:last").remove();
+                contp--;
+            }
+        });
+       
+        $("#del2").click(function () {
+            // Obtenemos el total de columnas (tr) del id "tabla"
+            var trs = $("#bodyanexos tr").length;
+            if (trs >= 1) {
+            
+                // Eliminamos la ultima columna
+                $("#bodyanexos tr:last").remove();
+                conta--;
+            }
+        });
+    });
+    
+ 
+  
+
+</script>

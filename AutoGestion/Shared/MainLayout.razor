@@ -1,0 +1,193 @@
+﻿@inherits LayoutComponentBase
+@using Microsoft.AspNetCore.SignalR.Client;
+@using AutoGestion.Theme
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@inject NavigationManager Navigation
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+<audio id="notification" src="/Media/notification.mp3" />
+<MudThemeProvider Theme="_themeManager.Theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+@if (DatosEmpleado != null) { 
+<MudLayout>
+    <MudAppBar Elevation="4">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <img src="./img/logoauto.png" />
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Xs">
+                <MudText Typo="Typo.h6" Class="ml-4">Gestión Click - @DatosEmpleado.ENAME</MudText>
+        </MudHidden>
+        <MudHidden Breakpoint="Breakpoint.Xs" Invert="true">
+                <MudText Typo="Typo.subtitle2">Gestión Click - @DatosEmpleado.ENAME</MudText>
+        </MudHidden>
+        <MudSpacer />
+        @if(DatosEmpleado != null)  {
+        <AutoGestion.Componentes.Notification></AutoGestion.Componentes.Notification>
+        }
+@*        <MudMenu Icon="@Icons.Material.Outlined.Widgets" Color="Color.Inherit" AnchorOrigin="Origin.BottomCenter" Dense="true">
+            <MudMenuItem Link="https://mudblazor.com/">MudBlazor</MudMenuItem>
+            <MudMenuItem Link="https://github.com/Garderoben/MudBlazor.Templates">Source Code</MudMenuItem>
+        </MudMenu>*@
+        <MudMenu AnchorOrigin="Origin.BottomLeft"  Dense="true" Class="mt-1 ml-4">
+            <ActivatorContent>
+                <MudAvatar Image="@imageDataURL" />
+            </ActivatorContent>
+            <ChildContent>
+                  <PersonCard Style="background-color: var(--mud-palette-drawer-background);color: var(--mud-palette-drawer-text);" Foto="@imageDataURL" Nombre="@DatosEmpleado.ENAME" Cargo="@DatosEmpleado.CARGO" />
+                 <MudDivider Class="mb-2" />
+                <MudListItem Text="Mis Datos" Icon="@Icons.Material.Outlined.Person" OnClick="@((e) => Navigation.NavigateTo($"personal/account"))" />
+                <MudListItem Text="Salir" Icon="@Icons.Material.Outlined.Login" OnClick="Salir"  />
+            </ChildContent>
+        </MudMenu>
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="25" ClipMode="_themeManager.DrawerClipMode">
+        <NavMenu  DatosEmpleado="@DatosEmpleado" Foto="@imageDataURL" />
+    </MudDrawer>
+    <MudMainContent>
+        <MudHidden Breakpoint="Breakpoint.SmAndDown">
+            <MudToolBar DisableGutters="true">
+                <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle())" Class="ml-3" />
+                 <MudSpacer />
+            </MudToolBar>
+        </MudHidden>
+        <MudContainer MaxWidth="MaxWidth.False" Class="mt-4">
+            <CascadingValue Value="hubConnection">
+            @Body
+                </CascadingValue>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+}
+
+
+@code {
+    private ThemeManagerTheme _themeManager = new ThemeManagerTheme();
+    private EmpleadoReturnSapDTO DatosEmpleado = new EmpleadoReturnSapDTO();
+    public bool _drawerOpen = true;
+    public bool _themeManagerOpen = false;
+    public string imageDataURL;
+    private HubConnection hubConnection;
+    public bool IsConnected => hubConnection.State == HubConnectionState.Connected;
+    private int CurrentUserId { get; set; }
+    public string LinkChat { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            DatosEmpleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+            if (DatosEmpleado != null)
+            {
+                var foto = await Http.PostAsJsonAsync<string>($"api/obtenerfotoempleado/{DatosEmpleado.PERNR}", $"{DatosEmpleado.PERNR}");
+                var stringfoto = "";
+
+
+                if (foto.IsSuccessStatusCode)
+                {
+                    stringfoto = await foto.Content.ReadAsStringAsync();
+                    if (stringfoto != null)
+                    {
+                        stringfoto = stringfoto.Replace("\"", "");
+                        if (DatosEmpleado != null)
+                        {
+                            imageDataURL = $"data:image/png;base64,{stringfoto}";
+
+                        }
+                    }
+                }
+            }
+
+            //Links Chat AnaA
+
+            //LinkChat =  await Http.GetFromJsonAsync<string>(($"api/ConsultarConfiguracion/{"URLCHATGC"}"));
+
+
+
+            // if ((DatosEmpleado.Correo == null || DatosEmpleado.Correo == "") || (DatosEmpleado.CorreoPersonal == null || DatosEmpleado.CorreoPersonal == "") || (DatosEmpleado.Estrato == "" || DatosEmpleado.Estrato == null) || (DatosEmpleado.Direccion == null || DatosEmpleado.Direccion == "") || (DatosEmpleado.MunicipioId == null || DatosEmpleado.MunicipioId == 0) || (DatosEmpleado.TipoViviendaId == null || DatosEmpleado.TipoViviendaId == 0) || (DatosEmpleado.Barrio == null || DatosEmpleado.Barrio == "") || (DatosEmpleado.DesplazamientosLaborales == "" || DatosEmpleado.DesplazamientosLaborales == null))
+
+            // {
+            //     await JS.ShowMessage("Atención", "Debe actualizar sus datos personales", "warning");
+            //     Navigation.NavigateTo("personal/account");
+            // }
+
+            hubConnection = new HubConnectionBuilder().WithUrl("https://radyesca.com/chathub").Build();
+            await hubConnection.StartAsync();
+            Console.WriteLine(CurrentUserId);
+            hubConnection.On<string, int, int>("ReceiveChatNotification", async (message, receiverUserId, senderUserId) =>
+            {
+                if (CurrentUserId == receiverUserId)
+                {
+                  
+                    // _jsRuntime.InvokeAsync<string>("PlayAudio", "notification");
+                     await JS.PlayAudio("notification");
+                    _snackBar.Add(message, Severity.Info, config =>
+                    {
+                        config.VisibleStateDuration = 10000;
+                        config.HideTransitionDuration = 500;
+                        config.ShowTransitionDuration = 500;
+                        config.Action = "ir al Chat?";
+                        config.ActionColor = Color.Primary;
+                        config.Onclick = snackbar =>
+                        {
+                            _navigationManager.NavigateTo($"chat/{senderUserId}");
+                            return Task.CompletedTask;
+                        };
+                    });
+                }
+            });
+
+            CurrentUserId = DatosEmpleado.Id.Value;
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message); 
+
+        }
+
+        StateHasChanged();
+    }
+    private async Task Salir()
+
+    {
+        await localStore.ClearAsync();
+
+        Navigation.NavigateTo($"pages/authentication/login");
+    }
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    void OpenThemeManager(bool value)
+    {
+        _themeManagerOpen = value;
+    }
+
+    void UpdateTheme(ThemeManagerTheme value)
+    {
+        _themeManager = value;
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        _themeManager.Theme = new AutogestionTheme();
+        _themeManager.DrawerClipMode = DrawerClipMode.Always;
+        _themeManager.FontFamily = "Montserrat";
+        _themeManager.DefaultBorderRadius = 3;
+    }
+
+
+}
+
+

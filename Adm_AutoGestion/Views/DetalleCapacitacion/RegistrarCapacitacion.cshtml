@@ -1,0 +1,668 @@
+﻿@model Adm_AutoGestion.Models.DetalleCapacitacion
+
+@{
+    ViewBag.Title = "RegistrarCapacitacion";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<
+
+    @using (Html.BeginForm("RegistrarCapacitacion", "DetalleCapacitacion", FormMethod.Get))
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+           
+               
+                    <div class="card">
+                        <div class="card-header text-white fondoDegradado mb-3"><h4>Registro Participantes</h4></div>
+                        <div class="card-body">
+
+                            @if (ViewBag.Fecha < DateTime.Today)
+                            {
+                                <div class="row">
+                                    <h6>Se cerró el registro de participantes de esta sesión.</h6>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="row">
+
+                                    @*<div class="col-md-3" style="text-align:center">
+                                        <img src="~/Contents/image/acta.png">
+                                    </div>*@
+                                    @if (ViewBag.Empleado != null)
+                                    {
+                                        <div class="col-md-12">
+
+                                            <div class="row">
+                                                @*<div class="card-header">
+                                                    <h5 class="colorTitulo">Busqueda de colaboradores</h5>
+                                                </div>*@
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <label>Empresa</label>
+                                                    @Html.DropDownList("Empresa", new SelectList(ViewBag.Empresa, "Codigo", "Descripcion", ViewBag.SelectedEmpresa), null, htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label>Perfil</label>
+                                                    @Html.DropDownList("TipoArea", (IEnumerable<SelectListItem>)ViewBag.TipoArea, null, htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-md-6">
+                                                    <label>Cargo</label>
+                                                    @Html.DropDownList("Cargo", new SelectList(ViewBag.Cargo, "Key", "Key"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", multiple = "multiple", title = "Seleccione..." })
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label>Unidad organizativa</label>
+                                                    @Html.DropDownList("Area", new SelectList(ViewBag.Areas, "Key", "Key"), null, htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", multiple = "multiple", title = "Seleccione..." })
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-12 d-flex justify-content-center">
+                                                    <button id="BuscarEmpleado" type="submit" class="bi bi-search btn btn-outline-primary  rounded-pill mb-2"> Buscar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                    <div class="row mt-2">
+
+                                        @if (ViewBag.Empleado != null)
+                                        {
+                                            <hr />
+                                            <div class="row mt-3">
+                                                <div class="col-md-12">
+                                                    <label>Listado de colaboradores</label>
+                                                    @Html.DropDownList("Empleados", new SelectList(ViewBag.Empleados, "Id", "Nombres"), null, htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", multiple = "true", title = "Seleccione..." })
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-3">
+                                                <div class="col-md-6 d-flex justify-content-between">
+                                                    <div>
+                                                        <button type="button" class="bi bi-plus-square btn btn-outline-primary  rounded-pill mb-2" onclick="javascript: AgregarTodo();"> Agregar Todo</button>
+                                                    </div>
+                                                    <div>
+                                                        <button type="button" class="bi bi-person-x btn btn-outline-primary   rounded-pill mb-2" onclick="javascript: BorrarTodo();"> Borrar Todo</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="row mt-3">
+                                                <table id="emp" class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+
+                                                            </th>
+                                                            <th>
+                                                                Nro
+                                                            </th>
+                                                            <th>
+                                                                Nombres
+                                                            </th>
+                                                            <th>
+                                                                Documento
+                                                            </th>
+                                                            <th>
+                                                                Area
+                                                            </th>
+                                                            <th>
+                                                                Cargo
+                                                            </th>
+                                                            <th>
+                                                                Empresa
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody id="empbody" class="text-center align-middle">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 d-flex justify-content-evenly">
+                                                    <div><button type="button" class="bi bi-save btn btn-outline-primary   rounded-pill mb-2"  style="font-size:16px" onclick="javascript: RegistrarCap();">&nbsp; Registrar los colaboradores a la sesión</button></div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (ViewBag.Terceros != null)
+                                        {
+                                            <hr />
+                                            <div>
+                                                <div class="row mt-3 mb-2">
+                                                    <div class="card-header">
+                                                        <h5 class="colorTitulo">Registro Terceros - Aliados estratégicos</h5>
+                                                        <div class="row mt-3">
+                                                            <div>
+                                                                <a id="linkRegistroTercero" class="bi bi-link btn btn-outline-primary  rounded-pill mb-2" href="@Url.Action("RegistroTercero", "Capacitacion", new { id = ViewBag.IdCap })" target="_blank"> Crear Terceros</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (ViewBag.Estudiantes != null)
+                                        {
+                                            <div>
+                                                <div class="row mt-3 mb-2">
+                                                    <div class="card-header">
+                                                        <h5 class="colorTitulo">Estudiantes</h5>
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-3">
+                                                                <a class="bi bi-link btn btn-outline-primary  rounded-pill mb-2" href="@Url.Action("Estudiantes", "Capacitacion", new { id = ViewBag.IdCap })" target="_blank"> Cargar Estudiantes</a>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <a class="bi bi-cloud-download btn btn-outline-primary  rounded-pill mb-2" href="~/Contents/Formato Estudiantes.csv" target="_blank"> Descargar Formato</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        <div>@Html.ActionLink(" Regresar", "ListaPorCompletar", "Capacitacion", null, new { @class = "bi bi-box-arrow-in-left  btn btn-outline-primary  rounded-pill mb-2", style = "font-size:16px" })</div>
+
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+          
+        </fieldset>
+    }
+
+
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje" />
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn btn-outline-primary  rounded-pill mb-2" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .dataTables_info {
+        text-align: center;
+    }
+
+    .dataTables_wrapper .top {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('#linkRegistroTercero').click(function (event) {
+            event.preventDefault();
+            var url = window.location.origin;
+
+            var tempInput = $('<input>');
+            $('body').append(tempInput);
+            tempInput.val(url + $(this).attr('href')).select();
+            document.execCommand('copy');
+            tempInput.remove();
+
+            alertify.alert("Enlace copiado");
+        });
+    });
+</script>
+
+<script>
+window.actualizarAreasPorPerfil = function() {
+    return new Promise((resolve, reject) => {
+        var selectedEmpresa = $('#Empresa').val();
+        var selectedPerfil = $('#TipoArea').val();
+
+        if (selectedEmpresa && selectedPerfil) {
+            $.ajax({
+                url: '@Url.Action("ObtenerAreasPorPerfil")',
+                type: 'GET',
+                data: { empresa: selectedEmpresa, perfil: selectedPerfil },
+                success: function(response) {
+                    if (response.Success) {
+                        var $areaDropdown = $('#Area');
+                        $areaDropdown.empty();
+                        $.each(response.Areas, function(index, area) {
+                            $areaDropdown.append('<option value="' + area.Area + '">' + area.Area + '</option>');
+                        });
+                        $areaDropdown.selectpicker('refresh');
+                        resolve();
+                    } else {
+                        alertify.alert(response.Message);
+                        reject();
+                    }
+                },
+                error: function() {
+                    alertify.alert('Error al obtener areas');
+                    reject();
+                }
+            });
+        } else {
+            $('#Area').empty().append('<option value="">Seleccione...</option>').selectpicker('refresh');
+            resolve();
+        }
+    });
+}
+
+window.actualizarCargosPorArea = function() {
+    return new Promise((resolve, reject) => {
+        var selectedAreas = $('#Area').val();
+        var selectedEmpresa = $('#Empresa').val();
+        var selectedPerfil = $('#TipoArea').val();
+
+        if (selectedEmpresa && selectedPerfil && selectedAreas) {
+            $.ajax({
+                url: '@Url.Action("ObtenerCargosPorArea")',
+                type: 'GET',
+                data: { area: selectedAreas, empresa: selectedEmpresa, perfil: selectedPerfil },
+                traditional: true,
+                success: function(response) {
+                    if (response.Success) {
+                        var $cargoDropdown = $('#Cargo');
+                        $cargoDropdown.empty();
+                        $.each(response.Cargos, function(index, cargo) {
+                            $cargoDropdown.append('<option value="' + cargo.Cargo + '">' + cargo.Cargo + '</option>');
+                        });
+                        $cargoDropdown.selectpicker('refresh');
+
+                        resolve();
+                    } else {
+                        alertify.alert(response.Message);
+                        reject();
+                    }
+                },
+                error: function() {
+                    alertify.alert('Error al obtener cargos');
+                    reject();
+                }
+            });
+        } else {
+            $('#Cargo').empty().append('<option value="">Seleccione...</option>').selectpicker('refresh');
+            resolve();
+        }
+    });
+}
+</script>
+
+<script>
+$(document).ready(function() {
+    window.actualizarAreasPorPerfil().then(() => {
+        return window.actualizarCargosPorArea();
+    }).then(() => {
+        establecerSeleccionados();
+    });
+});
+
+$('#TipoArea').change(function() {
+    window.actualizarAreasPorPerfil().then(() => {
+        return window.actualizarCargosPorArea();
+    }).then(() => {
+        establecerSeleccionados();
+    });
+});
+
+$('#Area').on('change', function () {
+
+    var selectedAreas = $(this).val();
+    if (selectedAreas.length > 5) {
+        alertify.alert('Solo puedes seleccionar un máximo de 5 cargos.');
+        $(this).val(selectedAreas.slice(0, 5));
+        $(this).selectpicker("refresh");
+    }
+
+    window.actualizarCargosPorArea();
+
+});
+
+$('#Cargo').on('change', function () {
+
+    var selectedCargos = $(this).val();
+    if (selectedCargos.length > 5) {
+        alertify.alert('Solo puedes seleccionar un máximo de 5 cargos.');
+        $(this).val(selectedCargos.slice(0, 5));
+        $(this).selectpicker("refresh");
+    }
+
+});
+
+function establecerSeleccionados() {
+    var selectedAreas = @Html.Raw(Json.Encode(ViewBag.SelectedArea));
+    if (selectedAreas != null) {
+        $('#Area').val(selectedAreas);
+        $('#Area').selectpicker('refresh');
+    }
+
+    var selectedCargos = @Html.Raw(Json.Encode(ViewBag.SelectedCargo));
+    if (selectedCargos != null) {
+        $('#Cargo').val(selectedCargos);
+        $('#Cargo').selectpicker('refresh');
+    }
+}
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        var dropdown = $("#Empleados").next().next();
+        dropdown.prepend('<button type="button" class="bi bi-plus-square btn btn-outline-primary ms-2 mb-2" onclick="javascript: Agregar();"> Agregar Seleccionados</button>');
+
+        //var dropdownT = $("#Terceros").next().next();
+        //dropdownT.prepend('<button type="button" class="bi bi-plus-square btn btn-outline-primary ms-2 mb-2" onclick="javascript: AgregarT();"> Agregar Seleccionados</button>');
+
+        var table = $('#emp').DataTable({
+            language: {
+                "decimal": "",
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "info": "_TOTAL_ Empleados programados",
+                "infoEmpty": "0 Empleados programados",
+                "infoFiltered": "",
+                "infoPostFix": "",
+                "thousands": ",",
+                "lengthMenu": "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+                "aria": {
+                    "sortAscending": ": activar para ordenar la columna de manera ascendente",
+                    "sortDescending": ": activar para ordenar la columna de manera descendente"
+                }
+            },
+            dom: '<"top"lif>rt<"bottom"p><"clear">',
+        });
+
+        //var tableT = $('#ter').DataTable({
+        //    language: {
+        //        "decimal": "",
+        //        "emptyTable": "No hay datos disponibles en la tabla",
+        //        "info": "_TOTAL_ Terceros programados",
+        //        "infoEmpty": "0 Terceros programados",
+        //        "infoFiltered": "",
+        //        "infoPostFix": "",
+        //        "thousands": ",",
+        //        "lengthMenu": "Mostrar _MENU_ entradas",
+        //        "loadingRecords": "Cargando...",
+        //        "processing": "Procesando...",
+        //        "search": "Buscar:",
+        //        "zeroRecords": "No se encontraron registros coincidentes",
+        //        "paginate": {
+        //            "first": "Primero",
+        //            "last": "Último",
+        //            "next": "Siguiente",
+        //            "previous": "Anterior"
+        //        },
+        //        "aria": {
+        //            "sortAscending": ": activar para ordenar la columna de manera ascendente",
+        //            "sortDescending": ": activar para ordenar la columna de manera descendente"
+        //        }
+        //    },
+        //    dom: '<"top"lif>rt<"bottom"p><"clear">',
+        //});
+
+        const tablaEmpleadosGuardada = JSON.parse(localStorage.getItem('TablaEmpleados'));
+        if (tablaEmpleadosGuardada) {
+            tablaEmpleadosGuardada.forEach(function (fila) {
+                var nuevaFila = ["<a href='' onclick='eliminarFila(this); return false;'><img alt='Quitar' src='../../Contents/image/Trash.png' title='Quitar' /></a>",
+                    fila[0],
+                    fila[1],
+                    fila[2],
+                    fila[3],
+                    fila[4],
+                    fila[5]
+                ];
+                table.row.add(nuevaFila).draw();
+            })
+        };
+
+        //const tablaTercerosGuardada = JSON.parse(localStorage.getItem('TablaTerceros'));
+        //if (tablaTercerosGuardada) {
+        //    tablaTercerosGuardada.forEach(function (fila) {
+        //        var nuevaFila = ["<a href='' onclick='eliminarFilaT(this); return false;'><img alt='Quitar' src='../../Contents/image/Trash.png' title='Quitar' /></a>",
+        //            fila[0],
+        //            fila[1],
+        //            fila[2],
+        //            fila[3],
+        //            fila[4],
+        //            fila[5]
+        //        ];
+        //        tableT.row.add(nuevaFila).draw();
+        //    })
+        //};
+
+        window.Agregar = function() {
+            try {
+                const selectedOptions = $("#Empleados").find("option:selected");
+                const tabla = JSON.parse(localStorage.getItem('TablaEmpleados')) || [];
+
+                selectedOptions.each(function () {
+                    const value = $(this).val();
+                    const nombre = $(this).text();
+                    const arreglo = value.split("%");
+
+                    if (!optionExistsInTable(arreglo[0])) {
+                        var nuevaFila = ["<a href='' onclick='eliminarFila(this); return false;'><img alt='Quitar' src='../../Contents/image/Trash.png' title='Quitar' /></a>",
+                            arreglo[0],
+                            nombre,
+                            arreglo[1],
+                            arreglo[2],
+                            arreglo[3],
+                            arreglo[4]
+                        ];
+                        table.row.add(nuevaFila).draw();
+                        tabla.push([arreglo[0], nombre, arreglo[1], arreglo[2], arreglo[3], arreglo[4]]);
+                    }
+                });
+
+                localStorage.setItem('TablaEmpleados', JSON.stringify(tabla));
+            }
+            catch (err) { alertify.alert(err); }
+            return false;
+        }
+
+        //window.AgregarT = function() {
+        //    try {
+        //        const selectedOptions = $("#Terceros").find("option:selected");
+        //        const tabla = JSON.parse(localStorage.getItem('TablaTerceros')) || [];
+        //
+        //        selectedOptions.each(function () {
+        //            const value = $(this).val();
+        //            const nombre = $(this).text();
+        //            const arreglo = value.split("%");
+        //
+        //            if (!optionExistsInTableT(arreglo[0])) {
+        //                var nuevaFila = ["<a href='' onclick='eliminarFilaT(this); return false;'><img alt='Quitar' src='../../Contents/image/Trash.png' title='Quitar' /></a>",
+        //                    arreglo[0],
+        //                    nombre,
+        //                    arreglo[1],
+        //                    arreglo[2],
+        //                    arreglo[3],
+        //                    arreglo[4]
+        //                ];
+        //                tableT.row.add(nuevaFila).draw();
+        //                tabla.push([arreglo[0], nombre, arreglo[1], arreglo[2], arreglo[3], arreglo[4]]);
+        //            }
+        //        });
+        //
+        //        localStorage.setItem('TablaTerceros', JSON.stringify(tabla));
+        //    }
+        //    catch (err) { alertify.alert(err); }
+        //    return false;
+        //}
+
+        window.optionExistsInTable = function(value) {
+            var exists = false;
+
+            table.rows().every(function () {
+                var data = this.data();
+                if (data[1] === value) {
+                    exists = true;
+                    return false;
+                }
+            });
+            return exists;
+        }
+
+        //window.optionExistsInTableT = function(value) {
+        //    var exists = false;
+        //
+        //    tableT.rows().every(function () {
+        //        var data = this.data();
+        //        if (data[1] === value) {
+        //            exists = true;
+        //            return false;
+        //        }
+        //    });
+        //    return exists;
+        //}
+
+        window.eliminarFila = function(elemento) {
+            var row = $(elemento).closest('tr');
+            var id = table.row(row).data()[1];
+            table.row(row).remove().draw();
+            eliminarRegistroLocalStorage(id);
+        }
+
+        //window.eliminarFilaT = function(elemento) {
+        //    var row = $(elemento).closest('tr');
+        //    var id = tableT.row(row).data()[1];
+        //    tableT.row(row).remove().draw();
+        //    eliminarRegistroLocalStorageT(id);
+        //}
+
+        window.eliminarRegistroLocalStorage = function(id) {
+            var tabla = JSON.parse(localStorage.getItem('TablaEmpleados')) || [];
+            var index = tabla.findIndex(function (fila) {
+                return fila[0] === id;
+            });
+            if (index !== -1) {
+                tabla.splice(index, 1);
+                localStorage.setItem('TablaEmpleados', JSON.stringify(tabla));
+            }
+        }
+
+        //window.eliminarRegistroLocalStorageT = function(id) {
+        //    var tabla = JSON.parse(localStorage.getItem('TablaTerceros')) || [];
+        //    var index = tabla.findIndex(function (fila) {
+        //        return fila[0] === id;
+        //    });
+        //    if (index !== -1) {
+        //        tabla.splice(index, 1);
+        //        localStorage.setItem('TablaTerceros', JSON.stringify(tabla));
+        //    }
+        //}
+
+        window.AgregarTodo = function() {
+
+            $("#Empleados").children("option").prop("selected", true);
+            Agregar();
+        }
+
+        //window.AgregarTodoT = function() {
+        //    $("#Terceros").children("option").prop("selected", true);
+        //    AgregarT();
+        //}
+
+        window.BorrarTodo = function() {
+            table.clear().draw();
+            localStorage.removeItem('TablaEmpleados');
+        }
+
+        //window.BorrarTodoT = function() {
+        //    tableT.clear().draw();
+        //    localStorage.removeItem('TablaTerceros');
+        //}
+
+        window.RegistrarCap = function() {
+        try {
+            var frmData = new FormData();
+            var IdCap = @ViewBag.IdCap;
+            frmData.append("IdCap", IdCap);
+            //Empleados
+            var emp = [];
+            var filasemp = table.rows().data();
+
+            filasemp.each(function(value, index) {
+                var fila = value[1] + ";" + value[2] + ";" + value[3] + ";" + value[4] + ";" + value[5] + ";" + value[6];
+                emp.push(fila);
+            });
+
+            frmData.append("CantidadEmp", filasemp.length)
+            frmData.append("Empleados", emp.join('|'));
+
+            //Terceros
+            //if (HayTerceros != "") {
+            //    var ter = [];
+            //    var filaster = tableT.rows().data();
+            //
+            //    filaster.each(function(value, index) {
+            //        var fila = value[1] + "/" + value[2] + "/" + value[3] + "/" + value[4] + "/" + value[5] + "/" + value[6];
+            //        ter.push(fila);
+            //    });
+            //
+            //    frmData.append("CantidadTer", filaster.length)
+            //    frmData.append("Terceros", ter);
+            //
+            //}
+
+            $.ajax({
+                url: "../RegistrarParticipantes",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: frmData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result != "") {
+
+                        localStorage.removeItem('TablaEmpleados');
+                        //localStorage.removeItem('TablaTerceros');
+
+                        alertify.alert(result, function () {
+                            location.replace('../../Capacitacion/ListaPorCompletar')
+                        });
+                    } else {
+                        alertify.alert("Error inesperado.")
+                    }
+                },
+
+                error: function (xhr, status, error) { alertify.alert("" + error); }
+
+            });
+        } catch (err) { alertify.alert("" + err); }
+
+    }
+    });
+
+</script>

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Incapacidades>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+    <br />
+    <h2 class="colorTitulo">Incapacidades</h2>
+
+    <p>
+        @Html.ActionLink(" Registrar Nuevo", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary mb-2" })
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <tr class="fondoDegradado text-white">
+                <th>
+                    @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+                    Nombre Empleado
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Fecha)*@
+                    Fecha Registro
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.FechaInicio)*@
+                    Fecha Inicio
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.FechaFin)*@
+                    Fecha Fin
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.CantidadDias)*@
+                    Cantidad Dias
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Diagnostico)
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.EstadoId)*@
+                    Estado
+                </th>
+                
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                        @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.FechaInicio)*@
+                        @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.FechaFin)*@
+                        @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CantidadDias)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Diagnostico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+    </div>
+
+</div>

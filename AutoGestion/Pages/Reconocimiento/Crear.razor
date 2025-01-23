@@ -1,0 +1,210 @@
+﻿@page "/reconocimiento/crear"
+
+@using Autogestion.Shared.DTO.Reconocimiento;
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@using System.Text.Json
+@inject IJSRuntime JS
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+
+
+
+
+
+
+
+<MudText Typo="Typo.h5" Color="Color.Surface" Class="mb-4">Crear Reconocimiento</MudText>
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    @if (empleado != null)
+    {
+        <EditForm Model="@Reconocimientos" OnValidSubmit="@GuardarReconocimiento">
+            <DataAnnotationsValidator />
+            <MudCard Class="mb-5">
+                <MudCardContent>
+                    <MudGrid>
+                        <MudHidden T="int" @bind-Value="Reconocimientos.Id" />
+
+                        <MudItem xs="12" sm="10" md="12">
+                            <MudAutocomplete T="string" Label="Seleccionar Empleado" @bind-Value="Reconocimientos.EmpleadoSeleccionado" SearchFunc="@BuscarEmpleados"
+                                             AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+                        </MudItem>
+
+
+                        <MudItem xs="12" sm="10" md="12">
+                            <MudSelect T="int" Text="Seleccione..." @bind-Value="Reconocimientos.TipoReconocimientoId" Label="TipoReconocimiento">
+                                <MudSelectItem T="int" Value="0">Seleccione...</MudSelectItem>
+                                @if (tipoReconocimientoDTO != null)
+                                {
+                                    @foreach (var opcion in tipoReconocimientoDTO)
+                                    {
+                                        <MudSelectItem T="int" Value="@opcion.Id">@opcion.Nombre</MudSelectItem>
+                                    }
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="12" md="22">
+                            <MudTextField T="string" @bind-Value="Reconocimientos.Observaciones" Label="Observaciones"  Variant="Variant.Text" Lines="5" />
+                            <MudElement>La longitud máxima permitida es de 200 caracteres</MudElement>
+                        </MudItem>
+                    </MudGrid>
+
+                </MudCardContent>
+                <MudCardActions Class="d-flex mt-3 justify-content-center">
+                    <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="" OnClick="@GuardarReconocimiento">Crear</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </EditForm>
+
+        
+
+
+    }
+}
+
+
+
+
+
+
+@code {
+
+
+    ReconocimientoDTO Reconocimientos = new ReconocimientoDTO();
+
+    TimeSpan? timeDesde = new TimeSpan(00, 00, 00);
+    TimeSpan? timeHasta = new TimeSpan(00, 00, 00);
+
+    private int nextId = 1;
+    private int idGenerado;
+
+
+    private bool _loading;
+    List<EmpleadoDTO> listaEmpleados;
+    private List<TipoReconocimientoDTO>? tipoReconocimientoDTO;
+
+
+
+    
+
+    private EmpleadoDTO? empleado { get; set; }
+
+
+
+
+
+
+    
+    //
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        Console.WriteLine("" + empleado.Id);
+
+
+        listaEmpleados = await Http.GetFromJsonAsync<List<EmpleadoDTO>>($"api/Reconocimiento/ListaEmpleados");
+        tipoReconocimientoDTO = await Http.GetFromJsonAsync<List<TipoReconocimientoDTO>>($"api/Reconocimiento/TipoReconocimiento");
+        _loading = false;
+        StateHasChanged();
+
+
+
+
+    }
+    
+    private async Task<IEnumerable<string>> BuscarEmpleados(string value)
+    {
+        
+        if (string.IsNullOrEmpty(value))
+            return new string[0];
+
+        if (listaEmpleados != null)
+        {
+            return listaEmpleados
+                .Where(e => !string.IsNullOrEmpty(e.Nombres) && e.Nombres.Contains(value, StringComparison.InvariantCultureIgnoreCase))
+                .Select(e => e.Nombres);
+        }
+
+        return Enumerable.Empty<string>();
+    }
+
+    private async void GuardarReconocimiento()
+    {
+        _loading = true;
+        string validador = "OK";
+        string respuesta = "";
+
+        try
+        {
+
+            if (Reconocimientos.EmpleadoSeleccionado == null || Reconocimientos.EmpleadoSeleccionado == "")
+            {
+                respuesta = "El campo Empleado Reconocido no puede esatar vacío <br/> " + respuesta;
+                validador = "Denegar";
+            }
+
+            if (Reconocimientos.TipoReconocimientoId == 0)
+            {
+                respuesta = "El campo Tipo Reconocimiento no puede esatar vacío <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            if (Reconocimientos.Observaciones == null || Reconocimientos.Observaciones == "")
+            {
+                respuesta = "El campo Observaciones no puede esatar vacío <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            if (Reconocimientos.Observaciones.Length > 200)
+            {
+                
+                respuesta = "La longitud máxima permitida es de 200 caracteres <br/> " + respuesta;
+                validador = "Denegar";
+            }
+            if (validador == "OK")
+            {
+                //vincular regisros OnInisializate
+                Reconocimientos.EmpleadoId = Convert.ToInt32(empleado.Id);
+
+                Reconocimientos.Fecha = DateTime.Now;
+                Reconocimientos.EmpleadoReconocidoId = listaEmpleados.Where(x => x.Nombres == Reconocimientos.EmpleadoSeleccionado).Select(x => x.Id).FirstOrDefault();
+                Reconocimientos.Visto = true;
+                Reconocimientos.Activo = true;
+                Reconocimientos.Fuente = "AutoGestion";
+                var guardadoReconocimiento = await Http.PostAsJsonAsync<ReconocimientoDTO>($"api/Reconocimiento/GuardarReconocimiento/{Reconocimientos}", Reconocimientos);
+                if (guardadoReconocimiento.IsSuccessStatusCode)
+                {
+                    _loading = false;
+                    await JS.ShowMessage("", "El Reconocimiento fue registrado de manera exitosa", "success");
+
+                    NavManager.NavigateTo("reconocimiento/crear", true);
+                }
+
+
+            }
+            else
+            {
+                _loading = false;
+                await JS.ShowMessage("Error", "Error al realizar registro: <br/> " + respuesta, "warning");
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+            _loading = false;
+            await JS.ShowMessage("Error:", "Error al realizar registro: " + respuesta + ex, "warning");
+        }
+    }
+
+    
+
+}

@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.HabilitarVacaciones>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+    <br />
+    <h2 class="colorTitulo">Habilitar Vacaciones</h2>
+
+    <p>
+        @Html.ActionLink(" Crear Habilitación", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary mb-2"})
+    </p>
+    <br />
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <tr class="fondoDegradado text-white">
+                <th>
+                    @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+                    Nombre Empleado
+                </th>
+                <th>
+                    Menor a 6 Dias
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Anticipadas)
+                </th>
+                <th>
+                    En Dinero
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.UsuarioRegistra)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.DiasMayor6)*@
+                        @if (item.DiasMayor6 == "SI")
+                        {
+                            <img src="~/Contents/image/check.png">
+                        }
+                        else
+                        {
+                            <img src="~/Contents/image/cerrar.png">
+                        }
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Anticipadas)*@
+                        @if (item.Anticipadas == "SI")
+                        {
+                            <img src="~/Contents/image/check.png">
+                        }
+                        else
+                        {
+                            <img src="~/Contents/image/cerrar.png">
+                        }
+                    </td>
+                    <td>
+                        @if (item.Pagadas == "SI")
+                        {
+                            <img src="~/Contents/image/check.png">
+                        }
+                        else
+                        {
+                            <img src="~/Contents/image/cerrar.png">
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empleado2.Nombres)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

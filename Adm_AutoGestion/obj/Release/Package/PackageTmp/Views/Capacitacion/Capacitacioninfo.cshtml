@@ -1,0 +1,389 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+
+@{
+    Adm_AutoGestion.Models.Capacitacion Item = ViewBag.Capacitacion;
+}
+<div class="container" style="width:90%">
+    <br />
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <div class="card ">
+                <div class="card-header">
+                    <div class="col-12" style="text-align:center">
+                        <h2 class="colorTitulo">@Item.Nombre</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-start">
+                        <div class="col-2">
+                            <label>Nmr Capacitación</label>
+                            <input class="form-control" type="text" value="@Item.Id" disabled />
+
+                        </div>
+                        <div class="col-4">
+                            <label>Fecha de creación</label>
+                            <input class="form-control" type="text" value="@Item.FechaRegistro" disabled />
+
+                        </div>
+                        <div class="col-4">
+                            <label>Fecha de la Capaciación</label>
+                            <input class="form-control" type="text" value="@Convert.ToDateTime(Item.FechaCapacitacion).ToString("dd/MM/yyyy")" disabled />
+
+                        </div>
+                        <div class="col-2">
+                            <label>Estado Actual</label>
+                            <input class="form-control" type="text" value="@Item.Estado" disabled />
+
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start">
+
+                        <div class="col-2">
+                            <label>Hora de Inicio</label>
+                            <input class="form-control" type="text" value="@Item.HoraInicio" disabled />
+                        </div>
+                        <div class="col-8">
+                            <label>Creador de la Capacitacion</label>
+                            <input class="form-control" type="text" value="@Item.Empleado.Nombres" disabled />
+                        </div>
+                        <div class="col-2">
+                            <label>Hora de Fin</label>
+                            <input class="form-control" type="text" value="@Item.HoraFin" disabled />
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-start mt-5">
+                        <div class="col-md-4">
+                            <label>Tipo PEC</label>
+                            @Html.TextBox("TipoPEC", null, new { @class = "form-control", @Value = Item.TipoPEC, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Sede</label>
+                            <input class="form-control" type="text" value="@Item.Sede.Nombre" disabled />
+                        </div>
+                        <div class="col-md-4">
+                            <label>Empresa</label>
+                            <input class="form-control" type="text" value="@Item.Empresa2.Descripcion" disabled />
+                        </div>
+
+                        @*<div class="col-6">
+            <label>Objetivo</label>
+            <input class="form-control" type="text" value="@Item.Objetivo" disabled />
+        </div>
+        <div class="col-6">
+            <label>Lugar o Ciudad</label>
+            <input class="form-control" type="text" value="@Item.LugarlCiudad" disabled />
+        </div>*@
+                        <div class="col-md-4 mt-3" id="d">
+                            <label>Responsable</label>
+                            @Html.TextBox("Responsable", null, htmlAttributes: new { @class = "form-control", @type = "text", disabled = "true", @Value = Item.Responsable })
+                        </div>
+
+                        <div class="col-md-4 mt-3" id="e">
+                            <label>Cargo del Responsable</label>
+                            @Html.TextBox("CargoResponsable", null, htmlAttributes: new { @class = "form-control", @type = "text", disabled = "true", @Value = Item.CargoResponsable })
+                        </div>
+
+                        <div class="col-md-4 mt-3" hidden id="a">
+                            <label>Programa Institucional o C.O.</label>
+                            @Html.TextBox("ProgramaInstitucional", null, new { @class = "form-control", @Value = Item.ProgramaInstitucional, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3" hidden id="b">
+                            <label>Responsable del Programa</label>
+                            @Html.TextBox("ResponsablePrograma", null, htmlAttributes: new { @class = "form-control", @type = "text", @Value = Item.ResponsablePrograma, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3" hidden id="c">
+                            <label>Cargo del Responsable del Programa</label>
+                            @Html.TextBox("CargoResponsablePrograma", null, htmlAttributes: new { @class = "form-control", @type = "text", @Value = Item.CargoResponsablePrograma, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Area o Servicio Objetivo</label>
+                            @Html.TextBox("AreaObjetivo", null, htmlAttributes: new { @class = "form-control", @type = "text", min = "1", @Value = Item.AreaObjetivo, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Total Sesiones</label>
+                            @Html.TextBox("TotalSesiones", null, htmlAttributes: new { @class = "form-control", @type = "number", min = "1", @Value = Item.TotalSesiones, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Total Personas</label>
+                            @Html.TextBox("TotalPersonas", null, htmlAttributes: new { @class = "form-control", @type = "number", min = "1", @Value = Item.TotalPersonas, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Publico dirigido</label>
+                            <input class="form-control" type="text" value="@Item.DirigidoA" disabled />
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Proveedor</label>
+                            @Html.TextBox("Proveedor", null, htmlAttributes: new { @class = "form-control", @type = "text", @Value = Item.Proveedor, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Meta Eficacia</label>
+                            @Html.TextBox("MetaEficacia", null, htmlAttributes: new { @class = "form-control", @type = "text", @Value = Item.MetaEficacia, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Requerimiento Institucional</label>
+                            @Html.TextBox("RequerimientoInstitucional", null, htmlAttributes: new { @class = "form-control", @type = "text", @Value = Item.RequerimientoInstitucional, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Especifique el Requerimiento</label>
+                            @Html.TextBox("EspecificacionReq", null, htmlAttributes: new { @class = "form-control", @type = "text", @Value = Item.EspecificacionReq, disabled = "true" })
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Metodología</label>
+                            <input class="form-control" type="text" value="@Item.MetodologiaC.Nombre" disabled />
+                        </div>
+
+                        <div class="col-md-4 mt-3">
+                            <label>Lugar / Ciudad</label>
+                            @Html.TextBox("LugarlCiudad", null, htmlAttributes: new { @class = "form-control", @type = "text", @Value = Item.LugarlCiudad, disabled = "true" })
+                        </div>
+
+                        @if (Item.PresupuestoRequerido == true)
+                        {
+                            <div class="col-md-4 mt-3" id="DivPresupuesto">
+                                <label>Presupuesto</label>
+                                @Html.TextBox("Presupuesto", null, htmlAttributes: new { @class = "form-control", @type = "number", @Value = Item.Presupuesto, disabled = "true" })
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-4 mt-3" hidden id="DivPresupuesto">
+                                <label>Presupuesto</label>
+                                @Html.TextBox("Presupuesto", null, htmlAttributes: new { @class = "form-control", @type = "number", @Value = Item.Presupuesto, disabled = "true" })
+                            </div>
+                        }
+
+                    </div>
+
+                    @*-------------------------------------------------------------------------------------------------------------------*@
+                    @if (@Item.Estado == "Cerrado")
+                    {
+                        <div class="card ">
+                            <div class="card-body">
+
+                                <div class="row justify-content-start">
+                                    <div class="col-6">
+                                        <label>Competencia Laboral</label>
+                                        <input class="form-control" type="text" value="@Item.CompetenciaL.Nombre" disabled />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Conocimientos</label>
+                                        <input class="form-control" type="text" value="@Item.Conocimientos" disabled />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row justify-content-start">
+                                    <div class="col-6">
+                                        <label>Cultura Organizacional</label>
+                                        <input class="form-control" type="text" value="@Item.CulturaO.Nombre" disabled />
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Medición Eficación</label>
+                                        <input class="form-control" type="text" value="@Item.MedicionEficacion" disabled />
+
+                                    </div>
+                                </div>
+                                @if (@Item.MedicionEficacion == "SI")
+                                {
+                                    <div class="row justify-content-start">
+                                        <div class="col-4">
+                                            <label>Resultado Medición</label>
+                                            <input class="form-control" type="text" value="@Item.ResultadoMedicion" disabled />
+                                        </div>
+                                        <div class="col-4">
+                                            <label>Meta Eficacia</label>
+                                            <input class="form-control" type="text" value="@Item.MetaEficacia" disabled />
+                                        </div>
+                                        <div class="col-4">
+                                            <label>Metodología Cierre</label>
+                                            <input class="form-control" type="text" value="@Item.MetodologiaCierre.Nombre" disabled />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @*-------------------------------------------------------------------------------------------------------------------*@
+                    <br />
+
+                    <div class="row justify-content-start">
+                        <div class="col-12">
+                            <br />
+                            <h3> &nbsp;&nbsp;&nbsp;&nbsp; • Expositores</h3>
+                            <br />
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead><tr class="table-info"><th></th><th>Nombre</th><th>Documento</th><th>Area</th><th>Cargo</th><th>Tercero</th><th></th></tr></thead>
+                                            <tbody id="AddItemsCap">
+                                                @foreach (var Expo in @Item.Expositores)
+                                                {
+                                                    if (Expo.TipoExpositor == "Empleado")
+                                                    {
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>
+                                                                @Expo.Empleado.Nombres
+                                                            </td>
+                                                            <td>
+                                                                @Expo.Empleado.Documento
+                                                            </td>
+                                                            <td>
+                                                                @Expo.Empleado.Area
+                                                            </td>
+                                                            <td>
+                                                                @Expo.Empleado.Cargo
+                                                            </td>
+                                                            <td>
+                                                                @Expo.TipoExpositor
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    }
+                                                    else if (Expo.TipoExpositor == "Tercero")
+                                                    {
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>
+                                                                @Expo.Tercero.Nombres
+                                                            </td>
+                                                            <td>
+                                                                @Expo.Tercero.Documento
+                                                            </td>
+                                                            <td>
+                                                                @Expo.Tercero.Area
+                                                            </td>
+                                                            <td>
+                                                                @Expo.Tercero.Cargo
+                                                            </td>
+                                                            <td>
+                                                                @Expo.TipoExpositor
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+
+                                            <tfoot><tr><td colspan="12"></td></tr></tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-12">
+                            <br />
+                            <h3> &nbsp;&nbsp;&nbsp;&nbsp; • Participantes</h3>
+                            <br />
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead><tr class="table-info"><th></th><th>Nombre</th><th>Documento</th><th>Area</th><th>Cargo</th><th>Tercero</th><th></th></tr></thead>
+                                            <tbody id="AddItemsCap2">
+                                                @foreach (var Par in @Item.Participantes)
+                                                {
+                                                    if (Par.EsTercero == "NO")
+                                                    {
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>
+                                                                @Par.Empleado2.Nombres
+                                                            </td>
+                                                            <td>
+                                                                @Par.Empleado2.Documento
+                                                            </td>
+                                                            <td>
+                                                                @Par.Empleado2.Area
+                                                            </td>
+                                                            <td>
+                                                                @Par.Empleado2.Cargo
+                                                            </td>
+                                                            <td>
+                                                                @Par.EsTercero
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    }
+                                                    else if (Par.EsTercero == "SI")
+                                                    {
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>
+                                                                @Par.Tercero2.Nombres
+                                                            </td>
+                                                            <td>
+                                                                @Par.Tercero2.Documento
+                                                            </td>
+                                                            <td>
+                                                                @Par.Tercero2.Area
+                                                            </td>
+                                                            <td>
+                                                                @Par.Tercero2.Cargo
+                                                            </td>
+                                                            <td>
+                                                                @Par.EsTercero
+                                                            </td>
+                                                            <td></td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+
+                                            <tfoot><tr><td colspan="12"></td></tr></tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+
+                </div>
+            </div>
+            <br />
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        var a = document.getElementById('a');
+        var b = document.getElementById('b');
+        var c = document.getElementById('c');
+        var d = document.getElementById('d');
+        var e = document.getElementById('e');
+        var select = $('#TipoPEC').val();
+
+        if (select == "Programas Institucionales y Cultura Organizacional") {
+            a.hidden = false;
+            b.hidden = false;
+            c.hidden = false;
+            d.hidden = true;
+            e.hidden = true;
+        }
+    });
+</script>

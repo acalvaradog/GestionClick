@@ -1,0 +1,103 @@
+﻿@page "/horasextra/detallehorasextramodal/{detalleHorasExtraParamsJson}"
+@using Autogestion.Shared.DTO.HorasExtra
+@using Autogestion.Shared.DTO.Empleado
+@inject HttpClient Http
+@inject IJSRuntime JS
+@using System.Text.Json
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@inject NavigationManager NavManager
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">Detalles de Horas Extra</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudCard Class="mb-5">
+            <MudTable Items="@DetalleHorasExtra" Dense="true" Hover="true" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Fecha</MudTh>
+                    <MudTh>Hora Desde</MudTh>
+                    <MudTh>Hora Hasta</MudTh>
+                    <MudTh>Horas Diurnas</MudTh>
+                    <MudTh>Horas Nocturnas</MudTh>
+                    <MudTh>Horas Diurnas Festivo</MudTh>
+                    <MudTh>Horas Nocturnas Festivo</MudTh>
+                    <MudTh>Total</MudTh>
+                    <MudTh>Motivo</MudTh>
+                    <MudTh>Observaciones</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Fecha">@Convert.ToDateTime(context.Fecha).ToString("dd/MM/yyyy")</MudTd>
+                    <MudTd DataLabel="Hora Desde">@Convert.ToDateTime(context.HoraDesde).ToString("h:mm tt")</MudTd>
+                    <MudTd DataLabel="Hora Hasta">@Convert.ToDateTime(context.HoraHasta).ToString("h:mm tt")</MudTd>
+                    <MudTd DataLabel="LiquidacionDiurna">@context.LiquidacionDiurna</MudTd>
+                    <MudTd DataLabel="LiquidacionNocturna">@context.LiquidacionNocturna</MudTd>
+                    <MudTd DataLabel="LiquidacionDiurnaFestivo">@context.LiquidacionDiurnaFestivo</MudTd>
+                    <MudTd DataLabel="LiquidacionNocturnaFestivo">@context.LiquidacionNocturnaFestivo</MudTd>
+                    <MudTd DataLabel="TotalHoras">@context.TotalHoras</MudTd>
+                    <MudTd DataLabel="Motivo">@context.MotivoNombre</MudTd>
+                    <MudTd DataLabel="ObservacionesMotivo">@context.ObservacionesMotivo</MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudCard>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="CerrarModal">Cerrar</MudButton>
+    </DialogActions>
+</MudDialog>
+
+
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    [Parameter] public string detalleHorasExtraParamsJson { get; set; }
+    [Parameter] public DialogOptions DialogOptions { get; set; }
+    
+    private List<DetalleHorasExtraDTO>? DetalleHorasExtra;
+    private List<DetalleHorasExtraDTO> listDetalleHorasExtra;
+
+    private void CerrarModal()
+    {
+        MudDialog.Close(DialogResult.Ok(false));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+
+        if (detalleHorasExtraParamsJson != null)
+        {
+            detalleHorasExtraParamsJson = Uri.UnescapeDataString(detalleHorasExtraParamsJson);
+
+            var detalleHorasExtraParams = JsonSerializer.Deserialize<DetalleHorasExtraParams>(detalleHorasExtraParamsJson);
+
+            try
+            {
+                DetalleHorasExtra = await Http.GetFromJsonAsync<List<DetalleHorasExtraDTO>>($"api/HorasExtra/DetalleHorasExtra/{detalleHorasExtraParams.HorasExtraId}");
+
+                if (DetalleHorasExtra != null)
+                {
+                    
+                }
+                else
+                {
+                    await JS.ShowMessage("Error", "No se encontraron detalles de horas extra", "error");
+                }
+            }
+            catch (Exception ex)
+            {
+                await JS.ShowMessage("Error", "Error al obtener detalles de horas extra", "error");
+            }
+        }
+    }
+
+    public class DetalleHorasExtraParams
+    {
+        public int HorasExtraId { get; set; }
+        
+    }
+}

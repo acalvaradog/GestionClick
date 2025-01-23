@@ -1,0 +1,208 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleEventos>
+
+
+<div class="card m-3">
+    <div class="card-header colorTitulo mb-3">
+        <h5>Pendientes for Firmar</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+                <table class="table table-hover table-responsive-sm table-bordered" id="tbl_pendientefirma1">
+                    @if (ViewBag.EsFamiliar != null)
+                    {
+                        <thead>
+                            <tr class="text-center fondoDegradado text-white align-middle" style="font-size:1.5em">
+                                <th colspan="6">Datos del Familiar</th>
+                                <th colspan="3">Datos del Trajabador</th>
+                                <th colspan="1"></th>
+                            </tr>
+                            <tr class="text-center align-middle fondoDegradado text-white">
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Fecha Firma
+                                </th>
+                                <th>
+                                    Tipo de Documento
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Edad
+                                </th>
+                                <th>
+                                    Observaciones
+                                </th>
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Firmar
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var i in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>
+                                        @Html.DisplayFor(item => i.Familiar.Nombre)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.FechaFirma)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Familiar.TipoDocumento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Familiar.Documento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Familiar.Edad)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Observaciones)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Nombres)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Documento)
+                                    </td>
+                                    <td>
+                                        <a href="javascript:firmaManual(@i.Id)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <thead>
+                            <tr class="text-center align-middle fondoDegradado text-white">
+                                <th>
+                                    Nombre
+                                </th>
+                                <th>
+                                    Fecha Firma
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    Firmar
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var i in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Nombres)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.FechaFirma)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.Documento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                    </td>
+                                    <td>
+                                        <a href="javascript:firmaManual(@i.Id)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    }
+                </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function firmaManual(id) {
+
+        var Data = new FormData();
+        Data.append("id", id);
+
+        $.ajax({
+            url: "/Eventos/FirmaManual",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: Data,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "true") {
+                    alertify.confirm('Firma guardada correctamente', function () { location.replace('EventosRegistrados'); });
+                } else {
+                    alertify.alert(result)
+                }
+            }
+        });
+    }
+
+    $(document).ready(function () {
+
+        var table = $('#tbl_pendientefirma1').DataTable({
+
+            /*"bFilter": false,*/
+
+            responsive: false,
+
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+            //bFilter": false,
+            pageLength: 5,
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+        });
+
+
+
+    })
+</script>

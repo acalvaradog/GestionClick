@@ -1,0 +1,5 @@
+2023-05-31 15:31:39.739 -05:00 [INF] Ejecucion
+2023-05-31 15:31:40.295 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:37:51.902 -05:00 [INF] Ejecucion
+2023-05-31 15:37:52.465 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:39:40.220 -05:00 [ERR] Error al ejecutar metodo actualizarempleado The request was canceled due to the configured HttpClient.Timeout of 100 seconds elapsing.

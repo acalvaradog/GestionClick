@@ -1,0 +1,172 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Descuentos>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+    string message1 = string.Format("{0}", Session["message1"]);
+    string Nombres = string.Format("{0}", Session["Nombres"]);
+    string Documento = string.Format("{0}", Session["Documento"]);
+    string impresion = string.Format("{0}", Session["Impresion"]);
+
+
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+    Session.Remove("message");
+}
+
+@if (!string.IsNullOrWhiteSpace(message1))
+{
+
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+
+        <hr>
+        <p class="mb-0">@message1</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+
+    </div>
+    Session.Remove("message1");
+}
+
+@if (impresion == "Ok")
+{
+    <body onload=generarimpresion();>
+    </body>
+}
+
+
+
+<div class="container">
+    <br />
+    <h2 class="colorTitulo">Descuentos</h2>
+
+
+
+    @*<p>
+            @Html.ActionLink("Crear Nuevo Descuento", "Create")
+        </p>*@
+    <div class="card ">
+        <div class="card-header text-white fondoDegradado">Buscar</div>
+        <div class="card-body">
+            <div class="row justify-content-start mt-2">
+                <div class="col-6">
+                    <input class="form-control" id="myInput" type="text" placeholder="Buscar..">
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr class="fondoDegradado text-white">
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+                        Empleado
+                    </th>
+                    <th>
+                        Tope Maximo
+                    </th>
+                    <th>
+                        Valor Descuento
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fecha)
+                    </th>
+                    <th>
+                        Fecha Inicio Vigencia
+                    </th>
+                    <th>
+                        Fecha Fin Vigencia
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Activo)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.ServicioId)*@
+                        Servicios
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TopeMaximo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValorDescuento)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @* @Html.DisplayFor(modelItem => item.FechaInicioVigencia)*@
+                            @Convert.ToDateTime(item.FechaInicioVigencia).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @* @Html.DisplayFor(modelItem => item.FechaFinVigencia)*@
+                            @Convert.ToDateTime(item.FechaFinVigencia).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Activo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Servicios.Nombre)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.Id })
+                        </td>
+                        <td>
+                            @Html.ActionLink("Imprimir", "EnvioAimpresion", new { Id = item.EmpleadoId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+//window.onload = generarimpresion;
+
+function generarimpresion() {
+
+
+    var username = '@Session["Nombres"]';
+    var documento = '@Session["Documento"]';
+    var url = "/Descuentos/Impresion?nombre="  + username  + " &documento=" + documento
+
+        window.open(url, '_blank');
+
+}
+
+
+</script>

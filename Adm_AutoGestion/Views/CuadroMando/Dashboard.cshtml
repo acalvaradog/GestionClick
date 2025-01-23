@@ -1,0 +1,1936 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.SummaryReport>
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<link href="~/Contents/css/dashboard-style.css" rel="stylesheet" />
+
+
+<div class="card">
+    <div class=" card-body">
+        <div id="loading" class="col-12 sticky-top">
+            <div class="col-12 d-flex justify-content-center" style="top:70px;position:absolute">
+                <div class="bg-opacity-50" style="padding:128px 200px 192px 200px;backdrop-filter:blur(5px)">
+                    <img src="~/Contents/image/Spinner.gif" style="width:64px;position:absolute; margin-top:24px;" />
+                    <div class="text-black">Cargando...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class=" text-white p-3" style="border-radius:3px; background-color: #1565C0">Filtros</div>
+                <div class="bg-white p-3" style="border-radius:3px;">
+
+                    <form>
+                        <div class="row">
+                            <div class="col-6">
+                                <label>Fecha Inicio</label>
+                                <input class="form-control" type="date" id="FechaInicio" name="FechaInicio" onblur="cambiarFechaMaxima();" required />
+                            </div>
+
+                            <div class="col-6">
+                                <label>Fecha Fin</label>
+                                <input class="form-control" type="date" id="FechaFin" name="FechaFin" disabled required />
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <label>Area</label>
+                                @Html.DropDownList("Area", new SelectList(ViewBag.Areas, "Key", "Key"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", onchange = "javascript: alternar();" })
+                            </div>
+
+                            <div class="col-6">
+                                <label>Cargo</label>
+                                @Html.DropDownList("Cargo", new SelectList(ViewBag.Cargos, "Key", "Key"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", onchange = "javascript: alternar();" })
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <button type="button" class="bi bi-filter-circle btn btn-outline-primary mb-2" onclick="javascript: filtrar();"> Filtrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_edades_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="edades_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_edades_foscal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_tiempopermanencia_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="tiempop_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_tiempopermanencia_foscal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_generoempleados_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="genero_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_generoempleados_foscal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla Area Personal</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_areapersonal_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="areap_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica Area Personal</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_areapersonal_foscal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla Cargo</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2" id="tabla_cargoempleado"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="cargos_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica Cargo</h6>
+                    </div>
+                    <div class="card-body" id="div_cargoempleado">
+                        <div id="filter_cargoempleado"></div>
+                        <div id="grafica_cargoempleado"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla Ingresos</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-2" id="tabla_ingresosmes"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="ingresos_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica Ingresos</h6>
+                    </div>
+                    <div class="card-body" id="div_ingresosmes">
+                        <div id="filter_ingresosmes"></div>
+                        <div class="mb-2" id="grafica_ingresosmes"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_edades_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="edades_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_edades_fosunab"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_tiempopermanencia_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="tiempop_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_tiempopermanencia_fosunab"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_generoempleados_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="genero_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_generoempleados_fosunab"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla Area Personal</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_areapersonal_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="areap_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica Area Personal</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_areapersonal_fosunab"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h5 class="text-center colorTitulo">% Rotación (Egresos) por cargos</h5>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Rotacion por Area</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="control" id="string_div"></div>
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_rotacion_area_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="rarea_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Rotacion por Cargos-Areas</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_rotacion_cargo_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="rcargos-areas_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Rotacion por Cargos-Areas</h6>
+                    </div>
+                    <div class="card-body" id="div_rotacion_cargo_foscal">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div id="filter_rotacion_cargo_foscal"></div>
+                        <div class="mb-2" id="grafica_rotacion_cargo_foscal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Rotacion por Area a Cargo</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_rotacion_jefe_area_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="rcargos_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Rotacion por Area</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="control" id="string_div"></div>
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_rotacion_area_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="rarea_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Rotacion por Cargos-Areas</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_rotacion_cargo_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="rcargos-areas_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Rotacion por Cargos-Areas</h6>
+                    </div>
+                    <div class="card-body" id="div_rotacion_cargo_fosunab">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div id="filter_rotacion_cargo_fosunab"></div>
+                        <div class="mb-2" id="grafica_rotacion_cargo_fosunab"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Rotacion por Area a Cargo</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_rotacion_jefe_area_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="rcargos_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <h5 class="text-center colorTitulo">Análisis de Datos - Egresos</h5>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_generoempleados_foscal_egreso"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="genero_foscal_e_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_generoempleados_foscal_egreso"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_edades_foscal_egreso"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="edades_foscal_e_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_edades_foscal_egreso"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_tiempopermanencia_foscal_egreso"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="tiempop_foscal_e_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_tiempopermanencia_foscal_egreso"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Motivo Renuncia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="tabla_motivorenuncia_foscal"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="motivo_foscal_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Motivo Renuncia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL</div>
+                        <div class="mb-2" id="grafica_motivorenuncia_foscal"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_generoempleados_fosunab_egreso"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="genero_fosunab_e_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Genero</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_generoempleados_fosunab_egreso"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_edades_fosunab_egreso"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="edades_fosunab_e_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Edades</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_edades_fosunab_egreso"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_tiempopermanencia_fosunab_egreso"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="tiempop_fosunab_e_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Tiempo de Permanencia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_tiempopermanencia_fosunab_egreso"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Tabla de Motivo Renuncia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="tabla_motivorenuncia_fosunab"></div>
+                        <a class="bi bi-download btn btn-outline-primary" id="motivo_fosunab_csv" href=""> Exportar tabla</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Grafica de Motivo Renuncia</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="fondoDegradado text-center text-white tablaheader">FOSCAL INTERNACIONAL</div>
+                        <div class="mb-2" id="grafica_motivorenuncia_fosunab"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function cambiarFechaMaxima() {
+        var FI = new Date(document.getElementById('FechaInicio').value);
+        var FF = document.getElementById('FechaFin');
+
+        //var dd = FI.getUTCDate();
+        //var mm = FI.getUTCMonth() + 1;
+        var yyyy = FI.getUTCFullYear();
+
+        //if (dd < 10) {
+        //    dd = '0' + dd;
+        //}
+
+        //if (mm < 10) {
+        //    mm = '0' + mm;
+        //}
+        FF.disabled = false;
+        FF.value = "";
+        var fechaMin = yyyy + '-' + '01' + '-' + '01';
+        /*yyyy = FI.getFullYear() + 1;*/
+        var fechaMax = yyyy + '-' + 12 + '-' + 31;
+        FF.setAttribute("max", fechaMax);
+        FF.setAttribute("min", fechaMin);
+    }
+
+    function alternar() {
+        var A = document.getElementById('Area');
+        var C = document.getElementById('Cargo');
+
+        if (A.value != "") {
+            C.disabled = true;
+            C.value = "";
+        } else if (C.value != "") {
+            A.disabled = true;
+            A.value = "";
+        } else if (A.value == "") {
+            C.disabled = false;
+            C.value = "";
+            A.disabled = false;
+            A.value = "";
+        } else if (C.value == "") {
+            A.disabled = false;
+            A.value = "";
+            C.disabled = false;
+            C.value = "";
+        }
+
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        google.charts.load('current', { 'packages': ['corechart', 'controls'] });
+        google.charts.load('current', { packages: ['table'] });
+        google.load('visualization', '1', { packages: ['controls'] });
+        google.charts.load("current", { packages: ["corechart"] });
+        google.charts.setOnLoadCallback(ObtenerDatosGraficas);
+    });
+
+    function filtrar() {
+        google.charts.setOnLoadCallback(filtraje);
+    }
+
+    function filtraje() {
+        var FechaInicio = $("#FechaInicio").val();
+        var FechaFin = $("#FechaFin").val();
+        var Cargo = $("#Cargo").val();
+        var Area = $("#Area").val();
+
+        var frmData = new FormData();
+        frmData.append("FechaInicio", FechaInicio);
+        frmData.append("FechaFin", FechaFin);
+        frmData.append("Cargo", Cargo);
+        frmData.append("Area", Area);
+
+        try {
+
+            $.ajax({
+                url: "DatosDashboard",
+                type: 'POST',
+                //contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: frmData,
+                contentType: false,
+                processData: false,
+                beforeSend: function () { $('#loading').show(); },
+                complete: function () { $('#loading').hide(); },
+                success: function (Results) {
+                    if (Results != undefined || Results != null) {
+                        GraficarTablaEdadesFoscal(Results);
+                        GraficarTablaEdadesFoscal2(Results);
+                        //
+                        GraficarTablaEdadesFosunab(Results);
+                        GraficarTablaEdadesFosunab2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFoscal(Results);
+                        GraficarTablaTiempoPermanenciaFoscal2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFosunab(Results);
+                        GraficarTablaTiempoPermanenciaFosunab2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFoscal(Results);
+                        GraficarTablaGeneroEmpleadosFoscal2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFosunab(Results);
+                        GraficarTablaGeneroEmpleadosFosunab2(Results);
+                        //
+                        GraficarTablaAreaPersonalFoscal(Results);
+                        GraficarTablaAreaPersonalFoscal2(Results);
+                        //
+                        GraficarTablaAreaPersonalFosunab(Results);
+                        GraficarTablaAreaPersonalFosunab2(Results);
+                        //
+                        GraficarTablaCargoEmpleado(Results);
+                        GraficarTablaCargoEmpleado2(Results);
+                        //
+                        GraficarTablaIngresosMes(Results);
+                        GraficarTablaIngresosMes2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFoscalEgreso(Results);
+                        GraficarTablaGeneroEmpleadosFoscalEgreso2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFosunabEgreso(Results);
+                        GraficarTablaGeneroEmpleadosFosunabEgreso2(Results);
+                        //
+                        GraficarTablaEdadesFoscalEgreso(Results);
+                        GraficarTablaEdadesFoscalEgreso2(Results);
+                        //
+                        GraficarTablaEdadesFosunabEgreso(Results);
+                        GraficarTablaEdadesFosunabEgreso2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFoscalEgreso(Results);
+                        GraficarTablaTiempoPermanenciaFoscalEgreso2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFosunabEgreso(Results);
+                        GraficarTablaTiempoPermanenciaFosunabEgreso2(Results);
+                        //
+                        GraficarTablaMotivoRenunciaFoscal(Results);
+                        GraficarTablaMotivoRenunciaFoscal2(Results);
+                        //
+                        GraficarTablaMotivoRenunciaFosunab(Results);
+                        GraficarTablaMotivoRenunciaFosunab2(Results);
+                        //
+                        GraficarTablaRotacionAreaFoscal(Results);
+                        //
+                        GraficarTablaRotacionPorCargoArea(Results);
+                        GraficarTablaRotacionPorCargoArea2(Results);
+                        //
+                        GraficarTablaRotacionCargoFoscal(Results);
+                        //
+                        GraficarTablaRotacionAreaFosunab(Results);
+                        //
+                        GraficarTablaRotacionPorCargoAreaFosunab(Results);
+                        GraficarTablaRotacionPorCargoAreaFosunab2(Results);
+                        //
+                        GraficarTablaRotacionCargoFosunab(Results);
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        } catch (e) { alert(e); }
+    }
+
+    function ObtenerDatosGraficas() {
+        try {
+            $.ajax({
+                url: "DatosDashboard",
+                type: "post",
+                complete: function () { $('#loading').hide(); },
+                success: function (Results) {
+                    if (Results != undefined || Results != null) {
+                        GraficarTablaEdadesFoscal(Results);
+                        GraficarTablaEdadesFoscal2(Results);
+                        //
+                        GraficarTablaEdadesFosunab(Results);
+                        GraficarTablaEdadesFosunab2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFoscal(Results);
+                        GraficarTablaTiempoPermanenciaFoscal2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFosunab(Results);
+                        GraficarTablaTiempoPermanenciaFosunab2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFoscal(Results);
+                        GraficarTablaGeneroEmpleadosFoscal2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFosunab(Results);
+                        GraficarTablaGeneroEmpleadosFosunab2(Results);
+                        //
+                        GraficarTablaAreaPersonalFoscal(Results);
+                        GraficarTablaAreaPersonalFoscal2(Results);
+                        //
+                        GraficarTablaAreaPersonalFosunab(Results);
+                        GraficarTablaAreaPersonalFosunab2(Results);
+                        //
+                        GraficarTablaCargoEmpleado(Results);
+                        GraficarTablaCargoEmpleado2(Results);
+                        //
+                        GraficarTablaIngresosMes(Results);
+                        GraficarTablaIngresosMes2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFoscalEgreso(Results);
+                        GraficarTablaGeneroEmpleadosFoscalEgreso2(Results);
+                        //
+                        GraficarTablaGeneroEmpleadosFosunabEgreso(Results);
+                        GraficarTablaGeneroEmpleadosFosunabEgreso2(Results);
+                        //
+                        GraficarTablaEdadesFoscalEgreso(Results);
+                        GraficarTablaEdadesFoscalEgreso2(Results);
+                        //
+                        GraficarTablaEdadesFosunabEgreso(Results);
+                        GraficarTablaEdadesFosunabEgreso2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFoscalEgreso(Results);
+                        GraficarTablaTiempoPermanenciaFoscalEgreso2(Results);
+                        //
+                        GraficarTablaTiempoPermanenciaFosunabEgreso(Results);
+                        GraficarTablaTiempoPermanenciaFosunabEgreso2(Results);
+                        //
+                        GraficarTablaMotivoRenunciaFoscal(Results);
+                        GraficarTablaMotivoRenunciaFoscal2(Results);
+                        //
+                        GraficarTablaMotivoRenunciaFosunab(Results);
+                        GraficarTablaMotivoRenunciaFosunab2(Results);
+                        //
+                        GraficarTablaRotacionAreaFoscal(Results);
+                        //
+                        GraficarTablaRotacionPorCargoArea(Results);
+                        GraficarTablaRotacionPorCargoArea2(Results);
+                        //
+                        GraficarTablaRotacionCargoFoscal(Results);
+                        //
+                        GraficarTablaRotacionAreaFosunab(Results);
+                        //
+                        GraficarTablaRotacionPorCargoAreaFosunab(Results);
+                        GraficarTablaRotacionPorCargoAreaFosunab2(Results);
+                        //
+                        GraficarTablaRotacionCargoFosunab(Results);
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); },
+            });
+        }
+        catch (e) { alert(e); }
+    }
+
+    function export_CSV(elementID, data) {
+        var csvColumns;
+        var csvContent;
+        var downloadLink;
+
+        csvColumns = '';
+        for (var i = 0; i < data.getNumberOfColumns(); i++) {
+            csvColumns += data.getColumnLabel(i);
+            if (i < data.getNumberOfColumns() - 1) {
+                csvColumns += ',';
+            }
+        }
+        csvColumns += '\n';
+
+        csvContent = csvColumns + google.visualization.dataTableToCsv(data);
+
+        downloadLink = document.getElementById(elementID);
+        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURI(csvContent);
+        downloadLink.download = 'data.csv';
+        downloadLink.target = '_blank';
+    }
+
+    function GraficarTablaEdadesFoscal(Results) {
+        var data2 = [['Rangos', 'N° Personas', '%']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleados[i].Key, Results.TablaEdadesEmpleados[i].Value, Results.TablaEdadesEmpleados[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_edades_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("edades_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("edades_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaEdadesFoscal2(Results) {
+        var data2 = [['Rangos', 'Cuenta']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleados[i].Key, Results.TablaEdadesEmpleados[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_edades_foscal'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaEdadesFosunab(Results) {
+        var data2 = [['Rangos', 'N° Personas', '%']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleados[i + 6].Key, Results.TablaEdadesEmpleados[i + 6].Value, Results.TablaEdadesEmpleados[i + 6].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_edades_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("edades_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("edades_fosunab_csv", csvData);
+        });
+    }
+
+    function GraficarTablaEdadesFosunab2(Results) {
+        var data2 = [['Rangos', 'N° Personas']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleados[i + 6].Key, Results.TablaEdadesEmpleados[i + 6].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_edades_fosunab'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaTiempoPermanenciaFoscal(Results) {
+        var data2 = [['Tiempo de permanencia', 'N° Personas', '%']];
+        for (i = 0; i < 7; i++) {
+            data2[i + 1] = [Results.TablaTiempoPermanencia[i].Key, Results.TablaTiempoPermanencia[i].Value, Results.TablaTiempoPermanencia[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_tiempopermanencia_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("tiempop_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("tiempop_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaTiempoPermanenciaFoscal2(Results) {
+        var data2 = [['Rangos', 'Cuenta']];
+        for (i = 0; i < 7; i++) {
+            data2[i + 1] = [Results.TablaTiempoPermanencia[i].Key, Results.TablaTiempoPermanencia[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_tiempopermanencia_foscal'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaTiempoPermanenciaFosunab(Results) {
+        var data2 = [['Tiempo de permanencia', 'N° Personas', '%']]
+
+        for (i = 0; i < 7; i++) {
+            data2[i + 1] = [Results.TablaTiempoPermanencia[i + 7].Key, Results.TablaTiempoPermanencia[i + 7].Value, Results.TablaTiempoPermanencia[i + 7].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_tiempopermanencia_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("tiempop_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("tiempop_fosunab_csv", csvData);
+        });
+    }
+
+    function GraficarTablaTiempoPermanenciaFosunab2(Results) {
+        var data2 = [['Tiempo de permanencia', 'N° Personas']];
+        for (i = 0; i < 7; i++) {
+            data2[i + 1] = [Results.TablaTiempoPermanencia[i + 7].Key, Results.TablaTiempoPermanencia[i + 7].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_tiempopermanencia_fosunab'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaGeneroEmpleadosFoscal(Results) {
+        var data2 = [['Genero', 'N° Personas', '%']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleados[i].Key, Results.TablaGeneroEmpleados[i].Value, Results.TablaGeneroEmpleados[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_generoempleados_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("genero_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("genero_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaGeneroEmpleadosFoscal2(Results) {
+        var data2 = [['Genero', 'Cuenta']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleados[i].Key, Results.TablaGeneroEmpleados[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_generoempleados_foscal'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaGeneroEmpleadosFosunab(Results) {
+        var data2 = [['Genero', 'N° Personas', '%']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleados[i + 3].Key, Results.TablaGeneroEmpleados[i + 3].Value, Results.TablaGeneroEmpleados[i + 3].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_generoempleados_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("genero_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("genero_fosunab_csv", csvData);
+        });
+    }
+
+    function GraficarTablaGeneroEmpleadosFosunab2(Results) {
+        var data2 = [['Genero', 'N° Personas']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleados[i + 3].Key, Results.TablaGeneroEmpleados[i + 3].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_generoempleados_fosunab'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaAreaPersonalFoscal(Results) {
+        var data2 = [['Area de Personal', 'N° Personas', '%']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaAreaPersonal[i].Key, Results.TablaAreaPersonal[i].Value, Results.TablaAreaPersonal[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_areapersonal_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("areap_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("areap_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaAreaPersonalFoscal2(Results) {
+        var data2 = [['Rangos', 'Cuenta']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaAreaPersonal[i].Key, Results.TablaAreaPersonal[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_areapersonal_foscal'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaAreaPersonalFosunab(Results) {
+        var data2 = [['Area de Personal', 'N° Personas', '%']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaAreaPersonal[i + 3].Key, Results.TablaAreaPersonal[i + 3].Value, Results.TablaAreaPersonal[i + 3].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_areapersonal_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("areap_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("areap_fosunab_csv", csvData);
+        });
+    }
+
+    function GraficarTablaAreaPersonalFosunab2(Results) {
+        var data2 = [['Area de Personal', 'N° Personas']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaAreaPersonal[i + 3].Key, Results.TablaAreaPersonal[i + 3].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_areapersonal_fosunab'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaCargoEmpleado(Results) {
+        var data2 = [['Cargo', 'FOSCAL', 'FOSUNAB']];
+        for (i = 0; i < Results.TablaCargoEmpleado.length; i++) {
+            data2[i + 1] = [Results.TablaCargoEmpleado[i].Cargo, Results.TablaCargoEmpleado[i].FOS, Results.TablaCargoEmpleado[i].FOSUNAB];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            pageSize: 10,
+            page: 'enable',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_cargoempleado'));
+
+        chart.draw(datos, options);
+
+        document.getElementById("cargos_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("cargos_csv", csvData);
+        });
+    }
+
+    function GraficarTablaCargoEmpleado2(Results) {
+        var data2 = [['Cargo', 'FOSCAL', 'FOSUNAB']];
+        for (i = 0; i < Results.TablaCargoEmpleado.length; i++) {
+            data2[i + 1] = [Results.TablaCargoEmpleado[i].Cargo, Results.TablaCargoEmpleado[i].FOS, Results.TablaCargoEmpleado[i].FOSUNAB];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+
+        var c = new google.visualization.ControlWrapper({
+            'controlType': 'CategoryFilter',
+            'containerId': 'filter_cargoempleado',
+            'filterColumnIndex': 0,
+            'options': { 'filterColumnLabel': 'Cargo', 'ui': { 'caption': 'Seleccione...' } },
+        });
+
+        var chart = new google.visualization.Dashboard(document.getElementById('div_cargoempleado'));
+
+        google.visualization.events.addListener(chart, 'error', function (googleError) {
+            google.visualization.errors.removeError(googleError.id);
+        });
+
+        var p = new google.visualization.ChartWrapper({
+            'chartType': 'BarChart',
+            'containerId': 'grafica_cargoempleado',
+            'options': {
+                'width': '-webkit-fill-available',
+                'height': 300,
+            }
+        });
+        chart.bind(c, p);
+        chart.draw(datos);
+    }
+
+    function GraficarTablaIngresosMes(Results) {
+        var data2 = [['Mes', 'Foscal', 'Fosunab']];
+        for (i = 0; i < Results.TablaIngresosMes.length; i++) {
+            data2[i + 1] = [Results.TablaIngresosMes[i].Mes, Results.TablaIngresosMes[i].FOS, Results.TablaIngresosMes[i].FOSUNAB];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-capitalize text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_ingresosmes'));
+        chart.draw(datos, options);
+
+        document.getElementById("ingresos_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("ingresos_csv", csvData);
+        });
+    }
+
+    function GraficarTablaIngresosMes2(Results) {
+        var data2 = [['Mes', 'Foscal', 'Fosunab']];
+        for (i = 0; i < Results.TablaIngresosMes.length; i++) {
+            data2[i + 1] = [Results.TablaIngresosMes[i].Mes, Results.TablaIngresosMes[i].FOS, Results.TablaIngresosMes[i].FOSUNAB];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+
+        var c = new google.visualization.ControlWrapper({
+            'controlType': 'CategoryFilter',
+            'containerId': 'filter_ingresosmes',
+            'filterColumnIndex': 0,
+            'options': { 'filterColumnLabel': 'Mes', 'ui': { 'caption': 'Seleccione...' } },
+        });
+
+        var chart = new google.visualization.Dashboard(document.getElementById('div_ingresosmes'));
+        google.visualization.events.addListener(chart, 'error', function (googleError) {
+            google.visualization.errors.removeError(googleError.id);
+        });
+        var p = new google.visualization.ChartWrapper({
+            'chartType': 'BarChart',
+            'containerId': 'grafica_ingresosmes',
+            'options': {
+                'width': '-webkit-fill-available',
+                'height': 300,
+            }
+        });
+        chart.bind(c, p);
+        chart.draw(datos);
+    }
+
+    function GraficarTablaGeneroEmpleadosFoscalEgreso(Results) {
+        var data2 = [['Genero', 'N° Personas', '%']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleadosEgreso[i].Key, Results.TablaGeneroEmpleadosEgreso[i].Value, Results.TablaGeneroEmpleadosEgreso[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_generoempleados_foscal_egreso'));
+        chart.draw(datos, options);
+
+        document.getElementById("genero_foscal_e_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("genero_foscal_e_csv", csvData);
+        });
+    }
+
+    function GraficarTablaGeneroEmpleadosFoscalEgreso2(Results) {
+        var data2 = [['Genero', 'N° Personas']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleadosEgreso[i].Key, Results.TablaGeneroEmpleadosEgreso[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_generoempleados_foscal_egreso'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaGeneroEmpleadosFosunabEgreso(Results) {
+        var data2 = [['Genero', 'N° Personas', '%']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleadosEgreso[i + 3].Key, Results.TablaGeneroEmpleadosEgreso[i + 3].Value, Results.TablaGeneroEmpleadosEgreso[i + 3].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_generoempleados_fosunab_egreso'));
+        chart.draw(datos, options);
+
+        document.getElementById("genero_fosunab_e_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("genero_fosunab_e_csv", csvData);
+        });
+    }
+
+    function GraficarTablaGeneroEmpleadosFosunabEgreso2(Results) {
+        var data2 = [['Genero', 'N° Personas']];
+        for (i = 0; i < 3; i++) {
+            data2[i + 1] = [Results.TablaGeneroEmpleadosEgreso[i + 3].Key, Results.TablaGeneroEmpleadosEgreso[i + 3].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_generoempleados_fosunab_egreso'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaEdadesFoscalEgreso(Results) {
+        var data2 = [['Rangos', 'N° Personas', '%']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleadosEgreso[i].Key, Results.TablaEdadesEmpleadosEgreso[i].Value, Results.TablaEdadesEmpleadosEgreso[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_edades_foscal_egreso'));
+        chart.draw(datos, options);
+
+        document.getElementById("edades_foscal_e_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("edades_foscal_e_csv", csvData);
+        });
+    }
+
+    function GraficarTablaEdadesFoscalEgreso2(Results) {
+        var data2 = [['Rangos', 'N° Personas']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleadosEgreso[i].Key, Results.TablaEdadesEmpleadosEgreso[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_edades_foscal_egreso'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaEdadesFosunabEgreso(Results) {
+        var data2 = [['Rangos', 'N° Personas', '%']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleadosEgreso[i + 6].Key, Results.TablaEdadesEmpleadosEgreso[i + 6].Value, Results.TablaEdadesEmpleadosEgreso[i + 6].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_edades_fosunab_egreso'));
+        chart.draw(datos, options);
+
+        document.getElementById("edades_fosunab_e_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("edades_fosunab_e_csv", csvData);
+        });
+    }
+
+    function GraficarTablaEdadesFosunabEgreso2(Results) {
+        var data2 = [['Rangos', 'N° Personas']];
+        for (i = 0; i < 6; i++) {
+            data2[i + 1] = [Results.TablaEdadesEmpleadosEgreso[i + 6].Key, Results.TablaEdadesEmpleadosEgreso[i + 6].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_edades_fosunab_egreso'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaTiempoPermanenciaFoscalEgreso(Results) {
+        var data2 = [['Tiempo de permanencia', 'N° Personas', '%']];
+        for (i = 0; i < 7; i++) {
+
+            data2[i + 1] = [Results.TablaTiempoPermanenciaEgreso[i].Key, Results.TablaTiempoPermanenciaEgreso[i].Value, Results.TablaTiempoPermanenciaEgreso[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_tiempopermanencia_foscal_egreso'));
+        chart.draw(datos, options);
+
+        document.getElementById("tiempop_foscal_e_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("tiempop_foscal_e_csv", csvData);
+        });
+    }
+
+    function GraficarTablaTiempoPermanenciaFoscalEgreso2(Results) {
+        var data2 = [['Tiempo de permanencia', 'N° Personas']];
+        for (i = 0; i < 7; i++) {
+
+            data2[i + 1] = [Results.TablaTiempoPermanenciaEgreso[i].Key, Results.TablaTiempoPermanenciaEgreso[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_tiempopermanencia_foscal_egreso'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaTiempoPermanenciaFosunabEgreso(Results) {
+        var data2 = [['Tiempo de permanencia', 'N° Personas', '%']];
+        for (i = 0; i < 7; i++) {
+
+            data2[i + 1] = [Results.TablaTiempoPermanenciaEgreso[i + 7].Key, Results.TablaTiempoPermanenciaEgreso[i + 7].Value, Results.TablaTiempoPermanenciaEgreso[i + 7].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_tiempopermanencia_fosunab_egreso'));
+        chart.draw(datos, options);
+
+        document.getElementById("tiempop_fosunab_e_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("tiempop_fosunab_e_csv", csvData);
+        });
+    }
+
+    function GraficarTablaTiempoPermanenciaFosunabEgreso2(Results) {
+        var data2 = [['Tiempo de permanencia', 'N° Personas']];
+        for (i = 0; i < 7; i++) {
+
+            data2[i + 1] = [Results.TablaTiempoPermanenciaEgreso[i + 7].Key, Results.TablaTiempoPermanenciaEgreso[i + 7].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_tiempopermanencia_fosunab_egreso'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaMotivoRenunciaFoscal(Results) {
+        var data2 = [['Motivo de Renuncia', 'N° Personas', '%']];
+        for (i = 0; i < 8; i++) {
+            data2[i + 1] = [Results.TablaMotivoRenuncia[i].Key, Results.TablaMotivoRenuncia[i].Value, Results.TablaMotivoRenuncia[i].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_motivorenuncia_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("motivo_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("motivo_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaMotivoRenunciaFoscal2(Results) {
+        var data2 = [['Motivo de Renuncia', 'N° Personas']];
+        for (i = 0; i < 8; i++) {
+            data2[i + 1] = [Results.TablaMotivoRenuncia[i].Key, Results.TablaMotivoRenuncia[i].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_motivorenuncia_foscal'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaMotivoRenunciaFosunab(Results) {
+        var data2 = [['Motivo de Renuncia', 'N° Personas', '%']];
+        for (i = 0; i < 8; i++) {
+            data2[i + 1] = [Results.TablaMotivoRenuncia[i + 8].Key, Results.TablaMotivoRenuncia[i + 8].Value, Results.TablaMotivoRenuncia[i + 8].Porcentaje + '%'];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_motivorenuncia_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("motivo_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("motivo_fosunab_csv", csvData);
+        });
+    }
+
+    function GraficarTablaMotivoRenunciaFosunab2(Results) {
+        var data2 = [['Motivo de Renuncia', 'N° Personas']];
+        for (i = 0; i < 8; i++) {
+            data2[i + 1] = [Results.TablaMotivoRenuncia[i + 8].Key, Results.TablaMotivoRenuncia[i + 8].Value];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            allowHtml: true,
+            hAxis: {
+                title: 'Rangos'
+            },
+            vAxis: {
+                title: 'Cantidad'
+            },
+            colors: ['#3b83bd', '#ffab91'],
+            bar: { groupWidth: "95%" },
+            legend: { position: "none" }
+            /*cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }*/
+        };
+        var chart = new google.visualization.ColumnChart(document.getElementById('grafica_motivorenuncia_fosunab'));
+        chart.draw(datos, options);
+    }
+
+    function GraficarTablaRotacionAreaFoscal(Results) {
+        var data2 = [['AREA', 'INDICADOR DE ROTACIÓN DE EGRESOS POR AREA', 'ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC', 'TOTAL']];
+        for (i = 0; i < Results.TablaIndicadorRotacionEgresosPorArea.length; i++) {
+            data2[i + 1] = [Results.TablaIndicadorRotacionEgresosPorArea[i].Area, Results.TablaIndicadorRotacionEgresosPorArea[i].Key, Results.TablaIndicadorRotacionEgresosPorArea[i].Enero, Results.TablaIndicadorRotacionEgresosPorArea[i].Febrero, Results.TablaIndicadorRotacionEgresosPorArea[i].Marzo, Results.TablaIndicadorRotacionEgresosPorArea[i].Abril, Results.TablaIndicadorRotacionEgresosPorArea[i].Mayo, Results.TablaIndicadorRotacionEgresosPorArea[i].Junio, Results.TablaIndicadorRotacionEgresosPorArea[i].Julio, Results.TablaIndicadorRotacionEgresosPorArea[i].Agosto, Results.TablaIndicadorRotacionEgresosPorArea[i].Septiembre, Results.TablaIndicadorRotacionEgresosPorArea[i].Octubre, Results.TablaIndicadorRotacionEgresosPorArea[i].Noviembre, Results.TablaIndicadorRotacionEgresosPorArea[i].Diciembre, Results.TablaIndicadorRotacionEgresosPorArea[i].Total];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            filterColumnLabel: 'AREA',
+            width: '-webkit-fill-available',
+            pageSize: 10,
+            page: 'enable',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_rotacion_area_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("rarea_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("rarea_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaRotacionPorCargoArea(Results) {
+        var data2 = [['Area', 'Cargo', 'Nro Personas', 'Retiros', '% Retiros']];
+        for (i = 0; i < Results.TablaRotacionPorCargo.length; i++) {
+            data2[i + 1] = [Results.TablaRotacionPorCargo[i].Area, Results.TablaRotacionPorCargo[i].Cargo, Results.TablaRotacionPorCargo[i].NroPersonas, Results.TablaRotacionPorCargo[i].Retiros, Results.TablaRotacionPorCargo[i].Porcentaje + "%"];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            pageSize: 10,
+            page: 'enable',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_rotacion_cargo_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("rcargos-areas_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("rcargos-areas_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaRotacionPorCargoArea2(Results) {
+        var data2 = [['Cargo', 'Nro Personas', 'Retiros']];
+        for (i = 0; i < Results.TablaRotacionPorCargo.length; i++) {
+            data2[i + 1] = [Results.TablaRotacionPorCargo[i].Cargo, Results.TablaRotacionPorCargo[i].NroPersonas, Results.TablaRotacionPorCargo[i].Retiros];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+
+        var c = new google.visualization.ControlWrapper({
+            'controlType': 'CategoryFilter',
+            'containerId': 'filter_rotacion_cargo_foscal',
+            'filterColumnIndex': 0,
+            'options': { 'filterColumnLabel': 'Cargo', 'ui': { 'caption': 'Seleccione...' } },
+        });
+
+        var chart = new google.visualization.Dashboard(document.getElementById('div_rotacion_cargo_foscal'));
+
+        google.visualization.events.addListener(chart, 'error', function (googleError) {
+            google.visualization.errors.removeError(googleError.id);
+        });
+
+        var p = new google.visualization.ChartWrapper({
+            'chartType': 'BarChart',
+            'containerId': 'grafica_rotacion_cargo_foscal',
+            'options': {
+                'width': '-webkit-fill-available',
+                'height': 300,
+            }
+        });
+        chart.bind(c, p);
+        chart.draw(datos);
+    }
+
+    function GraficarTablaRotacionCargoFoscal(Results) {
+        var data2 = [['CARGO', 'INDICADOR DE ROTACIÓN DE EGRESOS POR CARGO', 'ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC', 'TOTAL']];
+        for (i = 0; i < Results.TablaIndicadorRotacionEgresosPorCargo.length; i++) {
+            data2[i + 1] = [Results.TablaIndicadorRotacionEgresosPorCargo[i].Cargo, Results.TablaIndicadorRotacionEgresosPorCargo[i].Key, Results.TablaIndicadorRotacionEgresosPorCargo[i].Enero, Results.TablaIndicadorRotacionEgresosPorCargo[i].Febrero, Results.TablaIndicadorRotacionEgresosPorCargo[i].Marzo, Results.TablaIndicadorRotacionEgresosPorCargo[i].Abril, Results.TablaIndicadorRotacionEgresosPorCargo[i].Mayo, Results.TablaIndicadorRotacionEgresosPorCargo[i].Junio, Results.TablaIndicadorRotacionEgresosPorCargo[i].Julio, Results.TablaIndicadorRotacionEgresosPorCargo[i].Agosto, Results.TablaIndicadorRotacionEgresosPorCargo[i].Septiembre, Results.TablaIndicadorRotacionEgresosPorCargo[i].Octubre, Results.TablaIndicadorRotacionEgresosPorCargo[i].Noviembre, Results.TablaIndicadorRotacionEgresosPorCargo[i].Diciembre, Results.TablaIndicadorRotacionEgresosPorCargo[i].Total];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            pageSize: 10,
+            page: 'enable',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_rotacion_jefe_area_foscal'));
+        chart.draw(datos, options);
+
+        document.getElementById("rcargos_foscal_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("rcargos_foscal_csv", csvData);
+        });
+    }
+
+    function GraficarTablaRotacionAreaFosunab(Results) {
+        var data2 = [['AREA', 'INDICADOR DE ROTACIÓN DE EGRESOS POR AREA', 'ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC', 'TOTAL']];
+        for (i = 0; i < Results.TablaIndicadorRotacionEgresosPorAreaFosunab.length; i++) {
+            data2[i + 1] = [Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Area, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Key, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Enero, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Febrero, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Marzo, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Abril, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Mayo, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Junio, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Julio, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Agosto, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Septiembre, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Octubre, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Noviembre, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Diciembre, Results.TablaIndicadorRotacionEgresosPorAreaFosunab[i].Total];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            filterColumnLabel: 'AREA',
+            width: '-webkit-fill-available',
+            pageSize: 10,
+            page: 'enable',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_rotacion_area_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("rarea_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("rarea_fosunab_csv", csvData);
+        });
+    }
+
+    function GraficarTablaRotacionPorCargoAreaFosunab(Results) {
+        var data2 = [['Area', 'Cargo', 'Nro Personas', 'Retiros', '% Retiros']];
+        for (i = 0; i < Results.TablaRotacionPorCargoFosunab.length; i++) {
+            data2[i + 1] = [Results.TablaRotacionPorCargoFosunab[i].Area, Results.TablaRotacionPorCargoFosunab[i].Cargo, Results.TablaRotacionPorCargoFosunab[i].NroPersonas, Results.TablaRotacionPorCargoFosunab[i].Retiros, Results.TablaRotacionPorCargoFosunab[i].Porcentaje + "%"];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            pageSize: 10,
+            page: 'enable',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_rotacion_cargo_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("rcargos-areas_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("rarea_fosunab_csv", csvData);
+        });
+    }
+
+    function GraficarTablaRotacionPorCargoAreaFosunab2(Results) {
+        var data2 = [['Cargo', 'Nro Personas', 'Retiros']];
+        for (i = 0; i < Results.TablaRotacionPorCargoFosunab.length; i++) {
+            data2[i + 1] = [Results.TablaRotacionPorCargoFosunab[i].Cargo, Results.TablaRotacionPorCargoFosunab[i].NroPersonas, Results.TablaRotacionPorCargoFosunab[i].Retiros];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var c = new google.visualization.ControlWrapper({
+            'controlType': 'CategoryFilter',
+            'containerId': 'filter_rotacion_cargo_fosunab',
+            'filterColumnIndex': 0,
+            'options': { 'filterColumnLabel': 'Cargo', 'ui': { 'caption': 'Seleccione...' } },
+        });
+
+        var chart = new google.visualization.Dashboard(document.getElementById('div_rotacion_cargo_fosunab'));
+
+        google.visualization.events.addListener(chart, 'error', function (googleError) {
+            google.visualization.errors.removeError(googleError.id);
+        });
+
+        var p = new google.visualization.ChartWrapper({
+            'chartType': 'BarChart',
+            'containerId': 'grafica_rotacion_cargo_fosunab',
+            'options': {
+                'width': '-webkit-fill-available',
+                'height': 300,
+            }
+        });
+        chart.bind(c, p);
+        chart.draw(datos);
+    }
+
+    function GraficarTablaRotacionCargoFosunab(Results) {
+        var data2 = [['CARGO', 'INDICADOR DE ROTACIÓN DE EGRESOS POR CARGO', 'ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC', 'TOTAL']];
+        for (i = 0; i < Results.TablaIndicadorRotacionEgresosPorCargoFosunab.length; i++) {
+            data2[i + 1] = [Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Cargo, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Key, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Enero, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Febrero, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Marzo, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Abril, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Mayo, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Junio, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Julio, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Agosto, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Septiembre, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Octubre, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Noviembre, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Diciembre, Results.TablaIndicadorRotacionEgresosPorCargoFosunab[i].Total];
+        }
+        var datos = new google.visualization.arrayToDataTable(data2);
+        var options = {
+            width: '-webkit-fill-available',
+            pageSize: 10,
+            page: 'enable',
+            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-uppercase text-center', oddTableRow: 'tablabody text-uppercase tablaoddbody text-center' }
+        };
+        var chart = new google.visualization.Table(document.getElementById('tabla_rotacion_jefe_area_fosunab'));
+        chart.draw(datos, options);
+
+        document.getElementById("rcargos_fosunab_csv").addEventListener("click", function () {
+            var csvData = datos;
+            export_CSV("rcargos_fosunab_csv", csvData);
+        });
+    }
+</script>

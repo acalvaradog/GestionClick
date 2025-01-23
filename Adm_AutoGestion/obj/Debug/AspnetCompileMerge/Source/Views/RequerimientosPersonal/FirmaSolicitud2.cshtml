@@ -1,0 +1,168 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<link rel="stylesheet" href="~/Contents/css/bootstrap.min.css">
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/Contents/image/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <link rel="stylesheet" href="~/Contents/css/bootstrap.min.css">
+    <link href="~/Contents/css/bootstrap-select.min.css" rel="stylesheet" />
+    <script src="~/Contents/js/jquery-3.1.1.min.js" ></script>
+    <script src="~/Contents/js/popper.min.js" ></script>
+    <script src="~/Contents/js/bootstrap.min.js" ></script>
+    <script src="~/Contents/js/chart.js" ></script>
+    <script src="~/Contents/js/bootstrap-select.min.js"></script>
+     <link href="~/Contents/js/alertify.js/themes/alertify.core.css" rel="stylesheet" />
+    <link href="~/Contents/js/alertify.js/themes/alertify.default.css" rel="stylesheet" />
+    <script src="~/Contents/js/alertify.js/lib/alertify.js"></script>
+ <script src="~/Contents/js/RequerimientosPersonal.js"></script>
+    <script src="~/Contents/js/Procesos.js"></script>
+</head>
+<body style="margin-top:50px">
+<nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background: linear-gradient(90deg, #07ABDF 10%, #426AB0 90%);">
+      <a class="navbar-brand" href="~/Login/Index" onclick="location.reload();">
+       <img src="~/Contents/image/Logoauto.png" class="d-inline-block align-top" alt="">&nbsp Gestión de Personal</a>
+</nav>
+<br />
+<br />
+
+<div class="container col-sm-offset-2 col-md-offset-2 col-lg-offset-3 col-sm-8 col-md-8 col-lg-4">
+<br />
+<br />
+
+
+
+<div class="panel panel-info center-block">
+        <div class="card  border-info mb-3 shadow p-3 mb-5" style="max-width: 35rem;"><br />
+            
+            <div class="panel-heading" align="center">
+                <img src="~/Contents/image/icono.png" >
+                <br />
+                <br />
+               @*  <h5 style="color:#07ABDF">
+               @{
+                    ViewBag.Title = "FirmaSolicitud";
+                }
+                @if (ViewBag.firma != null)
+                {
+                 <h5 style="color:#07ABDF">@ViewBag.firma</h5>
+                }else{
+                <h5 style="color:#07ABDF">Proceso de Firma...</h5>
+
+
+                }</h5>*@
+                    <div class="row">
+                       
+                        <div class="col-12">
+                            <h4> 
+                           <label>
+                            Detalles
+                          </label>
+                          </h4>
+                             <a href='@Url.Action("DetalleRequerimientoFirma", "RequerimientosPersonal", new { id = @Model.Id }, null)' data-modaldetalles=''>
+            <img src='@Url.Content("~/Contents/image/ojo.png")' / style="width:32px;height:32px">
+            </a>
+
+                        </div>
+                        <div class="col-12">
+                          <h4> 
+                           <label>
+                            Observaciones
+                          </label>
+
+                          </h4>
+                             @Html.TextArea("Observaciones",null, htmlAttributes: new { @class="form-control", rows="4", cols="20"})
+                                  <br />
+                        </div>
+                                        <div class="col-6">
+                                              <input id="Accion" name="Accion" value="DirectorArea" hidden readonly="true" />
+                                            <button type = "button"  class="btn btn-lg btn-outline-dark btn-info" style="color:white;" id="Addformc2" onclick = "javascript: return CambioEstadoRdP( @Model.Id);" >Aprobar</button>
+                                        </div>
+                        <div class="col-6">
+
+                             <button type = "button"  class="btn  btn-lg btn-outline-dark  btn-info" style="color:white;" id="Anular" onclick = "javascript: return AnularRdP( @Model.Id);" >Anular</button>
+    
+                        </div>
+
+
+                    </div>
+            </div>
+
+
+
+            <div class="form-horizontal" align="center">
+               
+                <div class="form-group">
+                   
+                    <hr>
+                      <h4>
+                        <br />
+                    @if (ViewBag.Message != null)
+                    {
+                       <span>@ViewBag.Message</span>
+                    }
+                        <br />
+                        <br />
+                      </h4>
+                        
+                      <hr>
+                </div>
+            </div>
+
+
+</div>
+</div>
+</div>
+
+    <div class="modal fade in" id="modal_Detalles">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h5 class="modal-title text-white">Detalles</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id ="contentModalDetalles">
+       <br />
+        <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+
+<div class="modal fade in" id="modal_Registros2" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y:visible">
+  <div class="modal-dialog modal-xl " >
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#0B9ACF">
+        <h2 class="modal-title text-white"></h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id ="contentModalResgistros2">
+       <br />
+        <br />
+          <div class="card" style="text-align:center">
+              <b>Cargando...</b>
+          </div>
+          <br />
+ </div>
+      
+    </div>
+  </div>
+</div>
+
+<br />
+<br />
+ <nav class="navbar-fixed-bottom" style="border: solid 5px transparent;">    
+        
+        <p class="text-muted text-center" >Copyright © 2020 FOSCAL. Todos los derechos reservados. Fundación Oftalmológica de Santander - Clinica FOSCAL. - Bucaramanga. Colombia.</p>          
+    </nav>
+</body>
+
+</html>

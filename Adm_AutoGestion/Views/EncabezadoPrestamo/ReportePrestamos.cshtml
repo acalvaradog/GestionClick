@@ -1,0 +1,297 @@
+﻿@model IEnumerable<Adm_AutoGestion.Controllers.EncabezadoPrestamoController.reporteprestamos>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "ReportePrestamos";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+
+@{var TipoArea = new List<ListItem> {
+        new ListItem { Text = "Asistencial", Value = "Asistencial" },
+        new ListItem { Text = "Administrativo", Value = "Administrativo" }
+        };
+}
+
+
+@{var Estado = new List<ListItem> {
+        new ListItem { Text = "ACTIVO", Value = "ACTIVO" },
+        new ListItem { Text = "INACTIVO", Value = "INACTIVO" },
+        new ListItem { Text = "ANULADO", Value = "ANULADO" }
+        };
+}
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Mensaje:</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+    Session.Remove("message");
+}
+
+<h4 class="colorTitulo" style="text-align:center">Informe General Prestamos</h4>
+<br />
+@using (Html.BeginForm("ReportePrestamos", "EncabezadoPrestamo", FormMethod.Get))
+{
+
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">
+                <a class="card-link text-white" data-toggle="collapse" href="#collapse1">Consultar</a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Fecha Inicial: @Html.TextBox("FechaInicio", null, null, new { @class = "form-control form-control-sm", @type = "date" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Fecha Final: @Html.TextBox("FechaFin", null, null, new { @class = "form-control form-control-sm", @type = "date" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Sociedad: @Html.DropDownList("Sociedad", new SelectList(ViewBag.Sociedad, "Id", " Descripcion"), "--Seleccione Sociedad--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Tipo Area:  @Html.DropDownList("TipoArea", new SelectList(TipoArea, "Value", "Text"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Area:  @Html.DropDownList("AreaDirige", (List<SelectListItem>)ViewBag.Area, "--Seleccione Area--", new { @class = "form-control form-control-sm selectpicker", data_live_search = "true" })
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Estado:  @Html.DropDownList("Estado", new SelectList(Estado, "Value", "Text"), "--Seleccione Estado--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-12" style="text-align: center">
+                        <div class="form-group">
+                            <br />
+                            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Generar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <br />
+}
+
+<style>
+    table > tbody > tr > td {
+        vertical-align: middle !important;
+    }
+
+    .btn-group, .btn-group-vertical {
+        position: absolute !important;
+    }
+</style>
+
+
+
+
+<div class="table-responsive-sm">
+    <table class="table table-borderless table-sm" id="tabla" cellspacing="0" width="100%">
+        <thead>
+            <tr class="fondoDegradado text-white">
+                <th>
+                    Fecha Prestamo
+                </th>
+                <th>
+                    No. Entrega
+                </th>
+                <th>
+                    Sociedad
+                </th>
+                <th>
+                    Tipo Area
+                </th>
+                <th>
+                    Area donde se Dirige
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Documento
+                </th>
+                <th>
+                    Nombres Solicitante
+                </th>
+                <th>
+                    Telefono
+                </th>
+                <th>
+                    Correo
+                </th>
+                <th>
+                    Jefe Inmediato
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FechaRegistro)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NoPrestamo)
+                    </td>
+                    @if (item.Sociedad == "1")
+                    {
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Sociedad)*@
+                            FUNDACIÓN OFTALMOLOGICA DE SANTANDER
+
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+
+                            FUNDACIÓN FOSUNAB
+                        </td>
+
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TipoArea)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AreaDirige)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Documento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefono)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Correo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Jefe)
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+
+    </table>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        var table = $('#tabla').DataTable({
+            //$('#tabla').DataTable({
+
+
+            //"bFilter": true,
+            //"ordering": false,
+
+            buttons: [
+                {
+
+
+
+                    extend: 'excelHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'InformePrestamos.xlsx',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+
+
+                },
+                {
+                    extend: 'pdfHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-pdf"></i>',
+                    filename: 'InformePrestamos.xlsx',
+                    titleAttr: 'Exportar a PDF',
+                    className: 'btn btn-danger'
+                },
+
+
+            ],
+            dom: 'Brtip',
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+
+
+
+
+        });
+
+
+
+
+    })
+</script>

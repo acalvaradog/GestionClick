@@ -1,0 +1,144 @@
+﻿@page "/reconocimiento/historicoreconocimiento"
+
+@using Autogestion.Shared.DTO.Reconocimiento;
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@using System.Text.Json
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+
+
+
+
+
+
+
+
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    @if (empleado != null)
+    {
+
+        //************TABLA LISTA DE FAMILIARES************//
+        <MudContainer>
+            <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Surface">Historico Reconocimiento</MudText> </MudCardHeader>
+            <MudCard Class="mb-5">
+                <MudTable Items="@listReconocimiento" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+                    <HeaderContent>
+
+                        
+                        <MudTh>Texto</MudTh>
+                        <MudTh>Tipo</MudTh>
+                        <MudTh>Responsable</MudTh>
+                        <MudTh>Fecha</MudTh>
+                        
+
+
+
+                    </HeaderContent>
+                    <RowTemplate>
+
+
+
+                        <MudTd DataLabel="TipoTexto" Style="overflow-wrap:break-word;max-width:400px;">@context.TipoTexto</MudTd>
+                        <MudTd DataLabel="TipoNombre" Class="overflow-hidden">@context.TipoNombre</MudTd>
+                        <MudTd DataLabel="EmpleadoNombre" Class="overflow-hidden">@context.EmpleadoNombre</MudTd>
+                        <MudTd DataLabel="Fecha" Class="overflow-hidden">@Convert.ToDateTime(context.Fecha).ToString("dd/MM/yyyy")</MudTd>
+
+
+
+
+
+
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] { 6, 10, 50, 100, int.MaxValue }" InfoFormat="@($"Center {infoFormat}")" HorizontalAlignment="HorizontalAlignment.Center" />
+                    </PagerContent>
+                </MudTable>
+                
+            </MudCard>
+
+
+
+        </MudContainer>
+
+
+    }
+}
+
+
+
+
+
+
+@code {
+    private bool _loading;
+
+    private HashSet<ReconocimientoDTO> selectedItems = new HashSet<ReconocimientoDTO>();
+    private IEnumerable<ReconocimientoDTO>? listReconocimiento = new List<ReconocimientoDTO>();
+
+    MudListItem selectedItem;
+    object selectedValue = 1;
+    private string infoFormat = "{first_item}-{last_item} of {all_items}";
+    
+
+
+
+    DateTime fecha;
+
+
+
+    private EmpleadoDTO? empleado { get; set; }
+
+
+
+    
+
+
+    ReconocimientoDTO Reconocimiento = new ReconocimientoDTO();
+    
+   
+    
+
+    //
+    protected override async Task OnInitializedAsync()
+    {
+
+
+
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        try
+        {
+            _loading = true;
+            listReconocimiento = await Http.GetFromJsonAsync<List<ReconocimientoDTO>>($"api/Reconocimiento/HistoricoReconocimiento/{empleado.Id}");
+            _loading = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error" + ex.Message);
+
+        }
+
+
+
+
+    }
+    
+
+
+
+
+
+
+
+
+}

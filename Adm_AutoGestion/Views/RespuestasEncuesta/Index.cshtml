@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Encuesta>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<h2 class="colorTitulo text-center mt-3">
+    Detalle Informe
+</h2>
+<div class="card">
+    <div class="card-header text-white fondoDegradado mb-3">Datos del Empleado</div>
+    <div class="card-body">
+        <div class="row justify-content-start">
+            <div class="col-4">
+                <label for="Nombre">Documento: </label>
+                <input type="text" class="form-control" id="Doc" value="@ViewBag.Empleado.Documento " disabled="disabled" />
+            </div>
+
+            <div class="col-4">
+                <label for="Nombre">Nombre: </label>
+                <input type="text" class="form-control" id="Nom" value="@ViewBag.Empleado.Nombres " readonly />
+            </div>
+            <div class="col-4">
+
+                <label for="Fecha">Fecha: </label>
+                <input type="text" class="form-control" id="Fecha" value="@ViewBag.EncabezadoEncuesta.Fecha" readonly />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <tr class="fondoDegradado text-white text-center">
+            <th>
+                Numero
+            </th>
+            <th>
+                Pregunta
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Respuesta)
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            foreach (var pregunta in item.ListadoPreguntas)
+            {
+                <tr>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.NumeroPregunta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(Preguntas => pregunta.Pregunta)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Respuesta)
+                    </td>
+
+                </tr>
+            }
+        }
+
+    </table>
+</div>
+
+<div class="row justify-content-center mt-2">
+
+    <div class="col-12" style="text-align:center">
+        <a class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" href="~/EncabezadoEncuesta/Index"> Atras</a>
+    </div>
+</div>

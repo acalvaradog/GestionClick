@@ -1,0 +1,207 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EncabezadoEncuesta>
+
+@{
+
+    var mensaje = ViewBag.datos;
+    var fecha = ViewBag.Fecha;
+    var nombre = ViewBag.Nombres;
+    var fondo = ViewBag.ColorF;
+    var letra = ViewBag.ColorL;
+}
+
+@if (mensaje == "Verde")
+{
+    <div style="background-color:green">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:green; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy reporta no presentar síntomas sugestivos de COVID 19. Siga guardando las medidas de Prevención y protección recomendadas por su empleador contra el COVID 19.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Amarillo")
+{
+    <div style="background-color:yellow">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:black; background-color:yellow; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy usted ha reportado presentar síntomas sugestivos de COVID 19. Quédese en casa y solicite atención médica a la línea PBX 7008000 Ext 5431 ó  a la línea de emergencia COVID de su EPS si solo labora en Trabajo en casa.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Rojo")
+{
+    <div style="background-color:red">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:red; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, afirma tener CONTACTO ESTRECHO LABORAL, Y COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Aíslese en casa de inmediato y solicite atención médica a la línea de Urgencias Respiratorias FOSCAL línea 7008000 ext 5431. Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Verde1")
+{
+    <div style="background-color:green">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:green; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, refiere estar vacunado contra el COVID 19, mas refuerzo, niega tener CONTACTO ESTRECHO LABORAL, ó COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br /> <strong>Felicitaciones por su Autocuidado.</strong> Siga guardando las medidas de bioseguridad impartidas por su empleador.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado2")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, refiere estar vacunado contra el COVID 19, mas refuerzo, niega tener CONTACTO ESTRECHO LABORAL, ó COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Aíslese en casa de inmediato. Si usted es un trabajador que realiza atención a pacientes y/o familiares de estos,  solicite atención médica a la línea de Urgencias Respiratorias FOSCAL línea 7008000 ext 5431. De lo contrario,  consulte por su EPS.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Naranja3")
+{
+    <div style="background-color:#ff8000">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#ff8000; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, refiere estar vacunado contra el COVID 19, mas refuerzo, afirma tener CONTACTO ESTRECHO COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Por lo anterior consulte su caso al Médico de su EPS.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado4")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, refiere estar vacunado contra el COVID 19, mas refuerzo, afirma tener CONTACTO ESTRECHO LABORAL con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Aíslese en casa de inmediato y solicite atención médica a la línea de Urgencias Respiratorias FOSCAL línea 7008000 ext 5431. Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Verde5")
+{
+    <div style="background-color:green">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:green; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, refiere estar vacunado contra el COVID 19, mas refuerzo, afirma tener CONTACTO ESTRECHO COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />No requiere aislamiento ni pruebas para COVID 19.<br /><br />Adhiérase las medidas de bioseguridad impartidas por su empleador y evite visitar personas mayores de 60 años, menores de 3 años y/o con factores de riesgo para el COVID 19.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Verde6")
+{
+    <div style="background-color:green">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:green; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, refiere estar vacunado contra el COVID 19, mas refuerzo, afirma tener CONTACTO ESTRECHO LABORAL con persona positiva para COVID 19, en los últimos 7 días.<br />No requiere aislamiento ni pruebas para COVID 19.<br /> Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.<br />Adhiérase las medidas de bioseguridad impartidas por su empleador y evite visitar personas mayores de 60 años, menores de 3 años y/o con factores de riesgo para el COVID 19.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Verde7")
+{
+    <div style="background-color:green">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:green; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, refiere estar vacunado contra el COVID 19, mas refuerzo, afirma tener CONTACTO ESTRECHO COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />No requiere aislamiento ni pruebas para COVID 19.<br /><br />Adhiérase las medidas de bioseguridad impartidas por su empleador y evite visitar personas mayores de 60 años, menores de 3 años y/o con factores de riesgo para el COVID 19.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado8")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, refiere estar vacunado contra el COVID 19, mas refuerzo, afirma tener CONTACTO ESTRECHO LABORAL, Y COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Aíslese en casa de inmediato y solicite atención médica a la línea de Urgencias Respiratorias FOSCAL línea 7008000 ext 5431. Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Verde9")
+{
+    <div style="background-color:green">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:green; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, niega tener CONTACTO ESTRECHO LABORAL, ó COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Siga guardando las medidas de bioseguridad impartidas por su empleador.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado10")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, niega tener CONTACTO ESTRECHO LABORAL, ó COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Aíslese en casa de inmediato. Si usted es un trabajador que realiza atención a pacientes y/o familiares de estos,  solicite atención médica a la línea de Urgencias Respiratorias FOSCAL línea 7008000 ext 5431. De lo contrario,  consulte por su EPS.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Naranja11")
+{
+    <div style="background-color:#ff8000">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#ff8000; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, afirma tener CONTACTO ESTRECHO COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Por lo anterior consulte su caso al Médico de su EPS.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado12")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, afirma tener CONTACTO ESTRECHO LABORAL con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Aíslese en casa de inmediato y solicite atención médica a la línea de Urgencias Respiratorias FOSCAL línea 7008000 ext 5431. Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Naranja13")
+{
+    <div style="background-color:#ff8000">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#ff8000; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, afirma tener CONTACTO ESTRECHO COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Por lo anterior consulte su caso al Médico de su EPS. Adhiérase las medidas de bioseguridad impartidas por su empleador y evite visitar personas mayores de 60 años, menores de 3 años y/o con factores de riesgo para el COVID 19.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado14")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, afirma tener CONTACTO ESTRECHO LABORAL con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.<br /><br />Adhiérase las medidas de bioseguridad impartidas por su empleador y evite visitar personas mayores de 60 años, menores de 3 años y/o con factores de riesgo para el COVID 19.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado15")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted se encuentra asintomático, afirma tener CONTACTO ESTRECHO LABORAL, Y COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.<br /><br />Adhiérase las medidas de bioseguridad impartidas por su empleador y evite visitar personas mayores de 60 años, menores de 3 años y/o con factores de riesgo para el COVID 19.
+            </label>
+        </p>
+    </div>
+}
+@if (mensaje == "Morado16")
+{
+    <div style="background-color:#7D2181">
+        <p>
+            <label id="mensaje_certificado" style="white-space: pre-wrap; color:white; background-color:#7D2181; padding-left: 10px;padding-right: 10px;">
+                Fecha Consulta: @fecha<br />Señor(a):@nombre<br />En su autoevaluación de hoy, Usted  presenta síntomas sugestivos de COVID 19, afirma tener CONTACTO ESTRECHO LABORAL, Y COMUNITARIO con persona positiva para COVID 19, en los últimos 7 días.<br /><br />Aíslese en casa de inmediato y solicite atención médica a la línea de Urgencias Respiratorias FOSCAL línea 7008000 ext 5431. Reporte de manera inmediata el evento al Dpto. de SST  Ext 4111-4124-6102-6108.
+            </label>
+        </p>
+    </div>
+}
+
+<style>
+    div > p{
+        margin:0;
+    }
+</style>

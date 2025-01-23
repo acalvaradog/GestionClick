@@ -1,0 +1,234 @@
+﻿@page "/horasextra/historicohorasextra"
+
+@using Autogestion.Shared.DTO.HorasExtra;
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@using System.Text.Json
+@inject IJSRuntime JS
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    @if (empleado != null)
+    {
+        <MudForm Model="@model">
+            <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Surface">Histórico horas extras</MudText> </MudCardHeader>
+             <MudCard Class="mb-5">
+                 <MudCardContent>
+                     <MudGrid>
+                        <MudItem xs="6" sm="6">
+                            <MudDatePicker Label="Fecha Hora Extra desde" @bind-Date="FechaDesde" Mask="@(new DateMask("0000-00-00"))" DateFormat="yyyy-MM-dd" Placeholder="Seleccione" PickerClosed="FiltrarDatos"></MudDatePicker>
+                        </MudItem>
+
+                        <MudItem xs="6" sm="6">
+                            <MudDatePicker Label="Fecha Hora Extra hasta" @bind-Date="FechaHasta" Mask="@(new DateMask("0000-00-00"))" DateFormat="yyyy-MM-dd" Placeholder="Seleccione" PickerClosed="FiltrarDatos"></MudDatePicker>
+                        </MudItem>
+                     </MudGrid>
+
+                </MudCardContent>
+                <MudCardActions Class="d-flex mt-3 justify-content-center">
+                    <MudButton Color="Color.Primary" Variant="Variant.Outlined" Class="" OnClick="@LimpiarFiltro"> Limpiar Filtro </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudForm>
+       
+            <MudCard Class="mb-5">
+                <MudTable Items="@listHorasExtra" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+                    <HeaderContent>
+                        <MudTh>Ver detalle</MudTh> 
+                        <MudTh>No solicitud</MudTh>
+                        <MudTh>Fecha registro</MudTh>
+                        <MudTh>Fecha Hora Extra</MudTh>
+                        <MudTh>Hora Desde</MudTh>
+                        <MudTh>Hora Hasta</MudTh>
+                        <MudTh>Total Diurnas</MudTh>
+                        <MudTh>Total nocturnas</MudTh>
+                        <MudTh>Total diurnas festivo</MudTh>
+                        <MudTh>Total nocturnas festivo</MudTh>
+                        <MudTh>Total Horas</MudTh>
+                        <MudTh>Estado</MudTh>
+                        <MudTh>Fecha Pago</MudTh>
+                        <MudTh>Observación</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                         <MudTd>
+                            <MudIconButton Icon="@Icons.Material.Filled.RemoveRedEye" OnClick="@(async () => await MostrarDetalleHorasExtra(context.Id, new DialogOptions() { MaxWidth = MaxWidth.Medium, FullWidth = true }))"></MudIconButton>
+                        </MudTd> 
+                        <MudTd DataLabel=">No Solicitud">@context.Id</MudTd>
+                        <MudTd DataLabel="Fecha">@Convert.ToDateTime(context.FechadeRegistro).ToString("dd/MM/yyyy")</MudTd>
+                         <MudTd DataLabel="FechaHora">@Convert.ToDateTime(context.FechaHora).ToString("dd/MM/yyyy")</MudTd>
+                         <MudTd DataLabel=">HoraDesde">@context.HoraDesde</MudTd>
+                        <MudTd DataLabel=">HoraHasta">@context.HoraHasta</MudTd>
+                        <MudTd DataLabel="TotalLiquidacionDiurna">@context.LiquidacionDiurna</MudTd>
+                        <MudTd DataLabel="TotalLiquidacionNocturna">@context.LiquidacionNocturna</MudTd>
+                        <MudTd DataLabel="TotalLiquidacionDiurnaFestivo">@context.LiquidacionDiurnaFestivo</MudTd>
+                        <MudTd DataLabel="TotalLiquidacionNocturnaFestivo">@context.LiquidacionNocturnaFestivo</MudTd>
+                        <MudTd DataLabel="TotalHoras">@context.TotalHoras</MudTd>
+                        <MudTd DataLabel="Estado">@context.EstadoNombre</MudTd>
+                        <MudTd DataLabel="FechaPago">@Convert.ToDateTime(context.FechaPago).ToString("dd/MM/yyyy")</MudTd>
+                        <MudTd DataLabel="Observacion">@context.Observacion</MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }" InfoFormat="@($"Center {infoFormat}")" HorizontalAlignment="HorizontalAlignment.Center" />
+                    </PagerContent>
+                </MudTable>
+
+            </MudCard>
+        
+
+
+    }
+}
+
+
+@code {
+    private bool _loading;
+
+    private HashSet<HorasExtraDTO> selectedItems = new HashSet<HorasExtraDTO>();
+    //private IEnumerable<HorasExtraDTO>? listHorasExtraOriginal = new List<HorasExtraDTO>();
+    // private IEnumerable<HorasExtraDTO>? listHorasExtra = new List<HorasExtraDTO>();
+    private IEnumerable<InformeTotalHEDTO>? listHorasExtra = new List<InformeTotalHEDTO>();
+    private IEnumerable<InformeTotalHEDTO>? listHorasExtraOriginal = new List<InformeTotalHEDTO>();
+
+    MudListItem selectedItem;
+    object selectedValue = 1;
+    private string infoFormat = "{first_item}-{last_item} of {all_items}";
+
+    private List<MotivoTrabajoHEDTO>? motivoTrabajoHEDTO;
+    private List<DetalleHorasExtraDTO>? detalleHorasExtraDTO;
+    private string MotivoTrabajoHEDTO;
+
+
+
+    DateTime fecha;
+    DateTime? FechaDesde;
+    DateTime? FechaHasta;
+    DateTime? FechaDesde2;
+    DateTime? FechaHasta2;
+
+
+    private EmpleadoDTO? empleado { get; set; }
+
+    HorasExtraDTO model = new HorasExtraDTO();
+    MudForm form = new MudForm();
+
+    private MotivoTrabajoHEDTO? consulta { get; set; } = new MotivoTrabajoHEDTO();
+
+
+    HorasExtraDTO HorasExtra = new HorasExtraDTO();
+    MotivoTrabajoHEDTO MotivoTrabajoHE = new MotivoTrabajoHEDTO();
+
+
+    private HorasExtraDTO? horasExtraSeleccionada;
+    private List<DetalleHorasExtraDTO> listDetalleHorasExtra;
+
+    //
+    protected override async Task OnInitializedAsync()
+    {
+
+
+
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        try
+        {
+            _loading = true;
+            listHorasExtraOriginal = await Http.GetFromJsonAsync<List<InformeTotalHEDTO>>($"api/HorasExtra/ConsultaHorasExtra/{empleado.Id}");
+            listHorasExtra = listHorasExtraOriginal;
+            if (FechaHasta != null)
+            {
+                FechaHasta.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
+            }
+
+
+            _loading = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error" + ex.Message);
+
+        }
+
+
+
+
+    }
+    private async Task MostrarDetalleHorasExtra(int horasExtraId, DialogOptions options = null)
+    {
+        try
+        {
+            var detalleHorasExtraParams = new DetalleHorasExtraParams { HorasExtraId = horasExtraId };
+            var detalleHorasExtraParamsJson = JsonSerializer.Serialize(detalleHorasExtraParams);
+
+
+            var parameters = new DialogParameters();
+            parameters.Add("DetalleHorasExtraParamsJson", detalleHorasExtraParamsJson);
+
+            var dialog = await DialogService.ShowAsync<DetalleHorasExtraModal>("Detalles de Horas Extra", parameters, options);
+
+
+        }
+        catch (Exception ex)
+        {
+            await JS.ShowMessage("Error", "Error al mostrar detalles de horas extra", "error");
+        }
+    }
+
+    private void FiltrarDatos()
+    {
+        try
+        {
+
+            _loading = true;
+            if (FechaHasta != null && FechaDesde != null)
+            {
+
+                FechaHasta2 = FechaHasta.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
+                FechaDesde2 = FechaDesde;
+
+                if (listHorasExtraOriginal != null)
+                {
+                    listHorasExtra = listHorasExtraOriginal.Where(x => x.FechaHora >= FechaDesde2 && x.FechaHora <= FechaHasta2);
+                }
+            }
+            _loading = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error" + ex.Message);
+        }
+
+    }
+
+    private void LimpiarFiltro()
+    {
+        listHorasExtra = listHorasExtraOriginal;
+        FechaDesde = null;
+        FechaHasta = null;
+    }
+
+
+
+    public class DetalleHorasExtraParams
+    {
+        public int HorasExtraId { get; set; }
+        // Agrega otros parámetros según sea necesario
+    }
+
+
+
+
+
+
+
+
+}

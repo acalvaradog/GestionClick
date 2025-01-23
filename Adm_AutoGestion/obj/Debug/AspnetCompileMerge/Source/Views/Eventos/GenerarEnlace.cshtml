@@ -1,0 +1,39 @@
+﻿@model Adm_AutoGestion.Models.Eventos
+@{
+    string host = HttpContext.Current.Request.Url.Host;
+}
+
+<div class="container m-3">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <!--http://localhost:55389/Eventos/PendienteFirma2/1-->
+            <a id="Enlace" style="color:black;font-size:1.5rem;" target="_blank" href="PendienteFirma2/@Model.Id">@host/Eventos/PendienteFirma2/@Model.Id</a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12 d-flex justify-content-center">
+            <button onclick="copiarEnlace();" class="bi bi-clipboard btn btn-outline-primary mb-2"> Copiar Enlace</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        navigator.permissions.query({ name: "write-on-clipboard" }).then((result) => {
+            if (result.state == "granted" || result.state == "prompt") {
+                alert("Acceso al portapapeles concedido!");
+            }
+        });
+
+
+
+        // Solo funciona con HTTPS
+        function copiarEnlace() {
+            var Texto = document.getElementById("Enlace");
+
+            navigator.clipboard.writeText(Texto.textContent);
+            alert("Copiado " + Texto.textContent)
+        }
+</script>

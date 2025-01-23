@@ -1,0 +1,187 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Incapacidades>
+
+@{
+    ViewBag.Title = "CargarAseguradora";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.Incapacidades Item = ViewBag.Incapacidades;
+}
+
+<div class="container">
+    <br />
+    <h2 class="colorTitulo" style="text-align:center">Cargar Incapacidad a Aseguradora</h2>
+
+    <div class="card">
+        <div class="card-header text-white fondoDegradado mb-3">Detallado</div>
+        <div class="card-body">
+            <div class="row justify-content-start">
+                <div class="col-3" style="text-align:left">
+                    <label for="Documento">Documento:</label>
+                    <input type="text" class="form-control" id="Doc" value="@Item.Empleado.Documento" disabled="disabled" />
+                </div>
+                <div class="col-6" style="text-align:left">
+                    <label for="Nombre" class="control-label">Nombre: </label>
+                    <input type="text" class="form-control" id="Nom" value=" @Item.Empleado.Nombres" readonly />
+
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">Cantidad Dias: </label>&nbsp&nbsp&nbsp
+                    <input type="text" class="form-control" id="Cd" value="@Item.CantidadDias" disabled="disabled" />
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">Fecha Inicio: </label>
+                    <input type="text" class="form-control" id="FcI" value="@Convert.ToDateTime(Item.FechaInicio).ToString("dd/MM/yyyy")" disabled="disabled" />
+                </div>
+
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">Fecha Fin: </label>
+                    <input type="text" class="form-control" id="FcF" value="@Convert.ToDateTime(Item.FechaFin).ToString("dd/MM/yyyy")" disabled="disabled" />
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">Diagnostico: </label>&nbsp&nbsp
+                    <input type="text" class="form-control" id="FcI" value="@Item.Diagnostico" disabled="disabled" />
+                </div>
+
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">EPS: </label>&nbsp&nbsp
+                    <input type="text" class="form-control" id="FcI" value="@Item.ListadoEps.Nombre" disabled="disabled" />
+                </div>
+
+            </div>
+
+            <br />
+
+
+
+            <form action="~/Incapacidades/CargarAseguradora1">
+
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Prorroga: </label>&nbsp&nbsp
+                        <input type="text" class="form-control" id="Pro" value="@Item.Prorroga" disabled="disabled" />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="exampleFormControlSelect1">Estado: </label>&nbsp&nbsp&nbsp
+                        <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+                        <input type="hidden" id="Empleado" name="Empleado" value="@Item.Empleado.Id" />
+                        <select class="form-control" id="Estado" name="Estado">
+                            <option value="15">Cargar Aseguradora</option>
+                            <option value="16">Devuelto</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:left">
+                        <label for="comment">Observación:</label>
+                        <textarea class="form-control" rows="2" id="Observacion" name="Observacion"></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                    </div>
+                </div>
+
+
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+<br />
+<br />
+<br />
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr class="fondoDegradado text-white">
+                <th>
+                    Nombre Empleado
+                </th>
+                <th>
+                    Fecha Registro
+                </th>
+                <th>
+                    Fecha Inicio
+                </th>
+                <th>
+                    Fecha Fin
+                </th>
+                <th>
+                    Cantidad Dias
+                </th>
+                <th>
+                    EPS
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Diagnostico)
+                </th>
+                <th>
+                    Prorroga
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Adjunto
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                        @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.FechaInicio)*@
+                        @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.FechaFin)*@
+                        @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CantidadDias)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ListadoEps.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Diagnostico)
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Prorroga)*@
+                        @if (item.Prorroga == "SI")
+                        {
+                            <img src="~/Contents/image/relojarena.png">
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Ver Archivos Adjuntos", "Adjunto", new { Id = item.Id, Empleado = item.Empleado.Id }, new { target = "_blank" })
+                    </td>
+                    <td>
+                        @Html.ActionLink("Ver", "CargarAseguradora", new { Id = item.Id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

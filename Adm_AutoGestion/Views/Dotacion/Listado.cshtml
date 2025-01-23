@@ -1,0 +1,410 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Dotacion>
+@{
+    ViewBag.Title = "Listado Dotación";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<script src="~/Contents/js/html5-qrcode.js"></script>
+
+<form>
+    <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Buscar Dotación</h4>
+            </div>
+
+
+        </div>
+        <div class="card-body">
+            <div class="row mt-2">
+                <div class="col-6">
+                    <label>Año</label>
+                    <input required name="Year" id="Year" class="form-control" type="number" value="2023" min="2020" max="2050">
+                </div>
+
+                <div class="col-6">
+                    <label>Tipo Area</label>
+                    <select name="Area" id="Area" class="form-control">
+                        <option value="">Seleccione...</option>
+                        <option value="Adm">Administrativo</option>
+                        <option value="Asi">Asistencial</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-6">
+                    <label>Categoria</label>
+                    <select name="Cat" id="Cat" class="form-control">
+                        <option value="">Seleccione...</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                    </select>
+                </div>
+
+                <div class="col-6">
+                    <label>Recibido</label>
+                    <select required id="Recibido" name="Recibido" class="form-control selectpicker">
+                        <option selected value="false">No</option>
+                        <option value="true">Si</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="bi bi-search btn btn-outline-primary rounded-pill mb-2"> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="card mt-3">
+    <div class="card-header colorTitulo mb-3">
+        <h5>Listado de Dotación</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm table-striped" id="tabla-dotacion">
+                <thead>
+                    <tr class="text-center align-middle">
+                        <th>
+                            Nro
+                        </th>
+                        <th>
+                            Nombres
+                        </th>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Area Personal
+                        </th>
+                        <th>
+                            Empresa
+                        </th>
+                        <th>
+                            Categoria
+                        </th>
+                        <th>
+                            Año
+                        </th>
+                        <th width="140px">
+                            Tallas
+                        </th>
+                        <th>
+                            Recibido
+                        </th>
+                        <th>
+                            Firmar
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var i in Model)
+                    {
+                        <tr class="text-center align-middle">
+                            <td>
+                                @Html.DisplayFor(item => i.Nro)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => i.NombreEmpleado)
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(i.Fecha).ToString("dd/MM/yyy")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => i.TipoArea)
+                            </td>
+                            <td>
+                                @if (i.Empresa == "1000")
+                                {
+                                    <span>FOSCAL</span>
+                                }
+                                else if (i.Empresa == "2000")
+                                {
+                                    <span>FOSUNAB</span>
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => i.Categoria)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => i.Año)
+                            </td>
+                            <td>
+                                @{
+                                    if (!string.IsNullOrEmpty(i.Tallas))
+                                    {
+                                        string[] tallas = i.Tallas.Split(',');
+
+                                        if (tallas.Length >= 2 && tallas.Length <= 3)
+                                        {
+                                            <div>Camisa: @tallas[0] Pantalón: @tallas[1]</div>
+
+                                            if (tallas.Length == 3)
+                                            {
+                                                <div>Zapatos: @tallas[2]</div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (i.Recibido == false || i.Recibido == null)
+                                {
+                                    <span>No</span>
+                                }
+                                else
+                                {
+                                    <span>Si</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="col-12 mb-3">
+                                    <a class="btn btn-outline-primary" href="javascript:abrirCantidadEntrega('@i.Nro', @i.CantidadEntregas);">
+                                        <i class="bi bi-qr-code" data-bs-placement="top" data-bs-toggle="tooltip" title="Leer QR"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+
+    <div class="col-12 d-flex justify-content-start">
+        <div class="me-5">
+            <a class="bi bi-box-arrow-up-right btn btn-outline-primary rounded-pill mb-2" href="@Url.Action("AgregarRegistro", "Dotacion")"> Agregar Registro Manualmente</a>
+        </div>
+        <form action="../Dotacion/NotificarDotacion" method="post">
+            <div class="">
+                <button type="submit" class="bi bi-send btn btn-outline-primary rounded-pill mb-2"> Enviar Notificación de Dotación</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <div class="row mt-3">
+            <div class="col-6">
+                <label>Cantidad de dotación para el Tipo de Area Asistencial</label>
+                <h5 class="fw-bolder">@ViewBag.Asistenciales</h5>
+            </div>
+            <div class="col-6">
+                <label>Cantidad de dotación para el Tipo de Area Administrativa</label>
+                <h5 class="fw-bolder">@ViewBag.Administrativos</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Leer QR-->
+<div class="modal fade in" role="dialog" id="modal_LeerQR">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h5 class="modal-title text-white">Leer QR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalLeerQR">
+                <div id="reader" width="600px">
+
+                </div>
+                <div id="result">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Cantidad a Entregar-->
+<div class="modal fade in" role="dialog" id="modal_CantidadEntrega">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h5 class="modal-title text-white">Seleccionar Cantidad de Entrega</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalCantidad">
+                <div class="row mt-3 d-flex justify-content-center">
+                    <div class="col-6">
+                        <select id="cantidad" name="cantidad" class="form-control">
+                            <option value="">Seleccione...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="button" class="bi bi-save btn btn-outline-primary mb-2" onclick="javascript: abrirQR()"> Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var err = "@ViewBag.Message";
+
+        if (err == "true") {
+            alertify.alert("Se han enviado los correos correctamente.");
+        } else if (err == "correo") {
+            alertify.alert("Hubo un problema al identificar los correos de los empleados, consulte al administrador.");
+        } else if (" ") {
+
+        } else if ("false") {
+            alertify.alert("Ha ocurrido un error inesperado, consulte al administrador");
+        }
+    });
+</script>
+
+<script>
+    var NroRegistro;
+    var CantidadEntrega;
+
+    function abrirCantidadEntrega(nro, cantPendiente) {
+        OpcionesEntregas(cantPendiente);
+        $('#modal_CantidadEntrega').modal('show');
+        NroRegistro = nro;
+    }
+
+    function abrirQR() {
+        var cant = $('#cantidad option:selected').val();
+        if (cant == "") {
+            alertify.alert("Debe seleccionar un valor válido");
+        } else {
+            $('#modal_CantidadEntrega').modal('hide');
+            $('#modal_LeerQR').modal('show');
+
+            obtenerCantidad(cant);
+        }
+    }
+
+    function OpcionesEntregas(entregas) {
+        var select = document.getElementById("cantidad");
+
+        if (entregas != 0) {
+            select.innerHTML = "";
+
+            for (var i = 1; i <= entregas; i++) {
+                var option = document.createElement("option");
+                option.value = i;
+                option.text = i;
+                select.appendChild(option);
+            }
+        } else {
+            select.innerHTML = "";
+            var option = document.createElement("option");
+            option.value = "";
+            option.text = "No tiene entregas pendientes";
+            option.disabled = true;
+            option.selected = true;
+            select.appendChild(option);
+        }
+    }
+
+    function obtenerCantidad(cant) {
+        CantidadEntrega = cant;
+    }
+
+    let scanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        false);
+
+    scanner.render(success, error);
+
+    function success(result) {
+        document.getElementById('result').innerHTML = `
+            <p>${result}</p>`;
+
+        var Data = new FormData();
+        Data.append("NroRegistro", NroRegistro);
+        Data.append("CantidadEntrega", CantidadEntrega);
+        Data.append("result", result);
+
+        $.ajax({
+            url: "FirmaQR",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: Data,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "true") {
+                    alertify.alert('Recibido guardado correctamente', function () { location.reload(); });
+                } else {
+                    alertify.alert(result, function () { location.reload(); });
+                }
+            }
+        });
+        scanner.clear();
+        document.getElementById('reader').remove();
+    }
+
+    function error(err) {
+        console.error(err);
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        var table = $('#tabla-dotacion').DataTable({
+            responsive: false,
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+            pageLength: 5,
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'InformeEventos',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+                },
+            ],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+        });
+    })
+</script>

@@ -1,0 +1,263 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Vacaciones>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Informe";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+    <h2 class="colorTitulo text-center mt-3">Informe Vacaciones</h2>
+
+    <form>
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">Buscar</div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Fecha Inicio:</label>
+                        @Html.TextBox("FechaIni", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Fecha Fin:</label>
+                        @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-6" style="text-align:left">
+                        <label for="sospechoso">Nombre Empleado:</label>
+                        @Html.TextBox("Empleado", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Codigo Empleado:</label>
+                        @Html.TextBox("Codigo", null, htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Empresa:</label>
+                        @*@Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control" })*@
+                        @Html.DropDownList("Empresa", new SelectList(ViewBag.Sociedad, "Codigo", "Descripcion"), "Seleccione la Empresa", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="exampleFormControlSelect1">Estado: </label>
+                        <select class="form-control" id="Estado" name="Estado">
+                            <option value="0">Seleccionar...</option>
+                            <option value="1">Solicitado</option>
+                            <option value="2">Aprobado Jefe Inmediato</option>
+                            <option value="3">Recibido G.H</option>
+                            <option value="4">Confirmado</option>
+                            <option value="11">En Aprobación Jefe G.H</option>
+                            <option value="12">Aprobado Jefe Gestión Humana</option>
+                            <option value="5">Rechazado</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("Informe","Vacaciones")"> Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<br />
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr class="fondoDegradado text-white">
+                    <th>
+                        Codigo Empleado
+                    </th>
+                    <th>
+                        Nombre Empleado
+                    </th>
+                    <th>
+                        Nro Documento
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th>
+                        Fecha Solicitud
+                    </th>
+                    <th>
+                        Fecha Inicial
+                    </th>
+                    <th>
+                        Fecha Reintegro
+                    </th>
+                    <th>
+                        Cant. Dias Solicitados
+                    </th>
+                    <th>
+                        Cant. Dias Pendientes
+                    </th>
+                    <th>
+                        Vacaciones Pagadas
+                    </th>
+                    <th>
+                        Vacaciones Anticipadas
+                    </th>
+                    <th>
+                        Vacaciones Menor a 6 Dias
+                    </th>
+                    <th>
+                        Periodo
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Usuario Modifica
+                    </th>
+                    <th>
+                        Ver Historial
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Adjunto)
+                    </th>
+                    @*<th></th>*@
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                        </td>
+                        <td>
+                            @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Documento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.personal.Cargo)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.FechaInicial)*@
+                            @Convert.ToDateTime(item.FechaInicial).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CantDiasSolicitados)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CantDiasPendientes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VacacionesPagadas)
+                            @*@if(item.VacacionesPagadas == "SI"){
+                                <img src="~/Contents/image/dinero.png" >
+                                }*@
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VacacionesAdelantadas)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.VacacionesDiasMayor6)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Observacion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Empresa)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado2.Nombres)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Ver Historico", "HistorialVac", new { Id = item.Id })
+                        </td>
+                        <td>
+                            @if (@item.Adjunto == null || @item.Adjunto == "")
+                            {
+                                <div style="color:#FF0000;">
+                                    <label>Sin Archivo</label>
+                                </div>
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Descargar Archivo", "Download", new { archivo = item.Adjunto })}
+                        </td>
+                        @*<td>
+                                @Html.ActionLink("Edit", "Edit", new { id=item.Id })
+                            </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+                {
+
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'Informe_Vacaciones.xlsx',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+                }
+            ]
+        });
+
+    });
+
+</script>

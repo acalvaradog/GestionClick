@@ -1,0 +1,253 @@
+﻿@model Adm_AutoGestion.Models.Incapacidades
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+    <br />
+    <h2 class="colorTitulo">Registrar Incapacidad</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+
+
+                        <div class="editor-label">
+                            @*@Html.LabelFor(model => model.EmpleadoId)*@
+                            Número de Empleado
+                        </div>
+
+
+
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.EmpleadoId)*@
+                            @Html.TextBox("EmpleadoId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmpleadoId)
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+
+                        <div class="editor-label">
+                            @*@Html.LabelFor(model => model.Fecha)*@
+                            Fecha Registro
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.Fecha)*@
+                            @Html.TextBox("Fecha", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                        </div>
+                    </div>
+                    <div class="col-6">
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.FechaInicio)
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.FechaInicio)*@
+                            @Html.TextBox("FechaInicio", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(model => model.FechaInicio)
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.FechaFin)
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.FechaFin)*@
+                            @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(model => model.FechaFin)
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.CantidadDias)
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.CantidadDias)*@
+                            @Html.TextBox("CantidadDias", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.CantidadDias)
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Diagnostico)
+                        </div>
+                        <div class="editor-field">
+                            @Html.DropDownList("diagnostico", new SelectList(ViewBag.diagnostico, "Codigo", "nomcodigo"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <br />
+
+
+
+            <div class="card">
+                <div class="card-header text-white fondoDegradado mb-3">Adjuntar Archivos</div>
+                <div class="card-body">
+                    <div class="form-inline" role="form">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="editor-label">
+                                            Tipo Incapacidad
+                                        </div>&nbsp&nbsp
+                                        <div class="editor-field">
+                                            @Html.DropDownListFor(model => model.ListadoTiposInc, new SelectList(Model.ListadoTiposInc, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.ListadoTiposInc)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="editor-label">
+                                            Archivo
+                                        </div>&nbsp&nbsp
+                                        <div class="editor-field">
+                                            <div class="col-sm-10"><input type="text" class="form-control" id="Archivo" /></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-start mt-3">
+                                    <div class="col-12">
+                                        <button type="button" class="bi bi-plus-square btn btn-outline-primary mb-2" id="Addformc" onclick="javascript: return AddRow('Addfc', true );"> Agregar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+                    <div class="panel-body">
+                        <div class="panel panel-default">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead><tr class="table-info"><th></th><th>Codigo</th><th>Tipo Incapacidad</th><th>Archivo</th></tr></thead>
+                                    <tbody id="AddItems"></tbody>
+                                    <tfoot><tr><td colspan="3"></td></tr></tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-12">
+                    <button type="button" class="bi bi-save btn btn-outline-primary mb-2" id="Addinc" onclick="javascript: return Save();"> Guardar</button>
+                    @Html.ActionLink("Atras", "Index", null, new { @class = "bi bi-save btn btn-outline-primary mb-2" })
+                </div>
+            </div>
+        </fieldset>
+    }
+</div>
+
+<script>
+
+
+    window.onload = function () {
+        var fecha = new Date(); //Fecha actual
+        var mes = fecha.getMonth() + 1; //obteniendo mes
+        var dia = fecha.getDate(); //obteniendo dia
+        var ano = fecha.getFullYear(); //obteniendo año
+        if (dia < 10)
+            dia = '0' + dia; //agrega cero si el menor de 10
+        if (mes < 10)
+            mes = '0' + mes //agrega cero si el menor de 10
+        document.getElementById("Fecha").value = ano + "-" + mes + "-" + dia;
+    }
+
+    $(document).ready(function () {
+        $("#Fecha").prop('disabled', true);
+        $("#CantidadDias").prop('disabled', true);
+
+        $("#FechaFin").change(function () {
+            calcularDias();
+
+        });
+
+    });
+
+
+
+    function isValidDate(day, month, year) {
+        var dteDate;
+        month = month - 1;
+        dteDate = new Date(year, month, day);
+        return ((day == dteDate.getDate()) && (month == dteDate.getMonth()) && (year == dteDate.getFullYear()));
+    }
+
+    /**
+     * Funcion para validar una fecha
+     * Tiene que recibir:
+     *  La fecha en formato español dd/mm/yyyy
+     * Devuelve:
+     *  true o false
+     */
+    function validate_fecha(fecha) {
+        var patron = new RegExp("^(19|20)+([0-9]{2})([-])([0-9]{1,2})([-])([0-9]{1,2})$");
+
+        if (fecha.search(patron) == 0) {
+            var values = fecha.split("-");
+            if (isValidDate(values[2], values[1], values[0])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    function calcularDias() {
+        var fechaInicial = $("#FechaInicio").val();
+        var fechaFinal = $("#FechaFin").val();
+        var resultado = "";
+        if (validate_fecha(fechaInicial) && validate_fecha(fechaFinal)) {
+            inicial = fechaInicial.split("-");
+            final = fechaFinal.split("-");
+            // obtenemos las fechas en milisegundos
+            var dateStart = new Date(inicial[0], (inicial[1] - 1), inicial[2]);
+            var dateEnd = new Date(final[0], (final[1] - 1), final[2]);
+
+            if (dateStart > dateEnd) {
+
+                alert("La fecha inicial es posterior a la fecha final");
+
+
+            } else {
+
+                // la diferencia entre las dos fechas, la dividimos entre 86400 segundos
+                // que tiene un dia, y posteriormente entre 1000 ya que estamos
+                // trabajando con milisegundos.
+                var diasDif = dateEnd.getTime() - dateStart.getTime();
+                resultado = (diasDif / 86400000) + 1;
+
+
+            }
+        } else {
+            if (!validate_fecha(fechaInicial))
+                alert("La fecha inicial es incorrecta");
+            if (!validate_fecha(fechaFinal))
+                alert("La fecha final es incorrecta");
+        }
+        $('#CantidadDias').val(resultado);
+
+    }
+</script>

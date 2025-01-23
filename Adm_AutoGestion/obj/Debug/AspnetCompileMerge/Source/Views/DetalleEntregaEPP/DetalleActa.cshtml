@@ -1,0 +1,181 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleEntregaEPP>
+
+@{
+    ViewBag.Title = "DetalleActa";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string Numero = string.Format("{0}", ViewBag.NumeroEnt);
+}
+
+<h2 class="colorTitulo text-center mt-3">Detalle Acta de Entrega de Elementos (@Model.Count())</h2>
+
+@Html.ActionLink(" Copiar Acta", "CopiarActa", new { id = Numero, valor = "1", vista = "1" }, new { @class = "bi bi-clipboard btn btn-outline-primary mb-2" })
+
+
+<table class="table table-hover table-sm" id="Exportar_a_Excel">
+    <thead>
+        <tr class="fondoDegradado align-middle text-white text-center">
+            <th>
+                @*@Html.DisplayNameFor(model => model.NumeroEntrega)*@
+                N° Entrega
+            </th>
+            <th>
+                Elemento de Proteccion Personal
+                @*@Html.DisplayNameFor(model => model.EPP)*@
+            </th>
+            <th>
+                Documento
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.EmpleadoId)*@
+                Empleado
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cantidad)
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.MotivoEntrega)*@
+                Motivo Entrega
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Fecha)*@
+                Fecha Registro
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.FechaFirma)*@
+                Fecha Firma
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.FechaFin)*@
+                Fecha Fin
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observacion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>Anular Registro</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="text-center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroEntrega)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ElementosProtecionPersonal.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Documento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MotivoEntrega)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                    @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.FechaFirma)*@
+                    @if (item.FechaFirma != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.FechaFirma)}
+                </td>
+                <td>
+                    @if (item.FechaFin != null)
+                    {
+                        @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")}
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacion)
+                </td>
+                <td>
+                    @if (item.Estado == "Anulado")
+                    {
+                        <div style="color:#FF0000;">
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    }
+                </td>
+                <td>
+                    <a href="javascript:AnularRegistro1('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                        <img src="~/Contents/image/anular.png" alt="AnularRegistro" />
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje">
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn btn-primary" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function AnularRegistro1(id) {
+
+        alertify.confirm("Esta Seguro que Desea anular el registro?", function (e) {
+            if (e) {
+
+                AnularRegistro(id);
+            } else {
+
+            }
+        });
+    }
+
+    function AnularRegistro(id) {
+
+
+
+        try {
+
+            $.ajax({
+                url: '@Url.Action("AnularRegistro", "DetalleEntregaEPP")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+
+        }
+        catch (e) { alert(e); }
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+</script>

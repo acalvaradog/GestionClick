@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<div role="row">
+    <h2 class="colorTitulo text-center">Dashboard</h2>
+</div>
+<div id="chart_div_Mes"></div>
+<div class="mt-5" id="chart_div_IndicadorAsistentes"></div>
+
+<script>
+    $(document).ready(function () {
+        google.charts.load('current', { packages: ['corechart', 'bar'] });
+        google.charts.load('current', { packages: ['table'] });
+        google.charts.setOnLoadCallback(GraficaEventosPorMes);
+        google.charts.setOnLoadCallback(GraficaIndicadorAsistencia);
+    });
+
+    function GraficaIndicadorAsistencia() {
+        try {
+            $.ajax({
+                url: "GraficaIndicadorAsistentes",
+                type: "post",
+                success: function (Results) {
+                    if (Results != undefined || Results != null) {
+
+                        var data2 = [['Nombre Evento', 'Inscritos', 'Asistentes', 'Indicador']];
+                        for (i = 0; i < Results.length; i++) {
+
+                            data2[i + 1] = [Results[i].NombreEvento, Results[i].Inscritos, Results[i].Asistentes, Results[i].Indicador + '%'];
+                        }
+
+                        var datos = new google.visualization.arrayToDataTable(data2);
+
+                        var options = {
+                            width: '-webkit-fill-available',
+                            cssClassNames: { headerRow: 'fondoDegradado text-center tablaheader text-white', tableRow: 'tablabody text-capitalize text-center', oddTableRow: 'tablabody text-capitalize tablaoddbody text-center'}
+                        };
+
+
+                        var chart = new google.visualization.Table(document.getElementById('chart_div_IndicadorAsistentes'));
+
+                        chart.draw(datos, options);
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+    }
+
+    function GraficaEventosPorMes() {
+        try {
+            $.ajax({
+                url: "GraficaEventosPorMes",
+                type: "post",
+                success: function (Results) {
+                    if (Results != undefined || Results != null) {
+
+                        var data2 = [['Clasificacion', 'Cuenta']];
+                        for (i = 0; i < Results.length; i++) {
+
+                            data2[i + 1] = [Results[i].variable, Results[i].count];
+                        }
+
+                        var datos = new google.visualization.arrayToDataTable(data2);
+
+                        var options = {
+                            title: "Eventos Registrados por Mes",
+                            colors: ['green', '#ffab91'],
+                            width: '-webkit-fill-available',
+                            height: 400,
+                            bar: { groupWidth: "95%" },
+                            legend: { position: "none" },
+                            hAxis: {
+                                title: 'Mes ',
+                                minValue: 0
+                            },
+                            vAxis: {
+                                title: 'Cantidad'
+                            }
+                        };
+
+                        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_Mes'));
+
+                        google.visualization.events.addListener(chart, 'error', function (googleError) {
+                            google.visualization.errors.removeError(googleError.id);
+                        });
+
+                        chart.draw(datos, options);
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+    }
+</script>

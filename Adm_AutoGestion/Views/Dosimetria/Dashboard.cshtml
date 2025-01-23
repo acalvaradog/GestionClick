@@ -1,0 +1,206 @@
+﻿@model Adm_AutoGestion.DTO.DashboardViewModel
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Dashboard Dosimetría";
+}
+
+<div class="card">
+
+    <div class="card-header colorTitulo mb-3"><h5>Dashboard de Dosimetría</h5></div>
+    <div class="card-body">
+
+        <form method="get" asp-action="Dashboard">
+            <div class="row">
+                <div class="form-group col-4">
+                    <label for="anio">Año:</label>
+                    <input type="number" id="anio" name="anio" value="@DateTime.Now.Year" class="form-control" />
+                </div>
+                <div class="form-group col-4">
+                    <label for="mes">Mes:</label>
+                    <select id="mes" name="mes" class="form-control">
+                        <option value="">Todos</option>
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+                        }
+                    </select>
+                </div>
+                @*<div class="form-group col-4">
+                        <label for="empleadoId">Empleado:</label>
+                        <input type="number" id="empleadoId" name="empleadoId" class="form-control" />
+                    </div>*@
+                <div class="form-group col-4">
+                    <label for="sedeId">Sede:</label>
+                    <input type="number" id="sedeId" name="sedeId" class="form-control" />
+                </div>
+
+
+                @*<div class="form-group col-4">
+                        <button type="submit" class="btn btn-primary mt-4">Filtrar</button>
+                    </div>*@
+            </div>
+
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                    <button type="submit" class="btn btn-outline-primary rounded-pill mb-2">Filtrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <!-- Pestañas -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="chartTab" data-bs-toggle="tab" href="#charts" role="tab" aria-controls="charts" aria-selected="true">Anual</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="acumTab" data-bs-toggle="tab" href="#acum" role="tab" aria-controls="acum" aria-selected="false">Acumulado</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="charts" role="tabpanel" aria-labelledby="chartTab">
+                <div class="row mb-4">
+                    <div class="col-6 mb-4">
+                        <canvas id="chartHp10" style="max-width: auto; height: 400px;"></canvas>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-6 mt-5">
+                        <canvas id="chartHp3" style="max-width: auto; height: 400px;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="acum" role="tabpanel" aria-labelledby="acumTab">
+                <div class="row mb-4">
+                    <div class="col-6 mb-4">
+                        <canvas id="chartAcumuladoHp10" style="max-width: auto; height: 400px;"></canvas>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-6 mt-5">
+                        <canvas id="chartAcumuladoHp3" style="max-width: auto; height: 400px; "></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- Plugin para mostrar valores -->
+        <script>
+    // Configuración común para las gráficas
+    const commonOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: 'top'
+            },
+            datalabels: {
+                color: '#000', // Color del texto
+                anchor: 'end', // Posición del texto
+                align: 'top',  // Alineación del texto
+                font: {
+                    weight: 'bold'
+                },
+                formatter: function (value) {
+                    return value; // Mostrar el valor
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    maxRotation: 90, // Rotar las etiquetas del eje X
+                    minRotation: 90,
+                    autoSkip: false, // No omitir etiquetas
+                }
+            },
+            y: {
+                beginAtZero: true // Comenzar desde 0
+            }
+        }
+    };
+
+    // Gráfica de Hp(10) Anual
+    const chartHp10Data = {
+        labels: @Html.Raw(JsonConvert.SerializeObject(Model.DatosHp10.Select(d => d.NombreEmpleado))),
+        datasets: [{
+            label: 'Hp(10) Anual',
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.DatosHp10.Select(d => d.TotalAnualHp10))),
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Gráfica de Hp(3) Anual
+    const chartHp3Data = {
+        labels: @Html.Raw(JsonConvert.SerializeObject(Model.DatosHp3.Select(d => d.NombreEmpleado))),
+        datasets: [{
+            label: 'Hp(3) Anual',
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.DatosHp3.Select(d => d.TotalAnualHp3))),
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Gráfica de Hp(10) Acumulado
+    const chartAcumuladoHp10Data = {
+        labels: @Html.Raw(JsonConvert.SerializeObject(Model.DatosAcumuladoHp10.Select(d => d.NombreEmpleado))),
+        datasets: [{
+            label: 'Hp(10) Acumulado',
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.DatosAcumuladoHp10.Select(d => d.TotalAcumuladoHp10))),
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Gráfica de Hp(3) Acumulado
+    const chartAcumuladoHp3Data = {
+        labels: @Html.Raw(JsonConvert.SerializeObject(Model.DatosAcumuladoHp3.Select(d => d.NombreEmpleado))),
+        datasets: [{
+            label: 'Hp(3) Acumulado',
+            data: @Html.Raw(JsonConvert.SerializeObject(Model.DatosAcumuladoHp3.Select(d => d.TotalAcumuladoHp3))),
+            backgroundColor: 'rgba(153, 102, 255, 0.5)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Renderizar las gráficas
+    new Chart(document.getElementById('chartHp10'), {
+        type: 'bar',
+        data: chartHp10Data,
+        options: commonOptions,
+        plugins: [ChartDataLabels]
+    });
+    new Chart(document.getElementById('chartHp3'), {
+        type: 'bar',
+        data: chartHp3Data,
+        options: commonOptions,
+        plugins: [ChartDataLabels]
+    });
+    new Chart(document.getElementById('chartAcumuladoHp10'), {
+        type: 'bar',
+        data: chartAcumuladoHp10Data,
+        options: commonOptions,
+        plugins: [ChartDataLabels]
+    });
+    new Chart(document.getElementById('chartAcumuladoHp3'), {
+        type: 'bar',
+        data: chartAcumuladoHp3Data,
+        options: commonOptions,
+        plugins: [ChartDataLabels]
+    });
+        </script>
+
+    }

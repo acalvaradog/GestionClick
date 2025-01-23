@@ -1,0 +1,61 @@
+﻿@page "/historialcesantias"
+@inject HttpClient Http
+@using Autogestion.Shared.DTO.Cesantias
+@inject IJSRuntime JS
+@using AutoGestion.Helpers;
+@using System.Text;
+@using System.Text.RegularExpressions;
+@using Autogestion.Shared.DTO.Empleado;
+
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else{
+    <MudTable Items="@solicitudes" Dense="true">
+        <HeaderContent>
+            <MudTh>ID Solicitud</MudTh>
+            <MudTh>Fecha Registro</MudTh>
+            <MudTh>Valor Solicitado</MudTh>
+            <MudTh>Destino</MudTh>
+            <MudTh>Estado</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>@context.Id</MudTd>
+            <MudTd>@context.FechaRegistro</MudTd>
+            <MudTd>@context.ValorRetiro</MudTd>
+            <MudTd>@context.Destino.Nombre</MudTd>
+            <MudTd>@context.Estado.Nombre</MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+
+@code {
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    private List<SolicitudCesantiaDTO> solicitudes = new();
+    protected override async Task OnInitializedAsync()
+    {
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        await ConsultarSolicitudes();
+
+    }
+
+    private async Task ConsultarSolicitudes()
+    {
+        try
+        {
+            _loading = true;
+            solicitudes = await Http.GetFromJsonAsync<List<SolicitudCesantiaDTO>>($"api/cesantias/obtener-solicitudes-por-empleado/{datosempleado.Id}");
+            _loading = false;
+        }
+        catch (Exception ex)
+        {
+            await JS.ShowMessage("Ok", $"Error al consultar", "Error");
+            _loading = false;
+         
+        }
+    }
+}

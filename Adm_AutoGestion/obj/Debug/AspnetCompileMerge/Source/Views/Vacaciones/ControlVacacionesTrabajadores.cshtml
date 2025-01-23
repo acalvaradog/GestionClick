@@ -1,0 +1,373 @@
+﻿    @model IEnumerable<Adm_AutoGestion.Controllers.ControlVacacionesJefe>
+
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "ControlVacacionesTrabajadores";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container-fluid" >
+<br />
+<h2>Control Vacaciones Trabajadores</h2>
+<br />
+<div class="row justify-content-start align-items-center">
+  
+
+
+
+    <div class="col-2" >
+        <div class="card border-info mb-3" style="background-color:#C6EA88" >
+            <br />
+            <p class="card-text" style="text-align:center" ><strong>Dias Total Disponibles</strong></p>
+            <div class="row justify-content-start">
+                <div class="col-6" style="text-align:right">
+                    <h1>@ViewBag.Disfrutados</h1>
+                </div>
+                <div class="col-6" style="text-align:center">
+                    <img src="~/Contents/image/calendario1.png" >
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @*<div class="col-2" >
+        <div class="card  border-success mb-3" style="background-color:#C4F868">
+            <br />
+            <p class="card-text" style="text-align:center"><strong>Dias Vacaciones Disponibles</strong></p>
+                <div class="row justify-content-start">
+                    <div class="col-6" style="text-align:center">
+                         <h1>@ViewBag.Diaspendientes</h1>
+                    </div>
+                    <div class="col-6" style="text-align:center">
+                        <img src="~/Contents/image/maletas.png" >
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="col-2" >
+        <div class="card  border-success mb-3" style="background-color:#C4F868">
+            <br />
+            <p class="card-text" style="text-align:center"><strong>Dias Vacaciones Disfrutados</strong></p>
+                <div class="row justify-content-start">
+                    <div class="col-6" style="text-align:center">
+                         <h1>@ViewBag.DiasDisfrutados</h1>
+                    </div>
+                    <div class="col-6" style="text-align:center">
+                        <img src="~/Contents/image/maletas.png" >
+                    </div>
+                </div>
+        </div>
+    </div>*@
+
+
+</div>
+
+
+
+</div>
+
+<hr>
+
+<div class="row justify-content-start">
+
+    <div class="col-4" style="text-align:left">
+        <div class="card" >
+        <div class="card-header text-white" style="text-align:center; background-color:#0B9ACF">
+            Datos Personales
+          </div>
+        <br />
+    @foreach (var item in Model) {
+            <div align="center">
+                <img id="img_foto" src="" style="height:100px;width:100px"/> 
+            
+            </div>
+          <div class="card-body">
+            <br />
+
+             <div class="row justify-content-start">
+                    <div class="col-12" >
+                        <div class="row justify-content-start">
+                            <div class="col-4" style="color:#314FAB">
+                                <div class="display-label" style="text-align:left">
+                                    <strong>Nombre:</strong>
+                                </div>
+                            </div>
+                            <div class="col-8" >
+                                <div class="display-field">
+                                @Html.DisplayFor(modelItem => item.Nombres)
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                    <div class="col-12" style="text-align:left">
+                        <div class="row justify-content-start">
+                            <div class="col-4" style="color:#314FAB">
+                                <div class="display-label">
+                                <strong>Documento:</strong>
+                                </div>
+                            </div>
+                            <div class="col-8" >
+                                <div class="display-field">
+                                @Html.DisplayFor(modelItem => item.Documento)
+                                </div>
+                        </div>
+                       </div>
+                    </div>
+                     <div class="col-12" style="text-align:left">
+                         <div class="row justify-content-start">
+                            <div class="col-4" style="color:#314FAB">
+                                <div class="display-label">
+                                <strong>Nro Empleado:</strong>
+                                </div>
+                            </div>
+                            <div class="col-8" >
+                                <div class="display-field">
+                                @Html.DisplayFor(modelItem => item.NroEmpleado)
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                     <div class="col-12" style="text-align:left">
+                        <div class="row justify-content-start">
+                            <div class="col-4" style="color:#314FAB">
+                                <div class="display-label">
+                                <strong>Fecha Nacimiento:</strong>
+                                </div>
+                            </div>
+                            <div class="col-8" >
+                                <div class="display-field">
+                                @*@Html.DisplayFor(modelItem => item.FechaNacimiento)*@
+                                @Convert.ToDateTime(item.FechaNacimiento).ToString("dd/MM/yyyy")
+                                </div>
+                            </div>
+                       </div>
+                    </div>
+                    <div class="col-12" style="text-align:left">
+                        <div class="row justify-content-start">
+                            <div class="col-4" style="color:#314FAB">
+                                <div class="display-label">
+                                <strong>Telefono:</strong>
+                                </div>
+                            </div>
+                            <div class="col-8" >
+                                <div class="display-field">
+                                @Html.DisplayFor(modelItem => item.Telefono)
+                                </div>
+                        </div>
+                       </div>
+                    </div>
+                    <div class="col-12" style="text-align:left">
+                         <div class="row justify-content-start">
+                            <div class="col-4"style="color:#314FAB" >
+                            <strong>Correo:</strong>
+                            </div>
+                        
+                            <div class="col-8" >
+                            @Html.DisplayFor(modelItem => item.Correo)
+                            </div>
+                            </div>
+                        
+                    </div>
+                    <div class="col-12" style="text-align:left">
+                         <div class="row justify-content-start">
+                            <div class="col-4" style="color:#314FAB">
+                            <strong>Cargo:</strong>
+                            </div>
+                            <div class="col-8" >
+                            @Html.DisplayFor(modelItem => item.Cargo)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" style="text-align:left">
+                        <div class="row justify-content-start">
+                            <div class="col-4" style="color:#314FAB">
+                            <strong>Fecha Ingreso:</strong>
+                            </div>
+                            <div class="col-8" >
+                            @Convert.ToDateTime(item.FechaIngreso).ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }    
+          </div>
+        </div>
+
+
+        <div class="col-8">
+                <div class="card" style="padding-bottom:70px">
+                <div class="card-header text-white" style="text-align:center; background-color:#0B9ACF">
+                    Datos Historicos de los Periodos
+                  </div>
+                  <div class="card-body">
+                    <div data-spy="scroll" data-target=".navbar" data-offset="50">
+                    <div class = "table-responsive">
+                        <table class= "table table-hover table-sm table-bordered">
+                            <thead>
+                            <tr class="table-info">
+                                <th>
+                                    Fecha Inicio
+                                </th>
+                                <th>
+                                    Fecha Fin
+                                </th>
+                                <th>
+                                    Cantidad Dias Por Disfrutar
+                                </th>
+                                <th>
+                                    Cantidad Dias Disfrutados
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody  id = "TabHistorialSap" >
+                                
+                                    @{ string[] datos = ViewBag.DatosSap.Split(',');
+                                       
+                                       foreach(var dat in datos){
+                                            <tr>
+                                            @foreach(var dat1 in  dat.Split(';')){
+                                            <td>@dat1</td>
+                                            
+                                             }
+                                            </tr>
+                                        }
+                                    }
+                                    
+                                
+                                  
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div class="card">
+                <div class="card-header text-white" style="text-align:center; background-color:#0B9ACF">
+                    Información de Vacaciones Solicitadas
+                  </div>
+                  <div class="card-body">
+                    <div class = "table-responsive">
+                        <table class= "table table-hover table-sm table-bordered">
+                            <thead>
+                            <tr class="table-info">
+                                <th>
+                                    Fecha Solicitud
+                                </th>
+                                <th>
+                                    Fecha Inicial
+                                </th>
+                                <th>
+                                    Fecha Reintegro
+                                </th>
+                                <th>
+                                    Cantidad Dias Solicitados
+                                </th>
+                                <th>
+                                    Cantidad Dias Pendientes
+                                </th>
+                                <th>
+                                    Vacaciones Pagadas
+                                </th>
+                                <th>
+                                    Vacaciones Anticipadas
+                                </th>
+                                <th>
+                                    Vacaciones Dias Menor a 6
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody  >
+                               <tr>
+                                @if(ViewBag.Vacaciones != null){
+                                <td>
+                                @Convert.ToDateTime(ViewBag.Vacaciones.Fecha).ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                @Convert.ToDateTime(ViewBag.Vacaciones.FechaInicial).ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                @Convert.ToDateTime(ViewBag.Vacaciones.FechaFin).ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                @ViewBag.Vacaciones.CantDiasSolicitados
+                                </td>
+                                <td>
+                                @ViewBag.Vacaciones.CantDiasPendientes
+                                </td>
+                                <td>
+                                @ViewBag.Vacaciones.VacacionesPagadas
+                                </td>
+                                <td>
+                                @ViewBag.Vacaciones.VacacionesAdelantadas
+                                </td>
+                                <td>
+                                @ViewBag.Vacaciones.VacacionesDiasMayor6
+                                </td>
+                                <td>
+                                @ViewBag.Vacaciones.EstadoVacaciones.Nombre
+                                </td>
+                                }
+                               </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                  </div>
+              
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+    </div>
+
+</div>
+
+
+
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        GenerarFoto(@ViewBag.NEmpleado);
+    });
+
+
+
+    function GenerarFoto(id) {
+     
+
+      
+        try {
+            $.ajax({
+                url: "@Url.Action("ObtenerFotoEmpleado")",
+                data: { 'id': id },
+            type: "post",
+            success: function (e) {
+                if (e != null) {
+                    document.getElementById("img_foto").src = "data:image/png;base64," + e;
+                }
+            },
+            error: function (xhr, status, error) { alert(error); }
+        });
+    }
+        catch(e) { alert(e); }
+
+    }
+
+</script>

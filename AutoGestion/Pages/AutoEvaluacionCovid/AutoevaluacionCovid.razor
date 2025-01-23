@@ -1,0 +1,171 @@
+﻿@page "/AutoEvaluacionCovid"
+@using Autogestion.Shared.DTO.AutoEvaluacion
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.Empleado
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+
+    @if (alerta)
+
+    {
+
+        <MudAlert Severity="Severity.Error" Variant="Variant.Filled">
+   
+            Fecha Consulta: @DateTime.Now <br>
+            Señor(a): @datosempleado.ENAME <br>
+            En su autoevaluación de hoy, usted reporta síntomas sugestivos de Covid 19. Por lo anterior consulte en su EPS. RECUERDE Registrar en autogestión la información relacionada con la atención recibida en su EPS.
+        </MudAlert>
+    }
+
+    else
+    {
+        @if (ListPreguntas != null) {
+        <h3>Autoevaluacion Covid</h3>
+<MudCard>
+    <MudCardContent>
+               
+                    <MudSelect T="string" Label="Modo Trabajo" AnchorOrigin="Origin.BottomCenter" @bind-Value="ModoTrabajo">
+                        <MudSelectItem Value="@("Trabajo Presencial")" />
+                        <MudSelectItem Value="@("Trabajo desde casa")" />
+                        <MudSelectItem Value="@("Vacaciones")" />
+                    </MudSelect>
+            @foreach (var item in ListPreguntas)
+            {
+                    <div class="row">
+                        <div class="col">
+                        <MudTypography Variant="TypographyVariant.subtitle1">@item.Pregunta</MudTypography>
+
+                        </div>
+                        <div class="col">
+                            <MudCheckBox @bind-Checked="@item.Seleccion" Color="Color.Primary"></MudCheckBox>
+                </div>
+                <hr>
+                    </div>
+            }
+
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@Guardar">Guardar</MudButton>
+
+    </MudCardContent>
+</MudCard>
+    }   
+    
+    }
+
+}
+
+
+@code {
+    private List<PreguntaEncuestaDTO> ListPreguntas { get; set; } = new List<PreguntaEncuestaDTO>();
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    private EncabezadoEncuestaDTO encabezadoEncuesta { get; set; } = new EncabezadoEncuestaDTO();
+    private bool alerta = false;
+    private string ModoTrabajo;
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+        ListPreguntas = await Http.GetFromJsonAsync<List<PreguntaEncuestaDTO>>($"api/PreguntasGrupo2");
+
+
+        _loading = false;
+        StateHasChanged();
+    }
+
+    async Task Guardar()
+    {
+        try
+        {
+               @if (ListPreguntas.Where(x=> x.Seleccion == true).Count() < 1)
+            {
+                await JS.ShowMessage("Error", "Solo debe diligenciar la autoevaluación si presenta al menos un sintoma", "warning");
+                return;
+
+            }
+
+
+            @if (ModoTrabajo == null || ModoTrabajo == "")
+            {
+                await JS.ShowMessage("Error", "Debe seleccionar un modo de trabajo", "warning");
+                return;
+
+            }
+            _loading = true;
+            await ArmarDatosEnvio();
+
+            using var response = await Http.PostAsJsonAsync<EncabezadoEncuestaDTO>("api/encuesta", encabezadoEncuesta);
+            if (response.IsSuccessStatusCode)
+            {
+                var resultado = await response.Content.ReadFromJsonAsync<bool>();
+                if (resultado)
+                {
+
+                    alerta = true;
+                }
+                else
+                {
+                    await JS.ShowMessage("Error", "Ocurrio un error al guardar, vuelva intentarlo", "warning");
+
+                }
+            }
+            else
+            {
+
+                await JS.ShowMessage("Error", "Ocurrio un error al guardar, vuelva intentarlo", "warning");
+
+            }
+            _loading = false;
+        }
+        catch (Exception)
+        {
+
+            _loading = false;
+        }
+
+    }
+    async Task ArmarDatosEnvio()
+    {
+
+        encabezadoEncuesta.EmpleadoId = datosempleado.Id.Value;
+        encabezadoEncuesta.Cargo = datosempleado.CARGO;
+        encabezadoEncuesta.UnidadOrganizativa = datosempleado.ORGEH;
+        encabezadoEncuesta.Eps = datosempleado.EPS;
+        encabezadoEncuesta.ModoTrabajo = ModoTrabajo;
+        encabezadoEncuesta.Sospechoso = "Rojo";
+        encabezadoEncuesta.Empresa = datosempleado.BUKRS;
+        encabezadoEncuesta.Fecha = DateTime.Now;
+        encabezadoEncuesta.Transporte = "NA";
+        encabezadoEncuesta.Encuesta = new List<EncuestaDTO>();
+        foreach (var item in ListPreguntas)
+
+        {
+            if (item.Seleccion == true)
+
+            {
+              
+                encabezadoEncuesta.Encuesta.Add(new EncuestaDTO
+                {
+               NumeroPregunta = item.Id,
+                Respuesta = "si"
+
+                });
+            }
+
+        }
+
+       
+    
+    }
+}

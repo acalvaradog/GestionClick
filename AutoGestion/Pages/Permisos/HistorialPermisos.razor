@@ -1,0 +1,117 @@
+﻿@page "/historialpermisos"
+@using Autogestion.Shared.DTO.Incapacidad
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject NavigationManager NavManager
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.Permisos
+@using Autogestion.Shared.DTO.Empleado
+<h3>Historico Permisos</h3>
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+    <MudCardContent>
+
+        <MudTable Items="@ListPermisos">
+            <HeaderContent>
+                <MudTh>Fecha</MudTh>
+                <MudTh>Fecha Inicio</MudTh>
+                <MudTh>Fecha Fin</MudTh>
+                <MudTh>Hora Inicio</MudTh>
+                <MudTh>Hora Fin</MudTh>
+                <MudTh>Cantidad Días</MudTh>
+                <MudTh>Motivo Permiso</MudTh>
+                <MudTh>Estado</MudTh>
+                <MudTh>Anular Permiso</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>
+                  @context.Fecha.ToShortDateString()
+                </MudTd>
+                <MudTd>
+                    @context.FechaPermiso.ToShortDateString()
+                </MudTd>
+                <MudTd>
+                    @context.FechaFinPermiso.ToShortDateString()
+                </MudTd>
+                <MudTd>
+                    @context.HoraInicioPermiso
+                </MudTd>
+                <MudTd>
+                    @context.HoraFinPermiso
+                </MudTd>
+                <MudTd>
+                    @context.cantdias
+                </MudTd>
+                <MudTd>
+                    @context.MotivoPermiso.Nombre
+                </MudTd>
+                <MudTd>
+                    @context.EstadoPermiso.Nombre
+                </MudTd>
+                <MudTd DataLabel="Cancelar Solicitud">
+                    @if (context.Fecha == DateTime.Today && context.EstadoId == 1)
+                    {
+
+                        <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Primary" Placement="Placement.Top" Text="Anular Permiso">
+                            <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Primary" OnClick="@(args => AnularPermiso(context.Id))"></MudIconButton>
+                        </MudTooltip>
+
+                    }
+                    else if (context.Fecha != DateTime.Today || context.EstadoId !=1)
+                    {
+                        <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Primary" Placement="Placement.Top" Text="No es posible Anular">
+                            <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Primary" Disabled></MudIconButton>
+                    </MudTooltip>
+                    }
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    </MudCardContent>
+}
+
+@code {
+    private List<PermisoDTO> ListPermisos { get; set; } = new List<PermisoDTO>();
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    string AnularP { get; set; } = "";
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        ListPermisos = await Http.GetFromJsonAsync<List<PermisoDTO>>($"api/Permisos/Permisosxusuario/{datosempleado.Id}");
+
+
+        _loading = false;
+        StateHasChanged();
+    }
+    private async void AnularPermiso(int Id)
+    {
+        Console.WriteLine("Entra: "+Id);
+        AnularP = await Http.GetFromJsonAsync<string>($"api/Permisos/anularpermiso/{Id}");
+
+        char[] delimiterChars = { '@', '_', ',', '.', '"' };
+        string[] words = AnularP.Split(delimiterChars);
+        Console.WriteLine("U" + words[1]);
+        if (words[1] == "True")
+        {
+            await JS.ShowMessage("Notificación de Proceso", "Se ha anulado la solicitud de forma exitosa", "success");
+        }else
+        {
+            await JS.ShowMessage("Notificación de Proceso", "Se ha producido un error en el proceso de anular la solicitud", "error");
+        }
+        
+
+        NavManager.NavigateTo("historialpermisos", true);
+    }
+}

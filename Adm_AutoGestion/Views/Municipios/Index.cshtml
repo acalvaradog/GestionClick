@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Municipio>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+
+<div class="container">
+    <h2 class="colorTitulo text-center mt-3">Lista de Municipios</h2>
+
+    <p>
+        @Html.ActionLink(" Crear Nuevo Municipio", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary md-2" })
+    </p>
+
+    <br />
+
+    <div class="card ">
+        <div class="card-header text-white fondoDegradado">Buscar</div>
+        <div class="card-body">
+            <div class="row justify-content-start mt-3">
+                <div class="col-6">
+                    <input class="form-control" id="myInput" type="text" placeholder="Buscar..">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr class="text-white fondoDegradado">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </th>
+                    <th>
+                        @*@Html.DisplayNameFor(model => model.CodigoMunicipio)*@
+                        Código del Municipio
+                    </th>
+                    <th>
+                       @* @Html.DisplayNameFor(model => model.Departamento.Nombre)*@
+                        Nombre Departamento
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CodigoMunicipio)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Departamento.Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        <td class="align-middle">
+                            <a href="~/Municipios/Edit/@item.Id" title="Editar"><buttom class="bi bi-pencil-square btn btn-outline-primary md-2"></buttom></a>
+                            @* <a href="~/Municipios/Delete/@item.Id" title="Eliminar"><buttom class="bi bi-trash btn btn-outline-primary md-2"></buttom></a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

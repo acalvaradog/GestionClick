@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Viaticos>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpleadoId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Prorroga)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdSolicitud)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DestinoViaticoID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MtvViaje)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hospedaje)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vehiculo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Placa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaFin)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GastosTransporte)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GastoAlimentacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckNomina)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CheckTesoreria)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Estado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Observacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaRegistro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Destino)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EstadoNombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpleadoId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Prorroga)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdSolicitud)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DestinoViaticoID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MtvViaje)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hospedaje)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Vehiculo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Placa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaInicio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaFin)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GastosTransporte)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GastoAlimentacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckNomina)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CheckTesoreria)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Estado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Observacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaRegistro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Destino)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoNombre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

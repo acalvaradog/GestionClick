@@ -1,0 +1,262 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.RequerimientosDelPersonal>
+
+@{
+    ViewBag.Title = "AprobadoGerencia";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<br />
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+            <h4 class="card-title">Aprobación de Gerencia</h4>
+        </div>
+
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="tbl_gerencia">
+                <thead>
+
+                    <tr >
+                        <th></th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.EmpleadoRegistraId)*@
+                            <label> Empleado Registra</label>
+                        </th>
+                        <th>
+                            N° Solicitud
+                        </th>
+                        <th>
+                            @* @Html.DisplayNameFor(model => model.EmpresaId)*@
+                            Empresa
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Cargo)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fecha)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Area)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Direccion)
+                        </th>
+                        <th>
+                            N° Personas
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Sexo)
+                        </th>
+                        <th>
+                            @* @Html.DisplayNameFor(model => model.MtvSolicitudID)*@
+                            Motivo de Solicitud
+                        </th>
+
+
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.Contratado)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FechaIngreso)
+                            </th>*@
+                        <th>
+                            @* @Html.DisplayNameFor(model => model.JornadaRequeridaId)*@
+                            Jornada
+                        </th>
+                        <th>
+                            Horario
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.FechaSugeridaIngreso)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.JustificacionCargo)
+                            </th>*@
+                        <th>
+                            Estado
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.TiempoContratacion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RequisitosAdicionales)
+                            </th>*@
+                        <th>Observaciones</th>
+                        <th>
+                            Descargar
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center">
+                            <td style="text-align:center">
+
+                                <a class="fas fa-eye btn text-primary" href='@Url.Action("DetalleGerencia", "RequerimientosPersonal", new { id = item.Id }, null)' data-modaldetalles=''></a>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Empresa.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cargo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Area)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Direccion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumeroPresonas)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Sexo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MtvSolicitud.Nombre)
+                            </td>
+                            @* <td>
+                                    @Html.DisplayFor(modelItem => item.Contratado)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaIngreso)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Jornada.Nombre) -Horas
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Horario.Nombre)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FechaSugeridaIngreso)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.JustificacionCargo)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EstadoRdP.Nombre)
+                            </td>
+                            @* <td>
+                                    @Html.DisplayFor(modelItem => item.TiempoContratacion)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequisitosAdicionales)
+                                </td>*@
+                            @*  <td>
+                                    @Html.ActionLink("Ver", "DetalleRequerimiento", new { id=item.Id}, new { data_modaldetalles = "" } )
+                                </td>*@
+                            <td><a href="@Url.Action("Registros","RequerimientosPersonal", new { Id = item.Id}, null)" data-registros=''><img src="~/Contents/image/vernota.png" data-bs-placement="top" data-bs-toggle="tooltip" title="Ver Observaciones"></a></td>
+                            <td>
+                                @if (item.Archivo == "" || item.Archivo == null)
+                                {
+                                    <label>No hay Archivo</label> }
+                                else
+                                {@Html.ActionLink("Descargar Archivo", "Download1", new { archivo = item.Archivo })}
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    <div class="modal fade in" id="modal_Detalles">
+        <div class="modal-dialog modal-xl ">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0B9ACF">
+                    <h5 class="modal-title text-white">Detalles</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div id="contentModalDetalles">
+                    <br />
+                    <br />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade in" id="modal_Registros" data-backdrop="true" tabindex="-1" style="overflow-y:visible">
+        <div class="modal-dialog modal-xl ">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0B9ACF">
+                    <h2 class="modal-title text-white"></h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div id="contentModalRegistros">
+                    <br />
+                    <br />
+                    <div class="card" style="text-align:center">
+                        <b>Cargando...</b>
+                    </div>
+                    <br />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#tbl_gerencia').DataTable({
+
+                /*"bFilter": false,*/
+
+                responsive: false,
+
+                lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+                //bFilter": false,
+                pageLength: 5,
+
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+
+
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+            });
+        })
+
+    </script>

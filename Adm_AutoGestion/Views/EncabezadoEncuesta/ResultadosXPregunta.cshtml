@@ -1,0 +1,72 @@
+﻿@model Adm_AutoGestion.Models.Encuesta
+
+@{
+    ViewBag.Title = "ResultadosXPregunta";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+<script src="~/Contents/js/EncabezadoEncuesta.js"></script>
+@*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">*@
+
+<div class="card">
+
+    <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+            <h4 class="card-title">Consulta De Resultados</h4>
+        </div>
+    </div>
+
+
+    <div class="card-body">
+        <div class="row justify-content-start">
+            <div class="col-sm">
+                <label for="empleado" class="col-form-label col-sm-2">Area:</label>
+                @Html.DropDownListFor(m => m.Preguntas.Id, (List<SelectListItem>)ViewBag.Opciones, "Seleccione una Pregunta", new { @class = "form-control form-control-sm" })
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm">
+
+                <label for="empleado" class="col-form-label">Fecha Inicial:</label>
+
+                <input type="date" id="txt_fechainicial" name="Name1" style="color:#797676; width: 100%" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-sm">
+
+                <label for="empleado" class="col-form-label">Fecha Final:</label>
+
+                <input type="date" id="txt_fechafinal" name="Name1" style="color:#797676; width: 100%" class="form-control form-control-sm" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="form-group col text-center">
+
+                <button id="btn_ge" type="button" class="btn btn-outline-primary rounded-pill" data-bs-dismiss="modal" onclick="MostrarDatos()">Generar</button>
+            </div>
+        </div>
+
+        <br>
+
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Resultados</div>
+        <div class="panel-body">
+            <div id="toolbar_div"></div>
+            <div id="dashboard_div">
+                <!--Divs that will hold each control and chart-->
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+

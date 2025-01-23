@@ -1,0 +1,55 @@
+﻿@page "/CertificadoSintomas"
+@using Autogestion.Shared.DTO.AutoEvaluacion
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.Empleado
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+<h3>Certificado de Síntomas</h3>
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}else{
+@if (alerta) {
+<MudAlert Severity="Severity.Error" Variant="Variant.Filled">
+
+    Fecha Consulta: @DateTime.Now <br>
+    Señor(a): @datosempleado.ENAME <br>
+    En su autoevaluación de hoy, usted reporta síntomas sugestivos de Covid 19. Por lo anterior consulte en su EPS. RECUERDE Registrar en autogestión la información relacionada con la atención recibida en su EPS.
+        </MudAlert>
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Filled">
+El día de hoy ud no ha reportado ningún síntoma.
+    </MudAlert>
+}
+}
+@code {
+
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+
+    private bool alerta = false;
+    private string ModoTrabajo;
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+        var respuesta = await Http.GetFromJsonAsync<string>($"api/obtenersospechoso/{datosempleado.Id}");
+
+        if (respuesta == "Rojo") alerta = true;
+
+
+      
+
+
+        _loading = false;
+        StateHasChanged();
+    }
+}

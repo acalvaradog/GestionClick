@@ -1,0 +1,85 @@
+﻿@page "/dosimetria"
+@inject HttpClient Http
+@using MudBlazor
+@using Autogestion.Shared.DTO;
+@using Autogestion.Shared.DTO.Empleado;
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+<MudContainer>
+
+
+    @if (dosisResult != null)
+    {
+        @foreach (var item in dosisResult)
+        {
+            <MudPaper Class="pa-4 mt-4">
+                <MudText>Año: @item.año</MudText>
+                <MudGrid>
+                    @if (item.TotalAnualHp10 > 0) { 
+                        <MudItem xs="12" sm="6">
+                            <MudText Typo="Typo.h6">Dosis Anual Hp10:</MudText>
+                            <MudText>@item.TotalAnualHp10</MudText>
+                        </MudItem>
+                    }
+                    @if (item.TotalAnualHp3 > 0)
+                    {
+                        <MudItem xs="12" sm="6">
+                            <MudText Typo="Typo.h6">Dosis Anual Hp3:</MudText>
+                            <MudText>@item.TotalAnualHp3</MudText>
+                        </MudItem>
+                    }
+                    @if (item.TotalAcumuladoHp10 > 0)
+                    {
+                        <MudItem xs="12" sm="6">
+                            <MudText Typo="Typo.h6">Dosis Acumulada Hp10:</MudText>
+                            <MudText>@item.TotalAcumuladoHp10</MudText>
+                        </MudItem>
+                    }
+                    @if (item.TotalAcumuladoHp3 > 0)
+                    {
+                        <MudItem xs="12" sm="6">
+                            <MudText Typo="Typo.h6">Dosis Acumulada Hp3:</MudText>
+                        <MudText>@item.TotalAcumuladoHp3</MudText>
+                    </MudItem>
+                    }
+                </MudGrid>
+            </MudPaper>   
+        }
+
+    }
+</MudContainer>
+
+@code {
+    private int empleadoId;
+    private int anio;
+    private List<ReporteDosimetriaViewModelDTO> dosisResult;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    protected override async Task OnInitializedAsync()
+    { 
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+       await ObtenerDosis();
+       StateHasChanged();
+
+    }
+    private async Task ObtenerDosis()
+    {
+        try
+        {
+            if (datosempleado != null)
+
+
+            { 
+
+           
+
+
+                dosisResult = await Http.GetFromJsonAsync<List<ReporteDosimetriaViewModelDTO>>($"api/dosimetria/GetDosisAnualYAcumulada?empleadoId={datosempleado.Id}");
+            
+            }
+        }
+        catch (Exception ex)
+        {
+            // Manejo de errores
+            Console.WriteLine("error al consultar:" + ex.Message);
+        }
+    }
+}

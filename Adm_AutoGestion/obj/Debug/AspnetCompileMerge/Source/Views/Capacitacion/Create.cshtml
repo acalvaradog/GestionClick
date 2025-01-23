@@ -1,0 +1,170 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+
+
+
+
+<div class="container">
+    @*<br />
+        <h2>Crear Capacitación</h2>
+        <br />*@
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+
+        <fieldset>
+            <div class="row justify-content-start">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header text-white fondoDegradado"><h4>Datos Basicos de la Capacitación</h4></div>
+                        <div class="card-body">
+                            <br />
+                            <div class="row justify-content-start">
+                                <div class="col-md-4" style="text-align:center">
+                                    <br />
+                                    <img src="~/Contents/image/acta.png">
+                                    <br />
+                                </div>
+                                <div class="col-md-8">
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="editor-label">
+                                                @Html.LabelFor(model => model.Nombre)
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBox("Nombre", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+                                                @Html.ValidationMessageFor(model => model.Nombre)
+                                            </div>
+                                            <br />
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="editor-label">
+                                                <label>Hora de Inicio:</label>
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBox("HoraInicio", null, htmlAttributes: new { @class = "form-control", @type = "time" })
+                                                @Html.ValidationMessageFor(model => model.HoraInicio)
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="editor-label">
+                                                <label> Fecha de Capacitación</label>
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBox("FechaCapacitacion", null, htmlAttributes: new { @class = "form-control", @type = "date" })
+                                                @Html.ValidationMessageFor(model => model.FechaCapacitacion)
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="editor-label">
+                                                <label>Hora de Finalización:</label>
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBox("HoraFin", null, htmlAttributes: new { @class = "form-control", @type = "time" })
+                                                @Html.ValidationMessageFor(model => model.HoraFin)
+
+
+                                            </div>
+                                            <br />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div><label>Sede</label></div>
+                                            <div>
+                                                @Html.DropDownList("IdSede", new SelectList(ViewBag.Sede, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                                                @Html.ValidationMessageFor(model => model.IdSede)
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div>
+                                                <div><label> Empresa:  </label></div>
+                                                @Html.DropDownList("Empresa", new SelectList(ViewBag.Sociedad, "Codigo", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                                                @Html.ValidationMessageFor(model => model.Empresa)
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div><label>Metodología</label></div>
+                                            <div>
+                                                @Html.DropDownList("Metodologia", new SelectList(ViewBag.Metodologia, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                                                @Html.ValidationMessageFor(model => model.Metodologia)
+                                            </div>
+                                            <br />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="editor-label">
+                                                <div><label>   Objetivo</label></div>
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBox("Objetivo", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+                                                @Html.ValidationMessageFor(model => model.Objetivo)
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="editor-label">
+                                                <div><label> Dirigido a</label></div>
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBox("DirigidoA", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+                                                @Html.ValidationMessageFor(model => model.DirigidoA)
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="editor-label">
+                                                <div><label>  Lugar / Ciudad</label></div>
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextBox("LugarlCiudad", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+                                                @Html.ValidationMessageFor(model => model.LugarlCiudad)
+                                            </div>
+                                            <br />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="editor-label">
+                                                <label>Temas de la Capacitación</label>
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.TextArea("temas", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20" })
+                                                @Html.ValidationMessageFor(model => model.temas)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-start">
+                                        <br />
+                                        <div class="col-md-12 " style="text-align:center">
+                                            <br />
+                                            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Registrar</button>
+                                            @Html.ActionLink(" Atras", "ListaPorCompletar", null, new { @class = "bi bi-box-arrow-in-left  btn btn-outline-primary mb-2", style = "font-size:16px" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    }
+</div>

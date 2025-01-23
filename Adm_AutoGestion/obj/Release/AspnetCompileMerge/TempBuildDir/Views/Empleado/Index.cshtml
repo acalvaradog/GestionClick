@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Empleado>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<br />
+<br />
+<h2>Empleados</h2>
+<br />
+<br />
+
+<p>
+    @Html.ActionLink("Crear Empleado", "Create")
+</p>
+<br />
+<div class = "table-responsive">
+<table class= "table table-hover">
+    <tr class="table-info">
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Documento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NroEmpleado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombres)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Correo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Empresa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Telefono)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Superior)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Contraseña)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+         <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Documento)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NroEmpleado)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombres)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Correo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empresa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Telefono)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Superior)
+        </td>
+       @* <td>
+            @Html.DisplayFor(modelItem => item.Contraseña)
+        </td>*@
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) 
+        </td>
+    </tr>
+}
+
+</table>
+</div>

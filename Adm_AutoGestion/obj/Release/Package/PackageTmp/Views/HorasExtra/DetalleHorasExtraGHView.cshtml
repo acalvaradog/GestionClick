@@ -1,0 +1,243 @@
+﻿@model List<Adm_AutoGestion.Models.DetalleHorasExtra>
+
+@{
+
+    ViewBag.Title = "Detalle de Horas Extra Gestion Humana";
+    bool Count = true;
+}
+
+<div class="modal-body">
+    <div class="card">
+        <div class="container-fluid">
+            <br />
+            <form action="javascript:;" method="post" id="form" enctype="multipart/form-data">
+                <div class="form-group col-md-12">
+
+                    @*Primera Fila*@
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row justify-content-center">
+                                <div class="col-3">
+
+                                    <h4>Datos Del Empleado </h4>
+                                    @*<input type="text" class="form-control" value="" disabled="disabled" />*@
+
+                                    <br />
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        @*Segunda Fila - Tabla*@
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th>
+                                                @*Numerto del proceso*@
+
+                                            </th>
+                                            <th>
+                                                Documento
+                                            </th>
+
+                                            <th>
+
+                                                Nombre
+                                            </th>
+                                            <th>
+
+                                                Cargo
+                                            </th>
+                                            <th>
+
+                                                Sociedad
+                                            </th>
+                                            <th>
+
+                                                Area
+                                            </th>
+                                            <th>
+
+                                                Codigo del Empleado
+                                            </th>
+                                            <th></th>
+                                        </tr>
+
+                                        @foreach (var detalle in ViewBag.DetalleHorasExtra)
+                                        {
+                                            <tr>
+                                                @if (Count)
+                                                {
+
+                                                    <td>
+                                                    </td>
+                                                    <td>
+                                                        @detalle.HorasExtra.Empleado.Documento
+                                                    </td>
+
+                                                    <td>
+                                                        @detalle.HorasExtra.Empleado.Nombres
+                                                    </td>
+                                                    <td>
+                                                        @detalle.HorasExtra.Empleado.Cargo
+                                                    </td>
+                                                    <td>
+                                                        @detalle.HorasExtra.Empleado.Empresa
+                                                    </td>
+                                                    <td>
+                                                        @detalle.HorasExtra.Empleado.AreaDescripcion
+                                                    </td>
+                                                    <td>
+                                                        @detalle.HorasExtra.Empleado.NroEmpleado
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+
+                                            </tr>
+                                            Count = false;
+                                        }
+                                    </table>
+
+
+                                </div>                            <br />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row justify-content-center">
+                                <div class="col-3">
+
+                                    <h4 for="FechaRegistro">Detalles Horas Extra </h4>
+                                    @*<input type="text" class="form-control" value="" disabled="disabled" />*@
+
+                                    <br />
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th>
+                                                No. Solicitud
+
+                                            </th>
+
+                                            <th>
+                                                Fecha
+                                            </th>
+
+                                            <th>
+
+                                                Hora Desde
+                                            </th>
+                                            <th>
+
+                                                Hora Hasta
+                                            </th>
+                                            <th>
+
+                                                M300
+                                                <br />
+                                                (Diurnas)
+                                            </th>
+                                            <th>
+
+                                                M305
+                                                <br />
+                                                (Nocturnas)
+                                            </th>
+                                            <th>
+
+                                                M310
+                                                <br />
+                                                (Diurnas Festivas)
+                                            </th>
+                                            <th>
+
+                                                M315
+                                                <br />
+                                                (Nocturnas Festivas)
+                                            </th>
+                                            <th>
+
+                                                Total
+                                            </th>
+                                            <th>
+
+                                                Motivo
+                                            </th>
+
+                                            <th></th>
+                                        </tr>
+
+                                        @foreach (var detalle in ViewBag.DetalleHorasExtra)
+                                        {
+                                            <tr>
+
+
+                                                <td>
+                                                    @detalle.HorasExtra.Id
+                                                </td>
+                                                <td>
+                                                    @Convert.ToDateTime(detalle.Fecha).ToString("dd/MM/yyyy")
+                                                </td>
+
+                                                <td>
+                                                    @Convert.ToDateTime(detalle.HoraDesde).ToString("HH:mm tt")
+                                                </td>
+                                                <td>
+                                                    @Convert.ToDateTime(detalle.HoraHasta).ToString("HH:mm tt")
+                                                </td>
+                                                <td>
+                                                    @detalle.LiquidacionDiurna
+                                                </td>
+                                                <td>
+                                                    @detalle.LiquidacionNocturna
+                                                </td>
+                                                <td>
+                                                    @detalle.LiquidacionDiurnaFestivo
+                                                </td>
+                                                <td>
+                                                    @detalle.LiquidacionNocturnaFestivo
+                                                </td>
+                                                <td>
+                                                    @detalle.TotalHoras
+                                                </td>
+                                                <td>
+                                                    @detalle.MotivoTrabajoHE.Descripcion
+                                                </td>
+
+
+                                            </tr>
+                                        }
+
+                                    </table>
+
+
+                                </div>                            <br />
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <br />
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+

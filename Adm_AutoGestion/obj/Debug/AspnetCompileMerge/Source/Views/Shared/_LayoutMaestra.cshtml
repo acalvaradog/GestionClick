@@ -1,0 +1,1612 @@
+﻿@using System.Web.Optimization;
+
+@{
+    ViewBag.Title = "_LayoutMaestra";
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]);
+    string ErrorAutorizacion = string.Format("{0}", Session["ErrorAutorizacion"]);
+    if (!string.IsNullOrWhiteSpace(ErrorAutorizacion)) { Session.Remove("ErrorAutorizacion"); }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestión de Personal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/Contents/image/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <script src="~/Contents/js/jquery-3.1.1.min.js"></script>
+    <script src="~/Contents/js/popper.min.js"></script>
+    <script src="~/Contents/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Contents/js/chart.js"></script>
+    <script src="~/Contents/js/function.js"></script>
+    <script src="~/Contents/js/Procesos.js"></script>
+    <script src="~/Contents/js/Permisos.js"></script>
+    <script src="~/Contents/js/Capacitaciones.js"></script>
+    <script src="~/Contents/js/RequerimientosPersonal.js"></script>
+    <script src="~/Contents/js/Viaticos.js"></script>
+    <link href="~/Contents/js/alertify.js/themes/alertify.core.css" rel="stylesheet" />
+    <link href="~/Contents/js/alertify.js/themes/alertify.default.css" rel="stylesheet" />
+    <script src="~/Contents/js/alertify.js/lib/alertify.js"></script>
+
+
+    <!-- Bootstrap-Select -->
+    <link rel="stylesheet" href="~/Contents/bootstrap-select/css/bootstrap-select.min.css" />
+    <script src="~/Contents/bootstrap-select/js/bootstrap-select.min.js"></script>
+
+
+    <link href="~/Contents/js/Select2/css/select2.min.css" rel="stylesheet" />
+    <script src="~/Contents/js/Select2/js/select2.min.js"></script>
+
+    @*calendario*@
+    <link href='~/Contents/js/fullcalendar-5.8.0/lib/main.css' rel='stylesheet' />
+    <script src='~/Contents/js/fullcalendar-5.8.0/lib/main.js'></script>
+    <script src='~/Contents/js/fullcalendar-5.8.0/lib/locales-all.js'></script>
+    <script src='~/Contents/js/fullcalendar-5.8.0/lib/locales/es.js'></script>
+
+
+    @*<link href="~/Contents/js/datatables/DataTables-1.10.24/css/dataTables.bootstrap4.css" rel="stylesheet" />*@
+    <script src="~/Contents/js/datatables/datatables.min.js"></script>
+
+
+    @*DATATABLE*@
+
+    <script language="JavaScript" type="text/javascript" src="~/Contents/js/datatables/DataTables-1.11.3/DataTables-1.11.3/js/jquery.dataTables.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Contents/js/datatables/DataTables-1.11.3/DataTables-1.11.3/js/dataTables.bootstrap4.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Contents/js/datatables/DataTables-1.11.3/Responsive-2.2.9/js/dataTables.responsive.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Contents/js/datatables/DataTables-1.11.3/Responsive-2.2.9/js/responsive.bootstrap4.js"></script>
+    <script language="JavaScript" type="text/javascript" src="~/Contents/js/datatables/DataTables-1.11.3/Select-1.3.4/js/dataTables.select.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Contents/js/datatables/DataTables-1.11.3/DataTables-1.11.3/css/dataTables.bootstrap4.css" />
+    <link rel="stylesheet" type="text/css" href="~/Contents/js/datatables/DataTables-1.11.3/Responsive-2.2.9/css/responsive.bootstrap4.css" />
+    <link rel="stylesheet" type="text/css" href="~/Contents/js/datatables/DataTables-1.11.3/Select-1.3.4/css/select.bootstrap4.css" />
+
+    <script src="~/Contents/js/datatables/Buttons-1.7.1/js/dataTables.buttons.js"></script>
+    <script src="~/Contents/js/datatables/JSZip-2.5.0/jszip.min.js"></script>
+    <script src="~/Contents/js/datatables/Buttons-1.7.1/js/buttons.html5.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <script src="~/Contents/js/datatables/pdfmake-0.1.36/pdfmake.min.js"></script>
+    <script src="~/Contents/js/datatables/pdfmake-0.1.36/vfs_fonts.js"></script>
+
+
+    @*<script src="~/Contents/js/jquery.dataTables.min.js"></script>
+        <script src="~/Contents/js/dataTables.buttons.min.js"></script>
+        <script src="~/Contents/js/jszip.min.js"></script>
+        <script src="~/Contents/js/buttons.html5.min.js"></script>*@
+    <script src="~/Contents/js/alertify.js/lib/alertify.js"></script>
+    <link href="~/Contents/fontawesome-free/css/all.css" rel="stylesheet" />
+
+    <!--Nuevo Menu-->
+    <!-- Vendor CSS Files -->
+    <link href="~/Contents/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Contents/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/Contents/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/Contents/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="~/Contents/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="~/Contents/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="~/Contents/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/Contents/assets/css/style.css" rel="stylesheet">
+
+    <!---------------------------------->
+
+</head>
+
+<!--Nuevo Menu-->
+
+<body id="bodyid" style="overflow:visible">
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="header fixed-top d-flex align-items-center">
+        <br />
+        @if (ErrorAutorizacion != "")
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <h4 class="alert-heading">Falta autorización!</h4>
+                <p>@ErrorAutorizacion</p>
+                <hr>
+                <p class="mb-0">Para mayor información consulte con su administrador</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+        }
+
+        @if (funciones.Count >= 1)
+        {
+
+
+
+
+
+            <div class="d-flex align-items-center justify-content-between">
+                <a href="~/Login/Index" class="logo d-flex align-items-center">
+                    <img src="~/Contents/image/Logoauto.png" alt="">
+                    <span class="d-none d-lg-block">&nbsp Gestión Personal</span>
+                </a>
+                <i class="bi bi-list toggle-sidebar-btn"></i>
+            </div><!-- End Logo -->
+
+            <!-- Boton Volver -->
+             <div class="ms- me-0">
+               <a class="dropdown-item d-flex align-items-center" href="javascript: history.go(-1)">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>&nbsp;Volver</span>
+                </a>
+            </div>
+
+            <nav class="header-nav">
+                <ul class="d-flex align-items-center">
+                    <li class="nav-item dropdown pe-3">
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                            <img src="~/Contents/assets/img/profile-img.png" alt="Profile" class="rounded-circle">
+                            @*<span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>*@
+                        </a><!-- End Profile Iamge Icon -->
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" style="padding: 0 !important">
+                            <!--<li class="dropdown-header">-->
+                            @*<h6>@NombreEmpleado</h6>*@
+                            @*<span>Web Designer</span>*@
+                            <!--</li>-->
+                            @*<li>
+                                <hr class="dropdown-divider">
+                            </li>*@
+
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center" href="~/Login/Logout">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Salir</span>
+                                </a>
+                            </li>
+
+                        </ul><!-- End Profile Dropdown Items -->
+                    </li><!-- End Profile Nav -->
+
+                </ul>
+            </nav><!-- End Icons Navigation -->
+
+        }
+        else
+        {
+            <div class="d-flex align-items-center justify-content-between">
+                <a href="~/Login" class="logo d-flex align-items-center">
+                    <img src="~/Contents/image/Logoauto.png" alt="">
+                    <span class="d-none d-lg-block">&nbsp Gestión Personal</span>
+                </a>
+            </div><!-- End Logo -->
+        }
+
+    </header><!-- End Header -->
+    <!-- ======= Sidebar ======= -->
+    @if (funciones.Count > 0)
+    {
+        <aside id="sidebar" class="sidebar">
+
+            <ul class="sidebar-nav" id="sidebar-nav">
+
+                <!--<li class="nav-item">
+        <a class="nav-link " href="index.html">
+            <i class="bi bi-grid"></i>
+            <span>Dashboard</span>
+        </a>
+    </li>-->
+                <!-- End Dashboard Nav -->
+
+                @if (funciones.Contains("GrupoEmpleados") || funciones.Contains("Perfil") || funciones.Contains("Rol") || funciones.Contains("Preguntas") || funciones.Contains("PreguntasEncuesta") || funciones.Contains("Empleado") || funciones.Contains("Configuraciones") || funciones.Contains("HabilitarDescarga") || funciones.Contains("TiposIncapacidad") || funciones.Contains("EstructuraJerarquica") || funciones.Contains("ResponsablePazySalvo") || funciones.Contains("ActualizacionMasivaEmpleados")
+                        || funciones.Contains("ActualizacionMasivaEstructura") || funciones.Contains("TerceroCrear"))
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-gear fs-2x"></i><span>Maestros</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("GrupoEmpleados"))
+
+                            {
+                                <li>
+                                    <a href="~/GrupoEmpleados/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Grupo Empleados</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Perfil"))
+                            {
+                                <li>
+                                    <a href="~/Perfil/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Perfiles</span>
+                                    </a>
+                                </li>
+
+                            }
+
+                            @if (funciones.Contains("Rol"))
+                            {
+                                <li>
+                                    <a href="~/Rol/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Roles</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Preguntas"))
+                            {
+                                <li>
+                                    <a href="~/Preguntas/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Preguntas</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("PreguntasEncuesta"))
+                            {
+                                <li>
+                                    <a href="~/PreguntasEncuesta/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Preguntas Encuesta</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Empleado"))
+                            {
+                                <li>
+                                    <a href="~/Empleado/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Empleados</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Configuraciones"))
+                            {
+                                <li>
+                                    <a href="~/Configuraciones/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Configuraciones</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("TiposIncapacidad"))
+                            {
+                                <li>
+                                    <a href="~/TiposIncapacidad/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Tipos Incapacidad</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("EstructuraJerarquica"))
+                            {
+                                <li>
+                                    <a href="~/EstructuraJerarquica/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Estructura Jerarquica</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ResponsablePazySalvo"))
+                            {
+                                <li>
+                                    <a href="~/PazySalvo/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Responsable Paz y Salvo</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ActualizacionMasivaEmpleados"))
+                            {
+                                <li>
+                                    <a href="~/Empleado/ActualizarEmpleados">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Actualización Masiva Empleados</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                            @if (funciones.Contains("ActualizacionMasivaEstructura"))
+                            {
+                                <li>
+                                    <a href="~/Empleado/ActualizarEstructura">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Actualización Masiva Estructura</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                            @if (funciones.Contains("TerceroCrear"))
+                            {
+                                <li>
+                                    <a href="~/Terceros/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Registro Terceros</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                        </ul>
+                    </li><!-- End Components Nav -->
+                }
+
+                @if (funciones.Contains("DashboardPendientesJefe"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-bell"></i><span>Panel Pendientes</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+
+                        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+
+
+                            @if (funciones.Contains("DashboardPendientesJefe"))
+                            {
+                                <li>
+                                    <a href="~/Login/Dashboard">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Dashboard Pendientes por Gestionar</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                        </ul>
+                    </li><!-- End Forms Nav -->
+                }
+
+                @if (funciones.Contains("EncabezadoEncuesta") || funciones.Contains("Dashboard") || funciones.Contains("ResultadosXPreguntas"))
+                {
+
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-graph-up"></i><span>Resultados Encuesta</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("Dashboard"))
+                            {
+                                <li>
+                                    <a href="~/EncabezadoEncuesta/DatosGraficas">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Dashboard</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("EncabezadoEncuesta"))
+                            {
+                                <li>
+                                    <a href="~/EncabezadoEncuesta/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe</span>
+                                    </a>
+                                </li>
+
+                            }
+                            @if (funciones.Contains("ResultadosXPreguntas"))
+                            {
+                                <li>
+                                    <a href="~/EncabezadoEncuesta/ResultadosXPregunta">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Resultados por Preguntas</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                    <!-- End Tables Nav -->
+                }
+
+                @if (funciones.Contains("CrearCapacitacion") || funciones.Contains("ListadoCompletarCap") || funciones.Contains("InformeGeneralCap"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#capac-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-clipboard"></i><span>Capacitaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="capac-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("CrearCapacitacion"))
+                            {
+                                <li>
+                                    <a href="~/Capacitacion/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Crear Capacitación</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("ListadoCompletarCap"))
+                            {
+                                <li>
+                                    <a href="~/Capacitacion/ListaPorCompletar">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Mis Actas Abiertas</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                            @if (funciones.Contains("InformeGeneralCap"))
+                            {
+                                <li>
+                                    <a href="~/Capacitacion/DetalleCapacitacion">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe General</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li><!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("EstructuraJerarquica") || funciones.Contains("EstructuraJerarquicaCrear") || funciones.Contains("EstructuraJerarquicaEditar"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-diagram-3"></i><span>Estructura Jerarquica</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("EstructuraJerarquicaCrear"))
+                            {
+                                <li>
+                                    <a href="~/EstructuraJerarquica/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Crear Estructura</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("EstructuraJerarquica"))
+                            {
+                                <li>
+                                    <a href="~/EstructuraJerarquica/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Estructura</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("Prestamo"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#prest-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-cart"></i><span>Prestamo Trajes</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="prest-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("Prestamo"))
+                            {
+                                <li>
+                                    <a href="~/EncabezadoPrestamo/ListSolicitantes">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Gestión de Prestamo</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("Prestamo"))
+                            {
+                                <li>
+                                    <a href="~/EncabezadoPrestamo/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Generación de Llave</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Prestamo"))
+                            {
+                                <li>
+                                    <a href="~/EncabezadoPrestamo/ReportePrestamos">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe General Prestamos</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("RequerimientosDelPersonal") || funciones.Contains("CrearRdP") || funciones.Contains("RdPAprobacionDirectorArea") || funciones.Contains("RdPGestionHumana") || funciones.Contains("RdPGerencia") || funciones.Contains("InformeGeneralRdP") || funciones.Contains("RequerimientosPersonalDashboard") || funciones.Contains("RequerimientosPersonalSemaforo") || funciones.Contains("EncargadoContratacionRdP"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#reque-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-person-plus"></i><span>Requerimientos Personal</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="reque-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @if (funciones.Contains("RequerimientosPersonalDashboard"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/DashBoard">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white"> DashBoard RdP</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("RequerimientosPersonalSemaforo"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/Semaforo">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">  Semaforo RdP</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                            @if (funciones.Contains("CrearRdP"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Crear Solicitud</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("RdPAprobacionDirectorArea"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/AprobarDirectorArea">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobación Director de Area</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("RdPGestionHumana"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/GestionHumana">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobación Gestion Humana</span>
+                                    </a>
+                                </li>
+                            }
+
+
+                            @if (funciones.Contains("RdPGerencia"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/AprobadoGerencia">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobación Gerencia</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("EncargadoContratacionRdP"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/EncargadoContratacion">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Encargado de Selección</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("InformeGeneralRdP"))
+                            {
+                                <li>
+                                    <a href="~/RequerimientosPersonal/InformeRdP">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white"> Informe General</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+
+
+
+
+                        </ul>
+                    </li><!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("Vacaciones") || funciones.Contains("CrearVacacionesJefe") || funciones.Contains("AprobacionSuperior") || funciones.Contains("Confirmacion") || funciones.Contains("AprobarGestionH") || funciones.Contains("HabilitarVacaciones") || funciones.Contains("VacacionesInforme2") || funciones.Contains("VacacionesInforme") || funciones.Contains("ListaEmpleados") || funciones.Contains("ExportarInforme") || funciones.Contains("Calendario") || funciones.Contains("ExportarInformeGH"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#vacas-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-sun"></i><span> Vacaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="vacas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("Vacaciones"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Solicitud Vacaciones</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("CrearVacacionesJefe"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/CreateXJefe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Cargue Vacaciones del Personal</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("AprobacionSuperior"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/AprobacionSuperior">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobar Vacaciones</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Confirmacion"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/Confirmacion">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Confirmar Vacaciones</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("AprobarGestionH"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/AprobarGestionH">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobar Gestión Humana</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("VacacionesInforme"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/Informe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Vacaciones</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("VacacionesInforme2"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/Informe2">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Vacaciones Jefe</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("HabilitarVacaciones"))
+                            {
+                                <li>
+                                    <a href="~/HabilitarVacaciones/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Habilitar Vacaciones</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ListaEmpleados"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/ListaEmpleados">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Lista Empleados</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ExportarInforme"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/ExportarInforme">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Exportar Historico Vacaciones</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ExportarInformeGH"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/ExportarInformeGH">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Exportar Historico Vacaciones General</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Calendario"))
+                            {
+                                <li>
+                                    <a href="~/Vacaciones/Calendario">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Calendario</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("Incapacidades") || funciones.Contains("AprobarIncapacidad") || funciones.Contains("CargarAseguradora") || funciones.Contains("InformeIncapacidades"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#incap-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-bandaid"></i><span>Incapacidades</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="incap-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("Incapacidades"))
+                            {
+                                <li>
+                                    <a href="~/Incapacidades/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Cargar Incapacidades</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("AprobarIncapacidad"))
+                            {
+                                <li>
+                                    <a href="~/Incapacidades/AprobarIncapacidad">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobar Incapacidades</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("CargarAseguradora"))
+                            {
+                                <li>
+                                    <a href="~/Incapacidades/CargarAseguradora">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Cargar Incapacidad a Aseguradora</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("InformeIncapacidades"))
+                            {
+                                <li>
+                                    <a href="~/Incapacidades/Informe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Incapacidades</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("PersonalActivo") || funciones.Contains("PersonalActivoEnf") || funciones.Contains("PersonalActivoGlobal") || funciones.Contains("Respuestas"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#perso-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-pen"></i><span>Incapacidades</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="perso-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("PersonalActivo"))
+                            {
+                                <li>
+                                    <a href="~/PersonalActivo/Consulta">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Resultados Personal Asignado</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("PersonalActivoGlobal"))
+                            {
+                                <li>
+                                    <a href="~/PersonalActivo/ConsultaGlobal">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Resultados todo Personal</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("PersonalActivoEnf"))
+                            {
+                                <li>
+                                    <a href="~/PersonalActivo/ConsultaEnfermeria">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Resultados Enfermeria</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("Respuestas"))
+                            {
+                                <li>
+                                    <a href="~/PersonalActivo/Respuestas">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe General</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("Retiros") || funciones.Contains("RetirosCrear"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#retiros-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-person-x"></i><span>Gestion Retiros</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="retiros-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("Retiros"))
+                            {
+                                <li>
+                                    <a href="~/Retiros/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Retiros</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("RetirosCrear"))
+                            {
+                                <li>
+                                    <a href="~/Retiros/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Registrar Retiro</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("PermisoInforme") || funciones.Contains("AprobacionSuperiorPermisos") || funciones.Contains("ConfirmacionPer") || funciones.Contains("ConfirmacionPerNom") || funciones.Contains("InformePermisoJefe") || funciones.Contains("CalendarioPermisos"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#permisos-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-calendar-check"></i><span>Permisos</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="permisos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @if (funciones.Contains("AprobacionSuperiorPermisos"))
+                            {
+                                <li>
+                                    <a href="~/Permisos/AprobacionPer">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobar Permiso</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ConfirmacionPer"))
+                            {
+                                <li>
+                                    <a href="~/Permisos/ConfirmacionPer">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Recibido Gestion Humana</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ConfirmacionPerNom"))
+                            {
+                                <li>
+                                    <a href="~/Permisos/ConfirmacionPerNom">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Recibido Nomina</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("InformePermisoJefe"))
+                            {
+                                <li>
+                                    <a href="~/Permisos/Informe2">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Permisos Jefe</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("PermisoInforme"))
+                            {
+                                <li>
+                                    <a href="~/Permisos/Informe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Permisos</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("CalendarioPermisos"))
+                            {
+                                <li>
+                                    <a href="~/Permisos/Calendario">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Calendario</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("CrearEPP") || funciones.Contains("ListadoCompletarEPP") || funciones.Contains("RegistrarEntregaEPP") || funciones.Contains("InformeCerradasEPP") || funciones.Contains("DetalleCadaRegistro"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#epp-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-eyedropper"></i><span>EPP</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="epp-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @if (funciones.Contains("CrearEPP"))
+                            {
+                                <li>
+                                    <a href="~/EntregaEPP/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Crear Nueva Acta de Entrega</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ListadoCompletarEPP"))
+                            {
+                                <li>
+                                    <a href="~/EntregaEPP/ListaPorCompletar">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Mis Actas Abiertas</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("RegistrarEntregaEPP"))
+                            {
+                                <li>
+                                    <a href="~/DetalleEntregaEPP/RegistrarEntrega">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Registrar Entrega</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("InformeCerradasEPP"))
+                            {
+                                <li>
+                                    <a href="~/EntregaEPP/InformeCerradas">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Entregas Cerradas</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("DetalleCadaRegistro"))
+                            {
+                                <li>
+                                    <a href="~/DetalleEntregaEPP/DetalleCadaRegistro">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Entregas</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("Descuentoslista") || funciones.Contains("DescuentosCrear") || funciones.Contains("DescuentosCargaPlano") || funciones.Contains("DescuentosDescargarPlano"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#descuentos-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-cash-coin"></i><span> Descuentos</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="descuentos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @if (funciones.Contains("Descuentoslista"))
+                            {
+                                <li>
+                                    <a href="~/Descuentos/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Lista Descuentos</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("DescuentosCrear"))
+                            {
+                                <li>
+                                    <a href="~/Descuentos/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Crear Descuentos</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("DescuentosCargaPlano"))
+                            {
+                                <li>
+                                    <a href="~/Descuentos/CargarArchivoPlano">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Cargar Descuentos</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("DescuentosDescargarPlano"))
+                            {
+                                <li>
+                                    <a href="~/Descuentos/GenerarCSV">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Descargar Descuentos</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("PazySalvo") || funciones.Contains("ResponsablePazySalvo") || funciones.Contains("PazySalvoInforme"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#paz-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-file-check"></i><span>Paz y Salvo</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="paz-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @if (funciones.Contains("PazySalvo"))
+                            {
+                                <li>
+                                    <a href="~/PazySalvo/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Paz y Salvo</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("PazySalvoInforme"))
+                            {
+                                <li>
+                                    <a href="~/PazySalvo/Informe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Paz y Salvo</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ResponsablePazySalvo"))
+                            {
+                                <li>
+                                    <a href="~/PazySalvo/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Registrar Responsables Paz y Salvo</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("TurnoDisponibilidad") || funciones.Contains("TurnoDisponibilidadCrear") || funciones.Contains("TurnoDisponibilidadRecibeGH") || funciones.Contains("TurnoDisponibilidadInforme"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#turnos-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-card-checklist"></i><span>Turno Disponibilidad</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="turnos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @if (funciones.Contains("TurnoDisponibilidadCrear"))
+                            {
+                                <li>
+                                    <a href="~/TurnoDisponibilidad/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Registrar Turno Disponibilidad</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("TurnoDisponibilidadRecibeGH"))
+                            {
+                                <li>
+                                    <a href="~/TurnoDisponibilidad/RecibidoGestionHumana">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Recibido Turno Disponibilidad</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("TurnoDisponibilidad"))
+                            {
+                                <li>
+                                    <a href="~/TurnoDisponibilidad/Index">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Jefe Turnos Disponibilidad</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("TurnoDisponibilidadInforme"))
+                            {
+                                <li>
+                                    <a href="~/TurnoDisponibilidad/Informe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Turnos Disponibilidad</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                @if (funciones.Contains("ProcesoDisciplinarioCrear") || funciones.Contains("ProcesoDisciplinarioRespuestaJuridica") || funciones.Contains("ProcesoDisciplinarioConfirmarGH") || funciones.Contains("ProcesoDisciplinarioInforme") || funciones.Contains("ProcesoDisciplinarioDashboard") || funciones.Contains("ProcesoDisciplinarioInformeJefe") || funciones.Contains("ProcesoDisciplinarioGestionJefe"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#proceso-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-pen"></i><span>Proceso Disciplinario</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="proceso-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                            @if (funciones.Contains("ProcesoDisciplinarioCrear"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/Create">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Registrar Proceso Disciplinario</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ProcesoDisciplinarioRespuestaJuridica"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/Respuesta">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Respuesta Juridica</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ProcesoDisciplinarioConfirmarGH"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/GestionHumana">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Confirmar Recibido G.H</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ProcesoDisciplinarioDashboard"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/Dashboard">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Dashboard</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ProcesoDisciplinarioInforme"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/DetalleProcesoDisciplinario">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Procesos Disciplinarios</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ProcesoDisciplinarioGestionJefe"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/GestionJefe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Mis Procesos Creados</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ProcesoDisciplinarioDashboardJefe"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/DashboardJefe">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Dashboard del Jefe</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ProcesoDisciplinarioDashboardJefe"))
+                            {
+                                <li>
+                                    <a href="~/ProcesoDisciplinario/DetalleProcesoDisciplinario1">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Procesos Disciplinarios del Jefe</span>
+                                    </a>
+                                </li>
+                            }
+
+
+
+                        </ul>
+                    </li>
+                    <!-- End Charts Nav -->
+                }
+
+                <!-- End Forms Nav -->
+                @if (funciones.Contains("ViaticoJefeArea") || funciones.Contains("ViaticoGestionHumana") || funciones.Contains("ViaticoNomina") || funciones.Contains("ViaticoTesoreria"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-target="#Viaticos-nav" data-bs-toggle="collapse" href="#">
+                            <i class="bi bi-diagram-3"></i><span>Viáticos</span><i class="bi bi-chevron-down ms-auto"></i>
+                        </a>
+                        <ul id="Viaticos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                            @if (funciones.Contains("ViaticoJefeArea"))
+                            {
+                                <li>
+                                    <a href="~/Viaticos/JefeDirecto">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobación  Jefe Directo</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("ViaticoGestionHumana"))
+                            {
+                                <li>
+                                    <a href="~/Viaticos/GestionHumana">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Aprobación Gestión Humana</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="~/Viaticos/InformeViaticosGH">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe Viaticos GH</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("ViaticoNomina"))
+                            {
+                                <li>
+                                    <a href="~/Viaticos/Nomina">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Liquidación Nómina</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @if (funciones.Contains("ViaticoTesoreria"))
+                            {
+                                <li>
+                                    <a href="~/Viaticos/Tesoreria">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Liquidación Tesorería</span>
+                                    </a>
+                                </li>
+                            }
+                            @if (funciones.Contains("ViaticosInforme"))
+                            {
+                                <li>
+                                    <a href="~/Viaticos/InformeViaticos">
+                                        <i class="bi bi-circle-fill"></i><span class="text-white">Informe jefe Viaticos</span>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                     } 
+                    <!-- End Charts Nav -->
+
+
+                    @* @if (funciones.Contains("EncabezadoEncuesta") || funciones.Contains("Dashboard") || funciones.Contains("ResultadosXPreguntas"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#resulAut-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-pen"></i><span>Resultados Autoevaluación</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="resulAut-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        @if (funciones.Contains("EnviarNotificacion"))
+                        {
+                            <li>
+                                <a href="~/PersonalActivo/Consulta">
+                                    <i class="bi bi-circle"></i><span class="text-white">Resultado Personal Asignado</span>
+                                </a>
+                            </li>
+                        }
+                        @if (funciones.Contains("ListaDispositivos"))
+                        {
+                            <li>
+                                <a href="~/PersonalActivo/ConsultaGlobal">
+                                    <i class="bi bi-circle"></i><span class="text-white">Resultado Todo Personal</span>
+                                </a>
+                            </li>
+                        }
+
+
+
+
+                    </ul>
+                </li>
+                <!-- End Charts Nav -->
+            }*@
+
+                    @*@if (funciones.Contains("Vacunas"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#vacu-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-droplet-half"></i><span>Vacunación</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="vacu-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        @if (funciones.Contains("Vacunas"))
+                        {
+                            <li>
+                                <a href="~/DetallePersonalVacuna/Index">
+                                    <i class="bi bi-circle-fill"></i><span class="text-white">Registro Vacunas</span>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+                <!-- End Charts Nav -->
+            }*@
+                    @*@if (funciones.Contains("EnviarNotificacion") || funciones.Contains("ListaDispositivos"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#noti-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-envelope"></i><span> Notificaciones</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="noti-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        @if (funciones.Contains("EnviarNotificacion"))
+                        {
+                            <li>
+                                <a href="~/Notificaciones/Index">
+                                    <i class="bi bi-circle-fill"></i><span class="text-white">Enviar Notificación</span>
+                                </a>
+                            </li>
+                        }
+
+                        @if (funciones.Contains("ListaDispositivos"))
+                        {
+                            <li>
+                                <a href="~/Notificaciones/ListaDispositivos">
+                                    <i class="bi bi-circle-fill"></i><span class="text-white">Lista Dispositivos</span>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+                <!-- End Charts Nav -->
+            }*@
+                    @if (funciones.Contains("CrearEvento") || funciones.Contains("EventosRegistrados") || funciones.Contains("DashboardEventos") || funciones.Contains("InformeEventos"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" data-bs-target="#bienestar-nav" data-bs-toggle="collapse" href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#899bbd" class="bi bi-person-heart" viewBox="0 0 16 16">
+                                    <path d="M9 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-9 8c0 1 1 1 1 1h10s1 0 1-1-1-4-6-4-6 3-6 4Zm13.5-8.09c1.387-1.425 4.855 1.07 0 4.277-4.854-3.207-1.387-5.702 0-4.276Z" />
+                                </svg><span>&nbsp; &nbsp;Bienestar</span><i class="bi bi-chevron-down ms-auto"></i>
+                            </a>
+                            <ul id="bienestar-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                                @if (funciones.Contains("CrearEvento"))
+                                {
+                                    <li>
+                                        <a href="~/Eventos/Create">
+                                            <i class="bi bi-circle-fill"></i><span class="text-white">Crear Evento</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (funciones.Contains("EventosRegistrados"))
+                                {
+                                    <li>
+                                        <a href="~/Eventos/EventosRegistrados">
+                                            <i class="bi bi-circle-fill"></i><span class="text-white">Eventos Registrados</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (funciones.Contains("DashboardEventos"))
+                                {
+                                    <li>
+                                        <a href="~/Eventos/Dashboard">
+                                            <i class="bi bi-circle-fill"></i><span class="text-white">Dashboard</span>
+                                        </a>
+                                    </li>
+                                }
+                                @if (funciones.Contains("InformeEventos"))
+                                {
+                                    <li>
+                                        <a href="~/Eventos/Informe">
+                                            <i class="bi bi-circle-fill"></i><span class="text-white">Informe General</span>
+                                        </a>
+                                    </li>
+                                }
+
+                                @*@if (funciones.Contains("DashboardEventos"))
+                        {
+                            <li>
+                                <a href="~/Eventos/">
+                                    <i class="bi bi-circle-fill"></i><span class="text-white">Dashboard</span>
+                                </a>
+                            </li>
+                        }*@
+
+                            </ul>
+                        </li>
+                        <!-- End Charts Nav -->
+                    }
+                    @*@if (funciones.Contains("Encuesta"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#encuesta-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-pen"></i><span>Encuesta</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="encuesta-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        @if (funciones.Contains("Encuesta"))
+                        {
+                            <li>
+                                <a href="/Encuesta/Index">
+                                    <i class="bi bi-circle"></i><span class="text-white">Encuesta</span>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+                <!-- End Charts Nav -->
+            }
+            @if (funciones.Contains("Noticia"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#noticias-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-pen"></i><span>Noticias</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="encuesta-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        @if (funciones.Contains("Noticia"))
+                        {
+                            <li>
+                                <a href="/Noticia/Index">
+                                    <i class="bi bi-circle"></i><span class="text-white">Noticias</span>
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+                </li>
+                <!-- End Charts Nav -->
+            }*@
+
+
+
+
+                </ul>
+
+        </aside><!-- End Sidebar-->
+    }
+
+    @if (funciones.Count > 0)
+    {
+        <main id="main" class="main">
+            @RenderBody()
+
+        </main><!-- End #main -->
+    }
+    else
+    {
+        <main>
+            @RenderBody()
+
+        </main><!-- End #main -->
+    }
+
+
+
+
+    @if (funciones.Count > 0)
+    {
+        <!-- ======= Footer ======= -->
+        <footer id="footer" class="footer">
+
+            <div class="copyright">
+                <p class="text-muted text-center">Copyright © 2020 FOSCAL. Todos los derechos reservados. Fundación Oftalmológica de Santander - Clinica FOSCAL. - Bucaramanga. Colombia.</p>
+
+            </div>
+        </footer><!-- End Footer -->
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    }
+
+
+
+    <div class="modal fade in" id="modal_empleado">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0B9ACF">
+                    <h5 class="modal-title text-white">Datos del Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div id="contentModal">
+                    <br />
+                    <br />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="popupinstalacion">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Atención</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Desea instalar el sitio en su dispositivo?</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="prompt">
+                        <button type="button" class="prompt__install">Si</button>
+                        <button type="button" class="prompt__close">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<script src="admautogestion\register-sw.js"></script>*@
+
+    <script>
+        var prompt = document.querySelector('.prompt');
+        var installButton = prompt.querySelector('.prompt__install');
+        var closeButton = prompt.querySelector('.prompt__close');
+        let installEvent;
+
+        //**************** Funcion para darle estilos a los tooltips *********
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+        //************************ -------------------- **********************
+
+        function getVisited() {
+            return localStorage.getItem('install-prompt');
+        }
+
+        function setVisited() {
+            localStorage.setItem('install-prompt', true);
+        }
+
+
+
+        window.addEventListener('beforeinstallprompt', function (e) {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            prompt.style.display = 'block';
+            $('#popupinstalacion').modal('show');
+
+            // store the event for later use
+            installEvent = event;
+        });
+
+
+
+
+        // Shows prompt after a user clicks an "install" button
+        installButton.addEventListener("click", function (e) {
+            // you should not use the MouseEvent here, obviously
+            prompt.style.display = 'none';
+            $('#popupinstalacion').modal('hide');
+
+            installEvent.prompt();
+
+            e.userChoice.then(function (choiceResult) {
+                console.log(choiceResult.outcome); // either "accepted" or "dismissed"
+                if (choiceResult.outcome !== 'accepted') {
+                    setVisited();
+                }
+            }, handleError);
+
+            installEvent = null;
+        });
+
+
+
+        closeButton.addEventListener('click', function (e) {
+            // set localStorage to true
+            setVisited();
+
+            // hide the prompt banner
+            prompt.style.display = 'none';
+            $('#popupinstalacion').modal('hide');
+            installEvent = null;
+        });
+    </script>
+    <script src="~/Contents/js/html5-qrcode.js"></script>
+    <script src="~/Contents/js/Prestamos.js"></script>
+    <script src="~/Contents/js/Devolucion.js"></script>
+
+
+    <!-- Menu
+         <!-- Vendor JS Files -->
+    <script src="~/Contents/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="~/Contents/assets/vendor/chart.js/chart.min.js"></script>
+    <script src="~/Contents/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="~/Contents/assets/vendor/quill/quill.min.js"></script>
+    <script src="~/Contents/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="~/Contents/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="~/Contents/assets/vendor/php-email-form/validate.js"></script>
+
+    <script>
+        $.fn.selectpicker.Constructor.BootstrapVersion = '5';
+    </script>
+
+    <!-- Template Main JS File -->
+    <script src="~/Contents/assets/js/main.js"></script>
+    <!---->
+    @RenderSection("Scripts", required: false)
+
+
+</body>
+
+
+<!--Fin Nuevo Menu-->
+
+</html>
+

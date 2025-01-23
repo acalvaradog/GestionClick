@@ -1,0 +1,116 @@
+﻿@model Adm_AutoGestion.Models.Rol
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    
+}
+<br />
+<br />
+   
+<div class="container">
+     @using (Html.BeginForm())
+ {
+        <div class="card">
+        <div class="card-header  colorTitulo mb-3 d-flex align-items-center justify-content-center">
+            <h2>Eliminar Rol</h2>
+
+        </div>
+
+        <div class="card-body">
+            
+            <fieldset>
+                @Html.HiddenFor(model => model.Id)
+            
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                                <br />
+                            <h4>Esta seguro que desea eliminar este registro?</h4>
+                             <br />
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="editor-label">
+                                @*@Html.LabelFor(model => model.GrupoId)*@
+                                Grupo Empleado
+                            </div>
+                            <div class="editor-field">
+                               @* @Html.DisplayFor(model => model.GrupoEmpleados.Descripcion)*@
+                                 @Html.TextBoxFor( model => model.GrupoEmpleados.Descripcion, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                @*@Html.LabelFor(model => model.EmpleadoId)*@
+                                Empleado Asignado
+                            </div>
+                            <div class="editor-field">
+
+                                 @*@Html.DisplayFor(model => model.Empleado.Nombres)*@
+                                @Html.TextBoxFor( model => model.Empleado.Nombres, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                      
+                             </div>
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="card-footer d-flex align-items-center justify-content-center">
+                    <p>
+                        <input type="submit" value="Eliminar" class="btn btn-primary" />
+                    </p>
+                </div>
+
+            </fieldset>
+        </div>
+
+    </div>
+        }
+@*<br />
+<h2>Perfiles</h2>
+<br />
+<br />
+<h4>Esta seguro que desea eliminar este registro?</h4>
+
+
+
+<fieldset>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-5">
+
+            
+            <div class="display-label">
+                <strong> Grupo</strong>
+</div>
+            <div class="display-field">
+               @Html.DisplayFor(model => model.GrupoId)
+            </div>
+            <br />
+            <div class="display-label">
+                <strong> EmpleadoId</strong>
+</div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.EmpleadoId)
+            </div>
+            <br />
+
+        </div>
+   </div>
+  </div>
+<br />
+<br />
+
+</fieldset>*@
+
+    <p>
+       
+        @Html.ActionLink("Atras", "Index")
+    </p>
+
+
+</div>

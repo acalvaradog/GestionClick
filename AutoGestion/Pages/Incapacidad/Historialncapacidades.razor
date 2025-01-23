@@ -1,0 +1,67 @@
+﻿@page "/historialincapacidad"
+@using Autogestion.Shared.DTO.Incapacidad
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.Empleado
+    <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Historial Incapacidades</MudText>
+
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+<MudCard Class="mb-5">
+ <MudCardContent>
+
+        <MudTable Items="@ListIncapacidad">
+            <HeaderContent>
+                <MudTh>Fecha</MudTh>
+                <MudTh>Fecha Inicio</MudTh>
+                <MudTh>Fecha Fin</MudTh>
+                <MudTh>Cantidad Días</MudTh>
+                <MudTh>Estado</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                  <MudTd DataLabel="Fecha">@context.Fecha</MudTd>
+
+                
+                  <MudTd DataLabel="Fecha">@context.FechaInicio</MudTd>
+
+                
+                   <MudTd DataLabel="Fecha">@context.FechaFin</MudTd>
+
+               
+                   <MudTd DataLabel="Fecha">@context.CantidadDias</MudTd>
+                   <MudTd DataLabel="Fecha">@context.Estado</MudTd>
+                
+            </RowTemplate>
+            <PagerContent >
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+     </MudCardContent>
+    </MudCard>
+
+}
+
+@code {
+    private List<IncapacidadDTO> ListIncapacidad { get; set; } = new List<IncapacidadDTO>();
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        ListIncapacidad = await Http.GetFromJsonAsync<List<IncapacidadDTO>>($"api/Incapacidades/{datosempleado.Id}");
+
+
+        _loading = false;
+        StateHasChanged();
+    }
+}

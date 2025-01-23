@@ -1,0 +1,4 @@
+2023-05-31 15:28:34.089 -05:00 [INF] Ejecucion
+2023-05-31 15:28:34.654 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:30:36.619 -05:00 [INF] Ejecucion
+2023-05-31 15:30:37.132 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado

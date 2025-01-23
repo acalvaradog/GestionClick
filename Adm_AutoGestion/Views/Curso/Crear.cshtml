@@ -1,0 +1,80 @@
+﻿@model Adm_AutoGestion.Models.Curso
+@{
+    ViewBag.Title = "Crear Curso";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Crear Curso</h4>
+            </div>
+
+
+        </div>
+        <div class="card-body">
+
+            <div class="row mt-3">
+                <div class="col-4">
+                    <label>Nombre del Curso</label>
+                    <input id="FullName" name="FullName" type="text" class="form-control" required />
+                </div>
+                <div class="col-4">
+                    <label>Categoría</label>
+                    <select id="Categoria" name="Categoria" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Categoria Ejemplo">Categoría Ejemplo</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label>Es obligatorio?</label>
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.EsObligatorio)
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-4">
+                    <label>Modalidad</label>
+                    <select id="Modalidad" name="Modalidad" class="form-control" required>
+                        <option value="">Seleccione...</option>
+                        <option value="Presencial">Presencial</option>
+                        <option value="Virtual">Virtual</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label>Fecha Inicio</label>
+                    <input id="StartDate" name="StartDate" type="date" class="form-control" required />
+                </div>
+                <div class="col-4">
+                    <label>Fecha Fin</label>
+                    <input id="EndDate" name="EndDate" type="date" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="bi bi-save btn btn-outline-primary rounded-pill mb-2">Guardar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        var msg = "@ViewBag.Confirmacion";
+
+        if (msg == "true") {
+            alertify.alert("Cambio guardado.");
+        } else if (msg == "false") {
+            alertify.alert("Hubo un error al guardar.");
+        }
+    });
+</script>

@@ -1,0 +1,19 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using AutoGestion
+@using AutoGestion.Shared
+@using MudBlazor
+@using MudBlazor.ThemeManager
+@using Blazored.LocalStorage
+@using AutoGestion.Managers
+@inject IChatManager _chatManager
+@inject IJSRuntime _jsRuntime
+@inject NavigationManager _navigationManager
+@inject ISnackbar _snackBar
+@inject Blazored.LocalStorage.ILocalStorageService localStore

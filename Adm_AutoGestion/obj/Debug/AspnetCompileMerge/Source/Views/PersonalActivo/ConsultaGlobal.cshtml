@@ -1,0 +1,92 @@
+﻿@model Adm_AutoGestion.Models.PersonalActivo
+@{
+    ViewBag.Title = "Consulta";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<script src="~/Contents/js/PersonalActivo-Consulta.js"></script>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+@*  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<h2>Consulta De Resultados</h2>
+
+ <div class= "row">
+     <div class="col-sm">
+       <label for="empleado" class="col-form-label col-sm-2">Area:</label>
+          @Html.DropDownListFor(m => m.Area, (List<SelectListItem>)ViewBag.Opciones, "Seleccione un Area", new { @class = "form-control small" })
+         </div>
+     <div class="col-sm">
+       <label for="empleado" class="col-form-label col-sm-2">Sociedad:</label>
+          @Html.DropDownListFor(m => m.Empresa, (List<SelectListItem>)ViewBag.Empresas, "Seleccione una Sociedad", new { @class = "form-control small" })
+         </div>
+     </div>
+                 
+ <div class= "row">
+                     <div class="col-sm">
+                         
+                         <label for="empleado" class="col-form-label">Fecha Inicial:</label>
+                        
+                           <input type="date" id="txt_fechainicial" name="Name1" style="color:#797676; width: 100%"   class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")"/>    
+                                   </div>
+      <div class="col-sm">
+                         
+                         <label for="empleado" class="col-form-label">Fecha Final:</label>
+                        
+                           <input type="date" id="txt_fechafinal" name="Name1" style="color:#797676; width: 100%"  class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />    
+                                   </div>
+     </div>    <br>   
+ <div class= "row">
+      <div class="col-sm">
+                         
+     <button id="btn_ge"type="button" class="btn btn-primary" data-dismiss="modal" onclick="MostrarDatos()">Generar</button>
+        </div>    </div>
+<br>
+
+
+<div class="panel panel-primary">
+      <div class="panel-heading">Personal Sin AutoEvaluaciòn</div>
+      <div class="panel-body">  <div id="dashboard_div">
+   <!--Divs that will hold each control and chart-->
+ 
+</div></div>
+    </div>
+
+
+<br>
+
+
+
+
+
+<div class="panel panel-primary">
+      <div class="panel-heading">Personal que Realizò AutoEvaluaciòn</div>
+      <div class="panel-body">  <div id="div_resultados">
+   <!--Divs that will hold each control and chart-->
+ 
+</div></div>
+    </div>
+
+<div class="panel panel-primary">
+      <div class="panel-heading">Total por dìas</div>
+      <div class="panel-body">  <div id="calendar_basic">
+   <!--Divs that will hold each control and chart-->
+ 
+</div></div>
+    </div>
+ 
+<div class="panel panel-primary">
+      <div class="panel-heading">Total Resultados </div>
+      <div class="panel-body">  <div id="div_totalcolores">
+   <!--Divs that will hold each control and chart-->
+ 
+</div></div>
+    </div>
+ 
+
+<div class = "modal fade" id = "processState" data-keyboard="false" data-backdrop="static">
+        <div class = "modal-dialog ">
+            <div class = "modal-content">
+                <div class = "modal-body text-center"> <img src="~/Contents/image/Spinner.gif" > Espere....</div>
+                
+            </div>
+        </div>
+       </div> 

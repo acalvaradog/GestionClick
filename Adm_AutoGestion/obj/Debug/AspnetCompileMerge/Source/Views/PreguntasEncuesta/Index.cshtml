@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Preguntas>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container" >
+
+<br />
+<br />
+<br />
+<br />
+
+<h2>Preguntas Encuesta</h2>
+<br />
+
+<p>
+    @Html.ActionLink("Crear Nueva Pregunta", "Create")
+</p>
+
+<br />
+<div class = "table-responsive">
+<table class= "table table-hover table-sm">
+    <tr class="table-info">
+        <th>
+            @Html.DisplayNameFor(model => model.Pregunta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Activo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pregunta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Activo)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) 
+    </tr>
+}
+
+</table>
+</div>
+
+</div>

@@ -1,0 +1,20 @@
+2023-05-31 14:33:19.964 -05:00 [INF] Ejecucion
+2023-05-31 14:34:06.965 -05:00 [INF] Ejecucion
+2023-05-31 14:34:07.651 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 14:34:12.086 -05:00 [ERR] Error al ejecutar metodo actualizarempleado No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión. (localhost:55389)
+2023-05-31 14:39:07.010 -05:00 [INF] Ejecucion
+2023-05-31 14:39:07.546 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 14:39:09.922 -05:00 [ERR] Error al ejecutar metodo actualizarempleado Response status code does not indicate success: 500 (Internal Server Error).
+2023-05-31 14:47:23.142 -05:00 [INF] Ejecucion
+2023-05-31 14:47:23.687 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 14:47:28.043 -05:00 [ERR] Error al ejecutar metodo actualizarempleado Response status code does not indicate success: 500 (Internal Server Error).
+2023-05-31 14:50:27.183 -05:00 [INF] Ejecucion
+2023-05-31 14:50:27.674 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 14:52:13.295 -05:00 [INF] Ejecucion
+2023-05-31 14:52:13.997 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 14:52:16.351 -05:00 [ERR] Error al ejecutar metodo actualizarempleado Response status code does not indicate success: 500 (Internal Server Error).
+2023-05-31 15:03:29.303 -05:00 [INF] Ejecucion
+2023-05-31 15:03:30.017 -05:00 [INF] Inicia ejecuación proceso Actualización datos empleado
+2023-05-31 15:03:32.281 -05:00 [ERR] Error al ejecutar metodo actualizarempleado 
+2023-05-31 15:03:32.282 -05:00 [INF] Inicia ejecuación proceso Actualización Estructura
+2023-05-31 15:03:32.289 -05:00 [ERR] Error al ejecutar metodo actualizarEstructura 

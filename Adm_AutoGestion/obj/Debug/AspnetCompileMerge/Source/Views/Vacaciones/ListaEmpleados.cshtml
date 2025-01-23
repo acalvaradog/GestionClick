@@ -1,0 +1,241 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Vacaciones>
+
+@{
+    ViewBag.Title = "ListaEmpleados";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container-fluid">
+    <h2 class="colorTitulo text-center mt-3">Lista Trabajadores a Cargo</h2>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">Busqueda</div>
+            <div class="card-body">
+                <form action="~/Vacaciones/ListaEmpleados">
+                    <div class="row justify-content-start">
+                        <div class="col-md-4" style="text-align:left">
+                            <label for="Documento">Area:</label>
+                            @Html.DropDownList("Area", (List<SelectListItem>)ViewBag.Opciones, "Seleccione un Area", new { @class = "form-control small" })
+                        </div>
+                        <div class="col-md-3" style="text-align:left">
+                            <label for="Documento">Sociedad: </label>
+                            @Html.DropDownList("Sociedad", (List<SelectListItem>)ViewBag.Empresas, "Seleccione una Sociedad", new { @class = "form-control small" })
+                        </div>
+
+                        <div class="col-md-3" style="text-align:left;padding-top: 30px;">
+                            <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2"> Buscar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr class="fondoDegradado align-middle text-white">
+                    <th>
+                    </th>
+
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Documento
+                    </th>
+                    <th>
+                        Codigo Empleado
+                    </th>
+                    <th>
+                        Correo
+                    </th>
+                    <th>
+                        Telefono
+                    </th>
+                    <th>
+                        Modo Trabajo
+                    </th>
+                    <th>
+                        Horario Modo Trabajo
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    @* <th>
+                            Cantidad Dias Pendientes
+                        </th>*@
+                    <th>
+                        Ver Detalle
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="~/Contents/image/Logo.png" class="rounded-circle">
+                            @*<img id="img_foto" src="" class="rounded-circle"/>*@
+                        </td>
+
+                        <td>
+                            <FONT SIZE=4>@Html.DisplayFor(modelItem => item.Empleado.Nombres)</FONT>
+                            <br />
+                            <FONT SIZE=2>@Html.DisplayFor(modelItem => item.Empleado.Cargo)</FONT>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Documento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Correo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Telefono)
+                        </td>
+                        <td>
+                            @if (item.Empleado.ModoTrabajo != null)
+                            {
+                                @Html.ActionLink(@item.Empleado.ModoTrabajo, "EditarModoTrabajo", "Vacaciones", new { id = item.Empleado.Id }, new { data_modal4 = "" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("ASIGNAR", "EditarModoTrabajo", "Vacaciones", new { id = item.Empleado.Id }, new { data_modal4 = "" })
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.ObservacionModoTrabajo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Empresa)
+                        </td>
+                        @* <td>
+                            <div style="text-align:center">
+                                <h4>
+                                <span class="badge badge-success">@Html.DisplayFor(modelItem => item.CantDiasPendientes)</span>
+                                </h4>
+                             </div>
+                            </td>*@
+                        <td>
+                            @*<a href="javascript:Firmar('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">*@
+                            <a href='@Url.Action("ControlVacacionesTrabajadores", "Vacaciones", new { Empleado = item.Empleado.Id }, null)'>
+                                <img src='@Url.Content("~/Contents/image/buscaremp.png")' alt="Ver Detalle de Vacaciones del Empleado" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_EditarModoT">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal4">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="processState" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body text-center"> <img src="~/Contents/image/Spinner.gif"> Espere....</div>
+
+        </div>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+
+    $(document).ready(function () {
+        GenerarFoto(@ViewBag.NEmpleado);
+    });
+
+
+
+    function GenerarFoto(id) { try {
+        $.ajax({
+            url: "@Url.Action("ObtenerFotoEmpleado")",
+            data: { 'id': id },
+        type: "post",
+        success: function (e) {
+            if (e != null) {
+                document.getElementById("img_foto").src = "data:image/png;base64," + e;
+            }
+        },
+        error: function (xhr, status, error) { alert(error); }
+    });
+    }
+        catch(e) { alert(e); }
+
+    }
+
+
+
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+			{
+
+			    extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i>',
+			    filename: 'Trabajadores a Cargo.xlsx',
+                titleAttr: 'Exportar a Excel',
+                className: 'btn btn-success'
+
+			}
+
+            ]
+        });
+
+
+    });
+
+</script>

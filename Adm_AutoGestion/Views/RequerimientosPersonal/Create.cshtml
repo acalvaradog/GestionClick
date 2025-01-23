@@ -1,0 +1,276 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+@{
+    var ListItems = new List<ListItem>
+    {
+        new ListItem { Text = "Masculino", Value = "Masculino" },
+        new ListItem { Text = "Femenino", Value = "Femenino" },
+        new ListItem { Text = "Sin Preferencia", Value = "SinPreferencia" }
+
+    };
+    var ListItems2 = new List<ListItem>
+{
+        new ListItem { Text = "MIXTO", Value = "MIXTO" },
+        new ListItem { Text = "INTERNO", Value = "INTERNO" },
+        new ListItem { Text = "EXTERNO", Value = "EXTERNO" }
+
+    };
+
+
+    var ListItems3 = new List<ListItem>
+{
+        new ListItem { Text = "PERMANENTE", Value = "PERMANENTE" },
+        new ListItem { Text = "TEMPORAL", Value = "TEMPORAL" },
+
+    };
+
+}
+
+    @using (Html.BeginForm("Create", "RequerimientosPersonal",FormMethod.Post, new { @class = "example", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="card">
+                    <div class="card-header text-white fondoDegradado">
+                        <div class="col-12" style="text-align:center">
+                            <h2>Requerimiento del Personal</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row justify-content-start">
+
+                                    <div class="col-6">
+                                        <br />
+                                        <label>Empresa</label>
+                                        @* @Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })*@
+                                        @Html.DropDownList("EmpresaId", new SelectList(ViewBag.Sociedad, "Id", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control"})
+                                    </div>
+                                    <div class="col-6">
+                                        <br />
+                                        <label>Motivo Solicitud</label>
+                                        @Html.DropDownList("MtvSolicitudID", new SelectList(ViewBag.MtvSolicitud, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", @Onchange = "javascript:mostrarInputRdP();" })
+                                    </div>
+                                    <div class="col-6" id="MtvSolicitudID1">
+                                        <br />
+                                        <label>Cual</label>
+                                        @Html.TextBox("Cual", null, htmlAttributes: new { @class = "form-control text-uppercase", @type = "text" })
+                                    </div>
+                                    <div class="col-6" id="Todos">
+                                        <br />
+                                        <label>Cargo</label>
+                                        @Html.DropDownList("Cargo", new SelectList(ViewBag.Cargo, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", data_live_search = "true", data_size = "8" })
+                                    </div>
+                                    <div class="col-6" id="Nuevo">
+                                        <br />
+                                        <label>Cargo</label>
+                                        @Html.TextBox("Cargo1", null, htmlAttributes: new { @class = "form-control text-uppercase", @type = "text" })
+                                    </div>
+                                    @* <div class="col-6">
+                                              <br />
+                                        <label>Tipo Concurso</label>
+                                             @Html.DropDownList("TipoConcurso", new SelectList(ListItems2, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class="form-control"})
+                                        </div>*@
+                                    <div class="col-6">
+                                        <br />
+                                        <label>Area a la que Pertenece</label>
+                                        @*@Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })*@
+                                        @Html.DropDownList("Area", new SelectList(ViewBag.Area, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control ", data_live_search = "true", data_size = "8" })
+                                    </div>
+                                    <div class="col-6">
+                                        <br />
+                                        <label>Direccion a la que Pertenece</label>
+                                        @*@Html.TextBox("Direccion", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })*@
+                                        @Html.DropDownList("Direccion", new SelectList(ViewBag.Direccion, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control ", data_live_search = "true", data_size = "8" })
+
+                                    </div>
+                                    <div class="col-6">
+                                        <br />
+                                        <label>Numero de Personas</label>
+                                        @Html.TextBox("NumeroPresonas", null, htmlAttributes: new { @class = "form-control", @type = "number", required = "required" })
+                                    </div>                                     
+                                    @*<div class="col-6">
+                                        <br />
+                                        <label>Sexo</label>
+                                        @Html.DropDownList("Sexo", new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", required = "required" })
+                                    </div>*@
+                                    <div class="col-6" id="archivodiv" hidden>
+                                        <br />
+                                        <label>Adjuntar el manual de responsabilidades</label>
+                                        <br />
+                                        <input type="file" id="Archivo2" name="Archivo2" />
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row justify-content-start" id="EmplMotvSalida">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header text-white fondoDegradado"><b>Datos Empleado Saliente</b></div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-5" id="Emplesaliente">
+                                                        <br />
+                                                        <label>Empleado Saliente</label>
+                                                        <div>
+                                                            @Html.DropDownList("EmpSaliente", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control ", data_live_search = "true", data_size = "8" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <br />
+                                                        <label>Motivo de Egreso</label>
+                                                        <div id="Mtv">
+                                                            @Html.DropDownList("MotivoEgresoId1", new SelectList("", "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })
+  
+                                                            @*@Html.DropDownList("MotivoEgresoId1", new SelectList(ViewBag.MtvEgreso, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", @readonly = "readonly" })*@
+                                                        </div>
+                                                        <div id="MtvNovedad" hidden>
+                                                            @Html.DropDownList("MotivoEgresoId2", new SelectList(ViewBag.MtvEgresoNovedad, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <br />
+                                                        <button type="button" class="bi bi-plus-square btn btn-outline-primary rounded-pill mt-4" id="Addformc2" onclick="javascript: return AddRow3('Addemp', true );"> Agregar</button>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="panel panel-default">
+                                                        <div class="table-responsive">
+                                                            <br />
+                                                            <table class="table table-hover">
+                                                                <thead>
+                                                                    <tr class="text-white fondoDegradado">
+                                                                        <th></th>
+                                                                        <th>Empleado</th>
+                                                                        <th>Motivo Egreso</th>
+                                                                        <th class='text-center'>Novedad</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="AddItemsemp">
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        
+                                                                        <td colspan="4"></td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row justify-content-start">
+                                    <div class="col-6">
+                                        <label>Jornada (Horas) </label>
+                                        @Html.DropDownList("JornadaRequeridaId", new SelectList(ViewBag.Jornada, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-6">
+                                        <label>Horario</label>
+                                        @Html.DropDownList("HorarioTrabajoId", new SelectList(ViewBag.Horario, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    @* <div class="col-6">
+                                              <br />
+                                         <label>Fecha Sugerida de Ingreso</label>
+                                        @Html.TextBox("FechaSugeridaIngreso", null, htmlAttributes: new { @class = "form-control", @type = "date", required = "required" })
+                                         </div> *@
+                                    <div class="col-6">
+                                        <br />
+                                        <label>Tiempo requerido de contratación</label>
+                                        @Html.DropDownList("Contratacion", new SelectList(ListItems3, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-6">
+                                        <br />
+                                        <label>Tiempo requerido (meses)</label>
+                                        @Html.TextBox("TiempoContratacion", null, htmlAttributes: new { @class = "form-control", @type = "number" })
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <br />
+                                <label>Justificación del Cargo</label>
+
+                                @Html.TextArea("JustificacionCargo", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20" })
+                            </div>
+                            <div class="col-12">
+                                <br />
+                                <label>Requisitos adicionales</label>
+                                @Html.TextArea("RequisitosAdicionales", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row justify-content-center">
+                            <br />
+                            <div class="col-12 " style="text-align:center">
+                                <br />
+                                <button type="button" class="bi bi-save btn btn-outline-primary rounded-pill mb-2" id="AddEPP" onclick="javascript: return SaveReqPers();"> Guardar</button>
+                            </div>
+                            <div class="col-6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+
+@********************** Modal Novedad ******************@
+<div class="modal fade in" id="modal_Detalles">
+    <div class="modal-dialog modal-m ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalles Usuario Saliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalDetalles">
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+@**********************---------------******************@
+<script>
+    $("#Nuevo").hide();
+    $(document).ready(function () {
+        
+        $("#MtvSolicitudID").change(function () {
+            $("#MotivoEgresoId1").empty();            
+            $("#MotivoEgresoId1").append('<option value="' + this.value + '">' + this.options[this.options.selectedIndex].text + '</option>');
+        })
+    });
+
+</script>

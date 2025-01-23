@@ -1,0 +1,213 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleCapacitacion>
+
+@{
+    ViewBag.Title = "DetallesCapacitacion";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@*<br />
+    <h2>Participantes Capacitación</h2>
+    <br />*@
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+
+<div class="modal fade" id="modal_Lista_Encuestas" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Encuestas </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="contentModalEncuestas">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><h5 style="color: #012970">Asistentes</h5></div>
+    <br />
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-sm  table-bordered" id="tbl_asistentes">
+                <thead class="fondoDegradado" style="color: #fff">
+                    <tr>
+                        <!--<th>-->
+                        @*@Html.DisplayNameFor(model => model.Id)*@
+                        @*  Nmr*@
+                        <!--</th>-->
+                        <th>
+                            Nombre
+                        </th>
+                        @*  <th>
+                                @Html.DisplayNameFor(model => model.EmpleadoId)
+                            </th>*@
+                        <th>
+                            @* @Html.DisplayNameFor(model => model.FechaFirma)*@
+                            Fecha Firma
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Estado)*@
+                            Estado
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Cargo)*@
+                            Cargo
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.Area)*@
+                            Area
+                        </th>
+                        <th>
+                            @*   @Html.DisplayNameFor(model => model.EsTercero)*@
+                            Tercero
+                        </th>
+                        @*        <th>
+                                @Html.DisplayNameFor(model => model.TerceroId)
+                            </th>*@
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.SedeId)*@
+                            Sede
+                        </th>
+                        <th>Envio Encuesta</th>
+                        <th>Respuesta Encuesta</th>
+                        <th>Anular</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @*<td hidden>
+                                      @Html.DisplayFor(modelItem => item.CapacitacionId)
+                                </td>*@
+                            <td>
+                                @if (item.EsTercero == "NO")
+                                {@item.Empleado2.Nombres}
+                            else
+                            {@item.Tercero2.Nombres}
+                            </td>
+                            @* <td>
+                                    @Html.DisplayFor(modelItem => item.EmpleadoId)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaFirma)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Estado)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cargo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Area)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EsTercero)
+                            </td>
+                            @* <td>
+                                    @Html.DisplayFor(modelItem => item.TerceroId)
+                                </td>*@
+                            <td>
+                                @*@Html.DisplayFor(modelItem => item.SedeId)*@
+                                @item.Sede2.Nombre
+                            </td>
+                            <td>
+                                @if (item.EnvioEncuesta == "SI")
+                                {
+                                    <a href='@Url.Action("MostrarListaEncuestas", "Capacitacion", new { id = item.CapacitacionId, page = 2 }, null)' data-modalEncuestas='' , style="color:green;">Reenviar Encuesta</a>
+                                }
+                                else
+                                {
+                                    <a href='@Url.Action("MostrarListaEncuestas", "Capacitacion", new { id = item.CapacitacionId, page = 2 }, null)' data-modalEncuestas='' , style="color:#FF0000;">Enviar Encuesta</a>
+
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RespuestaEncuesta)
+                            </td>
+                            <td>
+                                <a href="javascript:AnularRegistro1('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                                    <img src="~/Contents/image/anular.png" alt="AnularRegistro" />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!--Botones-->
+    <div class="row justify-content-start">
+        <div class="col-md-12 ms-3">
+            @Html.ActionLink(" Atras", "ListaPorCompletar", "Capacitacion", null, new { @class = "bi bi-box-arrow-in-left  btn btn-outline-primary mb-2", style = "font-size:16px" })
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje">
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn btn-primary" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function AnularRegistro1(id) {
+
+        alertify.confirm("Esta Seguro que Desea anular el registro?", function (e) {
+            if (e) {
+
+                AnularRegistro(id);
+            } else {
+
+            }
+        });
+    }
+
+    function AnularRegistro(id) {
+
+
+
+        try {
+            $.ajax({
+                url: '@Url.Action("AnularRegistro", "DetalleCapacitacion")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+
+        }
+        catch (e) { alert(e); }
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+
+</script>

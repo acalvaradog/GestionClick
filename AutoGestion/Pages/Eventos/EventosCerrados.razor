@@ -1,0 +1,73 @@
+﻿@page "/Eventos/EventosCerrados"
+@using Autogestion.Shared.DTO.Eventos
+@inject HttpClient Http
+@using System.Text.Json
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@inject NavigationManager Navigation
+@using AutoGestion.Helpers
+@inject IJSRuntime JS
+@using System.ComponentModel.DataAnnotations
+
+<MudContainer>
+    <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Primary">Eventos Cerrados</MudText> </MudCardHeader>
+    <MudCard Class="mb-5">
+        <MudTable Items="@Eventos" @ref="_tabla" RowsPerPage="5" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+            <HeaderContent>
+                <MudTh>Nombre Evento</MudTh>
+                <MudTh>Tipo Evento</MudTh>
+                <MudTh>Dirigido A</MudTh>
+                <MudTh>Cupo</MudTh>
+                <MudTh>Fecha de Publicacion</MudTh>
+                <MudTh>Fecha Inicio</MudTh>
+                <MudTh>Fecha Fin</MudTh>
+                <MudTh>Hora Inicio</MudTh>
+                <MudTh>Hora Fin</MudTh>
+                <MudTh>Descripcion</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Nombre Evento">@context.NombreEvento</MudTd>
+                @if (context.TipoEvento == "1")
+                {
+                    <MudTd DataLabel="Tipo Evento">Unico</MudTd>
+                }
+                else
+                {
+                    <MudTd DataLabel="Tipo Evento">Continuo</MudTd>
+                }
+                <MudTd DataLabel="Dirigido A">@context.DirigidoA</MudTd>
+                <MudTd DataLabel="Cupo">@context.Cupo</MudTd>
+                <MudTd DataLabel="Fecha de Publicacion">@context.FechaPublicacion?.ToString("dd/MM/yyyy")</MudTd>
+                <MudTd DataLabel="Fecha Inicio">@context.FechaInicio?.ToString("dd/MM/yyyy")</MudTd>
+                <MudTd DataLabel="Fecha Fin">@context.FechaFin?.ToString("dd/MM/yyyy")</MudTd>
+                <MudTd DataLabel="Hora Inicio">@context.HoraInicio?.ToString("HH:mm")</MudTd>
+                <MudTd DataLabel="Hora Fin">@context.HoraFin?.ToString("HH:mm")</MudTd>
+                <MudTd DataLabel="Descripcion">@context.Descripcion</MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudPagination SelectedChanged="PageChanged" Count="@((_tabla.GetFilteredItemsCount() + _tabla.RowsPerPage - 1) / _tabla.RowsPerPage)" Class="pa-4" />
+            </PagerContent>
+        </MudTable>
+    </MudCard>
+</MudContainer>
+
+@code {
+    private EmpleadoReturnSapDTO? empleado { get; set; }
+    private List<EventosDTO>? Eventos;
+    private bool _loading;
+    private MudTable<EventosDTO> _tabla; 
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        Eventos = await Http.GetFromJsonAsync<List<EventosDTO>>($"api/Eventos/ListarEventosCerrados");
+        _loading = false;
+        StateHasChanged();
+    }
+
+    private void PageChanged(int i)
+    {
+        _tabla.NavigateTo(i - 1);
+    }
+}

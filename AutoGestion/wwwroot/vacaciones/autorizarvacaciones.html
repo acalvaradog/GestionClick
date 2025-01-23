@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="../css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <script src="../js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <link href="../js/alertify.js-0.3/themes/alertify.core.css" rel="stylesheet" />
+    <link href="../js/alertify.js-0.3/themes/alertify.default.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <div id="FrmSolicitarAntPag" class="container">
+        <!--<center>
+            <h1>Solicitud de Autorización para Registro de Vacaciones</h1>
+        </center>-->
+
+        <form enctype="multipart/form-data" id="formSolicitarVacAntPag" method="post">
+            
+            <div class="card  border-info mb-3 shadow p-3 mb-5">
+                <div class="card-header">
+                    <div class="header-title">
+                        <h4 class="card-title">Solicitar autorización para registrar vacaciones anticipadas, disfrute en dinero o dias menor a 6:</h4>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-4" id="Div1">
+                            Vacaciones en Dinero:
+                            <select id="SltDinero" class="form-control">
+                                <option value="vacio">Seleccione...</option>
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+                        <input type="text" id="SltDinero" class="form-control" name="SltDinero" value="NO" style="display:none;" />
+                        <br />
+                        <div class="col-4" id="Div2">
+                            Vacaciones Anticipadas:
+                            <select id="SltAnticipadas" class="form-control">
+                                <option value="vacio">Seleccione...</option>
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+                        <div class="col-4" id="Div3">
+                            Vacaciones Menor a 6 Dias:
+                            <select id="SltMayor6" class="form-control">
+                                <option value="vacio">Seleccione...</option>
+                                <option value="SI">SI</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <center>
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </center>
+            <br />
+
+        </form>
+
+    </div>
+
+    <script src="../js/alertify.js-0.3/src/alertify.js"></script>
+    <script src="Autorizaciones.js"></script>
+
+</body>
+</html>

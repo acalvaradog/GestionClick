@@ -1,0 +1,627 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Permiso>
+@using System.Web.UI.WebControls;
+
+@{
+
+    ViewBag.Title = "Informe";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]);
+    string ErrorAutorizacion = string.Format("{0}", Session["ErrorAutorizacion"]);
+    if (!string.IsNullOrWhiteSpace(ErrorAutorizacion)) { Session.Remove("ErrorAutorizacion"); }
+}
+
+<h2 class="colorTitulo text-center mt-3">Informe Permisos</h2>
+
+<form>
+    <div class="card">
+        <div class="card-header text-white fondoDegradado mb-3">Buscar</div>
+        <div class="card-body">
+            <div class="row justify-content-start">
+                <div class="col-3" style="text-align:left">
+                    <label for="solicitud">Fecha Inicio Permiso:</label>
+                    @Html.TextBox("FechaRegIni", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="solicitud">Fecha Fin permiso:</label>
+                    @Html.TextBox("FechaRegFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="JornadaCompleta" data-toggle="tooltip" data-placement="top" title="Especifique si la Jornada laboral es completa o no">Jornada Completa:</label>
+                    <select class="form-control" id="Jornada" name="Jornada">
+                        <option value="">Seleccione...</option>
+                        <option value="SI">SI</option>
+                        <option value="NO">NO</option>
+                    </select>
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="motivoper">Codigo del Empleado: </label>
+                    @Html.TextBox("IdEmpleado", null, htmlAttributes: new { @class = "form-control", placeholder = "Codigo del Empleado" })
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="col-6" style="text-align:left">
+                    <label>Nombre Empleado: </label>
+                    @Html.TextBox("Empleado", null, htmlAttributes: new { @class = "form-control", placeholder = "Nombre Empleado" })
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="motivoper">Motivo del permiso: </label>
+                    @Html.DropDownList("MotivoPermiso", new SelectList(ViewBag.motivos, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                </div>
+                @{
+                    if (funciones.Contains("PermisosNomina") && !funciones.Contains("AprobacionSuperiorPermisos"))
+                    {
+                        <div class="col-3" style="text-align:left">
+                            <label for="exampleFormControlSelect1">Estado: </label>
+                            <select class="form-control" id="Estado" name="Estado">
+                                <option value="">Seleccionar...</option>
+                                <option value="1">Solicitado</option>
+                                <option value="7">Enviado a Nomina</option>
+                                <option value="3">Rechazado</option>
+                                <option value="10">Anulado</option>
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-3" style="text-align:left">
+                            <label for="exampleFormControlSelect1">Estado: </label>
+                            <select class="form-control" id="Estado" name="Estado">
+                                <option value="">Seleccionar...</option>
+                                <option value="1">Solicitado</option>
+                                <option value="4">Confirmado</option>
+                                <option value="2">Aprobado Jefe Directo</option>
+                                <option value="7">Enviado a Nomina</option>
+                                <option value="3">Rechazado</option>
+                                <option value="10">Anulado</option>
+                            </select>
+                        </div>
+                    }
+
+                }
+
+            </div>
+            <br>
+            <div class="row justify-content-start">
+                <div class="col-4" style="text-align:left">
+                    <label>
+                        Sociedad (Empresa):
+                    </label>
+
+                    @Html.DropDownList("Empresa", new SelectList(ViewBag.Empresa, "Codigo", "Descripcion"), "Seleccione la Empresa", htmlAttributes: new { @class = "form-control" })
+
+                </div>
+
+            </div>
+            <br><br>
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("Informe","Permisos")"> Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table id="Exportar_a_Excel" class="table table-striped dt-responsive " style="width:100%">
+        <thead class="text-center text-capitalize ">
+            <tr class="fondoDegradado text-white">
+                <th>Nombre Empleado</th>
+                <th>Codigo Empleado</th>
+                <th>Cargo</th>
+                <th>Fecha De Solicitud</th>
+                <th> Fecha Ini.</th>
+                <th>Fecha Fin</th>
+                <th>Cantidad Dias</th>
+                <th>jornada Completa</th>
+                <th>Hora Ini.</th>
+                <th>Hora Fin</th>
+                <th>Area</th>
+                <th>Estado Permiso</th>
+                <th>Motivo Permiso</th>
+                <th>Ver Historico</th>
+                <th>Doc. Adjunto</th>
+                <th>Anular Permiso</th>
+                <!--<th>Doc. Adjunto-->@*@Html.DisplayNameFor(model => model.Adjunto)*@<!--</th>-->
+            </tr>
+        </thead>
+        <tbody class="text-center text-capitalize ">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @*<a class="btn text-black text-capitalize" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Detalle Empleado" value="" onclick="Detalle($Id = @item.EmpleadoId)">&nbsp; @item.Empleado.Nombres.ToLower()</a>*@
+                        @Html.ActionLink(@item.Empleado.Nombres.ToLower(), "Details2", "Empleado", new { id = item.EmpleadoId }, new { @class = "bg-color-danger", data_modal = "" })
+
+                    </td>
+
+                    <td>@Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.PersonalActivo.Cargo).ToString().ToLower()</td>
+
+                    <td>@Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")</td>
+
+                    <td>@Convert.ToDateTime(item.FechaPermiso).ToString("dd/MM/yyyy")</td>
+
+                    <td>@Convert.ToDateTime(item.FechaFinPermiso).ToString("dd/MM/yyyy")    </td>
+
+                    <td>
+                        @{
+                            var contda = @Convert.ToInt32(item.cantdias.ToString()) + 1;
+                            <p>@contda</p>
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Jornada).ToString()</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.HoraInicioPermiso)</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.HoraFinPermiso)</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.Empleado.Area).ToString().ToLower()</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.EstadoPermiso.Nombre)</td>
+
+                    <td>@Html.DisplayFor(modelItem => item.MotivoPermiso.Nombre)</td>
+                    <td>
+                        <h4><button id="Boton_Histo" class="btn bi bi-clock-fill text-info " data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="" onclick="Historico($Id = @item.Id)"></button></h4>
+                    </td>
+                    <td>
+                        <button id="Boton_Histo" class="btn close fas fa-cloud-download-alt text-info mr-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Adjuntos" value="" onclick="Descarga_Adjuntos_Per($Id = @item.Id)"></button>
+                    </td>
+                    <td>
+                        <h4>
+                            <button class="btn text-info" onclick="Modal_Anular($Id = @item.Id)"><i class="fas fa-ban "></i></button>
+                        </h4>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@*----------------------------------- Modal Detalle Empleado------------------------------------------------------ *@
+<div class="modal " id="Modal_Detalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header " style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white font-weight-bold" id="Modal_Empleado_label">Datos del Empleado</h5>
+                <button type="button" class="btn-close" id="cerrar_mod_det1" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="container">
+
+
+                    <fieldset>
+
+                        <div class="row justify-content-start">
+
+
+                            <div class="col-12" style="padding-top: 15px; padding-bottom: 15px;">
+                                <div class="card ">
+                                    @*<div class="card-header text-white" style="background-color:#0B9ACF">Datos Basicos del Empleado</div>*@
+                                    <div class="card-body">
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Documento</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtDocumento" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4 ">
+                                                <div class="display-label ">
+                                                    <strong>Nombres</strong>
+                                                </div>
+                                                <div class="display-field ">
+                                                    <textarea class="col-12 border-0 overflow-hidden text-lowercase" disabled style=" margin-left:-15.5px; " type="text" name="name" value="" id="txtNombres"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Nro Empleado</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtNroEmpleado" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>txtFechaNacimiento</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtFechaNacimiento" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Genero</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtGenero" />
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>RH</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtRH" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br />
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Telefono</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtTelefono" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Correo</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <textarea class="col-12 border-0 overflow-hidden text-lowercase" disabled style=" margin-left:-15.5px; " type="text" name="name" value="" id="txtCorreo"></textarea>
+                                                </div>
+                                                <div class="display-field">
+                                                    <textarea class="col-12 border-0 overflow-hidden text-lowercase" disabled style=" margin-left:-15.5px; " type="text" name="name" value="" id="txtCorreoPersonal"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Cargo</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <textarea class="col-12 border-0 overflow-hidden text-lowercase" disabled style=" margin-left:-15.5px; " type="text" name="name" value="" id="txtCargo"></textarea>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br />
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Area</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtArea" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Empresa</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtEmpresa" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>FechaIngreso</strong>
+                                                </div>
+                                                <div class="display-field">
+
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtFechaIngreso" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br />
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Jefe</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtJefe" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Superior</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtSuperior" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Director</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtDirector" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <br />
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>CeCo</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtCeCo" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Unidad Organizativa</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtUnidadOrganizativa" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Area Descripcion</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <textarea class="col-12 border-0 overflow-hidden text-lowercase" disabled style=" margin-left:-15.5px; " type="text" name="name" value="" id="txtAreaDescripcion"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="row justify-content-start">
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Tipo Area</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <textarea class="col-12 border-0 overflow-hidden text-lowercase" disabled style=" margin-left:-15.5px; " type="text" name="name" value="" id="txtTipoArea"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Modo Trabajo</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtModoTrabajo" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Activo</strong>
+                                                </div>
+                                                <div class="display-field">
+                                                    <input class="border-0" disabled type="text" name="name" value="" id="txtActivo" />
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>QR</strong>
+                                                    <div> <img id="img_qr" src="" style="height:100px;width:100px" /> </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-4">
+                                                <div class="display-label">
+                                                    <strong>Foto</strong>
+                                                </div>
+                                                <div>
+                                                    <img id="img_foto" src="" style="height:100px;width:100px" />
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+@***********************************------------------------------------********************************************@
+@*--------------------------------- Modal Anular --------------------------------- *@
+<div class="modal" id="Modal_Anulado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form action="~/Permisos/ConfirmacionPer1">
+                <div class="modal-body">
+                    <h4 class="modal-title text-left" id="Modal_reserva_label2">Por favor describa el motivo de la anulación del permiso?</h4>
+
+                    <textarea class="form-control" id="Observacion" name="Observacion"></textarea>
+                    <input type="hidden" id="Id1" name="Id1" value="" />
+                    <input type="hidden" id="Id" name="Id" value="" />
+                    <input type="hidden" id="Empleado1" name="Empleado" value="" />
+                    <input type="hidden" id="NroEmpleado1" name="NroEmpleado" value="" />
+                    <input type="hidden" id="FechaPermiso1" name="FechaPermiso" value="" />
+                    <input type="hidden" id="HoraInicioPermiso1" name="HoraInicioPermiso" value="" />
+                    <input type="hidden" id="HoraFinPermiso1" name="HoraFinPermiso" value="" />
+                    <input type="hidden" id="Jornada1" name="Jornada" value="" />
+                    <input type="hidden" id="Estado1" name="Estado" value="10" />
+                    <input type="hidden" id="tipo1" name="tipo" value="3" />
+                </div>
+                <br />
+                <div class="modal-footer mx-auto">
+                    <button type="button" class="btn btn-secondary" id="cerrar_mod_2">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*************************************************************************************@
+
+@*----------------------------------------- Modal Historico ------------------------------------------------------ *@
+<div class="modal " id="Modal_Historico_json" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white font-weight-bold" id="Modal_Historico_label">Trazabilidad Permiso </h5>
+                <button type="button" class="btn-close" id="cerrar_mod_his1" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="form-group">
+
+                        <div class=" ">
+                            <table id="Tabla_Historico" class="table table-striped dt-responsive " style=" width: 100%;">
+                                <thead>
+                                    @*fondo_titulos titulo_pagina*@
+                                    <tr class="font-weight-bolder fondoDegradado text-white titulo_pagina " style="color: #515050;">
+                                        <td class="align-middle text-center">Id Permiso</td>
+                                        <td class="align-middle text-center">Fecha de Modificación</td>
+                                        <td class="align-middle text-center">Usuario Que Modificó</td>
+                                        <td class="align-middle text-center">Estado Permiso</td>
+                                        <td class="align-middle text-center">Observaciones</td>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center text-capitalize">
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cerrar_mod_his2">Close</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+@*----------------------------------- *************************** -------------------------------------------------*@
+
+@*----------------------------------- Modal Descarga Adjuntos ------------------------------------------------------ *@
+<div class="modal " id="Modal_Descarga_json" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white font-weight-bold" id="Modal_Empleado_label">Documentos Anexos</h5>
+                <button type="button" class="btn-close" id="cerrar_mod_desc1" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-12" style="padding-top: 15px; padding-bottom: 15px;">
+
+                            <div class="form-group">
+
+
+                                <table id="Tabla_Descargar_archivos" class="table table-striped dt-responsive wrap " style=" width: 100%;">
+                                    <thead>
+                                        <tr class="font-weight-bolder fondoDegradado text-white titulo_pagina text-left" style="color: #515050;">
+                                            <td class="align-middle text-center">Id</td>
+                                            <td class="align-middle text-center">Documento</td>
+                                            <td class="align-middle text-center">Archivo</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center text-capitalize">
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    @*<div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" id="cerrar_mod_desc2">Close</button>
+
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@***********************************------------------------------------********************************************@
+
+
+
+
+
+@section scripts{
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+
+            $('#Exportar_a_Excel').DataTable({
+
+                columnDefs: [
+                    { targets: [0], visible: true, searchable: true, orderable: true },
+                    { targets: [1], visible: true, searchable: true, orderable: true },
+                    { targets: [2], visible: true, searchable: false, orderable: false },
+                    { targets: [3], visible: true, searchable: false, orderable: false },
+                    { targets: [4], visible: true, searchable: false, orderable: false },
+                    { targets: [5], visible: true, searchable: false, orderable: false },
+                    { targets: [6], visible: true, searchable: false, orderable: false },
+                    { targets: [7], visible: true, searchable: false, orderable: false },
+                    { targets: [8], visible: true, searchable: false, orderable: false },
+                    { targets: [9], visible: true, searchable: false, orderable: false },
+                    { targets: [10], visible: true, searchable: true, orderable: true },
+                    { targets: [11], visible: true, searchable: true, orderable: true },
+                    { targets: [12], visible: true, searchable: true, orderable: true },
+
+                ],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                select: true,
+                dom: 'Bfrtip',
+                buttons: [
+
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i>',
+                        filename: 'Informe_Permisos.xlsx',
+                        titleAttr: 'Exportar a Excel',
+                        className: 'btn btn-success'
+                    },
+
+                ]
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,172 @@
+﻿@using System.Web.Optimization;
+
+@{
+    ViewBag.Title = "_LayoutMaestra";    
+    List<string> funciones = Adm_AutoGestion.Models.Acceso.Validar(Session["Empleado"]); 
+    string ErrorAutorizacion = string.Format("{0}", Session["ErrorAutorizacion"]);
+    if(!string.IsNullOrWhiteSpace(ErrorAutorizacion)) { Session.Remove("ErrorAutorizacion"); }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Autogestion</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="~/Contents/image/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+    <link rel="stylesheet" href="~/Contents/css/bootstrap.min.css">
+    <script src="~/Contents/js/jquery-3.1.1.min.js" ></script>
+    <script src="~/Contents/js/popper.min.js" ></script>
+    <script src="~/Contents/js/bootstrap.min.js" ></script>
+    <script src="~/Contents/js/chart.js" ></script>
+    
+   
+  
+    <script src="~/Contents/js/jquery.dataTables.min.js"></script>
+    <script src="~/Contents/js/dataTables.buttons.min.js"></script>
+    <script src="~/Contents/js/jszip.min.js"></script>
+    <script src="~/Contents/js/buttons.html5.min.js"></script>
+ 
+   
+
+</head>
+<body style="margin-top:50px">
+   <br />
+    @if(ErrorAutorizacion != ""){
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Falta autorización!</h4>
+            <p>@ErrorAutorizacion</p>
+            <hr>
+            <p class="mb-0">Para mayor información consulte con su administrador</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+        </div>        
+    }
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light" style="background: linear-gradient(90deg, #07ABDF 10%, #426AB0 90%);">
+      <a class="navbar-brand" href="/Login/Index" onclick="location.reload();">
+        <img src="~/Contents/image/Logo.png" class="d-inline-block align-top" alt="">AutoGestion</a>
+      
+      @if(funciones.Count > 0){
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav mr-auto">
+
+                @if(funciones.Contains("GrupoEmpleados") || funciones.Contains("Perfil") || funciones.Contains("Rol") || funciones.Contains("Preguntas") || funciones.Contains("PreguntasEncuesta") || funciones.Contains("Empleado")){
+                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Maestros
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          @if(funciones.Contains("GrupoEmpleados")){
+                            <a class="dropdown-item" href="~/GrupoEmpleados/Index">Grupo de Empleados</a>
+                          }
+                          @if(funciones.Contains("Perfil")){
+                            <a class="dropdown-item" href="~/Perfil/Index">Perfiles</a>
+                          }
+                          @if(funciones.Contains("Rol")){
+                            <a class="dropdown-item" href="~/Rol/Index">Roles</a>
+                          }
+                           @if(funciones.Contains("Preguntas")){
+                            <a class="dropdown-item" href="~/Preguntas/Index">Preguntas</a>
+                          }  
+                          @if(funciones.Contains("PreguntasEncuesta")){
+                            <a class="dropdown-item" href="~/PreguntasEncuesta/Index">Preguntas Encuesta</a>
+                          }  
+                          @if(funciones.Contains("Empleado")){
+                          <a class="dropdown-item" href="~/Empleado/Index">Empleado</a>
+                          } 
+                        </div>
+                      </li>
+                  }
+                    
+                    @if(funciones.Contains("EncabezadoEncuesta") || funciones.Contains("Dashboard")){
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          ResultadosEncuestas
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          @if(funciones.Contains("EncabezadoEncuesta")){
+                            <a class="dropdown-item" href="~/EncabezadoEncuesta/Index">Informe</a>
+                          }
+                          @if(funciones.Contains("Dashboard")){
+                            <a class="dropdown-item" href="~/EncabezadoEncuesta/DatosGraficas">Dashboard</a>
+                          }
+                        </div>
+                   </li>
+                   }
+
+                 
+                   
+                   @if(funciones.Contains("Vacaciones") || funciones.Contains("AprobacionSuperior") || funciones.Contains("Confirmacion")){
+                  <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Vacaciones
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          @if(funciones.Contains("Vacaciones")){
+                            <a class="dropdown-item" href="~/Vacaciones/Index">Solicitud Vacaciones</a>
+                          }
+                          @if(funciones.Contains("AprobacionSuperior")){
+                            <a class="dropdown-item" href="~/Vacaciones/AprobacionSuperior">Aprobar Vacaciones</a>
+                          }
+                           @if(funciones.Contains("Confirmacion")){
+                            <a class="dropdown-item" href="~/Vacaciones/Confirmacion">Confirmar Vacaciones</a>
+                          }
+                          @if(funciones.Contains("VacacionesInforme")){
+                            <a class="dropdown-item" href="~/Vacaciones/Informe">Informe Vacaciones</a>
+                          }
+                        </div>
+                   </li>
+                   }
+
+                    @if(funciones.Contains("PersonalActivo")){
+                      <li class="nav-item">
+                        <a class="nav-link" href="~/PersonalActivo/Consulta">Resultados AutoEvaluación</a>
+                     </li>
+                  } 
+
+                 @* @if(funciones.Contains("Encuesta")){
+                      <li class="nav-item">
+                        <a class="nav-link" href="/Encuesta/Index">Encuesta</a>
+                      </li>
+                  }   *@ 
+
+
+                 @* @if(funciones.Contains("Noticia")){
+                      <li class="nav-item">
+                        <a class="nav-link" href="/Noticia/Index">Noticias</a>
+                      </li>
+                  } *@ 
+
+                   
+                  
+                  
+                </ul>
+                <ul class="navbar-nav navbar-right">
+                  <li class="nav-item">
+                     <a class="nav-link " href="~/Login/Logout">Salir</a>
+                  </li>
+                </ul>
+                
+              </div>
+
+     }
+
+    </nav>    
+
+   <div class="container">@RenderBody()</div>
+ 
+    
+</body>
+
+<br />
+<br />
+ <nav class="navbar-fixed-bottom" style="border: solid 5px transparent;">    
+        
+        <p class="text-muted text-center" >Copyright © 2020 FOSCAL. Todos los derechos reservados. Fundación Oftalmológica de Santander - Clinica FOSCAL. - Bucaramanga. Colombia.</p>          
+    </nav>
+</html>

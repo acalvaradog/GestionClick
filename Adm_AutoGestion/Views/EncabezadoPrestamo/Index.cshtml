@@ -1,0 +1,173 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Tercero>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Mensaje:</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+    Session.Remove("message");
+}
+
+
+<form>
+    <div class="container">
+        <div class="card">
+            <h5 class="card-header fondoDegradado text-white"> Consultar Llaves Prestamos</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            Sociedad:  @Html.DropDownList("Sociedad", new SelectList(ViewBag.Sociedad, "Codigo", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="form-group">
+                            Número de Documento Tercero: @Html.TextBox("Documento", null, null, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-start mt-3">
+                    <div class="col-12" style="text-align:left">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("Index","EncabezadoPrestamo")"> Buscar</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<br />
+<div class="table-responsive">
+    <table class="table table-hover display dataTable table-sm" id="tabla">
+        <thead>
+            <tr class="fondoDegradado text-white">
+                <th>
+                    @*@Html.DisplayNameFor(model => model.SociedadCOD)*@
+                    @Html.Label("Código de la Sociedad")
+                </th>
+
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Documento)*@
+                    @Html.Label("Documento")
+                </th>
+
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Nombres)*@
+                    @Html.Label("Nombre Completo")
+                </th>
+
+                <th>Ver QR</th>
+                <th>Actualizar QR</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SociedadCOD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Documento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombres)
+
+                    </td>
+
+                    <td>
+                       @* @Html.ActionLink(" Ver Cod", "VerQR", new { id = item.Id }, new { data_modalQRP = "", @class = "bi bi-qr-code btn btn-outline-primary mb-2", })*@
+                        <a href='@Url.Action("VerQR", "EncabezadoPrestamo", new { id = item.Id }, null)' data-modalQRP=''>
+                            <img src='@Url.Content("~/Contents/image/codigo-qr.png")' />
+                        </a>
+                    </td>
+                    <td>
+                        @*  @Html.ActionLink(" Actualizar", "ActualizarQR", new { id = item.Documento }, new { @class = "bi bi-search btn btn-outline-primary mb-2" })*@
+                      @*  <button type="button" class="bi bi-search btn btn-outline-primary mb-2" id="Actualizar" onclick="javascript:ActualizarQR('@Html.DisplayFor(modelItem => item.Documento)');"> Agregar </button>*@
+                        <a href="javascript:ActualizarQR('@Html.DisplayFor(modelItem => item.Documento)');" style="color:#FF0000;"><img src="~/Contents/image/editar.png" alt="GenerarQR" /></a>
+
+                    </td>
+
+                </tr>
+            }
+        <tbody>
+    </table>
+
+</div>
+<div class="modal fade in" id="modal_QRTercero">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header fondoDegradado">
+                <h5 class="modal-title text-white" id="exampleModalLabel">QR TERCERO</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+
+                    <div id="QRTerceroContent">
+
+                        Cargando...
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>*@
+                @*<button type="button" class="btn btn-primary">Guardar</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tabla').DataTable({
+            "bFilter": false,
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+        });
+
+
+
+    })
+</script>

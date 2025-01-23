@@ -1,0 +1,230 @@
+﻿@model IEnumerable<Adm_AutoGestion.Controllers.resultado>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<div class="container">
+<br />
+<div align="center">
+<h4>Registro Personal Vacunas</h4>
+<br />
+</div>
+
+
+
+<p>
+    @Html.ActionLink("Crear Nuevo Registro", "Create")
+</p>
+</div>
+<div class="container-fluid" style=" padding-right: 100px;padding-left: 100px;">
+<div class ="table-responsive">
+<table class= "table table-hover table-sm" id ="Exportar_a_Excel">
+<thead>
+    <tr class="table-info">
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FechaRegistro)
+        </th>
+            <th>
+            @Html.DisplayNameFor(model => model.TipoRegistro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumeroIdentificacion)
+        </th>
+         <th>
+            @Html.DisplayNameFor(model => model.PrimerApellido)
+        </th>
+           <th>
+            @Html.DisplayNameFor(model => model.SegundoApellido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PrimerNombre)
+        </th>
+         <th>
+            @Html.DisplayNameFor(model => model.SegundoNombre)
+        </th>
+         <th>
+           Indicador Actualización
+        </th>
+         
+          <th>
+           Modificar
+        </th>
+
+           <th>
+           Eliminar
+        </th>
+      
+        
+    </tr>
+</thead>
+<tbody>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FechaRegistro)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TipoRegistro)
+        </td>
+       <td>
+            @Html.DisplayFor(modelItem => item.NumeroIdentificacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrimerApellido)
+        </td>
+         <td>
+            @Html.DisplayFor(modelItem => item.SegundoApellido)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PrimerNombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SegundoNombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IdIndicadorActualizacion)
+        </td>
+
+     @if (  item.IdIndicadorActualizacion == "E"){
+        <td>
+
+          <a  onclick="return false" href='@Url.Action("Edit", "DetallePersonalVacuna", new { Id = item.Id, tipo = item.TipoRegistro}, null)'>
+            <img src="~/Contents/image/editar2.png" alt="AnularActa" class "disabled"/>
+                     
+        </td>
+}else{
+
+ <td>
+
+          <a href='@Url.Action("Edit", "DetallePersonalVacuna", new { Id = item.Id, tipo = item.TipoRegistro }, null)'>
+            <img src="~/Contents/image/editar.png" alt="AnularActa"  />
+                     
+        </td>
+}
+        <td>
+           <a href="javascript:AnularRegistro1('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+            <img src="~/Contents/image/eliminar.png" alt="AnularRegistro" />
+      
+        </td>
+
+    </tr>
+}
+</tbody>
+</table>
+</div>
+</div>
+<div class = "modal fade" id = "processState" data-backdrop="static">
+        <div class = "modal-dialog modal-lg">
+            <div class = "modal-content">
+                <div class = "modal-header">                    
+                     <h5 class="modal-title">&nbsp;Mensaje</h5>                         
+                 </div>
+                <div class = "modal-body">
+                    <input class="form-control border-0"  id="mensaje" name="mensaje"></input>
+                </div>
+            <div class = "modal-footer">
+                <button id = "signatureSbmt" type ="submit" class="btn btn-primary" onclick = "return reloadPage();">Aceptar</button>
+             </div>
+        </div>
+       </div>
+ 
+<script language="javascript" type="text/javascript">
+
+    function AnularRegistro1(id) {
+
+        alertify.confirm("Esta Seguro que Desea anular el registro?", function (e) {
+            if (e) {
+
+                AnularRegistro(id);
+            } else {
+
+            }
+        });
+    }
+
+    function AnularRegistro(id) {
+
+
+
+        try {
+
+            $.ajax({
+                url: '@Url.Action("AnularRegistro", "DetallePersonalVacuna")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+
+        }
+        catch (e) { alert(e); }
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+			{
+
+			    extend: 'excelHtml5',
+			    text: 'Exportar a Excel',
+			    filename: 'informe.xlsx',
+			    className: 'btn btn-primary d-block mx-auto',
+			}
+            ]
+        });
+
+
+
+    });
+
+  
+
+</script>

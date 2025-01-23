@@ -1,0 +1,345 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Empleado>
+
+@{
+    ViewBag.Title = "Index2";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+
+    <h2 class="colorTitulo text-center mt-3">Detalle Empleados</h2>
+
+
+    <p>
+        @Html.ActionLink(" Crear Empleado", "Create2", null, new { @class = "bi bi-plus-square btn btn-outline-primary md-2" })
+    </p>
+    <br />
+
+    <div class="card ">
+        <div class="card-header text-white fondoDegradado">Buscar</div>
+        <div class="card-body">
+            <div class="row justify-content-start mt-3">
+                <div class="col-6">
+                    <input class="form-control" id="myInput" type="text" placeholder="Buscar..">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="table-responsive">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr class="text-white fondoDegradado">
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Documento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NroEmpleado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombres)
+                    </th>
+                    @* <th>
+                            @Html.DisplayNameFor(model => model.Correo)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Empresa)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Area)
+                        </th>*@
+                    @* <th>
+                            @Html.DisplayNameFor(model => model.Telefono)
+                        </th>*@
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Superior)
+                        </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.Jefe)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Activo)
+                    </th>
+                    @*<th>
+                            @Html.DisplayNameFor(model => model.Contraseña)
+                        </th>*@
+                    <th>@*Visualizar*@</th>
+                    <th>@*Editar*@</th>
+                    @*<th></th>*@
+                    <th>@*GenerarQR*@</th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.Documento)
+                        </td>
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.NroEmpleado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nombres)
+                        </td>
+                        @* <td>
+                                @Html.DisplayFor(modelItem => item.Correo)
+                            </td>*@
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.Empresa)
+                        </td>
+                        @* <td>
+                                @Html.DisplayFor(modelItem => item.Area)
+                            </td>*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.Telefono)
+                            </td>*@
+                        @*<td>
+                                @Html.DisplayFor(modelItem => item.Superior)
+                            </td>*@
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.Jefe)
+                        </td>
+                        <td style="text-align:center">
+                            @Html.DisplayFor(modelItem => item.Activo)
+                        </td>
+                        @* <td>
+                                @Html.DisplayFor(modelItem => item.Contraseña)
+                            </td>*@
+                        <td style="text-align:center">
+                            @*@Html.ActionLink(" ", "Details2", "Empleado", new { id = item.Id }, htmlAttributes: new { @class = "btn fas fa-eye text-info", @data_bs_toggle = "tooltip", @data_bs_placement = "top", data_modal = "", @title = "Ver Detalles" })*@
+                            @Html.ActionLink(" ", "Details2", new { id = item.Id }, new { data_modalEMPDetail = "", @class = "btn close fas fa-eye text-primary mr-4" })
+                        </td>
+                        <td style="text-align:center">
+                            @*@Html.ActionLink("Editar", "Edit", new { id=item.Id }) *@
+                            @*@Html.ActionLink(" ", "Edit", "Empleado", new { id = item.Id }, htmlAttributes: new { @class = "btn far fa-edit text-info", @data_bs_toggle = "tooltip", @data_bs_placement = "top", data_modal0 = "", @title = "Editar" })*@
+                            @Html.ActionLink(" ", "Edit2", new { id = item.Id }, new { data_modal0 = "", @class = "btn close far fa-edit text-primary mr-4" })
+                        </td>
+
+                        @*<td style="text-align:center">
+                            @Html.ActionLink(" ", "SoporteHojaVida", new { id = item.Id }, new { data_modal0 = "", @class = "btn close far fa-address-card text-primary mr-4" })
+                        </td>*@
+                        <td style="text-align:center">
+
+                            <a href="javascript:GenerarQR('@Html.DisplayFor(modelItem => item.Id)');" class="btn" style="background:no-repeat center/80% url(../Contents/image/codigo-qr.png); height:45px;width: 38.66666px;"></a>
+                            @*   <button class="btn " style="background:no-repeat center/80% url(../Contents/image/codigo-qr.png); height:45px;width: 38.66666px;" data-bs-toggle="tooltip" data-bs-placement="top" title="Generar codigo QR" value="" onclick="javascript:GenerarQR('@Html.DisplayFor(modelItem => item.Id)');"></button>*@
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade in" id="popupqr" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Ver QR</h2>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <div class="col-12 d-flex justify-content-center">
+                    <p><label id="Label1" style="white-space: pre-wrap;"></label></p>
+                    <img id="ItemPreview" src="" style="height:100px;width:100px" />
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<div class="modal fade in" id="modal_detalle" role="dialog"  data-backdrop="true" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white"></h5>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal0">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_EMPDetail" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Detalles Empleado</h2>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalEMPDetail">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    function GenerarQR(id, fecha, idempleado) {
+        $('#popupqr').modal('show');
+
+        document.getElementById("ItemPreview").src = "/Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: "ObtenerQREmpleado",
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("ItemPreview").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#tabla').DataTable({
+            //responsive: {
+            //    details: {
+            //        display: $.fn.dataTable.Responsive.display.modal({
+            //            header: function (row) {
+            //                var data = row.data();
+            //                return '<h5 class="text-center text-capitalize">Empleado ' + data[0] + '</h5>';
+            //            }
+            //        }),
+            //        renderer: $.fn.dataTable.Responsive.renderer.tableAll({
+            //            tableClass: 'ui table'
+            //        })
+            //    }
+            //},
+            columnDefs: [
+                { targets: [0], visible: true, searchable: true, orderable: true },
+                { targets: [1], visible: true, searchable: true, orderable: true },
+                { targets: [2], visible: true, searchable: true, orderable: true },
+                { targets: [3], visible: true, searchable: true, orderable: true },
+                { targets: [4], visible: true, searchable: false, orderable: false },
+                { targets: [5], visible: true, searchable: false, orderable: false },
+                { targets: [6], visible: true, searchable: false, orderable: false },
+                { targets: [7], visible: true, searchable: false, orderable: false },
+                { targets: [8], visible: true, searchable: false, orderable: false },
+                { targets: [9], visible: true, searchable: false, orderable: false },
+            ],
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar MENU registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del START al END de un total de TOTAL registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de MAX registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+            lengthMenu: [
+                [10, 20, 30, -1],
+                ['10', '20', '30', 'Todos Los']
+            ],
+            select: true,
+            "pagingType": "full_numbers",
+            //       "drawCallback": function( settings ) {
+            //$('ul.pagination').addClass("pagination-sm");
+            //       },
+            "iDisplayLength": 50,
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: false });
+        $("a[data-modal]").on("click", function (e) {
+            openmodal(this.href);
+            return false;
+        });
+        $('#modal_empleado').on('hidden.bs.modal', function () {
+            $('#contentModal').html('');
+        })
+    });
+
+    function openmodal(url) {
+        $('#contentModal').load(url, function () {
+            $('#modal_empleado').modal({
+                keyboard: true
+            }, 'show');
+            //bindForm(this);
+
+
+
+
+        });
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+

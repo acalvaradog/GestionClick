@@ -1,0 +1,207 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.ProcesoDisciplinario>
+@{
+    ViewBag.Title = "Informe";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<h4 class="colorTitulo text-center">Informe</h4>
+
+<div class="card">
+    <div class="card-header text-white fondoDegradado">
+        <h6>Buscar</h6>
+    </div>
+    @using (Html.BeginForm())
+    {
+        <div class="card-body">
+            <div class="row mt-3 justify-content-start">
+                <div class="col-12" style="text-align:left">
+                    <label>Empleado Creador del Proceso</label>
+                    @*@Html.TextBox("EmpleadoRE",null,  htmlAttributes: new { @class = "form-control" } )*@
+                    @Html.DropDownList("EmpleadoCP", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                </div>
+            </div>
+
+            <div class="row mt-3 justify-content-start">
+                <div class="col-md-3">
+                    <label>Fecha Proceso Desde</label>
+                    @Html.TextBox("FechaInicio", null, htmlAttributes: new { @class = "form-control", type = "date" })
+                </div>
+
+                <div class="col-md-3">
+                    <label>Fecha Proceso Hasta</label>
+                    @Html.TextBox("FechaFin", null, htmlAttributes: new { @class = "form-control", type = "date" })
+                </div>
+
+                <div class="col-md-3" style="text-align:left">
+                    <label>Estado del Proceso:</label>
+                    <select class="form-control selectpicker" id="Estado" name="Estado">
+                        <option selected>Todos</option>
+                        <option>Activo</option>
+                        <option>Cerrado</option>
+                        <option>Anulado</option>
+                        <option>Remitido a Juridica</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3" style="text-align:left">
+                    <label>Numero Proceso</label>
+                    @Html.TextBox("NroProceso", "", htmlAttributes: new { @class = "form-control", type = "number" })
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="bi bi-search btn btn-outline-primary mb-2"> Buscar</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-bordered">
+        <thead class="fondoDegradado text-white align-middle">
+            <tr>
+                <th>
+                    Ver Detalle
+                </th>
+                <th>
+                    Nmr Proceso
+                </th>
+                <th>
+                    Empleados Implicados
+                </th>
+                <th>
+                    Fecha de Creación
+                </th>
+                <th>
+                    Registrado por
+                </th>
+                <th>
+                    Area
+                </th>
+                <th>
+                    Superior del Empleado
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Fecha Ocurrencia
+                </th>
+                <th>
+                    Fecha de apertura de Investigación
+                </th>
+                <th>
+                    Fecha de Fallo
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(" ", "Gestion3", new { id = item.Id }, new { data_modal9 = "", @class = "btn close fas fa-eye text-primary" })
+                    </td>
+                    <td class="text-center">
+                        @item.Id
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.EmpleadosImplicados)
+                    </td>
+                    <td>
+                        @if (item.FechaRegistro != null)
+                        {
+                            @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.EmpleadoNombres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.EmpleadoArea)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.SuperiorEmpleado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.Estado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.FechaHechos)
+                    </td>
+                    <td>
+                        @if (item.FechaDescargo != null)
+                        {
+                            @Convert.ToDateTime(item.FechaDescargo).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>
+                        @if (item.FechaSuspencion != null)
+                        {
+                            @Convert.ToDateTime(item.FechaSuspencion).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Ver Detalle -->
+<div class="modal fade in" id="modal_Gestion">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalles del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal9">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_NotasDetails" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y:visible">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Notas Del Proceso </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal14">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_NotasCreate" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-lg modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Añadir una Nueva Nota </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal15">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>

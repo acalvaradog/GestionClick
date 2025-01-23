@@ -1,0 +1,319 @@
+﻿@page "/viaticos/listaviaticos"
+@inject HttpClient Http
+@using Autogestion.Shared.DTO.Empleado
+@using Autogestion.Shared.DTO.Viaticos
+@using System.Text.Json
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject NavigationManager NavManager
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Lista de mis Viáticos</MudText>
+
+@if (_loading)
+{
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else
+{
+    if (listviaticos== null) 
+    {<MudText >No hay solicitudes</MudText> }
+     else if(listviaticos !=null)
+    {
+
+        <MudTable Items="@listviaticos" Dense="true" Hover="true" FixedHeader="@fixed_header" FixedFooter="@fixed_footer" Height="@(fixed_header || fixed_footer ?"500px":"")" SortLabel="Sort By" Filter="new Func<ViaticosDTO,bool>(FilterFunc1)" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info">
+            <ToolBarContent>
+                @*    <MudText Typo="Typo.h6">UWU</MudText>*@
+                <MudSpacer />
+                @*<MudDateRangePicker Label="Start and end date" DateRange="dateRange" DateRangeChanged="@(value => { dateRange = value; OnSearch(); })" DateFormat="yyyy-MM-dd" />*@
+                    <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <HeaderContent>
+                <MudTh> <MudTableSortLabel SortBy="new Func<ViaticosDTO, object>(x=>x.Id)">Nmr Solicitud </MudTableSortLabel></MudTh>
+                <MudTh> <MudTableSortLabel SortBy="new Func<ViaticosDTO, object>(x=>x.Destino)">Destino</MudTableSortLabel></MudTh>
+                <MudTh> <MudTableSortLabel SortBy="new Func<ViaticosDTO, object>(x=>x.FechaInicio)">Fecha de Viaje</MudTableSortLabel></MudTh>
+                <MudTh> <MudTableSortLabel SortBy="new Func<ViaticosDTO, object>(x=>x.FechaFin)">Fecha de Retorno</MudTableSortLabel></MudTh>
+                <MudTh>Prorroga</MudTh>
+                <MudTh>vehiculo</MudTh>
+                <MudTh>Hospedaje</MudTh>
+                <MudTh>Motivo Viaje</MudTh>
+                <MudTh>Estado</MudTh>
+                <MudTh>Liquidado Nómina</MudTh>
+                <MudTh>Liquidado Tesorería</MudTh>
+                <MudTh>Cancelar</MudTh>
+               @* <MudTh>Confirmar Viaje</MudTh>*@
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Nmr Solicitud">@context.Id</MudTd>
+                <MudTd DataLabel="Destino">@context.Destino</MudTd>
+                <MudTd DataLabel="FechaInicio">@Convert.ToDateTime(context.FechaInicio).ToString("dd/MM/yyyy")</MudTd>
+                <MudTd DataLabel="FechaFin">@Convert.ToDateTime(context.FechaFin).ToString("dd/MM/yyyy")</MudTd>
+                @if (@context.Prorroga == false)
+                {
+                    <MudTd DataLabel="Prorroga">NO</MudTd>
+                }
+                else if (@context.Prorroga == true)
+                {
+                    <MudTd DataLabel="Prorroga">SI</MudTd>
+                }
+
+                <MudTd DataLabel="Name">@context.Vehiculo</MudTd>
+                @if (@context.Hospedaje == false)
+                {
+                    <MudTd DataLabel="Hospedaje">NO</MudTd>
+                }
+                else if (@context.Hospedaje == true)
+                {
+                    <MudTd DataLabel="Hospedaje">SI</MudTd>
+                }
+                <MudTd DataLabel="Motivo Viaje">@context.MtvViaje</MudTd>
+                <MudTd DataLabel="Estado">@context.EstadoNombre</MudTd>
+                @if (@context.CheckNomina == false)
+                {
+                    <MudTd DataLabel="CheckNomina">NO</MudTd>
+                }
+                else if (@context.CheckNomina == true)
+                {
+                    <MudTd DataLabel="CheckNomina">SI</MudTd>
+                }
+
+          
+                @if (@context.CheckTesoreria == false)
+                {
+                    <MudTd DataLabel="CheckTesoreria">NO</MudTd>
+                }
+                else if (@context.CheckTesoreria == true)
+                {
+                    <MudTd DataLabel="CheckTesoreria">SI</MudTd>
+                }
+
+                <MudTd DataLabel="Cancelar Solicitud">
+                    @if (context.Estado== 1 )
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(args=>OpenDialog(context.Id))"></MudIconButton>
+                    }else
+                    {
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Disabled></MudIconButton>
+                    }
+
+                </MudTd>
+                
+           @*     <MudTd>
+                    @if ((context.FechaFin <= DateTime.Now && context.ViajeRealizado ==false) && context.Estado == 3)
+                    {
+
+                         <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Primary" Placement="Placement.Top" Text="Confirmar Viaje">
+                            <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Primary" OnClick="@(args => ConfirmarViaje(context.Id))"></MudIconButton>
+                        </MudTooltip>
+                                              
+                    }
+                    else if ((context.FechaFin <= DateTime.Now && context.ViajeRealizado == true))
+                    {
+                        <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Primary" Placement="Placement.Top" Text="Ya está verificado">
+                            <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Primary" Disabled></MudIconButton>
+                         </MudTooltip>
+                    }
+                    else if ((context.FechaFin > DateTime.Now && context.ViajeRealizado == false) || context.Estado != 3)
+                    {
+                        <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Error" Placement="Placement.Top" Text="Aún no puedes confirmar este viaje">
+                            <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Disabled></MudIconButton>
+                             </MudTooltip>
+                        Console.WriteLine("Id" + context.Id + "/ " + "Fecha: " + context.FechaFin + "/ " + DateTime.Today + "Viaje realizacdo: " + context.ViajeRealizado);
+
+                    }else
+                    {
+                        <MudTooltip ShowOnClick="true" ShowOnHover="true" Color="Color.Error" Placement="Placement.Top" Text="No puedes confirmar este viaje">
+                            <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Disabled></MudIconButton>
+                </MudTooltip>
+
+                    }
+
+                </MudTd>
+*@
+            </RowTemplate>
+            <PagerContent>        
+                <MudTablePager PageSizeOptions="new int[] { 10, 25, 50, 100, int.MaxValue }" InfoFormat="@($"Center {infoFormat}")" HorizontalAlignment="HorizontalAlignment.Center" />
+            </PagerContent>
+        </MudTable>
+        <br />
+
+    }
+}
+
+@code {
+    private MudTable<ViaticosDTO> _table;
+    private bool _loading=true;
+    private EmpleadoDTO datosempleado { get; set; }
+    private ViaticosDTO ViaticoMod = new ViaticosDTO();
+    //Table Elements
+    private DateRange dateRange = new DateRange();
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = false;
+    private bool bordered = false;
+    private string searchString1 = "";
+    private ViaticosDTO selectedItem1 = null;
+    private string infoFormat = "{first_item}-{last_item} of {all_items}";
+    bool fixed_header = true;
+    bool fixed_footer = false;
+    //---MODAL-DIALOG--//
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+    private DialogOptions dialogOptions = new() { FullWidth = true };
+    private bool visible;
+    private int NmrViatico;
+    async Task OpenDialog(int Id) 
+    {
+        ViaticoMod.Id = Id;
+
+        //visible = true;
+        //NmrViatico = Id;
+        var parameters = new DialogParameters { ["ViaticoMod"] = ViaticoMod };
+
+        var dialog = await DialogService.ShowAsync<Dialog>("Delete Server", parameters);
+        var result = await dialog.Result;
+        var Error = "";
+        string result2 = "Cancelado";
+        if (result.Data != null) { result2 = Convert.ToString(result.Data); }
+
+        bool conv= false;
+        Console.WriteLine(result2);
+        if (result2 != "Observación" && result2 != "Cancelado")
+        {
+            conv = Convert.ToBoolean(result2); 
+            if (conv == true)
+            {
+                await JS.ShowMessage("Cancelación", "Se ha cancelado el Viatico", "success");
+                NavManager.NavigateTo("viaticos/listaviaticos", true, false);
+            }
+            else if (conv == false)
+            {
+                await JS.ShowMessage("Error", "Ha ocurrido un error " + Error, "error");
+            }
+        }
+
+        else if (result2 == "Observación")
+        {
+            Error= "El campo Observaciones es requerido";
+        }
+
+
+
+
+    }
+
+    //-----------------//
+
+    private HashSet<ViaticosDTO> selectedItems = new HashSet<ViaticosDTO>();
+    private IEnumerable<ViaticosDTO>? listviaticos = new List<ViaticosDTO>();
+    //Table Func
+    private bool FilterFunc1(ViaticosDTO element) => FilterFunc(element, searchString1);
+
+    private bool FilterFunc(ViaticosDTO element, string searchString)
+    {
+
+
+
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (element.Destino.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.EstadoNombre.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.Vehiculo.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (element.EstadoNombre.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.Id}".Contains(searchString))
+            return true; 
+        if (element.FechaInicio.Value.ToString()==searchString)
+            return true;
+
+
+        return false;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        datosempleado = await localStore.GetItemAsync<EmpleadoDTO>("User");  
+        try
+        {
+            _loading = true;
+            listviaticos = await Http.GetFromJsonAsync<List<ViaticosDTO>>($"api/Viaticos/ConsultaViaticos/{datosempleado.Id}");
+            _loading = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error" + ex.Message);
+
+        }
+    }
+
+    private async void ConfirmarViaje(int Id)
+    {
+        var Respuesta = await Http.GetFromJsonAsync<string>($"api/Viaticos/VerificarViajeManual/{Id}/{datosempleado.Id}");
+
+        if (Respuesta == "Exito")
+        {
+            await JS.ShowMessage("Confirmado", "Se ha confirmado el viaje con éxito", "success");
+            Navigation.NavigateTo($"reload/viaticos.listaviaticos");
+        }
+        else if (Respuesta == "ViajeRealizado")
+        {
+            await JS.ShowMessage("Confirmado", "El viaje ya ha sido confirmado antes", "warning");
+            Navigation.NavigateTo($"reload/viaticos.listaviaticos");
+        }
+        else if (Respuesta == "FechaInvalida")
+        {
+            await JS.ShowMessage("Fecha Inválida", "Solo puede confirmar un viaje el mismo día en que regresó", "error");
+            Navigation.NavigateTo($"reload/viaticos.listaviaticos");
+        }
+        else
+        {
+            await JS.ShowMessage("Error", "Ha ocurrido un error", "error");
+            Navigation.NavigateTo($"reload/viaticos.listaviaticos");
+        }
+    }
+
+    //private async Task<TableData<ViaticosDTO>> GetServerData(TableState state)
+    //{
+    //    paginatedQuery.PerPage = state.PageSize;
+    //    paginatedQuery.Page = state.Page + 1;
+    //    paginatedQuery.SortBy = state.SortDirection == SortDirection.Descending ?
+    //    state.SortLabel + " desc" :
+    //    state.SortLabel;
+
+    //    string path = $"/api/invoice?perPage={paginatedQuery.PerPage}&page={paginatedQuery.Page}&SortBy={paginatedQuery.SortBy}";
+
+    //    if (dateRange.Start != null || dateRange.End != null)
+    //    {
+    //        loading = true;
+    //        paginatedQuery.Start = dateRange.Start;
+    //        paginatedQuery.End = dateRange.End;
+
+    //        path = path + $"&start={paginatedQuery.Start}&end={paginatedQuery.End}";
+
+    //    }
+
+    //    loading = true;
+
+    //    var response = await
+    //    _httpClient.GetFromJsonAsync<PaginatedData<List<InvoiceVm>>>
+    //        (path);
+
+    //    loading = false;
+    //    return new TableData<InvoiceVm>() { Items = response.Data, TotalItems = response.MetaData.TotalCount };
+
+    //}
+
+    private void OnSearch()
+    {
+        _table.ReloadServerData();
+    }
+   
+   
+}

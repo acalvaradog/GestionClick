@@ -1,0 +1,289 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EvaDesempeno.seguimientos>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "VerSeguimientosJF";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+    var Cumplimiento = new List<ListItem> {
+        new ListItem { Text = "Si cumplió", Value = "True" },
+        new ListItem { Text = "No cumplió", Value = "False" },
+
+        };
+}
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Mensaje:</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+    Session.Remove("message");
+}
+<h4 class="colorTitulo" style="text-align:center">Visualizar Seguimientos Jefe</h4>
+<br />
+<div class="container">
+    <form method="post">
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">
+                <a class="card-link text-white" data-toggle="collapse" href="#collapse1">Consultar</a>
+            </div>
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            Empleado:  @Html.DropDownList("Empleado", new SelectList(ViewBag.Empleados, "NroEmpleado", "Nombres"), "--Seleccione--", new { @class = "form-control form-control-sm selectpicker", data_live_search = "true" })
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            TipoPrueba:
+                            @Html.DropDownList("TipoPrueba", new SelectList(ViewBag.TipoPrueba, "codigo", "tipo"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            Cumplimiento Compromiso:
+                            @Html.DropDownList("cumplimiento", new SelectList(Cumplimiento, "Value"), "--Seleccione--", htmlAttributes: new { @class = "form-control form-control-sm" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12" style="text-align: center">
+                        <div class="form-group">
+                            <br />
+                            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Generar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-hover table-sm  table-bordered" id="Informe_evaDesempeño">
+            <thead>
+                <tr class="fondoDegradado text-white">
+
+                    <th>Codigo </th>
+                    <th>
+                        Nro Empleado
+                    </th>
+                    <th>
+                        Nombre del Empleado
+                    </th>
+                    <th>
+                        Fecha
+                    </th>
+                    <th>
+                        Descripción
+                    </th>
+                    <th>
+                        Comentario
+                    </th>
+                    <th>
+                        Proximo seguimiento
+                    </th>
+                    <th>
+                        Cumplimiento
+                    </th>
+                    <th>
+                        Tipo de evaluación
+                    </th>
+                    <th>Añadir comentario</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.codigo </td>
+                        <td>
+
+                            <label> @item.codigoempleado</label>
+                        </td>
+                        <td>
+                            <label> @item.NombreEmp</label>
+                        </td>
+                        <td>
+                            <label> @item.fecha</label>
+                        </td>
+                        <td>
+
+                            <label> @item.descripcion</label>
+                        </td>
+                        <td>
+
+                            <label> @item.comentario</label>
+                        </td>
+
+                        <td>
+                            <label> @item.proximoseguimiento</label>
+                        </td>
+                        <td>
+                            @if(@item.cumplimiento == false)
+                            {
+                             <label>No </label>
+                            }else 
+                            {<label> Si </label> }
+
+                            
+                        </td>
+                        <td>
+                            @if (item.tipoevaluacion == 1)
+                            {
+                                <label> Evaluación Periódica</label>
+                            }
+                            @if (item.tipoevaluacion == 2)
+                            {
+                                <label> Evaluación de Entrenamiento</label>
+                            }
+
+                        </td>
+
+                        <td>
+                            @if (item.cumplimiento != null)
+                            {
+                             <center>  <i class = "close  bi bi-life-preserver text-dark mr-4"></i></center>
+
+                            }
+                            else
+                            {
+                        <center>
+                            @Html.ActionLink(" ", "AñadirComentario", new { codigo = item.codigo }, new { data_modalEVADE01 = "", @class = "btn close bi bi-life-preserver text-primary mr-4" })
+                        </center>
+                            }
+
+</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<br />
+<div class="modal fade in" id="modal_EVADE01" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Añadir comentario</h2>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalEVADE01">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<style>
+    table > tbody > tr > td {
+        vertical-align: middle !important;
+    }
+
+    .btn-group, .btn-group-vertical {
+        position: absolute !important;
+    }
+</style>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        var table = $('#tabla').DataTable({
+            //$('#tabla').DataTable({
+
+
+            //"bFilter": true,
+            //"ordering": false,
+
+            buttons: [
+                {
+
+
+
+                    extend: 'excelHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'InformePrestamos.xlsx',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+
+
+                },
+                {
+                    extend: 'pdfHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-pdf"></i>',
+                    filename: 'InformePrestamos.xlsx',
+                    titleAttr: 'Exportar a PDF',
+                    className: 'btn btn-danger'
+                },
+
+
+            ],
+            dom: 'Brtip',
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+
+
+
+
+        });
+
+
+
+
+    })
+</script>
+

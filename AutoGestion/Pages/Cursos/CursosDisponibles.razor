@@ -1,0 +1,84 @@
+﻿@page "/cursosdisponibles"
+@using Autogestion.Shared.DTO.Incapacidad
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavigationManager
+@using Autogestion.Shared.DTO.Empleado
+@using Autogestion.Shared.DTO.Cursos
+@using System.Globalization;
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+    @if (ListCursos != null) { 
+         <MudPaper Elevation="25" Class="pa-4" Style="height:100%">
+             <h3>Cursos Disponibles</h3>
+        <MudCarousel Class="mud-width-full" Style="height:200px;" ShowArrows="@arrows" ShowBullets="@bullets" EnableSwipeGesture="@enableSwipeGesture" AutoCycle="@autocycle" TData="object">
+            @foreach (var item in ListCursos)
+            {
+                <MudCarouselItem Transition="transition">
+                    <div class="d-flex justify-content-center align-items-center" style="height:100%; background-color: white;">
+                        <div class="text-center">
+                            <MudIcon Class="mx-auto my-auto" Icon="@Icons.Custom.Brands.StackOverflow" Color="@Color.Success" Size="@Size.Large" />
+                            <MudElement HtmlTag="@htmlTag">
+                                @item.displayname 
+                            </MudElement>
+
+                            Fecha Inicio @DateTimeOffset.FromUnixTimeSeconds(item.startdate).Date.ToShortDateString()  Fecha Finalización @DateTimeOffset.FromUnixTimeSeconds(item.enddate).Date.ToShortDateString();
+                            <br>
+                           
+                         
+                            <MudLink href="@($"https://edufoscal.com/talentofoscal/course/view.php?id={item.id}")" Target="_blank">Ir al curso</MudLink>
+
+                        </div>
+                    </div>
+                </MudCarouselItem>
+            }
+        </MudCarousel>
+        </MudPaper>
+    }
+}
+
+@code {
+    private string htmlTag = "h3";
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    private List<CursoModdleDTO> ListCursos { get; set; } = new List<CursoModdleDTO>();
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        if (datosempleado == null)
+        {
+            await JS.ShowMessage("Debe volver a iniciar sesión en el aplicativo", "Sesión Expirada", "error");
+
+            NavigationManager.NavigateTo("pages/authentication/login", true);
+        }
+        else
+        {
+            if (datosempleado.Id == null || datosempleado.Id == 0)
+            {
+                await JS.ShowMessage("Debe volver a iniciar sesión en el aplicativo", "Sesión Expirada", "error");
+
+                NavigationManager.NavigateTo("pages/authentication/login", true);
+            }
+        }
+        ListCursos = await Http.GetFromJsonAsync<List<CursoModdleDTO>>($"api/EduFoscal/ListarCursos");
+
+        ListCursos = ListCursos.Where(x => x.categoryid != 36).ToList();
+
+        _loading = false;
+        StateHasChanged();
+    }
+}

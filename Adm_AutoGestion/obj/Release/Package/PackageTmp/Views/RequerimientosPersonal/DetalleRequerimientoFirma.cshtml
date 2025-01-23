@@ -1,0 +1,136 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+
+<div class="container-fluid" style="width:95%">
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <br />
+            <h2 style="text-align:center">Detalle del Requerimiento</h2>
+            <br />
+            <input id="Id" name="Id" value="@Model.Id" hidden readonly="true" />
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <label>Empresa</label>
+                        @Html.TextBox("EmpresaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Empresa.Codigo })
+                    </div>
+                    <div class="col-6">
+                        <label>Cargo</label>
+                        @Html.TextBox("Cargo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Area a la que Pertenece</label>
+                        @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Direccion a la que Pertenece</label>
+                        @Html.TextBox("Direccion", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Numero de Personas</label>
+                        @Html.TextBox("NumeroPresonas", null, htmlAttributes: new { @class = "form-control", @type = "number", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Sexo</label>
+                        @Html.TextBox("Sexo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Motivo Solicitud</label>
+                        @Html.TextBox("MtvSolicitudID2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.MtvSolicitud.Nombre })
+                        @*@Html.DropDownList("MtvSolicitudID", new SelectList(ViewBag.MtvSolicitud, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+
+
+
+                </div>
+                <br />
+                <hr />
+
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <label>Empleado Saliente</label>
+                        @Html.TextBox("EmpSaliente2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Empleado.Nombres })
+                        @*@Html.DropDownList("EmpSaliente", new SelectList( ViewBag.Empleado, "Id", "Nombres"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker",data_live_search="true"} )*@
+                    </div>
+
+                    <div class="col-6">
+
+                        <label>Motivo de Egreso</label>
+                        @Html.TextBox("MotivoEgresoId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.MtvSolicitud.Nombre })
+
+                        @* @Html.DropDownList("MotivoEgresoId", new SelectList(ViewBag.MtvEgreso, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+                </div>
+                <br />
+                <hr />
+
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <br />
+                        <label>Jornada </label>
+                        @Html.TextBox("JornadaRequeridaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Jornada.Nombre + " " + "Horas" })
+
+                        @* @Html.DropDownList("JornadaRequeridaId", new SelectList(ViewBag.Jornada, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Horario</label>
+                        @Html.TextBox("HorarioTrabajoId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Horario.Nombre })
+
+                        @*@Html.DropDownList("HorarioTrabajoId", new SelectList(ViewBag.Horario, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+
+                    <div class="col-6">
+                        <br />
+                        <label>Fecha Sugerida de Ingreso</label>
+                        @Html.TextBox("FechaSugeridaIngreso", null, htmlAttributes: new { @class = "form-control", @type = "date", required = "required", @Value = Model.FechaSugeridaIngreso, @readonly = "true" })
+                    </div>
+
+                    <div class="col-6">
+                        <br />
+                        <label>Tiempo de Contratacion</label>
+                        @Html.TextBox("TiempoContratacion", null, htmlAttributes: new { @class = "form-control", @type = "number", required = "required", @readonly = "true" })
+                    </div>
+
+
+                </div>
+                <br />
+
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <br />
+                        <label>Justificación del Cargo</label>
+
+                        @Html.TextArea("JustificacionCargo", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+                    <div class="col-12">
+                        <br />
+                        <label>Requisitos adicionales</label>
+
+                        @Html.TextArea("RequisitosAdicionales", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+
+                </div>
+                <br />
+
+                <br />
+
+            </div>
+            <div style="text-align:center">
+                <a data-bs-toggle="modal" href="#modal_Registros2" class="bi bi-eye btn btn-outline-primary mb-2"> Ver Observaciones</a>
+            </div>
+        </div>
+        <br />
+
+    </div>
+</div>
+<br />
+

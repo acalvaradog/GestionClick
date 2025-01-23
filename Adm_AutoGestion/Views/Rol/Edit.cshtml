@@ -1,0 +1,110 @@
+﻿@model Adm_AutoGestion.Models.Rol
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<br />
+<br />
+<br />
+<br />
+<div class="container">
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <div class="card">
+            <div class="card-header  colorTitulo mb-3 d-flex align-items-center justify-content-center">
+                <h2>Editar Rol</h2>
+
+            </div>
+
+            <div class="card-body">
+                <fieldset>
+                    @Html.HiddenFor(model => model.Id)
+                    <br />
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                                <div class="editor-label">
+
+                                    Grupo
+                                </div>
+                                <div class="editor-field">
+                                    @Html.ValidationMessageFor(model => model.GrupoId)
+                                    @Html.DropDownListFor(model => model.GrupoId, new SelectList(Model.ListadoGrupos, "Id", "Descripcion"), "Seleccione un grupo", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="editor-label">
+                                    Empleado
+                                </div>
+                                <div class="editor-field">
+                                    @Html.DropDownListFor(model => model.EmpleadoId, new SelectList(ViewBag.Empleados, "Id", "Nombres"), "Seleccione un Empleado", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                    @Html.ValidationMessageFor(model => model.EmpleadoId)
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="card-footer d-flex align-items-center justify-content-center">
+                        <p>
+                            <input type="submit" value="Guardar Cambios" class="btn btn-primary" />
+                        </p>
+                    </div>
+
+                </fieldset>
+            </div>
+
+        </div>
+        @*<fieldset>
+
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.GrupoId)
+                            Grupo
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.GrupoId)
+                            @Html.ValidationMessageFor(model => model.GrupoId)
+                            @Html.DropDownListFor(model => model.GrupoId, new SelectList(Model.ListadoGrupos, "Id", "Descripcion"), "Seleccione un grupo", htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <br />
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.EmpleadoId)
+                            Codigo Empleado
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.EmpleadoId)
+                            @Html.TextBox("EmpleadoId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.EmpleadoId)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+
+            <p>
+                <input type="submit" value="Guadar" class="btn btn-primary" />
+            </p>
+        </fieldset>*@
+    }
+    <br />
+    <div>
+        @Html.ActionLink("Volver a la Lista", "Index")
+    </div>
+
+
+</div>
+

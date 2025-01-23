@@ -1,0 +1,230 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EncabezadoEncuesta>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<br />
+<br />
+
+<h2>Informe</h2>
+
+<br />
+<form>
+<div class="card">
+  <div class="card-header text-white bg-info mb-3" >Buscar</div>
+    <div class="card-body">
+      <div class="form-inline" role="form">
+        
+              <div class ="form-group">
+                   @Html.TextBox("Unidad",null,  htmlAttributes: new { @class = "form-control", placeholder = "Unidad Organizativa" } )
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+                   @Html.TextBox("Transporte",null,  htmlAttributes: new { @class = "form-control", placeholder = "Transporte" } )
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+                   @Html.TextBox("Trabajo",null,  htmlAttributes: new { @class = "form-control", placeholder = "Modo Trabajo" } )
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+                   @Html.TextBox("Empresa",null,  htmlAttributes: new { @class = "form-control", placeholder = "Empresa" } )
+                </div>&nbsp&nbsp&nbsp&nbsp
+      </div><br />
+      <div class="form-inline" role="form">
+                <div class ="form-group">
+                <label for="sospechoso">Fecha Inicio:</label>&nbsp&nbsp
+                @Html.TextBox("FechaIni", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+                <label for="sospechoso">Fecha Fin:</label>&nbsp&nbsp
+                @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                </div>&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+                @Html.TextBox("Sospechoso",null,  htmlAttributes: new { @class = "form-control", placeholder = "Sospechoso" } )
+                </div>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <div class ="form-group">
+               <button type = "submit" id = "Search" class = "btn btn-primary"  onclick = "@Url.Action("Index","EncabezadoEncuesta")">Buscar</button>
+               </div>
+          
+      </div>
+     
+  </div>
+</div>
+
+
+<br />
+<br />
+
+<div class = "table-responsive">
+
+<table class= "table table-hover display dataTable table-sm " id ="Exportar_a_Excel">
+<thead>
+    <tr class="table-info">
+        <th class="d-none">
+            @Html.DisplayNameFor(model => model.EmpleadoId)
+        </th>
+         <th>
+            Nombre Empleado
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Cargo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnidadOrganizativa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Eps)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transporte)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ModoTrabajo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sospechoso)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Empresa)
+        </th>
+        <th>
+            Correo
+        </th>
+        <th>
+            Teléfono
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Temperatura)
+        </th>
+        <th>
+        Seguimiento
+        </th>
+        <th></th>
+    </tr>
+</thead>
+
+<tbody>
+@foreach (var item in Model) {
+    foreach (var empleado in item.ListadoEmpleado){
+
+    <tr>
+        <td class="d-none">
+            @Html.DisplayFor(modelItem => item.EmpleadoId)
+        </td>
+        <td>
+            @Html.DisplayFor(Empleado => empleado.Nombres)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cargo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnidadOrganizativa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Eps)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Transporte)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ModoTrabajo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sospechoso)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empresa)
+        </td>
+        <td>
+            @Html.DisplayFor(Empleado => empleado.Correo)
+        </td>
+        <td>
+            @Html.DisplayFor(Empleado=> empleado.Telefono)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fecha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Temperatura)
+        </td>
+        <td>
+           @*@Html.ActionLink("Registrar", "Create")*@
+
+            @if (item.sintomas == "0"){
+           @Html.ActionLink(linkText: "Registrar", actionName: "Create", controllerName: "EncabezadoEncuesta", routeValues: new { Id = item.Id, Empleado = item.EmpleadoId }, htmlAttributes: null )
+            }else{
+            @Html.ActionLink(linkText: "Editar", actionName: "Edit", controllerName: "EncabezadoEncuesta", routeValues: new { Id = item.Id, Empleado = item.EmpleadoId }, htmlAttributes: null )
+            }
+            
+        </td>
+     <td>
+        
+       @Html.ActionLink(linkText: "Ver", actionName: "Index", controllerName: "RespuestasEncuesta", routeValues: new { Id = item.Id }, htmlAttributes: null )
+
+
+    </tr>
+
+}
+}
+</tbody>
+</table>
+
+</div>
+</form>
+
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+            
+            buttons: [
+			{
+                
+			    extend: 'excelHtml5',
+			    text: 'Exportar a Excel',
+			    filename: 'informe.xlsx',
+			    className:'btn btn-primary d-block mx-auto',
+			}
+            ]
+        });
+
+      
+
+    })
+    ;
+
+
+
+</script>

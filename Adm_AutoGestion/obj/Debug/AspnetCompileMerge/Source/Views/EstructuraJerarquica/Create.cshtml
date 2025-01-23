@@ -1,0 +1,156 @@
+﻿@model Adm_AutoGestion.Models.EstructuraJerarquica
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+    <h2 class="colorTitulo text-center mt-3">Estructura Jerarquica</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <div class="row justify-content-start">
+                <div class="col-4" style="text-align:center">
+                    <img class="mt-5" src="~/Contents/image/lider.png">
+                </div>
+                <div class="col-8">
+                    <div class="card ">
+                        <div class="card-header text-white fondoDegradado">Datos</div>
+                        <div class="card-body">
+                            <div class="row justify-content-start">
+                                <div class="col-12">
+                                    <div class="editor-label">Sociedad: </div>
+                                    <select class="form-control" id="Sociedad" name="Sociedad">
+                                        <option value="null">Seleccione...</option>
+                                        <option value="1000">1000</option>
+                                        <option value="2000">2000</option>
+                                    </select>
+                                    @Html.ValidationMessageFor(model => model.Sociedad)
+                                    <br />
+                                    <div class="editor-field">
+                                        @* @Html.DropDownList("Area", new SelectList( ViewBag.Area, "Value", "Text"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker", data_live_search="true"} )
+                                            @Html.ValidationMessageFor(model => model.Area)*@
+                                        <div class="editor-label" for="exampleFormControlSelect1">Area: </div>
+                                        <select class="form-control mi-selector" id="Area" name="Area">
+                                            <option value="">Seleccione...</option>
+
+                                        </select>
+                                    </div>
+
+                                    <br />
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Jefe)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownList("Jefe", new SelectList(ViewBag.Empleado, "NroEmpleado", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "8" })
+                                        @Html.ValidationMessageFor(model => model.Jefe)
+                                    </div>
+                                    <br />
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Superior)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownList("Superior", new SelectList(ViewBag.Empleado, "NroEmpleado", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "8" })
+                                        @Html.ValidationMessageFor(model => model.Superior)
+                                    </div>
+
+                                    <br />
+                                    <div class="editor-label">
+                                        @Html.LabelFor(model => model.Director)
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownList("Director", new SelectList(ViewBag.Empleado, "NroEmpleado", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "8" })
+                                        @Html.ValidationMessageFor(model => model.Director)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Botones-->
+                        <div class="row justify-content-center">
+                            <div class="col-12" style="text-align:center">
+                                <button type="submit" class="bi bi-plus-square btn btn-outline-primary mb-2"> Crear</button>
+                                @Html.ActionLink(" Atras", "Index", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary mb-2" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    }
+
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $("#Sociedad").change(function () {
+            var sociedad = $("#Sociedad").val();
+
+            llenarArea(sociedad)
+
+
+        });
+    });
+
+    function llenarArea(id) {
+
+        try {
+
+            $.ajax({
+                url: "llenarArea",
+                data: { 'id': id },
+                type: "post",
+                dataType: "html",
+                success: function (result) {
+
+                    if (result == undefined || result == null || result == "[]") {
+                        alertify.alert("No se encuentran Registros")
+
+                    } else {
+                        $("#Area").empty();
+                        var obj = jQuery.parseJSON(result);
+                        obj.forEach(function (valor, indice) {
+                            var fila = "<option value='" + valor.Value + "'>" + valor.Value + "</option>";
+                            $("#Area").append(fila);
+
+                        });
+
+                    }
+
+                }
+            });
+
+        } catch (e) { alert(e); }
+
+    }
+
+    jQuery(document).ready(function ($) {
+        $(document).ready(function () {
+            $('.mi-selector').select2();
+        });
+    });
+
+
+</script>
+<style type="text/css">
+    .select2-container .select2-selection--single {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        height: 38px;
+        -webkit-user-select: none;
+        padding-top: 5px;
+    }
+    .select2-container{
+        width:-webkit-fill-available !important;
+    }
+</style>
+

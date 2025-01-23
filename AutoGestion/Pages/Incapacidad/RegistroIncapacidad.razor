@@ -1,0 +1,507 @@
+﻿@page "/registroincapacidad"
+@using Autogestion.Shared.DTO.Incapacidad
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.Empleado
+@inject Microsoft.Extensions.Configuration.IConfiguration config
+@inject IConfiguration Configuration
+@using System.Text;
+@using System.Text.RegularExpressions;
+
+    
+    <MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Incapacidades</MudText>
+
+        @if (fechaInicioInvalida)
+        {
+            <MudAlert Color="Color.Error" Severity="Severity.Error" Icon="@Icons.Material.Filled.Error" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(false))">
+                La <b>Fecha de Inicio</b> de la incapacidad es anterior a la <b>Fecha de Ingreso</b>. <i>Debe comunicarse con gestión humana.</i>
+            </MudAlert>
+        }
+    <MudForm @ref="myForm">
+        
+        <MudCard Class="mb-5">
+         
+        <MudCardContent>
+        @if (_loading)
+
+        {
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+        }
+        else
+        {
+        <MudGrid>
+            <MudItem xs="12" sm="6">
+                    <MudDatePicker Label="Fecha de Inicio" Date="@Incapacidad.FechaInicio" Required="true" Class="campos-invalidos" DateChanged="@(date => CalcularDiasIncapacidad(true, date))"></MudDatePicker>
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                    <MudDatePicker Date="@Incapacidad.FechaFin" Label="Fecha Fin" Required="true" DateChanged="@(date => CalcularDiasIncapacidad(false, date))" />
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="Incapacidad.CantidadDias" Label="Días Incapacidad" Required="true" Disabled="true" />
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                    @if (ListTipoIncapacidad != null) {
+
+
+                    <MudSelect  T="int" Label="Tipo Incapacidad"  Placeholder="Seleccionar Tipo Incapacidad" Required="true"
+                                   Value="@Incapacidad.TipoIncapacidadId" ValueChanged="value => DoStuff(value, Incapacidad.EPSId)">
+
+                        <MudSelectItem Value="0"> Seleccionar</MudSelectItem>
+                    @foreach (var item in ListTipoIncapacidad)
+
+                    {
+                        <MudSelectItem Value="@(item.Id)" >@item.Nombre</MudSelectItem>
+                    }
+                    </MudSelect>
+
+                }
+            </MudItem>
+         <MudItem xs="4" sm="3">
+                    <MudTextField @bind-Value="Incapacidad.Diagnostico" Label="Codigo Diagnostico" Required="true" />
+              
+
+            </MudItem>
+            <MudItem xs="12" sm="3">
+
+                <MudButton Color="Color.Primary" OnClick="buscar">Buscar</MudButton>
+
+            </MudItem>
+            <MudItem xs="12" sm="6">
+                    <MudTextField @bind-Value="TextoDx" Label="Diagnostico" Required="true" ReadOnly="true" />
+
+
+            </MudItem>
+            <MudItem xs="12" sm="3">
+                @if (ListEps != null)
+                {
+
+                    <MudSelect T="int" Label="Eps" AnchorOrigin="Origin.BottomCenter" @bind-Value="Incapacidad.EPSId" Required="true">
+                        <MudSelectItem Value="0"> Seleccionar</MudSelectItem>
+                        @foreach (var item in ListEps)
+                        {
+                            <MudSelectItem Value="@(item.Id)"> @item.Nombre</MudSelectItem>
+
+                        }
+                    </MudSelect>
+                }
+            </MudItem>
+            <MudItem xs="12" sm="3">
+                        <MudSelect T="string" Label="Prorroga" Placeholder="Seleccionar" AnchorOrigin="Origin.BottomCenter" @bind-Value="Incapacidad.Prorroga" Required="true">
+                            
+                            <MudSelectItem T="string" Value="@("SI")"> SI</MudSelectItem>
+                            <MudSelectItem T="string" Value="@("NO")"> NO</MudSelectItem>
+
+                </MudSelect>
+                        
+                    </MudItem>
+            <MudItem xs="12" sm="6">
+                        <MudAlert Color="Color.Info" Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">
+                            Se entiende por <b>prórroga</b> de la <b>incapacidad</b>, la que se expide con posterioridad a la inicial, por la misma enfermedad o lesión, o por otra que tenga relación directa con esta, así se trate de código diferente de diagnóstico ,siempre y cuando entre una y otra no haya una interrupción mayor a treinta (30) días
+                        </MudAlert>
+                       
+                @if (mostrarAlertaHC)
+                    {
+                            <hr>
+                        <MudAlert Color="Color.Info" Severity="Severity.Info" Icon="@Icons.Material.Filled.Info" ShowCloseIcon="true" CloseIconClicked="(() => mostrarAlertaHC = false)">
+                                Recuerda que para esta incapacidad es obligatorio <b>anexar historia clínica</b>
+                        </MudAlert>
+                    }
+                </MudItem>
+
+        </MudGrid>
+        }
+        <MudGrid>
+            <MudItem xs="12">
+                <MudText Typo="Typo.h6">Anexos que debe adjuntar:</MudText>
+                    <MudAlert Color="Color.Info" Severity="Severity.Info" Icon="@Icons.Material.Filled.Info">
+                        Es importante que todos los documentos sean debidamente <b>escaneados</b> y enviados en formato PDF.<br /> Este proceso garantiza que la información sea claramente visible.
+                    </MudAlert> 
+                @if (ListAdjutosObligatorios != null)
+                {
+                        @if (Incapacidad.EPSId != null)
+                        {
+
+                            <MudTable Items="@ListAdjutosObligatorios">
+                                <HeaderContent>
+                            <MudTh>Nombre Anexo</MudTh>
+                            <MudTh>Anexo</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                              
+                               <MudTd>
+                                   <MudTextField  @bind-Value="context.Nombre" />
+                               </MudTd>
+                               <MudTd>
+                                        <MudTextField @bind-Value="context.adjunto" />
+                               </MudTd>
+                               <MudTd>
+                               @*<MudFileUpload T="string" @bind-Value="context.adjunto" Required="true" />*@
+                                        <InputFile id="@($"file-{context.Id}")"
+                                       OnChange="@(e => this.UploadFiles(e, context))"
+                                           accept=".pdf" 
+                                           hidden/>
+                                <MudFab HtmlTag="label" 
+                                    Color="@Color.Success"
+                                    Icon="@Icons.Filled.AttachFile"
+                                    Size="@Size.Small"
+                                        for="@($"file-{context.Id}")" />
+                                        </MudTd>
+                               
+                                </RowTemplate>
+                        
+                    </MudTable>
+                            <MudAlert Severity="Severity.Normal" ContentAlignment="HorizontalAlignment.Right">Límite de peso archivos: <b>@pesoMaximo MB</b></MudAlert>
+
+                    }
+                }
+            </MudItem>
+        </MudGrid>
+            </MudCardContent>
+            <MudCardActions Class="d-flex mt-3 justify-content-center">
+            <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="Guardar" Disabled="@_loading">Guardar</MudButton>
+            </MudCardActions>
+        </MudCard>
+        
+    </MudForm>
+
+
+
+@code {
+    private bool _loading = false;
+    private MudForm myForm;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    private IncapacidadDTO Incapacidad { get; set; } = new IncapacidadDTO();
+    private List<TiposIncapacidadDTO> ListTipoIncapacidad = new List<TiposIncapacidadDTO>();
+    private List<EpsDTO> ListEps = new List<EpsDTO>();
+    private List<AdjuntoDTO> ListAdjutosObligatorios = new List<AdjuntoDTO>();
+    private string TextoDx;
+    private int selecttipoincapacidad;
+    public int SelectedOption { get; set; }
+    private List<IBrowserFile> files = new();
+    private List<int> tiposAdjuntos = new List<int>();
+    private EmpleadoDTO empleado { get; set; }
+    private string fechaIngreso { get; set; }
+    private bool fechaInicioInvalida = false;  
+    private bool mostrarAlertaHC = false;
+    private long maxFileSize;
+    string pesoMaximo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _loading = true;
+            datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+            ListTipoIncapacidad = await Http.GetFromJsonAsync<List<TiposIncapacidadDTO>>($"api/Incapacidades/TipoIncapacidad");
+            ListEps = await Http.GetFromJsonAsync<List<EpsDTO>>($"api/Incapacidades/EPS");
+            pesoMaximo = await Http.GetFromJsonAsync<string>(($"api/ConsultarConfiguracion/{"LIMITEPESOARCHIVO"}"));
+
+            _loading = false;
+        }
+        catch (Exception ex)
+        {
+            _loading = false;
+            throw;
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task UploadFiles(InputFileChangeEventArgs e, AdjuntoDTO item)
+    {
+
+
+
+        // Verificar si el archivo es un PDF por su tipo MIME
+        if (e.File.ContentType.ToLower() == "application/pdf")
+        {
+            // Si es PDF, agregar a la lista y actualizar el nombre del adjunto
+            item.adjunto = string.Join(", ", e.GetMultipleFiles().Select(f => f.Name));
+            files.Add(e.File);
+            tiposAdjuntos.Add(item.Id);
+        }
+        else
+        {
+            // Si no es PDF, mostrar una alerta Sweet Alert al usuario
+            await JS.InvokeAsync<object>("Swal.fire", new
+            {
+                Title = "Archivo Incorrecto",
+                Text = "Por favor, sube solo archivos en formato PDF.",
+                Icon = "error"
+            });
+
+        }
+
+        if (ListAdjutosObligatorios.Count < files.Count || tiposAdjuntos.Distinct().Count() != tiposAdjuntos.Count)
+        {
+            foreach (var input in ListAdjutosObligatorios)
+            {
+                input.adjunto = "";
+            }
+            files.Clear();
+            tiposAdjuntos.Clear();
+            // Si no es PDF, mostrar una alerta Sweet Alert al usuario
+            await JS.InvokeAsync<object>("Swal.fire", new
+            {
+                Title = "Error",
+                Text = "Por favor, sube los archivos nuevamente.",
+                Icon = "error"
+            });
+        }
+
+
+
+
+    }
+    private async Task buscar()
+    {
+        // Verificar si el campo de diagnóstico está vacío
+        if (string.IsNullOrWhiteSpace(Incapacidad.Diagnostico))
+        {
+            await JS.ShowMessage("Error", "El campo de <b>código diagnóstico</b> no puede estar vacío", "error");
+            return;
+        }
+
+        _loading = true;
+        try
+        {
+            var diagnostico = await Http.GetFromJsonAsync<string[]>($"api/Incapacidades/Diagnostico/{Incapacidad.Diagnostico}");
+
+            if (diagnostico[0] == "1")
+
+            {
+                _loading = false;
+                await JS.ShowMessage("Consulta Diagnostico", "Diagnostico no existe", "error");
+                return;
+            }
+            _loading = false;
+            TextoDx = diagnostico[1];
+        }
+        catch (Exception ex)
+        {
+            // Manejar otros posibles errores aquí
+            _loading = false;
+            await JS.ShowMessage("Error", "Se produjo un error al buscar el diagnóstico", "error");
+        }
+    }
+
+    async Task DoStuff(int tipoIncapacidadId, int epsId)
+    {
+
+        Incapacidad.TipoIncapacidadId = tipoIncapacidadId;
+        Incapacidad.EPSId = epsId;
+
+        ListAdjutosObligatorios = await Http.GetFromJsonAsync<List<AdjuntoDTO>>($"api/Incapacidades/TipoAdjunto/{tipoIncapacidadId}/{epsId}");
+
+
+    }
+
+    private void CloseMe(bool value)
+    {
+        if (value)
+        {
+            fechaInicioInvalida = false;
+        }
+        else
+        {
+            fechaInicioInvalida = false;
+        }
+    }
+    private void CalcularDiasIncapacidad(bool isFechaInicio, DateTime? newDate)
+    {
+        if (isFechaInicio)
+        {
+            Incapacidad.FechaInicio = newDate;
+        }
+        else
+        {
+            Incapacidad.FechaFin = newDate;
+        }
+
+        if (Incapacidad.FechaInicio.HasValue && Incapacidad.FechaFin.HasValue)
+        {
+            // Calcula la diferencia entre las dos fechas
+            TimeSpan diferencia = Incapacidad.FechaFin.Value - Incapacidad.FechaInicio.Value;
+            int dias = (int)diferencia.TotalDays + 1;
+
+            // Actualiza el valor en el campo "Días Incapacidad"
+            Incapacidad.CantidadDias = dias.ToString();
+
+            mostrarAlertaHC = dias >= 3;
+        }
+    }
+
+    async Task Guardar()
+
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        fechaIngreso = await Http.GetStringAsync($"api/Incapacidades/ConsultarFechaIngreso/{empleado.Id}");
+
+        fechaIngreso = fechaIngreso.Trim('\"');
+        fechaInicioInvalida = false;
+        // Convierte fechaIngreso a DateTime
+        if (DateTime.TryParse(fechaIngreso, out DateTime fechaIngresoDateTime))
+        {
+
+            // Compara con la FechaInicio de la incapacidad
+            if (Incapacidad.FechaInicio < fechaIngresoDateTime)
+            {
+                fechaInicioInvalida = true;  // Marcar como inválido si FechaInicio < fechaIngreso
+                _loading = false;
+                StateHasChanged();
+                return;
+            }
+        }
+        else
+        {
+            _loading = false;
+            await JS.ShowMessage("Error", "No se pudo convertir la fecha de ingreso.", "error");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(Incapacidad.CantidadDias))
+        {
+            _loading = false;
+            await JS.ShowMessage("Validación", "Debe ingresar la fecha inicio y fecha fin", "error");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(TextoDx))
+        {
+            _loading = false;
+            await JS.ShowMessage("Validación", "Debe digitar el código de diagnostico y hacer clic en BUSCAR", "error");
+            return;
+        }
+
+        if (string.IsNullOrEmpty(Incapacidad.Prorroga))
+        {
+            _loading = false;
+            await JS.ShowMessage("Validación", "Debe seleccionar si es prórroga o No", "error");
+            return;
+        }
+
+        if (Incapacidad.EPSId == 0 || Incapacidad.TipoIncapacidadId == 0)
+        {
+            _loading = false;
+            await JS.ShowMessage("Validación", "Debe seleccionar una EPS y un tipo de incapacidad válidos.", "error");
+            return;
+        }
+
+
+
+        /*if (myForm.IsValid == false)
+            {
+            _loading = false;
+            await JS.ShowMessage("Validación", "Debe ingresar todos los datos obligatorios", "error");
+            return;
+        }*/
+
+
+
+        var frmData = new MultipartFormDataContent();
+
+        frmData.Add(new StringContent(datosempleado.Id.ToString()), "Incapacidades.EmpleadoId");
+        frmData.Add(new StringContent(Incapacidad.FechaInicio.Value.ToShortDateString()), "Incapacidades.FechaInicio");
+        frmData.Add(new StringContent(Incapacidad.FechaFin.Value.ToShortDateString()), "Incapacidades.FechaFin");
+        frmData.Add(new StringContent(Incapacidad.CantidadDias), "Incapacidades.CantidadDias");
+        frmData.Add(new StringContent(Incapacidad.Diagnostico), "Incapacidades.Diagnostico");
+        frmData.Add(new StringContent(Incapacidad.EPSId.ToString()), "Incapacidades.EPS");
+        frmData.Add(new StringContent(Incapacidad.TipoIncapacidadId.ToString()), "IncapacidadAdjuntos.TipoIncapacidad");
+        frmData.Add(new StringContent(Incapacidad.Prorroga), "Incapacidades.Prorroga");
+        frmData.Add(new StringContent(files.Count.ToString()), "Incapacidades.CantidadAdjuntos");
+
+        for (int i = 0; i < files.Count; i++)
+        {
+            string maxSizeConfig = await Http.GetFromJsonAsync<string>(($"api/ConsultarConfiguracion/{"LIMITEPESOARCHIVO"}"));
+
+            // Intenta convertir la configuración a long
+            if (long.TryParse(maxSizeConfig, out long result))
+            {
+                maxFileSize = result * 1024 * 1024;
+            }
+
+            if (files[i].Size > maxFileSize)
+            {
+                _loading = false;
+                await JS.ShowMessage($"Error", $"El archivo {files[i].Name} supera el tamaño permitido de carga | <b>{maxSizeConfig}MB</b>", "");
+                foreach (var input in ListAdjutosObligatorios)
+                {
+                    input.adjunto = "";
+                }
+                files.Clear();
+                tiposAdjuntos.Clear();
+                return;
+            }
+
+            string fileName = files[i].Name;
+            // Normaliza el nombre del archivo para descomponer los caracteres acentuados
+            string normalizedFileName = fileName.Normalize(NormalizationForm.FormD);
+
+            // Regex para eliminar los caracteres no deseados (incluyendo los diacríticos después de la normalización)
+            string cleanFileName = Regex.Replace(normalizedFileName, @"[^a-zA-Z0-9\s.!@$%^&*()\-\/]+", "");
+
+            /*const long MaxFileSize = 10 * 1024 * 1024; // 10 MB en bytes*/
+            frmData.Add(new StreamContent(files[i].OpenReadStream(maxFileSize)), "Adjunto" + i, cleanFileName);
+
+            
+            frmData.Add(new StringContent(tiposAdjuntos[i].ToString()), "TipoAdjunto" + i);
+        }
+
+        if (ListAdjutosObligatorios.Count != files.Count || files.Any(f => f == null) || tiposAdjuntos.Distinct().Count() != tiposAdjuntos.Count)
+        {
+            _loading = false;
+
+            var maxArchivos = "";
+
+            if (ListAdjutosObligatorios.Count < files.Count || tiposAdjuntos.Distinct().Count() != tiposAdjuntos.Count)
+            {
+                maxArchivos = "<br><h5>Ha ocurrido un problema con los adjuntos, recarga la página y vuelve a intentarlo.</h5>";
+
+            }
+            await JS.ShowMessage("Error", $"Debe adjuntar  los {ListAdjutosObligatorios.Count} documentos. {maxArchivos}", "error");
+            return;
+        }
+
+
+        
+        /*using var response = await Http.PostAsync("api/incapacidadess", frmData);*/
+
+        var response = await Http.PostAsync($"api/incapacidadess", frmData);
+
+
+
+        if (response.IsSuccessStatusCode)
+        {
+       
+            var resultado = await response.Content.ReadFromJsonAsync<string>();
+            if (resultado == "true")
+
+            {
+                await JS.ShowMessage("Datos Guardados", "se han guardado los datos", "success");
+                Incapacidad = new IncapacidadDTO();
+                ListAdjutosObligatorios = new List<AdjuntoDTO>();
+                files.Clear();
+                tiposAdjuntos.Clear();
+            } else
+
+            {
+                await JS.ShowMessage($"Error", $"No se ha podido guardar  {resultado}", "error");
+
+            }  
+
+        }
+        else
+
+        {
+            await JS.ShowMessage("Error", $"No se ha podido guardar {response.Content}", "error");
+
+        }
+
+        _loading = false;
+        StateHasChanged();
+    }
+    }

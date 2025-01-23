@@ -1,0 +1,130 @@
+﻿@model Adm_AutoGestion.Models.Vacaciones
+
+@{
+    ViewBag.Title = "pruebas";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<h2>pruebas</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+      <div class="container">
+        <div class="row justify-content-start">
+            <div class="col-4">
+
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.EmpleadoId)
+                </div>
+                <div class="editor-field">
+                    @*@Html.EditorFor(model => model.EmpleadoId)*@
+                    @Html.TextBox("EmpleadoId", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                    @Html.ValidationMessageFor(model => model.EmpleadoId)
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Fecha)
+                </div>
+                <div class="editor-field">
+                    @*@Html.EditorFor(model => model.Fecha)*@
+                    @Html.TextBox("Fecha", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                    @Html.ValidationMessageFor(model => model.Fecha)
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.FechaInicial)
+                </div>
+                <div class="editor-field">
+                    @*@Html.EditorFor(model => model.FechaInicial)*@
+                    @Html.TextBox("FechaInicial", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                    @Html.ValidationMessageFor(model => model.FechaInicial)
+                </div>
+            </div>
+        </div>
+     </div>
+
+        
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FechaFin)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.FechaFin)
+            @Html.ValidationMessageFor(model => model.FechaFin)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CantDiasSolicitados)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CantDiasSolicitados)
+            @Html.ValidationMessageFor(model => model.CantDiasSolicitados)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CantDiasPendientes)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.CantDiasPendientes)
+            @Html.ValidationMessageFor(model => model.CantDiasPendientes)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.VacacionesPagadas)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VacacionesPagadas)
+            @Html.ValidationMessageFor(model => model.VacacionesPagadas)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.VacacionesAdelantadas)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.VacacionesAdelantadas)
+            @Html.ValidationMessageFor(model => model.VacacionesAdelantadas)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EstadoId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EstadoId)
+            @Html.ValidationMessageFor(model => model.EstadoId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Adjunto)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Adjunto)
+            @Html.ValidationMessageFor(model => model.Adjunto)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IdModifica)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IdModifica)
+            @Html.ValidationMessageFor(model => model.IdModifica)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+
+<br />
+<br />
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

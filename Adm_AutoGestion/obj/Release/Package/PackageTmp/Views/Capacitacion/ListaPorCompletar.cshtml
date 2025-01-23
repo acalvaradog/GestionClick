@@ -1,0 +1,457 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Capacitacion>
+
+@{
+    ViewBag.Title = "Actas Abiertas";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="card">
+    <div class="card-header colorTitulo mb-3"><h5>Lista de acción de formación</h5></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped" id="tbl_registro_cap">
+                <thead >
+                    <tr>
+                        <th style="text-align:center">
+                            No.
+                        </th>
+                        <!--<th>-->
+                        @*@Html.DisplayNameFor(model => model.Empleado.Nombres)*@
+                        <!--Nombre Empleado
+                        </th>-->
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.Nombre)*@
+                            Nombre acción formativa
+                        </th>
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.FechaCapacitacion)*@
+                            Fecha
+                        </th>
+                        <!--<th>-->
+                        @* @Html.DisplayNameFor(model => model.FechaRegistro)*@
+                        <!--Fecha de Creación
+                        </th>-->
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.HoraInicio)*@
+                            Hora Inicio
+                        </th>
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.HoraFin)*@
+                            Hora Fin
+                        </th>
+                        <!--<th>-->
+                        @*            @Html.DisplayNameFor(model => model.temas)*@
+                        <!--Temas a Desarrollar
+                        </th>-->
+                        <th style="text-align:center">Registro Asistentes</th>
+                        <th style="text-align:center">Ver Asistentes</th>
+                        @*<th style="text-align:center">Pendientes Firma</th>
+                            <th style="text-align:center">Enviar Correo</th>*@
+                        <th style="text-align:center">QR Asistencia</th>
+                        <th style="text-align:center">QR Evaluaciones</th>
+                        @*<th style="text-align:center">Añadir Expositores</th>*@
+                        <th style="text-align:center">Editar</th>
+                        <th style="text-align:center">Cerrar acción formativa</th>
+
+                        @*<th style="text-align:center">Copiar</th>
+                            <th style="text-align:center">Enviar Encuesta</th>
+                            <th style="text-align:center">Link Expositores</th>
+                            <th style="text-align:center">Link Preinscripcion</th>*@
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td>
+                                @* @Html.DisplayFor(modelItem => item.FechaCapacitacion)*@
+                                @Convert.ToDateTime(item.FechaCapacitacion).ToString("dd/MM/yyyy")
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FechaRegistro)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoraInicio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoraFin)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.temas)
+                                </td>*@
+                            <td style="text-align:center">
+                                @*@Html.ActionLink("Registrar Entrega", "RegistrarEntrega", "DetalleEntregaEPP", new { id = item.Id }, null)*@
+                                <a href='@Url.Action("RegistrarCapacitacion", "DetalleCapacitacion", new { id = item.Id }, null)'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-calendar2-week" viewBox="0 0 24 24">
+                                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" />
+                                        <path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
+                                    </svg>
+                                    @*<img src='@Url.Content("~/Contents/image/anadir-evento.png" )' />*@
+                                </a>
+
+                            </td>
+                            <td style="text-align:center">
+                                <a href='@Url.Action("DetallesCapacitacion", "DetalleCapacitacion", new { id = item.Id }, null)'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 24 24">
+                                        <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+                                    </svg>
+                                    @*<img src='@Url.Content("~/Contents/image/entrega-realizada.png")' />*@
+                                </a>
+                            </td>
+                            <!--<td style="text-align:center">
+                                <a href='@Url.Action("PendientePorFirmar", "Capacitacion", new { id = item.Id }, null)' data-modal2=''>
+                                    <img src="~/Contents/image/firma.png" alt="PendientesPorFirmar" />
+
+                                </a>
+                            </td>
+                            <td style="text-align:center">
+
+                                <a href="javascript:EnviarEmailFirmaCAP('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                                    <img src="~/Contents/image/sobre.png" alt="EnviarEmailFirma" />
+                                </a>
+                            </td>-->
+                            <td style="text-align:center">
+                                <a href="javascript:GenerarQR('@Html.DisplayFor(modelItem => item.Id)', '@Html.DisplayFor(modelItem => item.Nombre)', '@Html.DisplayFor(modelItem => item.Modalidad)');" >
+                                    <i>
+                                        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M9.18824 3.74722C9.18824 3.33438 8.84724 3 8.42724 3H8.42624L6.79724 3.00098C4.60624 3.00294 2.82324 4.75331 2.82324 6.90279V8.76201C2.82324 9.17386 3.16424 9.50923 3.58424 9.50923C4.00424 9.50923 4.34624 9.17386 4.34624 8.76201V6.90279C4.34624 5.57604 5.44624 4.4964 6.79824 4.49444L8.42724 4.49345C8.84824 4.49345 9.18824 4.15907 9.18824 3.74722ZM17.1931 3.00029H15.6001C15.1801 3.00029 14.8391 3.33468 14.8391 3.74751C14.8391 4.15936 15.1801 4.49277 15.6001 4.49277H17.1931C18.5501 4.49277 19.6541 5.57535 19.6541 6.90603V8.7623C19.6541 9.17415 19.9951 9.50952 20.4151 9.50952C20.8361 9.50952 21.1761 9.17415 21.1761 8.7623V6.90603C21.1761 4.75165 19.3901 3.00029 17.1931 3.00029ZM9.23804 6.74266H14.762C15.367 6.74266 15.948 6.98094 16.371 7.40554C16.797 7.83407 17.033 8.40968 17.032 9.00883V10.2542C17.027 10.4003 16.908 10.5189 16.759 10.5229H7.23904C7.09104 10.518 6.97204 10.3993 6.96904 10.2542V9.00883C6.95804 7.76837 7.97404 6.75541 9.23804 6.74266Z" fill="currentColor"></path>
+                                            <path d="M22.239 12.0413H1.762C1.342 12.0413 1 12.3756 1 12.7885C1 13.2003 1.342 13.5337 1.762 13.5337H2.823V17.0972C2.823 19.2467 4.607 20.9971 6.798 20.999L8.427 21C8.848 21 9.188 20.6656 9.189 20.2528C9.189 19.841 8.848 19.5066 8.428 19.5066L6.8 19.5056C5.447 19.5036 4.346 18.424 4.346 17.0972V13.5337H6.969V14.5251C6.959 15.7656 7.974 16.7795 9.238 16.7913H14.762C16.027 16.7795 17.042 15.7656 17.032 14.5251V13.5337H19.655V17.0933C19.655 18.425 18.551 19.5066 17.194 19.5066H15.601C15.18 19.5066 14.839 19.841 14.839 20.2528C14.839 20.6656 15.18 21 15.601 21H17.194C19.39 21 21.177 19.2487 21.177 17.0933V13.5337H22.239C22.659 13.5337 23 13.2003 23 12.7885C23 12.3756 22.659 12.0413 22.239 12.0413Z" fill="currentColor"></path>
+                                        </svg>
+                                    </i>
+
+                                    @*<img src="~/Contents/image/codigo-qr.png" alt="GenerarQR" />*@
+                                </a>
+
+                            </td>
+                            <td style="text-align:center">
+                                <a href="javascript:GenerarQREnlaces('@Html.DisplayFor(modelItem => item.Nombre)', '@Html.DisplayFor(modelItem => item.EvaluacionConocimiento)', '@Html.DisplayFor(modelItem => item.EncuestaSatisfaccion)')" >
+                                    <i>
+                                        <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M9.18824 3.74722C9.18824 3.33438 8.84724 3 8.42724 3H8.42624L6.79724 3.00098C4.60624 3.00294 2.82324 4.75331 2.82324 6.90279V8.76201C2.82324 9.17386 3.16424 9.50923 3.58424 9.50923C4.00424 9.50923 4.34624 9.17386 4.34624 8.76201V6.90279C4.34624 5.57604 5.44624 4.4964 6.79824 4.49444L8.42724 4.49345C8.84824 4.49345 9.18824 4.15907 9.18824 3.74722ZM17.1931 3.00029H15.6001C15.1801 3.00029 14.8391 3.33468 14.8391 3.74751C14.8391 4.15936 15.1801 4.49277 15.6001 4.49277H17.1931C18.5501 4.49277 19.6541 5.57535 19.6541 6.90603V8.7623C19.6541 9.17415 19.9951 9.50952 20.4151 9.50952C20.8361 9.50952 21.1761 9.17415 21.1761 8.7623V6.90603C21.1761 4.75165 19.3901 3.00029 17.1931 3.00029ZM9.23804 6.74266H14.762C15.367 6.74266 15.948 6.98094 16.371 7.40554C16.797 7.83407 17.033 8.40968 17.032 9.00883V10.2542C17.027 10.4003 16.908 10.5189 16.759 10.5229H7.23904C7.09104 10.518 6.97204 10.3993 6.96904 10.2542V9.00883C6.95804 7.76837 7.97404 6.75541 9.23804 6.74266Z" fill="currentColor"></path>
+                                            <path d="M22.239 12.0413H1.762C1.342 12.0413 1 12.3756 1 12.7885C1 13.2003 1.342 13.5337 1.762 13.5337H2.823V17.0972C2.823 19.2467 4.607 20.9971 6.798 20.999L8.427 21C8.848 21 9.188 20.6656 9.189 20.2528C9.189 19.841 8.848 19.5066 8.428 19.5066L6.8 19.5056C5.447 19.5036 4.346 18.424 4.346 17.0972V13.5337H6.969V14.5251C6.959 15.7656 7.974 16.7795 9.238 16.7913H14.762C16.027 16.7795 17.042 15.7656 17.032 14.5251V13.5337H19.655V17.0933C19.655 18.425 18.551 19.5066 17.194 19.5066H15.601C15.18 19.5066 14.839 19.841 14.839 20.2528C14.839 20.6656 15.18 21 15.601 21H17.194C19.39 21 21.177 19.2487 21.177 17.0933V13.5337H22.239C22.659 13.5337 23 13.2003 23 12.7885C23 12.3756 22.659 12.0413 22.239 12.0413Z" fill="currentColor"></path>
+                                        </svg>
+                                    </i>
+                                </a>
+                            </td>
+                            <!--<td style="text-align:center">
+                                                    @*          @Html.ActionLink("Añadir", "Expositores", new { Id=item.Id}, new { data_modalExposi = "" })*@
+                                                    <!--<a href='@Url.Action("Expositores", "Capacitacion", new { id = item.Id }, null)' data-modalExposi=''>
+                                    <img src='@Url.Content("~/Contents/image/anadir.png")' />
+                                </a>
+                            </td>
+                                -->
+                            <td style="text-align:center">
+                                @if (item.Estado == "Cerrado")
+                                {
+                                    <a onclick="return false" href='@Url.Action("Edit", "Capacitacion", new { Id = item.Id}, null)' class="disabled">
+                                        <svg   xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" class="bi bi-building-fill-lock" viewBox="0 0 24 24">
+                                            <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7.764a3 3 0 0 0-4.989 2.497 2 2 0 0 0-.743.739H6.5a.5.5 0 0 0-.5.5V16H3a1 1 0 0 1-1-1zm2 1.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3 0v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5m3.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zM4 5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M7.5 5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5M4.5 8a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm2.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5" />
+                                            <path d="M9 13a1 1 0 0 1 1-1v-1a2 2 0 1 1 4 0v1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm3-3a1 1 0 0 0-1 1v1h2v-1a1 1 0 0 0-1-1" />
+                                           
+                                        </svg>
+                                        @*<img src="~/Contents/image/editar2.png" alt="AnularActa" class="disabled" />*@
+                                    </a>
+                                }
+                                else
+                                {
+                            <a href='@Url.Action("Edit", "Capacitacion", new { Id = item.Id }, null)'>
+                                <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">                                    
+                                <path d="M11.4925 2.78906H7.75349C4.67849 2.78906 2.75049 4.96606 2.75049 8.04806V16.3621C2.75049 19.4441 4.66949 21.6211 7.75349 21.6211H16.5775C19.6625 21.6211 21.5815 19.4441 21.5815 16.3621V12.3341" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                    
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.82812 10.921L16.3011 3.44799C17.2321 2.51799 18.7411 2.51799 19.6721 3.44799L20.8891 4.66499C21.8201 5.59599 21.8201 7.10599 20.8891 8.03599L13.3801 15.545C12.9731 15.952 12.4211 16.181 11.8451 16.181H8.09912L8.19312 12.401C8.20712 11.845 8.43412 11.315 8.82812 10.921Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                    <path d="M15.1655 4.60254L19.7315 9.16854" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>                                </svg>
+
+                                @*<img src="~/Contents/image/editar.png" alt="AnularActa" />*@
+                            </a>
+                                }
+                            </td>
+
+                            <td style="text-align:center">
+                                <a href='@Url.Action("CerrarCap", "Capacitacion", new { id = item.Id }, null)' data-modalCerrarCap=''>
+                                    <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M7.7688 8.71387H16.2312C18.5886 8.71387 20.5 10.5831 20.5 12.8885V17.8254C20.5 20.1308 18.5886 22 16.2312 22H7.7688C5.41136 22 3.5 20.1308 3.5 17.8254V12.8885C3.5 10.5831 5.41136 8.71387 7.7688 8.71387ZM11.9949 17.3295C12.4928 17.3295 12.8891 16.9419 12.8891 16.455V14.2489C12.8891 13.772 12.4928 13.3844 11.9949 13.3844C11.5072 13.3844 11.1109 13.772 11.1109 14.2489V16.455C11.1109 16.9419 11.5072 17.3295 11.9949 17.3295Z" fill="currentColor"></path>
+                                        <path opacity="0.4" d="M17.523 7.39595V8.86667C17.1673 8.7673 16.7913 8.71761 16.4052 8.71761H15.7447V7.39595C15.7447 5.37868 14.0681 3.73903 12.0053 3.73903C9.94257 3.73903 8.26594 5.36874 8.25578 7.37608V8.71761H7.60545C7.20916 8.71761 6.83319 8.7673 6.47754 8.87661V7.39595C6.4877 4.41476 8.95692 2 11.985 2C15.0537 2 17.523 4.41476 17.523 7.39595Z" fill="currentColor"></path>
+                                    </svg>
+                                    @*<img src='@Url.Content("~/Contents/image/secure-data.png")' />*@
+                                </a>
+                            </td>
+
+                            <!--<td style="text-align:center">
+                                <a href='@Url.Action("CopiarCap", "Capacitacion", new { id = item.Id}, null)'>
+                                    <img src='@Url.Content("~/Contents/image/copiar.png")' />
+
+                                </a>
+                            </td>
+                            <td class="text-center">-->
+                            @* if(item.EnvioEncuesta == "SI"){
+                                 <a href="javascript:ConfirmarEnc(@Html.DisplayFor(modelItem => item.Id));"style="color:green;">Reenviar Encuesta</a>
+                                }else{
+                                 <a href="javascript:ConfirmarEnc(@Html.DisplayFor(modelItem => item.Id));" style="color:#FF0000;">Enviar Encuesta</a>
+                                }*@
+
+                            <!--<a href='@Url.Action("MostrarListaEncuestas", "Capacitacion", new { id = item.Id, page = 1 }, null)' data-modalEncuestas=''>
+                                    <img src="~/Contents/image/EnviarEncuesta.png" alt="Enviar Encuesta" style="font-size:16px" />
+                                </a>
+
+                            </td>
+                            <td class="text-center">
+                                <a href='@Url.Action("LoginExpositor", "Capacitacion", null, null)'>
+                                    <img src='@Url.Content("~/Contents/image/copiar.png")' />
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href='@Url.Action("Preinscripcion", "Capacitacion", new { id = item.Id}, null)'>
+                                    <img src='@Url.Content("~/Contents/image/buscador.png")' />
+                                </a>
+                            </td>-->
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="popupqr" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="TituloQR" class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="ItemPreview" src="" style="height:200px;width:200px" />
+                <p><a id="Label1" target="_blank" href="">Ir al enlace</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" data-bs-dismiss="modal"> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="popupqre" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="TituloQRE" class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight:bold">Evaluación Conocimientos</p>
+                <img id="QR1" src="" style="height:200px;width:200px" />
+                <p><a id="Url1" target="_blank" href="">Ir al enlace</a></p>
+                <hr />
+                <p style="font-weight:bold">Encuesta de Satisfacción</p>
+                <img id="QR2" src="" style="height:200px;width:200px" />
+                <p><a id="Url2" target="_blank" href="">Ir al enlace</a></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" data-bs-dismiss="modal"> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_CerrarCap">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h5 class="modal-title text-white">Cerrar Capacitación </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalCerrarCap">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Exposi">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Añadir Expositores </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalExposi">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Lista_Encuestas">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Encuestas </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalEncuestas">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade in" id="modal_Pendienteporfirma">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pendientes por Firmar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade in" id="modal_Pendienteporfirma">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pendientes por Firmar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function GenerarQREnlaces(titulo, url1, url2) {
+        $('#TituloQRE').text(titulo);
+        $('#popupqre').modal('show');
+
+        document.getElementById("QR1").src = "../../Contents/image/Spinner.gif";
+        document.getElementById("QR2").src = "../../Contents/image/Spinner.gif";
+
+        $('#Url1').attr('href', url1);
+        $('#Url2').attr('href', url2);
+
+
+        try {
+            $.ajax({
+                url: "ObtenerQRE",
+                data: { 'url1': url1},
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("QR1").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+        try {
+            $.ajax({
+                url: "ObtenerQRS",
+                data: { 'url2': url2 },
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("QR2").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+    function GenerarQR(id, titulo, modalidad) {
+        $('#TituloQR').text(titulo);
+        $('#popupqr').modal('show');
+
+        if (modalidad == "4" || modalidad == "5") {
+            $('#Label1').text('Esta sesión no requiere QR');
+            document.getElementById("ItemPreview").src = "";
+            $("#ItemPreview").hide();
+        } else {
+            $("#ItemPreview").show();
+            document.getElementById("ItemPreview").src = "../../Contents/image/Spinner.gif";
+            var url = new URL(window.location.href);
+            var pathname = url.pathname.substring(0, url.pathname.lastIndexOf('/') + 1);
+            var newUrl = url.origin + pathname;
+            $('#Label1').attr('href',newUrl + "FirmaAsistencia/" + id);
+
+            try {
+                $.ajax({
+                    url: "ObtenerQr",
+                    data: { 'id': id, 'url': newUrl },
+                    type: "post",
+                    success: function (e) {
+                        if (e != null) {
+                            document.getElementById("ItemPreview").src = "data:image/png;base64," + e;
+                        }
+                    },
+                    error: function (xhr, status, error) { alert(error); }
+                });
+            }
+            catch (e) { alert(e); }
+        }
+
+
+
+    }
+
+    function EnviarEmailFirmaCAP(id) {
+
+        $('#popupqr').modal('show');
+        document.getElementById("ItemPreview").src = "~/Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: '@Url.Action("EnviarEmailFirma", "Capacitacion")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    $('#popupqr').modal('hide');
+                    if (e != null) {
+
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+</script>

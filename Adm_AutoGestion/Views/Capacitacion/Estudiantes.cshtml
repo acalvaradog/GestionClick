@@ -1,0 +1,54 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+
+@{
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="card">
+    <div class="card-header"><h5 class="colorTitulo">Subir archivo estudiantes</h5></div>
+
+    <div class="card-body">
+
+        @if (!Model.DirigidoASelect.Contains("6"))
+        {
+            <div class="row">
+                <b class="colorGrisOscuro">@Model.Nombre</b>
+                <h6>Esta sesión no está dirigida a estudiantes.</h6>
+            </div>
+        }
+        else
+        {
+            using (Html.BeginForm("Estudiantes", "Capacitacion", new { id = ViewBag.Id }, FormMethod.Post, new { @enctype = "multipart/form-data" }))
+            {
+                <label class="bi bi-file-binary btn btn-outline-primary mb-2 mt-3">
+                    <span id="labelFile">Seleccionar Archivo</span>
+                    <input type="file" id="file" name="file" hidden onchange="mostrarNombreArchivo();" />
+                </label>
+                <div class="form-group">
+                    <button type="submit" class="bi bi-upload btn btn-outline-primary mb-2"> Guardar</button>
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        var msg = '@ViewBag.Message';
+
+        if (msg != "") {
+            alertify.alert(msg);
+        }
+    });
+
+    function mostrarNombreArchivo() {
+        var file = $("#file").get(0).files;
+        var archivo = file[0];
+        var texto = document.getElementById('labelFile');
+
+        texto.innerHTML = " Archivo subido: " + archivo.name;
+
+    }
+</script>

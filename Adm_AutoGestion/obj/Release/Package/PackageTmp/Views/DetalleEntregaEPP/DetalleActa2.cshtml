@@ -1,0 +1,140 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleEntregaEPP>
+
+@{
+    ViewBag.Title = "DetalleActa2";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<h2 class="colorTitulo text-center mt-3">Detalle Acta de Entrega de Elementos (@Model.Count())</h2>
+
+<div class="container">
+    <div class="row justify-content-start">
+        <div class="col-8">
+            <div class="row mb-2">
+                <label for="inputEmail3" class="col-sm-2 col-form-label">Empleado</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" value="@ViewBag.Empleado" disabled>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" value="@Convert.ToDateTime(@ViewBag.Fecha).ToString("dd/MM/yyyy")" disabled>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Area</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" value="@ViewBag.Area " disabled>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Sociedad</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" value="@ViewBag.Sociedad" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <img id="ItemPreview" src="data:image/png;base64,@ViewBag.Codigo" style="height:200px;width:200px" />
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover table-sm mt-2" id="Exportar_a_Excel">
+    <thead>
+        <tr class="fondoDegradado text-white align-middle text-center">
+            <th>
+                N° Entrega
+            </th>
+            <th>
+                Elemento de Proteccion Personal
+            </th>
+            <th>
+                Documento
+            </th>
+            <th>
+                Empleado
+            </th>
+            <th>
+                Cantidad
+            </th>
+            <th>
+                Motivo Entrega
+            </th>
+            <th>
+                Fecha Registro
+            </th>
+            <th>
+                Fecha Firma
+            </th>
+            <th>
+                Fecha Fin
+            </th>
+            <th>
+                Observacion
+            </th>
+            <th>
+                Estado
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="text-center">
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroEntrega)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ElementosProtecionPersonal.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Documento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MotivoEntrega)
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @if (item.FechaFirma != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.FechaFirma)}
+                </td>
+                <td>
+                    @if (item.FechaFin != null)
+                    {
+                        @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")}
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacion)
+                </td>
+                <td>
+                    @if (item.Estado == "Anulado")
+                    {
+                        <div style="color:#FF0000;">
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    }
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

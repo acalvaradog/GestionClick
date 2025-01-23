@@ -1,0 +1,158 @@
+﻿@model Adm_AutoGestion.Models.TurnoDisponibilidad
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@{var ListItems = new List<ListItem> { 
+        new ListItem { Text = "SI", Value = "SI" }, 
+        new ListItem { Text = "NO", Value = "NO" } 
+        };
+}
+
+
+<div class="container">
+<br />
+<br />
+<h2 style="text-align:center">Grabar Turno de Disponibilidad</h2>
+<br />
+<br />
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+
+
+<div class="row justify-content-start">
+<div class="col-3" style="text-align:center">
+<img src="~/Contents/image/cita.png" >
+@*<br />*@
+<div class="alert alert-success">Recuerde que la fecha de cierre de nomina es el 15 de cada mes. Los registros que se realicen por fuera de la fecha limite se tendran en cuenta en la nomina del siguiente mes.</div>
+</div>
+<div class="col-9">
+<div class="card ">
+<div class="card-header text-white" style="background-color:#0B9ACF">Datos Basicos del Empleado</div>
+<div class="card-body">
+   <div class="row justify-content-start">
+     <div class="col-6">
+        <label for="sospechoso">Trabajador:</label>
+            @*@Html.TextBox("TrabajadorId", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" } )*@
+            @Html.DropDownList("TrabajadorId", new SelectList( ViewBag.Empleado, "Id", "Nombres"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker" ,data_live_search="true"} )
+            @Html.ValidationMessageFor(model => model.TrabajadorId)
+       
+     </div>
+    <div class="col-6">
+        <label for="sospechoso">Fecha Inicio:</label>
+            @Html.TextBox("FechaInicio", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+            @Html.ValidationMessageFor(model => model.FechaInicio)
+        
+     </div>
+    </div>
+  <br />
+    <div class="row justify-content-start">
+     <div class="col-6">
+        <label for="sospechoso">Fecha Fin:</label>
+            @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+            @Html.ValidationMessageFor(model => model.FechaFin)
+         
+     </div>
+    <div class="col-6">
+        <label for="sospechoso">Hora Inicio:</label>
+            @Html.TextBox("HoraInicio", null, htmlAttributes: new { @class = "form-control", type = "time"})
+            @Html.ValidationMessageFor(model => model.HoraInicio)
+         
+     </div>
+    </div>
+  <br />
+    <div class="row justify-content-start">
+     <div class="col-6">
+        <label for="sospechoso">Hora Fin:</label>
+            @Html.TextBox("HoraFin", null, htmlAttributes: new { @class = "form-control", type = "time"})
+            @Html.ValidationMessageFor(model => model.HoraFin)
+         
+     </div>
+    <div class="col-6">
+        <label for="sospechoso">Extras:</label>
+            @Html.DropDownListFor(model => model.Extras, new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", id = "txtExtras" })
+            @Html.ValidationMessageFor(model => model.Extras)
+         
+     </div>
+    </div>
+  <br />
+     <div class="row justify-content-start">
+     <div class="col-6" id="Cantidad" >
+        <label for="sospechoso">Cantidad Extras:</label>
+            @Html.TextBox("CantExtras", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", Type = "Number", id = "txt_cantidadext", @Value = "" } )
+            @Html.ValidationMessageFor(model => model.CantExtras, null, new { @class = "text-danger" })
+         
+     </div>
+        <br />
+        @Html.TextBox("Estado", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", Value="Registrado", type="hidden"} )
+    </div>
+  <br />
+<br />
+     
+
+
+     
+
+    </div>
+  </div>
+<br />
+<br />
+<div class="row justify-content-center">
+     <div class="col-4 " style="text-align:end">
+        <input type="submit" value="Crear" class="btn" style="background-color:#96D44D; color:white" id="btn_guardar"/>
+     </div>
+     <div class="col-4">
+        @Html.ActionLink("Atras", "Index", null, new { @class="btn", style="background-color:#96D44D; color:white" })
+        
+     </div>
+</div>
+
+</div>
+</div>
+<br />
+<br />
+
+    </fieldset>
+}
+
+
+</div>
+
+<script>
+
+    if ($("#txtExtras").val() == "SI") {
+        $("#Cantidad").show();
+    } else { $("#Cantidad").hide(); }
+    
+    $(document).ready(function () {
+
+
+
+        $("#txtExtras").change(function () {
+            var Extras = $("#txtExtras").val();
+            if (Extras == "SI") {
+                $("#Cantidad").show();
+                alertify.alert('Recuerde que debe seguir reportando las horas extras mediante el formato fisico.')
+            } else {
+                $("#Cantidad").hide();
+                $("#txt_cantidadext").val("0");
+                
+            }
+
+        });
+
+        
+        
+        
+
+
+
+    });
+
+</script>

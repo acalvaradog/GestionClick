@@ -1,0 +1,295 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+
+@{
+    Adm_AutoGestion.Models.Capacitacion Item = ViewBag.Capacitacion;
+    }
+<div class="container" style="width:90%">
+    <br />
+  <div class="form-row">
+    <div class="form-group col-md-12">
+        <div class="card ">
+            <div class="card-header">
+                  <div class="col-12"  style="text-align:center">
+                        <h2>@Item.Nombre</h2>
+                            <br />
+                        </div>
+              </div>
+                <div class="card-body">
+                    <div class="row justify-content-start">
+                      
+                        
+                        <div class="col-2">
+                            <label>Nmr Capacitación</label>
+                            <input class="form-control" type="text" value="@Item.Id" disabled/>
+
+                        </div>
+                        <div class="col-4">
+                            <label>Fecha de creación</label>
+                            <input class="form-control" type="text" value="@Item.FechaRegistro" disabled/>
+
+                        </div>
+                        <div class="col-4">
+                            <label>Fecha de la Capaciación</label>
+                            <input class="form-control" type="text" value="@Convert.ToDateTime(Item.FechaCapacitacion).ToString("dd/MM/yyyy")" disabled/>
+
+                        </div>
+                        <div class="col-2">
+                            <label>Estado Actual</label>
+                            <input class="form-control" type="text" value="@Item.Estado" disabled/>
+
+                        </div>                       
+
+                    </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        
+                        <div class="col-2">
+                            <label>Hora de Inicio</label>
+                            <input class="form-control" type="text" value="@Item.HoraInicio" disabled/>
+                        </div>
+                        <div class="col-8">
+                           <label>Creador de la Capacitacion</label>
+                            <input class="form-control" type="text" value="@Item.Empleado.Nombres" disabled/>
+                        </div>
+                        <div class="col-2">
+                            <label>Hora de Fin</label>
+                            <input class="form-control" type="text" value="@Item.HoraFin" disabled/>
+                        </div>
+                        
+                        </div>
+                     <br />
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <label>Sede</label>
+                            <input class="form-control" type="text" value="@Item.Sede.Nombre" disabled/>
+                        </div>
+                        <div class="col-6">
+                            <label>Empresa</label>
+                            <input class="form-control" type="text" value="@Item.Empresa2.Descripcion" disabled/>
+                        </div>
+                        </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <label>Objetivo</label>
+                            <input class="form-control" type="text" value="@Item.Objetivo" disabled/>
+                        </div>
+                        <div class="col-6">
+                            <label>Lugar o Ciudad</label>
+                            <input class="form-control" type="text" value="@Item.LugarlCiudad" disabled/>
+                        </div>
+                        </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <label>Metodología</label>
+                            <input class="form-control" type="text" value="@Item.MetodologiaC.Nombre" disabled/>
+                        </div>
+                        <div class="col-6">
+                            <label>Publico dirigido</label>
+                            <input class="form-control" type="text" value="@Item.DirigidoA" disabled/>
+                        </div>
+                        </div>
+                    <br />
+              
+                    <div class="row justify-content-start">
+                        <div class="col-12">
+                            <label>Temas</label>
+                            <textarea class="form-control" disabled>@Item.temas</textarea>
+                            @*<input class="form-control" type="text" value="@Item.temas" disabled/>*@
+                        
+                        </div>
+                        </div>
+                    <br />
+                    <br />
+@*-------------------------------------------------------------------------------------------------------------------*@
+                    @if(@Item.Estado=="Cerrado"){
+            <div class="card ">         
+                <div class="card-body">
+                  
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <label>Competencia Laboral</label>
+                            <input class="form-control" type="text" value="@Item.CompetenciaL.Nombre" disabled/>
+                        </div>
+                        <div class="col-6">
+                            <label>Conocimientos</label>
+                            <input class="form-control" type="text" value="@Item.Conocimientos" disabled/>
+                        </div>
+                        </div>
+                    <br />
+                    <div class="row justify-content-start">
+                        <div class="col-6">
+                            <label>Cultura Organizacional</label>
+                            <input class="form-control" type="text" value="@Item.CulturaO.Nombre" disabled/>
+                        </div>
+                        <div class="col-6">
+                            <label>Medición Eficación</label>
+                            <input class="form-control" type="text" value="@Item.MedicionEficacion" disabled/>
+                            
+                        </div>
+                        </div>
+                      <br />
+                    @if(@Item.MedicionEficacion=="SI"){
+                    <div class="row justify-content-start">
+                        <div class="col-4">
+                            <label>Resultado Medición</label>
+                            <input class="form-control" type="text" value="@Item.ResultadoMedicion" disabled/>
+                        </div>
+                        <div class="col-4">
+                            <label>Meta Eficacia</label>
+                            <input class="form-control" type="text" value="@Item.MetaEficacia" disabled/>
+                        </div>
+                        <div class="col-4">
+                            <label>Metodología Cierre</label>
+                            <input class="form-control" type="text" value="@Item.MetodologiaCierre.Nombre" disabled/>
+                        </div>
+                        </div>
+                    }
+                    </div>
+                </div>
+                    }
+@*-------------------------------------------------------------------------------------------------------------------*@
+                    <br />
+                   
+                    <div class="row justify-content-start" >
+                        <div class="col-12">
+                            <br />
+                               <h3> &nbsp;&nbsp;&nbsp;&nbsp; • Expositores</h3>
+                            <br />
+                <div class="panel-body">
+                  <div class = "panel panel-default">                        
+                    <div class = "table-responsive">
+                      <table class = "table table-hover">                                
+                         <thead><tr class = "table-info"><th></th><th>Nombre</th><th>Documento</th><th>Area</th><th>Cargo</th><th>Tercero</th><th></th></tr></thead>
+                         <tbody id = "AddItemsCap">
+                             @foreach(var Expo in @Item.Expositores){
+                                 if(Expo.TipoExpositor=="Empleado"){
+                          <tr>
+                              <td></td>
+                               <td>
+                                   @Expo.Empleado.Nombres
+                              </td>
+                              <td>
+                                  @Expo.Empleado.Documento
+                              </td>
+                              <td>
+                                  @Expo.Empleado.Area
+                              </td>
+                              <td>
+                                  @Expo.Empleado.Cargo
+                              </td>
+                              <td>
+                                  @Expo.TipoExpositor
+                              </td>
+                              <td></td>
+                         </tr>}
+                                 else if(Expo.TipoExpositor=="Tercero"){
+                          <tr>
+                              <td></td>
+                               <td>
+                                   @Expo.Tercero.Nombres
+                              </td>
+                             <td>
+                                  @Expo.Tercero.Documento
+                              </td>
+                              <td>
+                                  @Expo.Tercero.Area
+                              </td>
+                              <td>
+                                  @Expo.Tercero.Cargo
+                              </td>
+                              <td>
+                                  @Expo.TipoExpositor
+                              </td>
+                              <td></td>
+                         </tr>}
+                             }
+                         </tbody>
+                          
+                         <tfoot><tr><td colspan = "12"></td></tr></tfoot>
+                       </table>
+                     </div>
+                   </div> 
+                 </div>
+
+                        </div>
+                    </div>
+                    <br />
+                                       <div class="row justify-content-start" >
+                        <div class="col-12">
+                            <br />
+                               <h3> &nbsp;&nbsp;&nbsp;&nbsp; • Participantes</h3>
+                            <br />
+                <div class="panel-body">
+                  <div class = "panel panel-default">                        
+                    <div class = "table-responsive">
+                      <table class = "table table-hover">                                
+                         <thead><tr class = "table-info"><th></th><th>Nombre</th><th>Documento</th><th>Area</th><th>Cargo</th><th>Tercero</th><th></th></tr></thead>
+                         <tbody id = "AddItemsCap2">
+                             @foreach(var Par in @Item.Participantes){
+                                 if (Par.EsTercero == "NO")
+                                 {
+                          <tr>
+                              <td></td>
+                               <td>
+                                   @Par.Empleado2.Nombres
+                              </td>
+                              <td>
+                                  @Par.Empleado2.Documento
+                              </td>
+                              <td>
+                                  @Par.Empleado2.Area
+                              </td>
+                              <td>
+                                  @Par.Empleado2.Cargo
+                              </td>
+                              <td>
+                                  @Par.EsTercero
+                              </td>
+                              <td></td>
+                         </tr>}
+                                 else if (Par.EsTercero == "SI")
+                                 {
+                          <tr>
+                              <td></td>
+                               <td>
+                                   @Par.Tercero2.Nombres
+                              </td>
+                             <td>
+                                  @Par.Tercero2.Documento
+                              </td>
+                              <td>
+                                  @Par.Tercero2.Area
+                              </td>
+                              <td>
+                                  @Par.Tercero2.Cargo
+                              </td>
+                              <td>
+                                  @Par.EsTercero
+                              </td>
+                              <td></td>
+                         </tr>}
+                             }
+                         </tbody>
+                          
+                         <tfoot><tr><td colspan = "12"></td></tr></tfoot>
+                       </table>
+                     </div>
+                   </div> 
+                 </div>
+
+                        </div>
+                    </div>
+                    <br />
+                   
+                </div>
+        </div>
+    <br />
+    
+ </div>
+
+    
+</div>
+    
+</div>

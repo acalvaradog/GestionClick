@@ -1,0 +1,255 @@
+﻿@model Adm_AutoGestion.Models.ProcesoDisciplinario
+@*<script src="~/Contents/js/Procesos.js"></script>*@
+@{
+    Adm_AutoGestion.Models.ProcesoDisciplinario Item = ViewBag.ProcesoDisciplinario;
+}
+
+<div class="container">
+
+    <div class="card-body">
+        <form action="javascript:;" method="post" id="form" enctype="multipart/form-data">
+
+            <div class="row justify-content-start">
+
+                <div class="col-3" style="text-align:left">
+                    <br />
+                    <label for="Nombre">Fecha Registro: </label>
+                    <input type="number" value="@Item.Id" id="identificador" class="form-control" disabled hidden />
+                    <input type="text" class="form-control" id="FechaInicial" name="FechaInicial" value="@Convert.ToDateTime(Item.FechaRegistro).ToString("dd/MM/yyyy")" disabled="disabled" />
+
+                </div>
+                <div class="col-6" style="text-align:left">
+                    <br />
+                    <label for="Nombre">Empleado Registra: </label>
+                    <input type="text" class="form-control" id="Nom" value=" @Item.Empleado.Nombres" readonly="true" />
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <br />
+                    <label for="Nombre">Documento Empleado: </label>
+                    <input type="text" class="form-control" id="Doc" value="@Item.Empleado.Documento" disabled="disabled" />
+                    <br />
+                </div>
+                <div class="table-responsive">
+                    <br />
+                    <table class="table table-hover">
+                        <thead><tr class="fondoDegradado text-white"><th></th><th>Nombre</th><th>Cargo</th><th>Area</th><th>Jefe</th></tr></thead>
+                        <tbody id="AddItemsemp"></tbody>
+
+                        @foreach (var Item2 in Item.PDTrabajador)
+                        {
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <label>
+                                        @Item2.Empleado2.Nombres
+                                    </label>
+                                </td>
+                                <td>
+                                    @if (@Item2.Empleado2.Cargo == "" || @Item2.Empleado2.Cargo == null)
+                                    {
+                                        <div style="color:#FF0000;">
+                                            <label>Sin Definir</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <label>@Item2.Empleado2.Cargo</label>
+                                    }
+                                </td>
+                                <td>
+                                    @if (@Item2.Empleado2.Area == "" || @Item2.Empleado2.Area == null)
+                                    {
+                                        <div style="color:#FF0000;">
+                                            <label>Sin Definir</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <label>@Item2.Empleado2.Area</label>
+                                    }
+                                </td>
+                                <td>
+                                    @if (@Item2.Jefe == null)
+                                    {
+                                        <div style="color:#FF0000;">
+                                            <label>Sin Definir</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <label>@Item2.Jefe.Nombres</label>
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                    <br />
+                </div>
+                <div class="col-6">
+
+                    <label for="Nombre">Momento de los hechos: </label>
+                    <input type="text" class="form-control" id="fh" value="@Item.FechaHechos" disabled="disabled" />
+                </div>
+                <div class="col-6">
+                    <label for="Nombre">Nivel de Prioridad: </label>
+                    <input type="text" class="form-control" id="Np" value="@Item.NivelPrioridad" disabled="disabled" />
+                </div>
+                <div class="col-12">
+
+                    <label for="Nombre">Lugar de los hechos: </label>
+                    <input type="text" class="form-control" id="lugar" value="@Item.Lugar" disabled="disabled" />
+                </div>
+
+                <div class="col-12" style="text-align:left">
+                    <br />
+                    <label for="comment">Fundamentos:</label>
+                    <textarea class="form-control" rows="4" id="Fundamentos" name="Fundamentos" readonly>@Item.Fundamentos</textarea>
+                    <br />
+                </div>
+
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-md-6" style="text-align:center">
+                    @*@Html.ActionLink("Añadir Nota", "NotasCreate", new { Id=Item.Id}, new { data_modal15 = "", data_dismiss="modal", data_backdrop="false", @class="btn btn-outline-dark  btn-info",@style="color:white; width:100%;"} )*@
+                    <a data-toggle="modal" href="#modal_NotasCreate" class="bi bi-plus-square btn btn-outline-primary mb-2" style="width:100%;"> Añadir Nota</a>
+                </div>
+                <div class="col-md-6" style="text-align:center">
+                    @*@Html.ActionLink("Ver Notas", "NotaDetails", new { Id=Item.Id}, new { data_modal14 = "", @class="btn btn-outline-dark btn-info",@style=" color:white; width:100%;" } )*@
+                    <a data-toggle="modal" href="#modal_NotasDetails" class="bi bi-eye btn btn-outline-primary mb-2" style="width:100%;"> Ver Notas</a>
+                </div>
+
+            </div>
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:left">
+                    <br />
+                    <label for="comment">Respuesta Juridica:</label>
+                    <textarea class="form-control" rows="4" id="RJuridica" name="RJuridica" readonly>@Item.RespuestaJuridica</textarea>
+                    <br />
+                </div>
+            </div>
+
+            <div class="row justify-content-start">
+                <div class="col-4">
+                    <label>Tipo de Falta:</label>
+                    <input type="text" class="form-control" id="Falta" name="Falta" value="@Item.TipoFalta" disabled />
+
+
+                </div>
+                <div class="col-4">
+                    <label>Fecha de Descargo:</label>
+                    <input type="text" id="Fechades" name="Fechades" class="form-control" value="@Item.FechaDescargo" disabled />
+                </div>
+                <div class="col-4">
+                    <label>Fecha Citación a Descargo:</label>
+                    <input type="text" id="FechaCdes" name="FechaCdes" class="form-control" value="@Item.FechaCitacionDes" disabled />
+                </div>
+            </div>
+
+            <div class="row justify-content-start">
+
+                <div class="col-4">
+                    <br />
+                    <label>Sanciones:</label>
+                    <input type="text" class="form-control" id="Sancion" name="Sancion" value="@Item.Sanciones" disabled />
+
+                </div>
+                <div class="col-4">
+                    <br />
+                    <label>Motivo de Sancion</label>
+                    <input type="text" id="MotivoSan" name="MotivoSan" class="form-control" value="@Item.MtvSancion" disabled />
+
+                </div>
+                <div class="col-4">
+                    <br />
+                    <label id="Suspensionlb">Días a Suspender:</label>
+                    <input type="number" id="Suspension" name="Suspension" class="form-control" value="@Item.Suspencion" disabled />
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <div>
+
+                @*         <div class = "table-responsive" style="border-radius:7px 7px;">
+                                 <table class = "table table-hover" " id="Tanexos">
+                                    <thead><tr class = "table-info"><th>N</th><th>Archivo</th></tr></thead>
+                                    <tbody id = "bodyanexos"></tbody>
+
+                                  </table>
+                                        <button id="adda" name="adda" class="btn btn-info" >Añadir fila</button>
+                                      <button id="del2" name="del2" class="btn btn-info">Eliminar fila</button>
+                        <button type = "submit" id = "Anexos" class="btn btn-success"  onclick="javascript:SaveA();"> Guardar Anexos</button>
+
+                            </div>
+                    <br />
+                    <br />
+                    <div class = "table-responsive" style="border-radius:7px 7px;">
+                                 <table class = "table table-hover" " id="pruebat">
+                                    <thead><tr class = "table-info"><th>N</th><th>Tipo Prueba</th><th>Archivo</th></tr></thead>
+                                    <tbody id = "bodyprueba"></tbody>
+
+                                  </table>
+                                        <button id="add" class="btn btn-info">Añadir fila</button>
+                                      <button id="del" class="btn btn-info">Eliminar fila</button>
+                        <button type = "submit" id = "Pruebas" class="btn btn-success"  onclick="javascript:SaveP();" > Guardar Pruebas</button>
+
+                                </div>*@
+                @*             <div class="row justify-content-start">
+                        <div class="col-12" style="text-align:center">
+                            <button type = "submit" id = "Anexos" class="btn" style="background-color:#f00; color:white; "  onclick="javascript:SaveA();" >Anexos</button>
+                    </div>
+                             <div class="col-12" style="text-align:center">
+                            <button type = "submit" id = "Pruebas" class="btn" style="background-color:#ff6a00; color:white; "  onclick="javascript:SaveP();" >Pruebas</button>
+                        </div>
+                    </div>*@
+            </div>
+            <br />
+            <br />
+
+            <div class="row justify-content-start">
+                <div class="col-3" style="text-align:left">
+
+                    <input type="text" id="Id" name="Id" value="@Item.Id" hidden />
+                    <input type="hidden" id="Empleado" name="Empleado" value="@Item.Empleado.Id" />
+                    <input type="hidden" id="NroEmpleado" name="NroEmpleado" value="@Item.Empleado.NroEmpleado" />
+                    @if (Item.Sanciones == "Suspension" && Item.FechaSuspencion == null)
+                    {
+                        <label id="fechaSuslb">Fecha de Suspension:</label>
+                        <input type="date" class="form-control" id="fechasSus" name="NroEmpleado" value="@Item.FechaSuspencion" />
+                    }
+                    else if (Item.FechaSuspencion != null)
+                    {
+
+                        <label id="fechaSuslb">Fecha de Suspension:</label>
+                        <input type="text" class="form-control" id="fs" value="@Item.FechaSuspencion" disabled="disabled" />
+                        <br />
+                        <input type="date" class="form-control" id="fechasSus" name="NroEmpleado" value="@Item.FechaSuspencion" hidden />
+                    }
+                    else
+                    {
+                        <label id="fechaSuslb" hidden>Fecha de Suspension:</label>
+                        <input type="date" class="form-control" id="fechasSus" name="NroEmpleado" value="@Item.FechaSuspencion" hidden />
+                    }
+
+                </div>
+                <br />
+            </div>
+            @if (Item.Sanciones == "Suspension" && Item.FechaSuspencion == null)
+            {
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <br />
+                        <button type="submit" id="Search" class="btn" style="background-color:#96D44D; color:white; " onclick="javascript:DefinicionFecha();">Guardar</button>
+                    </div>
+                </div>
+                <br />
+            }
+
+
+
+        </form>
+    </div>
+</div>

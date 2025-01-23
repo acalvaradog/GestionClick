@@ -1,0 +1,194 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Viaticos>
+
+@{
+    ViewBag.Title = "InformeViaticosGH";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+
+    <h2 class="colorTitulo mb-3" style="text-align:center;">Informe Viáticos Gestión Humana</h2>
+
+    <form method="post">
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">Buscar</div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:left">
+                        <label for="sospechoso">Trabajador Solicitante</label>
+                        @Html.DropDownList("TrabajadorS", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:center">
+                        <label for="sospechoso">Fechas Desde:</label>
+                        @Html.TextBox("FechaI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-3" style="text-align:center">
+                        <label for="sospechoso">Fechas Hasta:</label>
+                        @Html.TextBox("FechaF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Estado">Estado del Proceso:</label>
+                        <select class="form-control" id="Estado" name="Estado">
+                            <option selected>Todos</option>
+                            <option>Solicitado</option>
+                            <option>Aprobado Jefe directo</option>
+                            <option>Cerrado</option>
+                            <option>Rechazado</option>
+                        </select>
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="sospechoso">Numero Viático</label>
+                        @Html.TextBox("NmrRegistro", "", htmlAttributes: new { @class = "form-control", type = "number" })
+                    </div>
+                </div>
+                <br />
+
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("InformeViaticos","Viaticos")"> Buscar</button>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+    </form>
+</div>
+<br />
+<br />
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel_Viaticos">
+            <thead>
+                <tr class="fondoDegradado text-white">
+                    <th>
+                        Nmr Solicitud
+                    </th>
+                    <th>
+                        Fecha Registro
+                    </th>
+                    <th>
+                        Empleado Solicitante
+                    </th>
+
+                    <th>
+                        Fecha de Viaje
+                    </th>
+                    <th>
+                        Fecha de Ingreso
+                    </th>
+                    <th>
+                        Gasto Alimentacion
+                    </th>
+                    <th>
+                        Gasto Transporte
+                    </th>
+                    <th>
+                        Verificado Nómina
+                    </th>
+                    <th>
+                        Liquidado Tesorería
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+
+                    <th>Registros</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <label> @item.Id</label>
+                        </td>
+                        <td>
+                            @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @item.Empleado.Nombres
+                        </td>
+                        <td>
+                            @item.FechaInicio
+                        </td>
+                        <td>
+                            @item.FechaFin
+                        </td>
+                        <td>
+                            @item.GastoAlimentacion
+                        </td>
+                        <td>
+                            @item.GastosTransporte
+                        </td>
+                        @if (item.CheckNomina == true)
+                        {
+                            <td>
+                                Si
+                            </td>
+                        }
+                        else if (item.CheckNomina == false)
+                        {
+                            <td>
+                                NO
+                            </td>
+                        }
+                        @if (item.CheckTesoreria == true)
+                        {
+                            <td>
+                                Si
+                            </td>
+                        }
+                        else if (item.CheckTesoreria == false)
+                        {
+                            <td>
+                                NO
+                            </td>
+                        }
+                        <td>
+                            @item.EstadosViaticos.Nombre
+                        </td>
+
+                        <td>
+                            @Html.ActionLink(" ", "ViaticosLogDetails", new { id = item.Id }, new { data_modal36 = "", @class = "btn close bi bi-life-preserver text-primary mr-4" })
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade in" id="modal_ViaticosLog" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Modificaciones Viatico </h2>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModal36">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,153 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.TurnoDisponibilidad>
+
+@{
+    ViewBag.Title = "RecibidoGestionHumana";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.TurnoDisponibilidad Item = ViewBag.TDisp;
+}
+
+>
+
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+            <h4 class="card-title">Recibido Gestion Humana</h4>
+        </div>
+
+
+    </div>
+    <div class="card-body">
+        <div class="row justify-content-start">
+            <div class="col-6" style="text-align:left">
+                <label for="Nombre">Empleado: </label>
+                <input type="text" class="form-control" id="Nom" value="@Item.Empleado.Nombres" readonly />
+            </div>
+            <div class="col-3" style="text-align:left">
+                <label for="Nombre">Fecha Inicio: </label>
+                <input type="text" class="form-control" id="Doc" value="@Convert.ToDateTime(Item.FechaInicio).ToString("dd/MM/yyyy")" disabled="disabled" />
+            </div>
+            <div class="col-3" style="text-align:left">
+                <label for="Nombre">Fecha Final: </label>
+                <input type="text" class="form-control" id="Doc" value="@Convert.ToDateTime(Item.FechaFin).ToString("dd/MM/yyyy")" disabled="disabled" />
+            </div>
+        </div>
+        <br />
+        <form action="~/TurnoDisponibilidad/RecibidoGestionHumana1">
+            <div class="row justify-content-start">
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">Horas Extras: </label>
+                    <input type="text" class="form-control" id="HorasExtras" name="HorasExtras" value="@Item.Extras" disabled="disabled" />
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">Cantidad Horas Extras: </label>
+                    <input type="text" class="form-control" id="CantExtras" name="CantExtras" value="@Item.CantExtras" disabled="disabled" />
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="Nombre">Liquidado: </label>
+                    <select class="form-control" id="Liquidado" name="Liquidado">
+                        <option value="SI">SI</option>
+                        <option value="NO">NO</option>
+                    </select>
+                </div>
+                <div class="col-3" style="text-align:left">
+                    <label for="exampleFormControlSelect1">Estado: </label>
+                    <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+                    <input type="hidden" id="Empleado" name="Empleado" value="" />
+                    <select class="form-control" id="Estado" name="Estado">
+                        <option value="Recibido G.H">Recibido G.H</option>
+                        <option value="Anulado">Anulado</option>
+                    </select>
+                </div>
+            </div>
+            <br />
+
+
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class=" btn btn-outline-primary rounded-pill">Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <tr >
+            <th>
+                Empleado
+            </th>
+            <th>
+                Area
+            </th>
+            <th>
+                Fecha Registro
+            </th>
+            <th>
+                Fecha Inicio
+            </th>
+            <th>
+                Fecha Final
+            </th>
+            <th>
+                Horas Extras
+            </th>
+            <th>
+                Cantidad  Horas Extras
+            </th>
+            <th>
+                Liquidado
+            </th>
+            <th>
+                Estado
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Empleado.Nombres)*@
+                    @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.TrabajadorId }, new { data_modal = "" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Empleado.Cargo)
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Extras)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CantExtras)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Liquidado)*@
+                    @if (item.Liquidado == "SI")
+                    {
+                        <img src="~/Contents/image/dinero.png">
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Estado)
+                </td>
+                <td>
+                    @Html.ActionLink("Ver", "RecibidoGestionHumana", new { Id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+

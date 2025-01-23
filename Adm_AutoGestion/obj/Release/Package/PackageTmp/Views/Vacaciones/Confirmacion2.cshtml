@@ -1,0 +1,83 @@
+﻿@model Adm_AutoGestion.Models.Vacaciones
+@using System.Web.UI.WebControls;
+@{
+    Adm_AutoGestion.Models.Vacaciones Item = ViewBag.Vacaciones;
+}
+
+
+<div class="container">
+    <br />
+    <div class="card">
+
+
+        <div class="card-body">
+            <div class="row justify-content-start">
+                <div class="col-4" style="text-align:left">
+                    <label for="Nombre">Documento: </label>
+                    <input type="text" class="form-control" id="Doc" value="@Item.Empleado.Documento" disabled="disabled" />
+                </div>
+                <div class="col-8" style="text-align:left">
+                    <label for="Nombre">Nombre: </label>
+                    <input type="text" class="form-control" id="Nom" value=" @Item.Empleado.Nombres" readonly />
+                </div>
+            </div>
+            <br />
+            <form action="~/Vacaciones/Confirmacion1">
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Fecha Inicio: </label>
+                        <input type="text" class="form-control" id="FechaInicial" name="FechaInicial" value="@Convert.ToDateTime(Item.FechaInicial).ToString("dd/MM/yyyy")" />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Fecha Reintegro: </label>
+                        <input type="text" class="form-control" id="FechaFin" name="FechaFin" value="@Convert.ToDateTime(Item.FechaFin).ToString("dd/MM/yyyy")" />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Cant. Dias Solicitados: </label>
+                        <input type="text" class="form-control" id="Cds" name="Cds" value="@Item.CantDiasSolicitados" />
+                    </div>
+                    <div class="col-3" style="text-align:left">
+                        <label for="Nombre">Cant. Dias Pendientes: </label>
+                        <input type="text" class="form-control" id="Cdp" name="Cdp" value="@Item.CantDiasPendientes" />
+                    </div>
+                </div>
+                <br />
+
+                <div class="row justify-content-start">
+                    <div class="col-md-12" style="text-align:left">
+                        <label for="comment">Observación del Trabajador:</label>
+                        <textarea class="form-control" rows="1" id="ObservacionTrab" name="ObservacionTrab" disabled="disabled">@Item.Observacion</textarea>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:left">
+                        <label for="comment">Observación:</label>
+                        <textarea class="form-control" rows="2" id="Observacion" name="Observacion"></textarea>
+                    </div>
+                </div>
+                <div class="row justify-content-start">
+                    <div class="col-3" style="text-align:left">
+                        <label for="exampleFormControlSelect1">Estado: </label>
+                        <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+                        <input type="hidden" id="Empleado" name="Empleado" value="@Item.Empleado.Id" />
+                        <input type="hidden" id="NroEmpleado" name="NroEmpleado" value="@Item.Empleado.NroEmpleado" />
+                        <input type="hidden" id="ObservacionTra" name="ObservacionTra" value="@Item.Observacion" />
+                        <select class="form-control" id="Estado" name="Estado">
+                            <option value="3">Recibido G.H</option>
+                            <option value="4">Confirmado</option>
+                            <option value="11">En Aprobación Jefe G.H</option>
+                            <option value="5">Rechazado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

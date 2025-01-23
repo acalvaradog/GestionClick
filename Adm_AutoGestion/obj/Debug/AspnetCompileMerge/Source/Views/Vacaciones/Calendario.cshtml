@@ -1,0 +1,156 @@
+﻿@model Adm_AutoGestion.Models.Vacaciones
+
+@{
+    ViewBag.Title = "Calendario";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<script src='~/Contents/js/fullcalendar-5.8.0/lib/locales/es.js'></script>
+
+@*<h2>Calendario</h2>*@
+
+<br />
+<br />
+
+<div class="container-fluid" style=" padding-right: 200px;padding-left: 200px;">
+<div id='calendar'></div>
+
+<div>
+
+<br />
+<br />
+  <div class="row">
+    <div class="col-sm-2">
+            <table class="table table-bordered" >
+  <thead>
+    <tr>
+      <th scope="col" style="text-align:center">Solicitado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row" style="background-color:#FAAC41; text-align:center;">Aprobado Jefe Inmediato</th>
+    </tr>
+    <tr>
+      <th scope="row" style="background-color:#FCFA81; text-align:center;">Recibido G.H</th>
+    </tr>
+    <tr>
+      <th scope="row" style="background-color:#BFFC99; text-align:center;">Confirmado</th>
+    </tr>
+@*    <tr>
+      <th scope="row" style="background-color:#FBACAC; text-align:center;">Rechazado</th>
+    </tr>*@
+    <tr>
+      <th scope="row" style="background-color:#ACA4FC; text-align:center;">Aprobado Jefe Gestion Humana</th>
+    </tr>
+    @*<tr>
+      <th scope="row" style="background-color:#ACA4FC; text-align:center;">Anulado</th>
+    </tr>*@
+  </tbody>
+</table>
+    </div>
+    <div class="col-sm-5">
+
+    </div>
+    <div class="col-sm-5">
+      
+    </div>
+  </div>
+
+
+
+
+</div>
+
+</div>
+
+
+<script>
+    $(function () {
+        ObtenerTareas();
+    });
+
+    function ObtenerTareas() {
+        var events = [];
+        var datos = [];
+        var Result = "";
+
+        $.ajax({
+            url: "Datoscalendario",
+            type: "post",
+            dataType: "html",
+            success: function (result) {
+
+                 datos = result.split(",");
+                
+                for(var fila in datos) {
+                
+                    var f = datos[fila].split(";");
+                    console.log("En el índice " + f[0] + "fecha" + f[1]);
+                    var texto = f[0] + " - " + f[3];
+
+
+                    if (f[3] == "Solicitado") {
+                        Result = '#FDFEFD';
+                    } else if (f[3] == "Aprobado Jefe Inmediato") {
+                        Result = '#FAAC41';
+                    } else if (f[3] == "Recibido G.H") {
+                        Result = '#FCFA81';
+                    } else if (f[3] == "Confirmado") {
+                        Result = '#BFFC99';
+                    } else if (f[3] == "Rechazado") {
+                        Result = '#FBACAC';
+                    } else if (f[3] == "En Aprobaciòn Jefe G.H") {
+                        Result = '#B6DCFD';
+                    } else if (f[3] == "Aprobado Jefe Gestion Humana") {
+                        Result = '#ACA4FC';
+                    }
+                
+
+
+                    
+                    events.push({
+                        'title': texto,
+                        'start': f[1],
+                        'end': f[2],
+                        'color': Result,
+                        'textColor': '#010101'
+
+                    });
+                }
+                console.log(events);
+
+                
+
+
+                var calendarEl = document.getElementById('calendar');
+
+               
+                 var calendar = new FullCalendar.Calendar(calendarEl, {
+                     headerToolbar: {
+                         left: 'prev,next today',
+                         center: 'title',
+                         right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                     },
+
+                     navLinks: true, // can click day/week names to navigate views
+                     businessHours: true, // display business hours
+                     editable: false,
+                     selectable: true,
+                     eventClick: function (evenObj)
+                     { },
+                     locale: 'es',
+                     height: 700,
+                    
+                     events: events
+                 });
+
+                 calendar.render();
+
+            }
+
+        });
+    
+
+    }
+</script>

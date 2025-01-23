@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EstructuraJerarquica>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+    @*<h2 class="colorTitulo text-center mt-3">Estructura Jerarquica</h2>*@
+
+    
+
+
+<div class="card ">
+   
+    <div class="card-header text-white fondoDegradado">Buscar</div>
+    <div class="card-body">
+        <div class="row justify-content-start mt-3">
+            <div class="col-12" style="text-align:right"> @Html.ActionLink(" Crear Estructura", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary rounded-pill md-2" })</div>
+            <div class="col-8">
+                <input class="form-control" id="myInput" type="text" placeholder="Buscar..">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+    <div class="table-responsive">
+        <table class="table table-striped" id="Informe_STRJerarquica">
+            <thead>
+                <tr>
+                    <th>
+                        Unidad Org
+                    </th>
+                    <th>
+                        Sociedad
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Jefe)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Superior)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Director)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Lider)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnidadOrg)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sociedad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NJefe.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NSuperior.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NDirector.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NLider.Nombres)
+                        </td>
+                        <td class="align-middle">
+                            @* <a href="/EstructuraJerarquica/Edit/@item.Id" title="Editar"><buttom class="bi bi-pencil-square btn btn-outline-primary md-2"></buttom></a>*@
+                            @*@Html.ActionLink(" ", "Edit", new { Id = item.Id }, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary rounded-pill mb-2" })*@
+                            <a href='@Url.Action("Edit", "EstructuraJerarquica", new { Id = item.Id }, null)' title="Editar">
+                                <i>
+                                    <svg class="icon-32" width="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path opacity="0.4" d="M19.9927 18.9534H14.2984C13.7429 18.9534 13.291 19.4124 13.291 19.9767C13.291 20.5422 13.7429 21.0001 14.2984 21.0001H19.9927C20.5483 21.0001 21.0001 20.5422 21.0001 19.9767C21.0001 19.4124 20.5483 18.9534 19.9927 18.9534Z" fill="currentColor"></path>
+                                        <path d="M10.309 6.90385L15.7049 11.2639C15.835 11.3682 15.8573 11.5596 15.7557 11.6929L9.35874 20.0282C8.95662 20.5431 8.36402 20.8344 7.72908 20.8452L4.23696 20.8882C4.05071 20.8903 3.88775 20.7613 3.84542 20.5764L3.05175 17.1258C2.91419 16.4915 3.05175 15.8358 3.45388 15.3306L9.88256 6.95545C9.98627 6.82108 10.1778 6.79743 10.309 6.90385Z" fill="currentColor"></path>
+                                        <path opacity="0.4" d="M18.1208 8.66544L17.0806 9.96401C16.9758 10.0962 16.7874 10.1177 16.6573 10.0124C15.3927 8.98901 12.1545 6.36285 11.2561 5.63509C11.1249 5.52759 11.1069 5.33625 11.2127 5.20295L12.2159 3.95706C13.126 2.78534 14.7133 2.67784 15.9938 3.69906L17.4647 4.87078C18.0679 5.34377 18.47 5.96726 18.6076 6.62299C18.7663 7.3443 18.597 8.0527 18.1208 8.66544Z" fill="currentColor"></path>
+                                    </svg>
+
+                                </i>
+                                @*<img src="~/Contents/image/editar.png" alt="AnularActa" />*@
+                            </a>
+
+                        </td>
+                        <td class="align-middle">
+                            <center>
+                                @*@Html.ActionLink(" ", "Delete", new { Id = item.Id }, new { data_modalSTRDelete = "", @class = "bi bi-x-square btn btn-outline-primary md-2" })*@
+                                
+                                <a href='@Url.Action("Delete", "EstructuraJerarquica", new { id = item.Id }, null)' data-modalSTRDelete='' title="Eliminar">
+                                    
+                                    <i>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-trash" viewBox="0 0 24 24">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+
+                                       
+
+                                    </i>
+                                        @*<img src="~/Contents/image/editar.png" alt="AnularActa" />*@
+                                    </a>
+</center>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+<br />
+<div class="modal fade in" id="modal_STRDelete" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h4 class="modal-title text-white"> Eliminar Estructura</h4>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalSTRDelete">
+                <br />
+                
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

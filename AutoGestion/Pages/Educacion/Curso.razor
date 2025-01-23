@@ -1,0 +1,80 @@
+﻿@page "/Educacion/Curso"
+@inject NavigationManager Navigation
+@using Autogestion.Shared.DTO.TalentoHumano;
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject IDialogService DialogService
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    <MudContainer>
+        <MudCardHeader><MudText Typo="Typo.h5" Color="Color.Primary">Listado Acción de Formación</MudText> </MudCardHeader>
+        <MudCard Class="mb-5">
+            <MudTable Items="@Cursos" @ref="_tabla" RowsPerPage="10" Dense="true" Hover="true" Loading="@_loading" LoadingProgressColor="Color.Info">
+                <HeaderContent>
+                    <MudTh>Nombre Acción de Formación</MudTh>
+                    <MudTh>Fecha</MudTh>
+                    <MudTh>Hora Inicio</MudTh>
+                    <MudTh>Hora Fin</MudTh>
+                    <MudTh></MudTh>
+                    <MudTh>Estado</MudTh>
+                    <MudTh>Asistencia</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Nombre Acción de Formación">@context.Nombre</MudTd>
+                    <MudTd DataLabel="Fecha">@context.FechaCapacitacion?.ToString("dd/MM/yyyy")</MudTd>
+                    <MudTd DataLabel="Hora Inicio">@context.HoraInicio</MudTd>
+                    <MudTd DataLabel="Hora Fin">@context.HoraFin</MudTd>
+                    <MudTd><MudButton Class="ml-6" Variant="Variant.Outlined" Color="Color.Primary" @onclick="@((e) => OpenDialog(context.Id))">Ver Detalles</MudButton></MudTd>
+                    <MudTd DataLabel="Estado">@context.Estado</MudTd>
+                    <MudTd DataLabel="Asistencia">@context.Asistencia</MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudPagination SelectedChanged="PageChanged" Count="@((_tabla.GetFilteredItemsCount() + _tabla.RowsPerPage - 1) / _tabla.RowsPerPage)" Class="pa-4" />
+                </PagerContent>
+            </MudTable>
+        </MudCard>
+    </MudContainer>
+}
+
+@code {
+    private bool _loading;
+    private MudTable<CapacitacionDTO> _tabla;
+    private List<CapacitacionDTO>? Cursos;
+    private EmpleadoReturnSapDTO? empleado { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        if (empleado == null)
+        {
+            await JS.ShowMessage("Debe volver a iniciar sesión en el aplicativo", "Sesión Expirada", "error");
+
+            Navigation.NavigateTo("pages/authentication/login", true);
+        }
+        Cursos = await Http.GetFromJsonAsync<List<CapacitacionDTO>>($"api/TalentoHumano/Listar/{empleado.Id}/{5}");
+        _loading = false;
+        StateHasChanged();
+    }
+
+    private void PageChanged(int i)
+    {
+        _tabla.NavigateTo(i - 1);
+    }
+
+    private void OpenDialog(int? IdCap)
+    {
+        var parametro = new DialogParameters { ["IdCap"] = IdCap };
+        var options = new DialogOptions { CloseOnEscapeKey = true, CloseButton = true, FullWidth = true, MaxWidth = MaxWidth.Large };
+        DialogService.Show<DetallesDialog>("DETALLES DE LA ACCIÓN DE FORMACIÓN", parametro, options);
+    }
+}

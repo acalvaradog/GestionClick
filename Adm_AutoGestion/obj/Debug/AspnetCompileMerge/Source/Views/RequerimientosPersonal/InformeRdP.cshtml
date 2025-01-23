@@ -1,0 +1,277 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.RequerimientosDelPersonal>
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "InformeRdP";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+}
+
+
+<div class="container">
+    <div class="colorTitulo" style="text-align:center">
+        <h2>Informe de Requisitos del Personal</h2>
+    </div>
+    <br />
+
+    <form>
+        <div class="card">
+            <div class="card-header text-white fondoDegradado mb-3">Buscar</div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Nmr Solicitud:</label>
+                        @Html.TextBox("NmrSolicitud", "", htmlAttributes: new { @class = "form-control", type = "number" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Fecha Requerimiento Desde:</label>
+                        @Html.TextBox("FechaRI", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Fecha Requerimiento Hasta:</label>
+                        @Html.TextBox("FechaRF", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Empleado Registra:</label>
+
+                        @Html.DropDownList("EmpleadoRegistraId", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione..", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Empresa:</label>
+                        @Html.DropDownList("Sociedad", new SelectList(ViewBag.Empresa, "Id", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                    </div>
+                    @*<div class="col-4" style="text-align:left">
+                            <label for="sospechoso">Sede:</label>
+                            @Html.DropDownList("Sede", new SelectList( ViewBag.Sede, "Id", "Nombre"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker"} )
+                        </div>*@
+                    <div class="col-4" style="text-align:left">
+                        <label for="sospechoso">Estado:</label>
+
+                        @Html.DropDownList("EstadoId", new SelectList(ViewBag.Estado, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+
+                    </div>
+
+                </div>
+                <br />
+
+                <br />
+
+
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("DetalleCapacitacion","Capacitacion")"> Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+</div>
+
+<br />
+<div class="table-responsive" style="padding-right: 100px;padding-left: 100px;">
+    <div class="table-responsive">
+        <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr class="fondoDegradado text-white" style="text-align:center">
+                    <th>
+                        Nmr
+                    </th>
+                    <th>
+                        Nombre Empleado
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+
+                    </th>
+                    <th>
+                        Fecha de Creación
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Mtv Solicitud
+                    </th>
+                    <th>
+                        Jornada
+                    </th>
+                    <th>
+                        Detalle Requerimiento
+                    </th>
+                    <th>
+                        Descargar
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Empresa.Descripcion)
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fecha)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EstadoRdP.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MtvSolicitud.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Jornada.Nombre)
+                    </td>
+                    <td style="text-align:center">
+                        <a href='@Url.Action("DetalleRequerimientoinfo", "RequerimientosPersonal", new { id = item.Id }, null)' data-modaldetalles=''>
+                            <img src='@Url.Content("~/Contents/image/ojo.png")' / style="width:32px;height:32px">
+                        </a>
+                    </td>
+                    <td>
+                        @if (item.Archivo == "" || item.Archivo == null)
+                        {
+                            <label>No hay Archivo</label> }
+                        else
+                        {@Html.ActionLink("Descargar Archivo", "Download1", new { archivo = item.Archivo })}
+                    </td>
+
+                    <td>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Detalles">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalles</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalDetalles">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="modal_Registros" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y:visible">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalResgistros">
+                <br />
+                <br />
+                <div class="card" style="text-align:center">
+                    <b>Cargando...</b>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        var table = $('#Exportar_a_Excel').DataTable({
+            //$('#tabla').DataTable({
+
+
+
+
+            //"bFilter": true,
+            //"ordering": false,
+            //dom: 'Brtip',
+
+            dom: 'Brtip',
+            buttons: [
+                {
+
+
+
+                    extend: 'excelHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'InformeCapacitacion',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+
+
+                },
+                {
+                    extend: 'pdfHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-pdf"></i>',
+                    filename: 'InformeCapacitacion',
+                    titleAttr: 'Exportar a PDF',
+                    className: 'btn btn-danger'
+                },
+
+
+            ],
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+
+
+
+
+        });
+
+
+
+
+    })
+
+</script>

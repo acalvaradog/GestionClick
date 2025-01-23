@@ -1,0 +1,371 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.ProcesoDisciplinario>
+@*<script src="~/Contents/js/Procesos.js"></script>*@
+
+@{
+    ViewBag.Title = "Respuesta";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.ProcesoDisciplinario Item = ViewBag.ProcesoDisciplinario;
+}
+
+<div class="card">
+    <div class="card-header colorTitulo mb-3"><h5>Respuesta Juridica</h5></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="Tabla_RE" class="table table-striped table-sm">
+                <thead class="text-center text-capitalize">
+                    <tr class="fondoDegradado text-white">
+                        <th>Ver Detalle</th>
+                        <th>
+                            Nmr Proceso
+                        </th>
+                        <th>
+                            Empleado Registra
+                        </th>
+                        <th>
+                            Fecha Registro
+                        </th>
+                        <th>
+                            Empleados Implicados
+                        </th>
+                        <th>
+                            Momento Hechos
+                        </th>
+                        <th>
+                            Fundamentos
+                        </th>
+                        <th>
+                            Pruebas
+                        </th>
+                        <th>
+                            Anexos
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                        <th>
+                            Nivel Prioridad
+                        </th>
+                        <th>
+                            Ver Notas
+                        </th>
+                        <th>Añadir Nota</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center text-capitalize">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(" ", "Respuesta3", new { id = item.Id }, new { data_modal9 = "", @class = "btn close fas fa-eye text-primary mr-4" })
+                            </td>
+                            <td>
+                                <label> @item.Id</label>
+                            </td>
+                            <td>
+                                @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoRegistraId }, new { data_modal = "" })
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                <!--Empleados Implicados-->
+                                @foreach (var item2 in item.Implicados)
+                                {
+
+                                    @*  @Html.ActionLink(@item2.Nombres, "Details2", "Empleado", new { id = item2.Id }, new { data_modal = "" })*@
+                                    <label>@item2.Nombres</label>
+                                    <br />
+
+                                }
+
+                                @*           @Html.ActionLink("Ver Empleados", "Implicado1", new { Id = item.Id,Id2=item.EmpleadoRegistraId }, new { data_modal7 = "" })*@
+                                @*    @Html.DisplayFor(modelItem => item.PDTrabajador.EmpleadoId)*@
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FechaHechos)
+                            </td>
+                            <td>
+                                <a href='@Url.Action("Fundamentos", "ProcesoDisciplinario", new { id=item.Id}, null)' data-modal13='' style="text-align:center">
+                                    <img src="~/Contents/image/verfundamento.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Fundamentos" />
+                                </a>
+                                @*@Html.ActionLink("Ver", "Fundamentos", new { id = item.Id }, new { data_modal13 = "" })*@
+
+                            </td>
+                            <td>
+                                <!--Pruebas acerca del proceso-->
+                                <a href='@Url.Action("Prueba1", "ProcesoDisciplinario", new { Id=item.Id ,Id2=item.EmpleadoRegistraId}, null)' data-modal6='' style="text-align:center">
+                                    <img src="~/Contents/image/verPrueba.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Pruebas" />
+                                </a>
+                                @*@Html.ActionLink("Ver Pruebas", "Prueba1", new { Id=item.Id ,Id2=item.EmpleadoRegistraId}, new { data_modal6 = "" })*@
+
+                            </td>
+                            <td>
+                                <!--Anexos del proceso disciplinario-->
+                                <a href='@Url.Action("Anexo1", "ProcesoDisciplinario", new { Id=item.Id ,Id2=item.EmpleadoRegistraId}, null)' data-modal5='' style="text-align:center">
+                                    <img src="~/Contents/image/verAnexo.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Anexos" />
+                                </a>
+                                @*@Html.ActionLink("Ver Anexos", "Anexo1", new { Id=item.Id,Id2=item.EmpleadoRegistraId }, new { data_modal5 = "" })*@
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Estado)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NivelPrioridad)
+                            </td>
+                            <td>
+                                <a href='@Url.Action("NotaDetails", "ProcesoDisciplinario", new { Id=item.Id}, null)' data-modal14='' style="text-align:center">
+                                    <img src="~/Contents/image/vernota.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Notas" />
+                                </a>
+                                @*@Html.ActionLink("Ver", "NotaDetails", new { Id=item.Id}, new { data_modal14 = "" } )*@
+                                <br />
+
+                            </td>
+                            <td>
+                                <a href='@Url.Action("NotasCreate", "ProcesoDisciplinario", new { Id=item.Id}, null)' data-modal15='' style="text-align:center">
+                                    <img src="~/Contents/image/AddNotas.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Añadir Nota" />
+                                </a>
+                                @*@Html.ActionLink("Añadir Nota", "NotasCreate", new { Id=item.Id}, new { data_modal15 = "" } )*@
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@*<div class="modal fade in" id="modal_Implicados">
+      <div class="modal-dialog modal-xl " >
+        <div class="modal-content">
+          <div class="modal-header" style="background-color:#0B9ACF">
+            <h5 class="modal-title text-white">Empleados Implicados en el proceso</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id ="contentModal7">
+           <br />
+            <br />
+     </div>
+
+        </div>
+      </div>
+    </div>*@
+
+<div class="modal fade in" id="modal_Pruebas">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pruebas del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal6">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Anexos">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Anexos del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal5">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_RespuestaJ" data-backdrop="static" tabindex="-1" data-dismiss="modal" style="overflow-y: auto">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Respuesta Juridica</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeRj">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal8">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="modal_Fundamento">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Fundamentos </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal13">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_NotasDetails">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Notas Del Proceso </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal14">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_NotasCreate" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-lg modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Añadir una Nueva Nota </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal15">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*<div class="modal fade in" id="modal_NotasDetails2" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y:visible">
+        <div class="modal-dialog modal-xl ">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0B9ACF">
+                    <h2 class="modal-title text-white"> Notas Del Proceso </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div id="contentModal14-2">
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade in" id="modal_NotasCreate2" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+        <div class="modal-dialog modal-xl modal-dialog-centered ">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0B9ACF">
+                    <h2 class="modal-title text-white"> Añadir una Nueva Nota </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div id="contentModal15-2">
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<div class="modal fade in" id="modal_Gestion">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalles del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal9">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+
+            $('#Tabla_RE').DataTable({
+
+                columnDefs: [
+                    { targets: [0], visible: true, searchable: false, orderable: false },
+                    { targets: [1], visible: true, searchable: true, orderable: true },
+                    { targets: [2], visible: true, searchable: true, orderable: true },
+                    { targets: [3], visible: true, searchable: true, orderable: false },
+                    { targets: [4], visible: true, searchable: true, orderable: true },
+                    { targets: [5], visible: true, searchable: true, orderable: false },
+                    { targets: [6], visible: true, searchable: false, orderable: false },
+                    { targets: [7], visible: true, searchable: false, orderable: false },
+                    { targets: [8], visible: true, searchable: false, orderable: false },
+                    { targets: [9], visible: true, searchable: true, orderable: true },
+                    { targets: [10], visible: true, searchable: true, orderable: true },
+                    { targets: [11], visible: true, searchable: false, orderable: false },
+                    { targets: [12], visible: true, searchable: false, orderable: false },
+
+                ],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                select: true,
+                dom: 'lfrtip',
+
+            });
+
+        });
+
+    </script>
+}

@@ -1,0 +1,62 @@
+﻿@model Adm_AutoGestion.Models.DetalleEventos
+
+@{
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="card mt-3">
+    <div class="card-header colorTitulo mb-3">
+        <h5>Cambiar de Fecha de Asistencia</h5>
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            <div class="row mt-3">
+                @if (ViewBag.EsFamiliar != false)
+                {
+                    <div class="col-md-6 col-12">
+                        Nombre del Familiar:
+                        <div class="text-capitalize">
+                            @Html.DisplayFor(item => Model.Familiar.PrimerNombre)
+                            @Html.DisplayFor(item => Model.Familiar.SegundoNombre)
+                            @Html.DisplayFor(item => Model.Familiar.PrimerApellido)
+                            @Html.DisplayFor(item => Model.Familiar.SegundoApellido)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-6 col-2">
+                        Nombre del Empleado:
+                        <div class="text-capitalize">
+                            @Html.DisplayFor(item => Model.Empleado.Nombres)
+                        </div>
+                    </div>
+                }
+
+                <div id="labelRelacionar" class="col-md-6 col-12">
+                    <div class="form-group">
+                        <label>Cambiar a:</label>
+                        @Html.DropDownList("eventoId", new SelectList(ViewBag.EventosId, "Id", "NombreEvento"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    Evento Actual:
+                    <div>
+                        @ViewBag.NombreEvento
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12">
+                    <a class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" href="~/Eventos/VerAsistentes/@ViewBag.Id"> Atras</a>
+                    <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar cambios</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

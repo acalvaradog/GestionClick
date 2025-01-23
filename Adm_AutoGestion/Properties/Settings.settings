@@ -1,0 +1,113 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Adm_AutoGestion.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="prueba" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Tiempo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="Id" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">00</Value>
+    </Setting>
+    <Setting Name="Usuario" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">foscom</Value>
+    </Setting>
+    <Setting Name="Saprouter" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Correo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">foscal@foscal.com.co</Value>
+    </Setting>
+    <Setting Name="PassCorreo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">RjA1QzRMMjAxNyo=</Value>
+    </Setting>
+    <Setting Name="Correo2000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">alvaro.rincon@foscal.com.co</Value>
+    </Setting>
+    <Setting Name="TextoCorreo" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Se ha realizado solicitud de certificación con funciones.</Value>
+    </Setting>
+    <Setting Name="Servidor" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">172.17.1.105</Value>
+    </Setting>
+    <Setting Name="Mandante" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="Correo1000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">alvaro.rincon@foscal.com.co;andres.rincon2@gmail.com</Value>
+    </Setting>
+    <Setting Name="Correo1000Sospechoso" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">alvaro.rincon@foscal.com.co;andres.rincon2@gmail.com</Value>
+    </Setting>
+    <Setting Name="Correo2000Sospechoso" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">alvaro.rincon@foscal.com.co;andres.rincon2@gmail.com</Value>
+    </Setting>
+    <Setting Name="TextoCorreoSospechoso" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">El colaborador mencionado a continuación reporta tener sintomas de COVID19:</Value>
+    </Setting>
+    <Setting Name="Correo1000Epidemiologia" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">alvaro.rincon@foscal.com.co;andres.rincon2@gmail.com</Value>
+    </Setting>
+    <Setting Name="Correo2000Epidemiologia" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">alvaro.rincon@foscal.com.co;andres.rincon2@gmail.com</Value>
+    </Setting>
+    <Setting Name="TextoCorreoEpidemiologia" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">alvaro.rincon@foscal.com.co;andres.rincon2@gmail.com</Value>
+    </Setting>
+    <Setting Name="Encuesta1000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://docs.google.com/forms/d/e/1FAIpQLScX5NlL_YNEJ0T_hEytYWXCa1zgxrQDpT2ShtfrKD_W7Ks9-w/viewform?usp=pp_url&amp;entry.861182420=nroretiro&amp;entry.1270610438=nombres&amp;entry.843183947=cedula</Value>
+    </Setting>
+    <Setting Name="Encuesta2000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TextoCorreoEncuesta2000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="NotificacionIncapacidad1000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">
+          Hola,
+          &lt;br&gt;
+          &lt;br&gt;
+          De manera atenta se notifica que el empleado 
+        </Value>
+    </Setting>
+    <Setting Name="NotificacionPermiso1000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">
+          Hola,
+          &lt;br&gt;
+          &lt;br&gt;
+          De manera atenta se notifica que el empleado
+        </Value>
+    </Setting>
+    <Setting Name="NotificacionRechazoIncapacidad1000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">
+          &lt;DIV&gt;De manera atenta se notifica que el registro de su incapacidad se encuentra en estado RECHAZADO. &lt;/DIV&gt;&lt;br&gt;
+          &lt;br&gt;
+          Cordialmente,
+          &lt;br&gt;
+          &lt;H1&gt;Servicios Digitales Foscal&lt;/H1&gt;
+          &lt;img width="145" height="156" src="http://www.foscal.com.co/correo/logo-correo-foscal.jpg" alt="Logo FOSCAL Internacional" hspace="5" class="CToWUd"&gt;
+    
+        </Value>
+    </Setting>
+    <Setting Name="TextoCorreoEncuesta1000" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">&lt;DIV&gt;La Organización FOSCAL agradece su tiempo de vinculación laboral y le invita a diligenciar la siguiente Encuesta de Egreso Laboral:
+&lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;Link de Acceso:  &lt;a href = "https://docs.google.com/forms/d/e/1FAIpQLScX5NlL_YNEJ0T_hEytYWXCa1zgxrQDpT2ShtfrKD_W7Ks9-w/viewform?usp=pp_url&amp;entry.861182420=nroretiro&amp;entry.1270610438=nombres&amp;entry.843183947=cedula"&gt;Encuesta de Engreso&lt;/a&gt;
+&lt;br&gt;Le deseamos éxitos en sus nuevos proyectos
+&lt;br&gt;
+&lt;br&gt;
+Cordialmente,
+&lt;br&gt;Ángela Suárez Lopera
+&lt;br&gt;Jefe División Administrativa y Talento Humano
+&lt;br&gt;
+&lt;img width="145" height="156" src="http://www.foscal.com.co/correo/logo-correo-foscal.jpg" alt="Logo FOSCAL Internacional" hspace="5" class="CToWUd"&gt;</Value>
+    </Setting>
+    <Setting Name="Contraseña" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Rm9zY2FsMjAyMg==</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

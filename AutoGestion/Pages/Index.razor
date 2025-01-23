@@ -1,0 +1,99 @@
+﻿
+@page "/"
+@page "/Index"
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject IDialogService DialogService
+@using Autogestion.Shared.DTO.Reconocimiento
+@using Autogestion.Shared.DTO.Empleado
+@inject NavigationManager Navigation
+@inject HttpClient Http
+@using System.Text.Json
+@using AutoGestion.Pages.Vacaciones
+@using AutoGestion.Componentes
+@using Autogestion.Shared.DTO;
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Mi Dashboard</MudText>
+@if (User != null) {
+<MudGrid>
+        <MudItem xs="12" sm="8">
+            <EstadoSolicitud datosempleado="User"></EstadoSolicitud>
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            <ListaCumpleanos></ListaCumpleanos>
+        </MudItem>
+     @*    <MudItem xs="12" sm="12">
+            <AutoGestion.Pages.Cursos.CursosDisponibles></AutoGestion.Pages.Cursos.CursosDisponibles>
+        </MudItem> *@
+        <MudItem xs="12" sm="12">
+     @*        <AutoGestion.Pages.Noticia.NoticiasBanner></AutoGestion.Pages.Noticia.NoticiasBanner> *@
+     <AutoGestion.Pages.Noticia.Noticias></AutoGestion.Pages.Noticia.Noticias>
+        </MudItem>
+        
+  
+</MudGrid>
+
+}
+@code {
+    private bool TieneReconocimiento;
+    private EmpleadoReturnSapDTO User { get; set; }
+
+    EarningReport[] earningReports = new EarningReport[]
+    {
+        new EarningReport { Name = "Lunees", Title = "Reactor Engineer", Avatar = "https://avatars2.githubusercontent.com/u/71094850?s=460&u=66c16f5bb7d27dc751f6759a82a3a070c8c7fe4b&v=4", Salary = "$0.99", Severity = Color.Success, SeverityTitle = "Low"},
+        new EarningReport { Name = "Mikes-gh", Title = "Developer", Avatar = "https://avatars.githubusercontent.com/u/16208742?s=120&v=4", Salary = "$19.12K", Severity = Color.Secondary, SeverityTitle = "Medium"},
+        new EarningReport { Name = "Garderoben", Title = "CSS Magician", Avatar = "https://avatars2.githubusercontent.com/u/10367109?s=460&amp;u=2abf95f9e01132e8e2915def42895ffe99c5d2c6&amp;v=4", Salary = "$1337", Severity = Color.Primary, SeverityTitle = "High"},
+    };
+
+    class EarningReport
+    {
+        public string Avatar;
+        public string Name;
+        public string Title;
+        public MudBlazor.Color Severity;
+        public string SeverityTitle;
+        public string Salary;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        try
+        {
+            User = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+            if (User == null) Navigation.NavigateTo("pages/authentication/login");
+
+            var token = await localStore.GetItemAsync<string>("token");
+
+            var Respuesta = await Http.PostAsJsonAsync<DispositivoDTO>($"api/dispositivos", new DispositivoDTO { token = token, Documento = User.DOCUMENTO, FechaRegistro = DateTime.Now, NroEmpleado = User.PERNR });
+
+            TieneReconocimiento = await Http.GetFromJsonAsync<bool>($"api/Reconocimiento/ConsultaReconocimiento/{User.Id}");
+
+            //var respuesta = await Http.GetFromJsonAsync<string>($"api/obtenerfotoempleado/203");
+
+            //List<EmpleadoReturnSapDTO> listaempleado = JsonSerializer.Deserialize<List<EmpleadoReturnSapDTO>>(respuesta);
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message);
+        }
+        if (TieneReconocimiento)
+        {
+            var options = new DialogOptions
+                {
+                    MaxWidth = MaxWidth.Medium,
+                    FullWidth = true
+                };
+            await MostrarModalAutomatico(options);
+        }
+
+
+        StateHasChanged();
+    }
+    private async Task MostrarModalAutomatico(DialogOptions options = null)
+    {
+
+        var dialog = await DialogService.ShowAsync<NotificacionReconocimiento>("Reconocimiento", options);
+    }
+
+}

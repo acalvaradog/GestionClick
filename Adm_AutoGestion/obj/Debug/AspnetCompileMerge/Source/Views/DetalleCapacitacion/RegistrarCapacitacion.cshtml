@@ -1,0 +1,118 @@
+﻿@model Adm_AutoGestion.Models.DetalleCapacitacion
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "RegistrarCapacitacion";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<div class="container">
+
+    @*<br/>
+        <h2>Registrar Capacitacion</h2>
+        <br/>*@
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <div class="row justify-content-start">
+                <div class="col-12">
+                    <div class="card ">
+                        <div class="card-header text-white fondoDegradado"><h4>Registro Capacitación</h4></div>
+                        <div class="card-body">
+                            <br />
+                            <div class="row">
+
+                                <div class="col-md-6" style="text-align:center">
+
+                                    <img src="~/Contents/image/acta.png">
+
+                                </div>
+                                <br />
+                                <div class="col-md-6">
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            No. Capacitación
+                                            <input type="text" class="form-control" value="@ViewBag.Numero" disabled id="NmrCapacitacion" name="NmrCapacitacion" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="editor-label">
+                                                @*@Html.LabelFor(model => model.EmpleadoId)*@
+                                                Empleado
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.DropDownList("EmpleadoId", new SelectList(ViewBag.Empleado, "nomcodigo", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                                @Html.ValidationMessageFor(model => model.EmpleadoId)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-12" style="text-align:right">
+                                            @*<button type="button" class="btn" style="background-color:#96D44D; color:white" id="AddElemento" onclick="javascript: return AddRowCap('AddEmp2', true );">Agregar</button>*@
+                                            <button type="button" class="bi bi-plus-square btn btn-outline-primary mb-2" style="font-size:16px" id="AddCap" onclick="javascript: return AddRowCap('AddEmp2', true );">&nbsp; Agregar</button>
+                                        </div>
+                                    </div>
+                                    <br />
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover  table-bordered  table-sm" id="tbl_registro">
+                                            <thead style="background: linear-gradient(90deg, #07ABDF 10%, #426AB0 90%); color: #fff">
+                                                <tr>
+                                                    <th></th>
+                                                    <th hidden></th>
+                                                    <th style="white-space:nowrap;">Nombre</th>
+                                                    <th style="white-space:nowrap;">Documento</th>
+                                                    <th style="white-space:nowrap;">Area</th>
+                                                    <th style="white-space:nowrap;">Cargo</th>
+                                                    <th hidden></th>
+                                                    <th style="white-space:nowrap;">Tercero</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="AddItemsCap"></tbody>
+                                            <tfoot><tr><td colspan="12"></td></tr></tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                  <!--Botones-->
+                    <div class="row justify-content-start">
+                        <div class="col-md-12" style="text-align:center">
+                            <button type="button" class="bi bi-save btn btn-outline-primary mb-2" style = "font-size:16px" id="AddCap" onclick="javascript: return SaveCap();">&nbsp; Registrar</button>
+                            @Html.ActionLink( " Atras","ListaPorCompletar", "Capacitacion", null, new { @class = "bi bi-box-arrow-in-left  btn btn-outline-primary mb-2", style = "font-size:16px" })
+                        </div>
+                        
+                    </div>
+                </div>
+
+
+            </div>
+        </fieldset>
+    }
+
+</div>
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje"/>
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn btn-primary" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

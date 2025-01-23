@@ -1,0 +1,478 @@
+﻿@model Adm_AutoGestion.Models.ProcesoDisciplinario
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<form action="javascript:;" enctype="multipart/form-data" method="post">
+
+    <div class="container">
+        <br />
+        <div class="row">
+            <div class="col-8">
+                <h2 class="colorTitulo text-center">Registro Proceso Disciplinario</h2>
+            </div>
+            <div class="col-3">
+                Fecha:  @Html.TextBox("FechaRegistro", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+            </div>
+        </div>
+        <div class="container">
+
+            <br />
+            <div class="card">
+                <div class="card-header text-white fondoDegradado mb-3">Empleados implicados</div>
+                <div class="card-body">
+                    <div class="form-inline" role="form">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="container-fluid">
+
+                                            <!--contenido-->
+                                            <div class="editor-field">
+                                                @Html.DropDownList("EmpleadoRegistraId", new SelectList(ViewBag.Empleado, "nomcodigo", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_width = "45%", data_live_search = "true" })
+                                                @Html.ValidationMessageFor(model => model.EmpleadoRegistraId)
+                                                <button type="button" class="bi bi-plus-square btn btn-outline-primary mb-2 mt-2" id="Addformc2" onclick="javascript: return AddRow2('Addemp', true );"> Agregar</button>
+                                            </div>
+
+
+
+
+                                        </div>
+
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="panel panel-default">
+                                            <div class="table-responsive">
+                                                <br />
+                                                <table class="table table-hover">
+                                                    <thead><tr class="table-info"><th></th><th>Nombre</th><th>Cargo</th><th>Area</th><th>Jefe</th></tr></thead>
+                                                    <tbody id="AddItemsemp"></tbody>
+                                                    <tfoot><tr><td colspan="5"></td></tr></tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+
+                @*<div class="col-3">
+
+                    <div class="editor-label">
+                        @Html.LabelFor(model => model.FechaRegistro)
+                        Fecha Registro
+                    </div>
+                    <div class="editor-field">
+                        @Html.EditorFor(model => model.FechaRegistro)
+                         @Html.TextBox("FechaRegistro", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date"})
+                     </div>
+                    </div>*@
+
+
+                <div class="col-4">
+                    Fecha de los Hechos
+                    @Html.TextBox("FechaHechos", "{0:dd/MM/aaaa}", htmlAttributes: new { @class = "form-control", type = "date" })
+
+                </div>
+                <div class="col-4">
+                    Hora de los Hechos
+                    @Html.TextBox("HoraHechos", "{hh:mm tt}", htmlAttributes: new { @class = "form-control", type = "time", data_width = "100%" })
+                </div>
+                <div class="col-4">
+                    Nivel de Prioridad
+                    <select class="form-control" id="NivelP" name="NivelP">
+                        <option selected>Seleccione...</option>
+                        <option>Baja</option>
+                        <option>Media</option>
+                        <option>Alta</option>
+                    </select>
+                </div>
+                <div class="col-6">
+                    <br />
+                    Lugar
+                    @Html.TextBox("Lugar", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-6">
+                    <br />
+                    Empresa:
+                    <br />
+                    @Html.DropDownList("Empresa", new SelectList(ViewBag.Sociedad, "Codigo", "Descripcion"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_width = "100%" })
+                    @Html.ValidationMessageFor(model => model.Empresa)
+                </div>
+
+                <div class="col-12">
+
+                    <div class="editor-label">
+                        <br />
+                        @Html.LabelFor(model => model.Fundamentos)
+                    </div>
+                    <div class="editor-field">
+                        @*@Html.EditorFor(model => model.CantidadDias)*@
+                        @Html.TextArea("Fundamentos", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20" })
+                        @Html.ValidationMessageFor(model => model.Fundamentos)
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header text-white fondoDegradado mb-3">Adjuntar Pruebas</div>
+                <div class="card-body">
+                    <div class="form-inline" role="form">
+                        <div class="container-fluid">
+                            <br />
+                            <div class="panel-body">
+                                <div class="panel panel-default">
+
+                                    <form action="javascripts:;" enctype="multipart/form-data" name="formulario" id="formulario" method="post">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="pruebat">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        <th>N</th>
+                                                        <th>Tipo Prueba</th>
+                                                        <th>Archivo</th>
+                                                        <th hidden>tamaño</th>
+                                                        <th>Descripcion</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bodyprueba"></tbody>
+
+                                            </table>
+                                            <button id="add" class="bi bi-plus-square btn btn-outline-primary mb-2"> Añadir fila</button>
+                                            <button id="del" class="bi bi-x-circle btn btn-outline-primary mb-2"> Eliminar fila</button>
+
+                                        </div>
+
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            @*--------- Card con los tamaños de los archivos ----------*@
+            <div class="card">
+                <div class="card-body">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Importante!</strong> <br /> - Favor tener en cuenta que los archivos que se adjuntan <strong> NO </strong> deben contener puntos en el nombre, solo se permite el punto que indica la extension del archivo.
+                        <br /><br />
+                        <strong> Correcto:</strong>     Archivo.pdf
+                        <br />
+                        <strong> Incorrecto:</strong>     Archivo.2020.01.02.pdf
+                        <br /><br />
+                        - Favor tener en cuenta que solo se permiten archivos de tipo ( jpg, jpeg, png, doc, docx, pdf, xlsx, odt, ods, mp4 ).
+
+                        @*<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>*@
+                    </div>
+
+                    - El tamaño máximo para subir los archivos es de 7 Mb "7000000 Bytes" le quedan
+                    (<span id="archivototal" style="color:darkgreen;">7000000</span> Bytes)
+                    <div class="row">
+                        <label class="ml-3 mr-2">Tamaño total:</label>
+                        <div calss"flex-xl-row" style=" width:400px;" id="barra1"> <progress class="progress mt-2 " id="barra" max="7000000" value="0" style="border: 2px solid grey; border:1px solid grey; width:auto;"></progress></div>
+                        <div class="progress  mt-2  " id="barra2" style="display: none; width: 400px;"><div class="progress-bar" style="background-color:red;  border:1px solid grey; width:100%;"></div></div>
+                    </div>
+                    <span id="archivototal21" class="text-success" hidden>0</span>@*---- Total Tabla 1 ----*@
+                    <span id="archivototal22" class="text-success" hidden>0</span>@*---- Total Tabla 2 ----*@
+                    <span id="archivototal23" class="text-success" hidden>0</span>@*---- Total Suma de la tabla 1 y 2 ----*@
+                </div>
+            </div>
+            @*--------- **************** Fin *************** ----------*@
+
+
+            <br />
+            <!--Anexos-->
+            <div class="card">
+                <div class="card-header text-white fondoDegradado mb-3">Anexos</div>
+                <div class="card-body">
+                    <div class="form-inline" role="form">
+                        <div class="container-fluid">
+                            <div class="form-row">
+                                <div class="col-sm">
+                                    <div class="form-group">
+                                        <div class="editor-label">
+                                            <!--contenido-->
+                                        </div>
+                                    </div>
+                                    <form action="javascripts:;" enctype="multipart/form-data" method="post">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" " id="Tanexos">
+                                                <thead>
+                                                    <tr class="table-info">
+                                                        <th>N</th>
+                                                        <th>Archivo</th>
+                                                        <th hidden>tamaño</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody id="bodyanexos"></tbody>
+
+                                            </table>
+                                            <button id="adda" name="adda" class="bi bi-plus-square btn btn-outline-primary mb-2"> Añadir fila</button>
+                                            <button id="del2" name="del2" class="bi bi-x-circle btn btn-outline-primary mb-2"> Eliminar fila</button>
+                                        </div>
+                                        <br />
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="col-12 " style="text-align:center">
+                <button type="button" class="bi bi-save btn btn-outline-primary mb-2" id="AddPD" onclick="javascript: return SavePD();"> Guardar</button>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+
+<div class="modal fade" id="processState" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-body text-center"> <img src="~/Contents/image/Spinner.gif"> Espere....</div>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    //************************ Funcion para Recargar la pagina ************************************
+    function reloadPage() {
+        location.replace("../../ProcesoDisciplinario/DetalleProcesoDisciplinario")
+    }
+    //************************ --------------------------------------------- **********************
+
+
+    //************************ Funcion para asignar La fecha de registro  *************************
+    window.onload = function () {
+        var fecha = new Date(); //Fecha actual
+        var mes = fecha.getMonth() + 1; //obteniendo mes
+        var dia = fecha.getDate(); //obteniendo dia
+        var ano = fecha.getFullYear(); //obteniendo año
+        if (dia < 10)
+            dia = '0' + dia; //agrega cero si el menor de 10
+        if (mes < 10)
+            mes = '0' + mes //agrega cero si el menor de 10
+        document.getElementById("FechaRegistro").value = ano + "-" + mes + "-" + dia;
+    }
+    //************************ --------------------------------------------- **********************
+
+
+
+    //------------------------------------------ Adjuntar Pruebas --------------------------------------------------\\
+
+    //************************ Funcion para asignar el peso de los archivos ********************************
+    function comprobar(obj) {
+
+        //Declaramos la variable a asignar
+        var total = 0;
+        var num = 1;
+
+        //Por cada fila agregar el valor al td con el peso del archivo cargado
+        for (i in obj.files) {
+            if (obj.files[i].size !== undefined) {
+                total += obj.files[i].size;
+            }
+        }
+
+        //Asignamos el valor
+        document.getElementById(obj.name).innerHTML = total;
+
+        //Se envía a calcular el total
+        calcular_total(num);
+    }
+    //************************ --------------------------------------------- *******************************
+
+
+    //****************** Funcion para calcular el peso total de los archivos *******************************
+
+    function calcular_total(num) {
+
+        //Declaramos la variable que contendra el peso total
+        let datos = 0;
+        let trs = 0;
+
+        //Se declara la variable con el valor de la cantidad de
+        //filas + 1 para que empiece desde 1 y no desde 0
+        if (num == 1) {
+            trs += $("#bodyprueba tr").length + 1;
+        }
+        else {
+            trs += $("#bodyanexos tr").length + 1;
+        }
+
+
+
+
+        //Por cada fila sumamos el valor del peso del archivo y usamos
+        //el ciclo para obtener el numero de la fila
+        for (let i = 1; i < trs; i++) {
+            if (num == 1) {
+
+                var archivo = "archivo" + i; //Obtenemos el num de fila con la variable i
+                var ar = document.getElementById(archivo).textContent;//Con el id traemos el peso del archivo actual
+
+                datos += parseInt(ar);//Sumamos el peso del achivo al tamaño anterior
+                $(archivototal21).text(datos);
+            }
+            else {
+
+                var archivo2 = "anexos" + i;//Obtenemos el num de fila con la variable i
+                var ar = document.getElementById(archivo2).textContent;//Con el id traemos el peso del archivo actual
+
+                datos += parseInt(ar);//Sumamos el peso del achivo al tamaño anterior
+                $(archivototal22).text(datos);
+            }
+
+        }
+
+        var at21 = parseInt($(archivototal21).text());//Tomamos el valor de la tabla 1 "Pruebas"
+        var at22 = parseInt($(archivototal22).text());//Tomamos el valor de la tabla 2 "Anexos"
+
+        //Sumamos los dos valores el valor de la tabla 1 "Pruebas" y  el valor de la tabla 2 "Anexos" y los asignamos al spam archivototal23
+        $(archivototal23).text(at21 + at22);
+
+        var at23 = parseInt($(archivototal23).text());//Asignamos ese valor a una variable
+
+        document.getElementById('barra').value = at23;//Asignamos el valor de la variable a la barra de progreso
+
+        $(archivototal).text(7000000 - at23);//Restamos el peso el valor de la variable del tamaño total y lo asignamos para el texto
+
+        color();//Enviamos para cambiar el color de la barra y los numeros
+    }
+    //************************ -------------------------------------------------------- ********************
+
+
+
+
+    //************************ Funcion para cambiar el color de la barra de progreso ********************
+    function color() {
+
+        var tamaño = document.getElementById('barra').value;//Tomamos el valor actual de la barra de progreso
+        var tamaño2 = $(archivototal).text();//Tomamos el valor actual del spam con el numero
+
+        //Dependiendo del tamaño "valor" de la barra de progreso cambiamos los colores del border inferior
+        if (tamaño >= 0 && tamaño <= 6999999) { $('#barra').css('display', ''); $('#barra2').css('display', 'none'); $('#barra1').css('display', ''); }//Si esta en 0 es Verde
+
+        //else if (tamaño >= 1 && tamaño <= 6900000) { $('#barra').css('display', ''); $('#barra2').css('display', 'none'); }//Si aumenta es Azul
+
+        ////Si esta entre los 6900001 y los 6999999 queda en Naranja
+        //else if (tamaño >= 6900001 && tamaño <= 6999999) { $('#barra').css('display', ''); $('#barra2').css('display', 'none'); }
+
+        else if (tamaño >= 7000000) { $('#barra').css('display', 'none'); $('#barra2').css('display', ''); $('#barra1').css('display', 'none'); }//Cuando llegue a 7000000 o mas quedara en Rojo
+
+        //------------------------ Color de los numeros -------------------------------------------------
+
+        //Si los numeros estan en 0 o menos cambiamos el color de los numeros a Rojo
+        if (tamaño2 <= 1000) { $('#archivototal').css('color', 'red'); }
+        else { $('#archivototal').css('color', 'darkgreen'); }
+    };
+    //************************ -------------------------------------------------------- ********************
+
+
+
+
+
+    //************************ funcion para agregar al total el peso del archivo eliminado *****************
+
+    function restar_total(pesoarch, num) {
+
+
+        var at21 = parseInt($(archivototal21).text());//Tomamos el valor de la tabla 1 "Pruebas"
+        var at22 = parseInt($(archivototal22).text());//Tomamos el valor de la tabla 2 "Anexos"
+
+        // Dependiendo de la tabla que viene se resta el valor del archivo al total
+        if (num == 1) {
+            $(archivototal21).text(at21 - pesoarch)//Tabla Pruebas
+
+        }
+        else {
+            $(archivototal22).text(at22 - pesoarch)//Tabla Anexos
+
+        }
+
+
+        var Pat21 = parseInt($(archivototal21).text());//Tomamos el nuevo valor de la tabla 1 "Pruebas"
+        var Pat22 = parseInt($(archivototal22).text());//Tomamos el nuevo valor de la tabla 2 "Anexos"
+
+        //Sumamos los dos valores el valor de la tabla 1 "Pruebas" y
+        //el valor de la tabla 2 "Anexos" y los asignamos al spam archivototal23
+        $(archivototal23).text(Pat21 + Pat22);
+
+
+
+
+        //Obtenemos el peso actual del archivo
+        var pesoactual = parseInt($(archivototal).text());//Spam con el numero
+        var tamañoactual = parseInt($(archivototal23).text());//Spam Oculto con el peso total
+
+
+
+        //Tomamos el peso actual y le agregamos el peso del archivo para los numeros
+        var total = (pesoactual + parseInt(pesoarch));
+
+
+        //Asignamos el valor actual
+        $(archivototal).text(total);//Numeros
+        document.getElementById('barra').value = tamañoactual;//Barra de progreso
+
+        //Enviamos a cambiar el color de la barra
+        color();
+    }
+    //************************ ---------------------------------------------------------- ******************
+
+    //-----------------------------------------************************---------------------------------------------\\
+
+
+
+
+
+    //------------------------------------------ Adjuntar Anexos ---------------------------------------------------\\
+
+    //************************ Funcion para asignar el peso de los archivos ********************************
+    function comprobar2(obj) {
+
+        //Declaramos la variable a asignar
+        var total2 = 0;
+
+        //Numero de tabla
+        var num = 2;
+
+        //Por cada fila agregar el valor al td con el peso del archivo cargado
+        for (i in obj.files) {
+            if (obj.files[i].size !== undefined) {
+                total2 += obj.files[i].size;
+            }
+        }
+
+        //Asignamos el valor
+        document.getElementById(obj.name).innerHTML = total2;
+
+        //Se envía a calcular el total con el numero de tabla
+        calcular_total(num);
+
+    }
+        //************************ --------------------------------------------- *******************************
+
+
+
+
+</script>

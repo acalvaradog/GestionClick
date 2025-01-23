@@ -1,0 +1,161 @@
+﻿@model Adm_AutoGestion.Models.Descuentos
+@using System.Web.UI.WebControls;
+
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string Nombres = string.Format("{0}", Session["Nombres"]);
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "SI", Value = "SI" },
+        new ListItem { Text = "NO", Value = "NO" }
+        };
+}
+
+<div class="container">
+    <br />
+    <h2>Descuentos</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="card ">
+                <div class="card-header text-white fondoDegradado">Datos Basicos del Empleado</div>
+                <div class="card-body">
+                    <div class="row justify-content-start">
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Empleado
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" class="form-control" id="Nom" value="@Nombres" desabled="desabled" readonly />
+                            </div>
+
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.EmpleadoId)*@
+                            @Html.TextBox("EmpleadoId", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", type = "hidden" })
+                            @Html.ValidationMessageFor(model => model.EmpleadoId)
+                        </div>
+                        <br />
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Tope Maximo
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.TopeMaximo)*@
+                                @Html.TextBox("TopeMaximo", null, htmlAttributes: new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.TopeMaximo)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row justify-content-start">
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Valor Descuento
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.ValorDescuento)*@
+                                @Html.TextBox("ValorDescuento", null, htmlAttributes: new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.ValorDescuento)
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Fecha
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.Fecha)*@
+                                @Html.TextBox("Fecha", null, htmlAttributes: new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.Fecha)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row justify-content-start">
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Fecha Inicio Vigencia
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.FechaInicioVigencia)*@
+                                @Html.TextBox("FechaInicioVigencia", null, htmlAttributes: new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.FechaInicioVigencia)
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Fecha Fin Vigencia
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.FechaFinVigencia)*@
+                                @Html.TextBox("FechaFinVigencia", null, htmlAttributes: new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.FechaFinVigencia)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row justify-content-start">
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Servicio
+                            </div>
+                            <div class="editor-field">
+                                @Html.DropDownListFor(model => model.ServicioId, new SelectList(Model.ListadoServicios, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", @readonly = "true" })
+                                @Html.ValidationMessageFor(model => model.ServicioId)
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Activo
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.Activo)*@
+                                @if (ViewBag.Estado == "SI")
+                                {
+                                    @Html.DropDownListFor(model => model.Activo, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                }
+                                else
+                                {
+                                    @Html.DropDownListFor(model => model.Activo, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                }
+                                @Html.ValidationMessageFor(model => model.Activo)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-center mb-2">
+                    <div class="col-4 " style="text-align:end">
+                        @if (ViewBag.Estado == "NO")
+                        {
+                            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2" disabled="disabled"> Guardar </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                        }
+                    </div>
+                    <div class="col-4">
+                        @Html.ActionLink(" Atras", "Index", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary mb-2" })
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+    }
+    <br />
+</div>

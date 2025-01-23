@@ -1,0 +1,162 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Vacaciones>
+
+@{
+    ViewBag.Title = "AprobacionSuperior";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.Vacaciones Item = ViewBag.Vacaciones;
+    
+}
+
+
+
+
+<br />
+<br />
+
+<h2>Aprobación</h2>
+<br />
+
+<div class="card">
+  <div class="card-header text-white bg-info mb-3" >Detallado</div>
+    <div class="card-body">
+      <div class="form-inline" role="form">
+       <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm">
+                <div class ="form-group">
+                  <label for="Nombre" class="control-label col-sm-1 ">Documento: </label>&nbsp&nbsp
+                  <input  type = "text" class="form-control" id = "Doc" value="@Item.Empleado.Documento" disabled = "disabled" />
+                   
+                  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                  <label for="Nombre" class="control-label col-sm-1">Nombre: </label>
+                  <input  type = "text" class="form-control col-sm-7" id = "Nom" value=" @Item.Empleado.Nombres" readonly/>
+                </div>
+            </div>
+          </div>
+        <br />
+        <div class="row">
+            <div class="col-sm">
+                <div class ="form-group">
+                <label for="Nombre">Fecha Inicio: </label>&nbsp&nbsp
+                <input  type = "text" class="form-control" id = "FcI" value="@Convert.ToDateTime(Item.FechaInicial).ToString("dd/MM/yyyy")" disabled = "disabled" />
+                <div>
+            </div>
+            <div class="col-sm">
+                  <div class ="form-group">
+                  <label for="Nombre">Cant. Dias Solicitados: </label>&nbsp&nbsp&nbsp
+                  <input  type = "text" class="form-control col-sm-5" id = "Cds" value="@Item.CantDiasSolicitados" disabled = "disabled" />
+                  </div>
+            </div>
+            <div class="col-sm">
+                 <div class ="form-group">
+                    <label for="Nombre">Cant. Dias Pendientes: </label>&nbsp&nbsp&nbsp
+                    <input  type = "text" class="form-control col-sm-5" id = "Cdp" value="@Item.CantDiasPendientes" disabled = "disabled" />
+                 </div>
+            </div>
+          </div>
+         </div>
+       </div>
+        <br />
+    <form  action="~/Vacaciones/AprobacionSuperior1">
+        <div class="row">
+            <div class="col-sm-5">
+            <div class ="form-group">
+             <label for="exampleFormControlSelect1">Estado: </label>&nbsp&nbsp&nbsp
+             <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+             <input type="hidden" id="Empleado" name="Empleado" value="@Item.Empleado.Id" />
+             <select class="form-control col-sm-5" id="Estado" name="Estado">
+                  <option value="2">Aprobar</option>
+                  <option value="5">Rechazar</option>
+             </select>
+                
+              </div>
+            </div>
+         </div>
+
+        <div style="text-align: center">   
+              <button class="btn btn-primary" type="submit">Guardar</button>
+              @*@Html.ActionLink("Guardar", "AprobacionSuperior1", new { Id = Item.Id, Empleado = Item.Empleado.Id, Estado = Item.EstadoId})*@                         
+        </div>
+        
+</form>
+
+
+
+        
+     </div>
+    </div>
+  </div>
+</div>
+
+
+<br />
+<br />
+<br />
+
+<div class = "table-responsive">
+<table class= "table table-hover">
+    <tr class="table-info">
+        <th>
+           @* @Html.DisplayNameFor(model => model.EmpleadoId)*@
+            Nombre Empleado
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </th>
+        <th>
+           @* @Html.DisplayNameFor(model => model.FechaInicial)*@
+            Fecha Inicial
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.CantDiasSolicitados)*@
+            Cant. Dias Solicitados
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.CantDiasPendientes)*@
+            Cant. Dias Pendientes
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.EstadoId)*@
+            Estado
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adjunto)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {     
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.FechaInicial)*@
+            @Convert.ToDateTime(item.FechaInicial).ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantDiasSolicitados)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CantDiasPendientes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EstadoVacaciones.Nombre)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => item.Adjunto)*@
+            @Html.ActionLink("Descargar Archivo", "Download", new { archivo=item.Adjunto })
+        </td>
+        <td>
+           @Html.ActionLink("Ver", "AprobacionSuperior", new { Id=item.Id })
+           
+        </td>
+    </tr>
+}
+
+</table>
+</div>

@@ -1,0 +1,64 @@
+﻿@model  Adm_AutoGestion.Models.EvaDesempeno.seguimientos
+@using System.Web.UI.WebControls;
+<br />
+@{
+    ViewBag.Title = "Añadir Comentario";
+}
+@using (Html.BeginForm("AñadirComentario", "EvaDesempeño"))
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+
+                        Descripcion:
+                        @Html.TextBox("Descripcion", null, null, new { @class = "form-control form-control-sm", @type = "Text", @disabled = true })
+                        <br />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+
+                        Comentario:
+                        @Html.TextBox("comentario", null, null, new { @class = "form-control form-control-sm", @type = "Text", @requiered=true })
+                        <br />
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+
+                        Proximo Seguimiento:
+                        @Html.TextBox("Fecha1", null, null, new { @class = "form-control form-control-sm", @type = "date", @requiered = true })
+
+                        @Html.TextBox("codigo", null, null, new { @class = "form-control form-control-sm", @type = "number", @hidden = true })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+
+                        Cumplió el seguimiento:<br />
+                        SI:
+                        @Html.RadioButtonFor(m => m.cumplimiento, true)
+                        No:
+                        @Html.RadioButtonFor(m => m.cumplimiento, false)
+
+                    </div>
+                </div>
+
+
+
+
+
+                <div class="col-md-12" style="text-align: center">
+                    <div class="form-group">
+                        <br />
+                        <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}

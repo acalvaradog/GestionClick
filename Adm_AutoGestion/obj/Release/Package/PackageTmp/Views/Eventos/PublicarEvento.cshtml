@@ -1,0 +1,25 @@
+﻿@model Adm_AutoGestion.Models.Eventos
+
+@using (Html.BeginForm())
+{
+    <div class="row me-5 ms-5 mt-3">
+        <div class="col-12 d-flex justify-content-center">
+            Estado Actual del Evento:&nbsp; @if (@Model.Estado == "Activo")
+            { <p style="font-weight:bold">Publicado</p>}
+            else if(Model.Estado == "NoPublicado"){ <p style="font-weight:bold">No Publicado</p> }
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            Esta seguro que desea cambiar el estado del evento a:&nbsp; @if (@Model.Estado == "Activo")
+            {<p style="font-weight:bold">No Publicado</p>}
+            else if (Model.Estado == "NoPublicado")
+            { <p style="font-weight:bold">Activo</p>}?
+        </div>
+
+    </div>
+    <div class="row mt-3 mb-2">
+        <div class="col-12 d-flex justify-content-center">
+            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Aceptar</button>
+            <button type="button" data-bs-dismiss="modal" class="bi bi-box-arrow-in-left btn btn-outline-primary ms-3 mb-2"> Cancelar</button>
+        </div>
+    </div>
+}

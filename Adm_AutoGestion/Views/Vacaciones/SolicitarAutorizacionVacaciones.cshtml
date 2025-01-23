@@ -1,0 +1,77 @@
+﻿@using System.Web.UI.WebControls;
+
+@{var ListItems = new List<ListItem> { 
+        new ListItem { Text = "SI", Value = "SI" }, 
+        new ListItem { Text = "NO", Value = "NO" } 
+        };
+}
+
+
+<div class="container">
+
+
+<br />
+<div align="center">
+<h2>Solicitud de Autorización para Registro de Vacaciones</h2>
+</div>
+<br />
+
+<form  action="~/Vacaciones/GrabarSolicitudAutorVac">
+
+<div class="row justify-content-start">
+        @*<div class="col-6" >
+            <div class="editor-label">
+            Vacaciones Pagadas
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("VacacionesPagadas", new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+        </div>
+    
+        </div>*@
+        <div class="col-6" >
+        <div class="editor-label">
+            Vacaciones Anticipadas
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("VacacionesAdelantadas", new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+        </div>
+    </div>
+
+<br />
+
+    
+    <div class="col-6" >
+        <div class="editor-label">
+            Vacaciones Menor a 6 Dias
+         </div>
+         <div class="editor-field">
+            @Html.DropDownList("VacacionesMayores6", new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+        </div>
+    </div>
+</div>
+<br />
+
+<input type="hidden" id="EmpleadoP" name="EmpleadoP" value="" />
+<input type="hidden" id="VacacionesPagadas" name="VacacionesPagadas" value="NO" />
+
+<br />
+<div class="row justify-content-start">
+<div class="col-12" style="text-align:center">
+        <button type = "submit" id = "Search" class="btn" style="background-color:#96D44D; color:white; " >Enviar</button>
+     </div>
+</div>
+<br />
+<br />
+
+</form>
+
+
+</div>
+
+
+<script>
+var Empleado = $("#EmpleadoId").val();
+        
+$("#EmpleadoP").val(Empleado);
+
+</script>

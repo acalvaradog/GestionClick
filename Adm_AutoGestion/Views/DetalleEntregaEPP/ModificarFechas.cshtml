@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleEntregaEPP>
+
+
+
+<h2 class="colorTitulo text-center mt-3">Cambio Masivo de Fechas</h2>
+
+
+<form action="~/DetalleEntregaEPP/Guardafechas">
+
+    <div class="row justify-content-start m-3">
+
+        <div class="col-6" style="text-align:left">
+            <label for="Nombre">Fecha Entrega: </label>
+            @Html.TextBox("Fecha", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+        </div>
+
+        <div class="col-6" style="text-align:left">
+            <label for="Nombre">Fecha Vencimiento: </label>
+            @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+        </div>
+
+    </div>
+    <div class="row mt-3 justify-content-start">
+        <div class="col-12 text-center">
+            <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+        </div>
+    </div>
+
+</form>

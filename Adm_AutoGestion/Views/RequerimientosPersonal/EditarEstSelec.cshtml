@@ -1,0 +1,26 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+@using System.Web.UI.WebControls;
+@{
+    Adm_AutoGestion.Models.RequerimientosDelPersonal Item = ViewBag.Requerimiento;
+}
+<script src="~/Contents/js/RequerimientosPersonal.js"></script>
+
+    <div class="card">
+        <div class="card-body">            
+            <div class="container">
+                    <div class="col-12 text-center" id="">
+                        <br />
+                        <label>Estado Selección</label>
+                        @Html.DropDownList("EstadoSelec", new SelectList(ViewBag.EstadoSelec, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control", @type = "text" })  
+                      
+                    </div>                   
+                    <br />
+                    <div class="col-12 text-center" >  
+                        <button type="button" class="btn btn-outline-primary mb-2" id="GuardarEstSel" onclick="javascript: return ModifiEstSelec( @Item.Id);"> Modificar</button>
+                    </div>                
+            </div>
+        </div>
+    </div>
+
+
+

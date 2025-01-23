@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Editar Categoria";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="card">
+    <div class="card-header mb-2 fondoDegradado">
+        <h2 class="text-center text-white">Editar Categoria</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-6">
+                <label>Listado de Empleados</label>
+                @Html.DropDownList("Empleados", new SelectList ( ViewBag.Empleados,"Id", "Nombre" ), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" , onchange = "javascript: AgregarEmp(true);" })
+            </div>
+
+            <div class="col-6">
+                <label>Seleccione categoría</label>
+                <select class="form-control" id="cat">
+                    <option value="">
+                        Seleccione...
+                    </option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <table class="table table-bordered table-sm table-hover">
+                <thead class="fondoDegradado text-center align-middle">
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            Nro
+                        </th>
+                        <th>
+                            Nombres
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody id="emp" class="text-center align-middle">
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <button type="button" class="btn bi bi-save btn-outline-primary mb-2" onclick=""> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function AgregarEmp(insert) {
+        var field = ["", ""];
+        var tabla = [];
+
+        try {
+
+            $("#AddItemsemp tr").each(function (index, item, array) {
+                tabla.push([item.cells[2].innerText]);
+            });
+            for (i = 0; i < tabla.length; i++) {
+                if (em == tabla[i]) {
+                    throw "No es posible asignar el mismo proceso dos veces al mismo empleado";
+                }
+            }
+
+            field[0] = "emp"; field[1] = "<tr><td><a href = '' onclick = '$(this).parent().parent().remove(); return false;'><img alt='Quitar' src='../Contents/image/Trash.png' title='Quitar'/><a/></td> <td>" + $("#Empleados option:selected").val() + "</td><td>" + $("#Empleados option:selected").text() + "</td>";
+        }
+        catch (err) { alertify.alert(err); }
+        
+
+        if (insert == true) { $("#" + field[0]).append(field[1]); }
+        if (insert == false) { $("#" + field[0]).html(field[1]); }
+        return false;
+    }
+</script>

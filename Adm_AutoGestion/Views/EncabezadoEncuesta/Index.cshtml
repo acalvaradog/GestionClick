@@ -1,0 +1,368 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EncabezadoEncuesta>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.EncabezadoEncuesta Item = ViewBag.resultado;
+}
+
+
+
+  
+  
+<div class="card">
+    
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Informe</h4>
+            </div>
+        </div>
+
+
+
+        <form>
+            <div class="card-body">
+
+
+                <div class="row justify-content-start">
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Area Organizativa</label>
+                        @Html.TextBox("Unidad", null, htmlAttributes: new { @class = " form-control form-control-sm" })
+                    </div>
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Transporte</label>
+                        @Html.TextBox("Transporte", null, htmlAttributes: new { @class = " form-control form-control-sm" })
+                    </div>
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Modo Trabajo</label>
+                        @Html.TextBox("Trabajo", null, htmlAttributes: new { @class = " form-control form-control-sm" })
+                    </div>
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Empresa</label>
+                        @Html.TextBox("Empresa", null, htmlAttributes: new { @class = " form-control form-control-sm" })
+                    </div>
+                </div>
+
+                <div class="row justify-content-start">
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Fecha Inicio</label>
+                        @Html.TextBox("FechaIni", null, htmlAttributes: new { @class = " form-control form-control-sm", @type = "date", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                    </div>
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Fecha Fin</label>
+                        @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = " form-control form-control-sm", type = "date", @Value = DateTime.Now.ToString("yyyy-MM-dd") })
+                    </div>
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Sospechoso</label>
+                        @Html.TextBox("Sospechoso", null, htmlAttributes: new { @class = " form-control form-control-sm" })
+                    </div>
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Nombre Empleado</label>
+                        @Html.TextBox("Empleado", null, htmlAttributes: new { @class = " form-control form-control-sm col-sm-12" })
+                    </div>
+                </div>
+                <div class="row justify-content-start mb-3">
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Documento Empleado</label>
+                        @Html.TextBox("Cedula", null, htmlAttributes: new { @class = " form-control form-control-sm col-sm-12" })
+                    </div>
+
+                    <div class="col-sm">
+                        <label class="form-label" for="sospechoso">Seleccione la pregunta</label>
+                        @Html.DropDownList("Pregunta", new SelectList(ViewBag.Preguntas, "Id", "Pregunta"), "Seleccione...", htmlAttributes: new { @class = " form-control form-control-sm" })
+                    </div>
+
+                    <div class="col-sm" style="text-align:left">
+                        <label class="form-label" for="sospechoso">Respuesta </label>&nbsp&nbsp
+                        <select class="form-control form-control-sm" id="Respuesta" name="Respuesta">
+                            <option value="nada">Seleccionar...</option>
+                            <option value="si">SI</option>
+                            <option value="no">NO</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col text-center">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary rounded-pill" onclick="@Url.Action("Index","EncabezadoEncuesta")"> Buscar</button>
+                </div>
+            </div>
+
+        </form>
+
+      
+
+            <div class="table-responsive mt-4">
+
+                <table class="table table-striped mb-0" role="grid" id="Exportar_a_Excel">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                Nombre Empleado
+                            </th>
+                            <th>
+                                Nro Cedula
+                            </th>
+                            <th>
+                                Cargo
+                                @*            @Html.DisplayNameFor(model => model.Cargo)*@
+                            </th>
+                            <th>
+                                Area Organizativa
+                            </th>
+                            <th>
+                                EPS
+                                @*            @Html.DisplayNameFor(model => model.Eps)*@
+                            </th>
+                            <th>
+                                Transporte
+                                @*            @Html.DisplayNameFor(model => model.Transporte)*@
+                            </th>
+                            <th>
+                                Modo Trabajo
+                                @*            @Html.DisplayNameFor(model => model.ModoTrabajo)*@
+                            </th>
+                            <th>
+                                Tipo Certificado
+                                @*            @Html.DisplayNameFor(model => model.Sospechoso)*@
+                            </th>
+                            <th>
+                                Empresa
+                                @*            @Html.DisplayNameFor(model => model.Empresa)*@
+                            </th>
+                            <th>
+                                Correo
+                            </th>
+                            <th>
+                                Teléfono
+                            </th>
+                            <th>
+                                Fecha
+                                @*            @Html.DisplayNameFor(model => model.Fecha)*@
+                            </th>
+                            <th>
+
+                                @*            @Html.DisplayNameFor(model => model.Temperatura)*@
+                            </th>
+                            <th>
+                                En los últimos 7 días, fuera del trabajo, ¿ha tenido contacto sin tapabocas, por más de 15 min. y a una distancia menor a 2 mts. con_persona_positiva_para_COVID_19?
+                            </th>
+                            <th>
+                                En los últimos 7 días, en el trabajo ¿ha tenido contacto sin tapabocas y/o respirador N95 por más de 15 min. y a una distancia < a 2 mts. con persona positiva para COVID19_durante_su_atención_o_apoyo?
+                            </th>
+                            <th>
+                                Vacuna Primera Dosis
+                            </th>
+                            <th>
+                                Fecha Primera Dosis
+                            </th>
+                            <th>
+                                Vacuna Segunda Dosis
+                            </th>
+                            <th>
+                                Fecha Segunda Dosis
+                            </th>
+                            <th>
+                                Vacuna Dosis Refuezo
+                            </th>
+                            <th>
+                                Fecha Dosis Refuezo
+                            </th>
+                            <th>
+                                Respuestas
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            foreach (var empleado in item.ListadoEmpleado)
+                            {
+
+                                <tr>
+
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.Nombres)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.Documento)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cargo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.AreaDescripcion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Eps)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Transporte)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ModoTrabajo)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(@item.Sospechoso, "Certificado", "EncabezadoEncuesta", new { id = item.Id }, new { data_modal20 = "" })
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Empresa)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.Correo)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.Telefono)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Fecha)
+                                    </td>
+                                    <td>
+                                    </td>
+                                    @foreach (var encuesta in item.Encuesta)
+                                    {
+
+                                        if (encuesta.NumeroPregunta == 12 || encuesta.NumeroPregunta == 20)
+                                        {
+                                            <td style="text-align:center">
+                                                @Html.DisplayFor(modelItem => encuesta.Respuesta)
+
+                                            </td>
+                                        }
+                                        if (encuesta.NumeroPregunta == 13 || encuesta.NumeroPregunta == 21)
+                                        {
+                                            <td style="text-align:center">
+                                                @Html.DisplayFor(modelItem => encuesta.Respuesta)
+
+                                            </td>
+                                        }
+                                    }
+
+                                    @if (empleado.OtraD1 == empleado.OtraD1)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(Empleado => empleado.OtraD1)
+                                            @if (empleado.VacunaDosis1 == empleado.VacunaDosis1)
+                                            {
+                                                @Html.DisplayFor(Empleado => empleado.VacunaDosis1)
+                                            }
+                                        </td>
+                                    }
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.FechaDosis1)
+                                    </td>
+
+                                    @if (empleado.OtraD2 == empleado.OtraD2)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(Empleado => empleado.OtraD2)
+                                            @if (empleado.VacunaDosis2 == empleado.VacunaDosis2)
+                                            {
+                                                @Html.DisplayFor(Empleado => empleado.VacunaDosis2)
+                                            }
+                                        </td>
+                                    }
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.FechaDosis2)
+                                    </td>
+
+                                    @if (empleado.OtraR == empleado.OtraR)
+                                    {
+                                        <td>
+                                            @Html.DisplayFor(Empleado => empleado.OtraR)
+                                            @if (empleado.DosisRefuerzo == empleado.DosisRefuerzo)
+                                            {
+                                                @Html.DisplayFor(Empleado => empleado.DosisRefuerzo)
+                                            }
+                                        </td>
+                                    }
+                                    <td>
+                                        @Html.DisplayFor(Empleado => empleado.FechaRefuerzo)
+                                    </td>
+
+                                    <td style="text-align:center">
+
+                                        @Html.ActionLink(linkText: "Ver", actionName: "Index", controllerName: "RespuestasEncuesta", routeValues: new { Id = item.Id }, htmlAttributes: null)
+
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+
+    
+
+
+    <div class="modal fade in" id="modal_certificado">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#0B9ACF">
+                    <h5 class="modal-title text-white">Detalle del Certificado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div id="contentModal20">
+
+                    <br />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+            var table = $('#Exportar_a_Excel').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+
+                "pagingType": "simple",
+                dom: 'Brtip',
+
+                buttons: [
+                    {
+
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i>',
+                        filename: 'informe.xlsx',
+                        titleAttr: 'Exportar a Excel',
+                        className: 'btn btn-success'
+                    }
+                ]
+            });
+        });
+    </script>

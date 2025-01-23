@@ -1,0 +1,464 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.ProcesoDisciplinario>
+
+@{
+    ViewBag.Title = "GestionHumana";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    Adm_AutoGestion.Models.ProcesoDisciplinario Item = ViewBag.ProcesoDisciplinario;
+    string message = string.Format("{0}", Session["message"]);
+}
+
+<head>
+
+</head>
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+
+
+<div class="card">
+    
+    <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+            <h4 class="card-title">Gestion Humana</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="Tabla_PD_GH" class="table table-striped">
+                <thead class="text-center text-capitalize ">
+                    <tr>
+                        <th>Ver Detalle</th>
+                        <th>
+                            Nmr Proceso
+                        </th>
+                        <th>
+                            Empleado Registra
+                        </th>
+                        <th>
+                            Fecha Registro
+                        </th>
+                        <th>
+                            Empleados Implicados
+                        </th>
+                        <th>
+                            Momento Hechos
+                        </th>
+                        <th>
+                            Fundamentos
+                        </th>
+                        <th>
+                            Pruebas
+                        </th>
+                        <th>
+                            Anexos
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+                        <th>
+                            Nivel Prioridad
+                        </th>
+                        <th>
+                            Sancion
+                        </th>
+                        <th>
+                            Cantidad de Días
+                        </th>
+                        <th>Anular Proceso</th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-center text-capitalize">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.ActionLink(" ", "Gestion1", new { id = item.Id }, new { data_modal9 = "", @class = "btn close fas fa-eye text-primary mr-4" })
+                                @*<a href='@Html.ActionLink("Ver", "Gestion1", new { id=item.Id}, new { data_modal9 = "" } )' >
+                                    <img src="~/Contents/image/firma.png" alt="PendientesPorFirmar" />
+                                    </a>*@
+                            </td>
+                            <td>
+                                <label>@item.Id</label>
+                            </td>
+                            <td>
+                                @Html.ActionLink(@item.Empleado.Nombres, "Details2", "Empleado", new { id = item.EmpleadoRegistraId }, new { data_modal = "" })
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.FechaRegistro).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                <!--Empleados Implicados-->
+                                @foreach (var item2 in item.Implicados)
+                                {
+
+
+                                    <label>@item2.Nombres</label>
+                                    <br />
+
+                                }
+
+                                @*        @Html.ActionLink("Ver Empleados", "Implicado1", new { Id = item.Id,Id2=item.EmpleadoRegistraId }, new { data_modal7 = "" })*@
+                                @* @Html.DisplayFor(modelItem => item.PDTrabajador.EmpleadoId)*@
+
+                            </td>
+                            <td style="text-align:center">
+                                @Html.DisplayFor(modelItem => item.FechaHechos)
+                            </td>
+                            <td>
+                                <a href='@Url.Action("Fundamentos", "ProcesoDisciplinario", new { id=item.Id}, null)' data-modal13='' style="text-align:center" title="Ver Fundamentos">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-binoculars" viewBox="0 0 24 24">
+                                        <path d="M3 2.5A1.5 1.5 0 0 1 4.5 1h1A1.5 1.5 0 0 1 7 2.5V5h2V2.5A1.5 1.5 0 0 1 10.5 1h1A1.5 1.5 0 0 1 13 2.5v2.382a.5.5 0 0 0 .276.447l.895.447A1.5 1.5 0 0 1 15 7.118V14.5a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 14.5v-3a.5.5 0 0 1 .146-.354l.854-.853V9.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v.793l.854.853A.5.5 0 0 1 7 11.5v3A1.5 1.5 0 0 1 5.5 16h-3A1.5 1.5 0 0 1 1 14.5V7.118a1.5 1.5 0 0 1 .83-1.342l.894-.447A.5.5 0 0 0 3 4.882zM4.5 2a.5.5 0 0 0-.5.5V3h2v-.5a.5.5 0 0 0-.5-.5zM6 4H4v.882a1.5 1.5 0 0 1-.83 1.342l-.894.447A.5.5 0 0 0 2 7.118V13h4v-1.293l-.854-.853A.5.5 0 0 1 5 10.5v-1A1.5 1.5 0 0 1 6.5 8h3A1.5 1.5 0 0 1 11 9.5v1a.5.5 0 0 1-.146.354l-.854.853V13h4V7.118a.5.5 0 0 0-.276-.447l-.895-.447A1.5 1.5 0 0 1 12 4.882V4h-2v1.5a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5zm4-1h2v-.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5zm4 11h-4v.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5zm-8 0H2v.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5z" />
+                                    </svg>
+                                    @*<img src="~/Contents/image/verfundamento.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Fundamentos" />*@
+                                </a>
+                                @*@Html.ActionLink("Ver", "Fundamentos", new { id = item.Id }, new { data_modal13 = "" })*@
+                            </td>
+                            <td style="text-align:center">
+                                <!--Pruebas acerca del proceso-->
+                                <a href='@Url.Action("Prueba1", "ProcesoDisciplinario", new { Id=item.Id ,Id2=item.EmpleadoRegistraId}, null)' data-modal6='' style="text-align:center" title="Ver Pruebas">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-eye" viewBox="0 0 24 24">
+                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z" />
+                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0" />
+                                    </svg>
+                                    @*<img src="~/Contents/image/verPrueba.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Pruebas" />*@
+                                </a>
+                                @*@Html.ActionLink("Ver Pruebas", "Prueba1", new { Id=item.Id ,Id2=item.EmpleadoRegistraId}, new { data_modal6 = "" })*@
+                            </td>
+                            <td style="text-align:center">
+                                <!--Anexos del proceso disciplinario-->
+                                <a href='@Url.Action("Anexo1", "ProcesoDisciplinario", new { Id=item.Id ,Id2=item.EmpleadoRegistraId}, null)' data-modal5='' style="text-align:center" title="Ver Anexos">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-folder2" viewBox="0 0 24 24">
+                                        <path d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v7a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 12.5zM2.5 3a.5.5 0 0 0-.5.5V6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3zM14 7H2v5.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5z" />
+                                    </svg>
+                                    @*<img src="~/Contents/image/verAnexo.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Anexos" />*@
+                                </a>
+                                @*@Html.ActionLink("Ver Anexos", "Anexo1", new { Id=item.Id,Id2=item.EmpleadoRegistraId }, new { data_modal5 = "" })*@
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Estado)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NivelPrioridad)
+                            </td>
+                            <td>
+                                @if (@item.Sanciones == null || @item.Sanciones == "")
+                                {
+                                    <div style="color:#FF0000;">
+                                        <label>Sin Aplicar</label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    @item.Sanciones}
+                            </td>
+                            <td>
+                                @item.Suspencion
+                            </td>
+                            <td style="text-align:center">
+                                <a href='@Url.Action("AnularProceso", "ProcesoDisciplinario", new { id=item.Id }, null)' data-modalAnular='' style="text-align:center" title="Anular">
+
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-file-earmark-x" viewBox="0 0 24 24">
+                                        <path d="M6.854 7.146a.5.5 0 1 0-.708.708L7.293 9l-1.147 1.146a.5.5 0 0 0 .708.708L8 9.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 9l1.147-1.146a.5.5 0 0 0-.708-.708L8 8.293z" />
+                                        <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                                    </svg>
+
+                                    @*<img src="~/Contents/image/Anular2.png" alt="PendientesPorFirmar" data-bs-toggle="tooltip" data-bs-placement="top" title="Anular" />*@
+                                </a>
+                                @*@Html.ActionLink("Anular", "AnularProceso", new { id=item.Id}, new { data_modalAnular = "" } )*@
+                            </td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@*<div class="modal fade in" id="modal_Implicados">
+      <div class="modal-dialog modal-xl " >
+        <div class="modal-content">
+          <div class="modal-header" style="background-color:#0B9ACF">
+            <h5 class="modal-title text-white">Empleados Implicados en el proceso</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div id ="contentModal7">
+           <br />
+            <br />
+     </div>
+
+        </div>
+      </div>
+    </div>*@
+<div class="modal fade in" id="modal_Anular">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Anular Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalAnular">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="modal_Pruebas">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pruebas del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal6">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Anexos">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Anexos del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal5">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Gestion">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Detalles del Proceso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal9">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Pretencion">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pretencion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal12">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade in" id="modal_Fundamento">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Fundamentos </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal13">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade in" id="modal_NotasCreate" data-backdrop="true" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Añadir una Nueva Nota </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal15">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div class="modal fade in" id="modal_NotasDetails" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y:visible">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Notas Del Proceso </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal14">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*<div class="modal fade in" id="modal_NotasCreate2" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+      <div class="modal-dialog modal-xl modal-dialog-centered " >
+        <div class="modal-content">
+              <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Añadir una Nueva Nota </h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            <div id ="contentModal15-2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+     </div>
+    </div>*@
+
+<div class="modal fade in" id="modal_Respusta">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Respuesta Juridica </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal16-2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function () {
+
+            $('#Tabla_PD_GH').DataTable({
+
+                columnDefs: [
+                    { targets: [0], visible: true, searchable: true, orderable: true },
+                    { targets: [1], visible: true, searchable: true, orderable: true },
+                    { targets: [2], visible: true, searchable: true, orderable: true },
+                    { targets: [3], visible: true, searchable: true, orderable: false },
+                    { targets: [4], visible: true, searchable: true, orderable: false },
+                    { targets: [5], visible: true, searchable: false, orderable: false },
+                    { targets: [6], visible: true, searchable: false, orderable: false },
+                    { targets: [7], visible: true, searchable: false, orderable: false },
+                    { targets: [8], visible: true, searchable: false, orderable: false },
+                    { targets: [9], visible: true, searchable: true, orderable: false },
+                    { targets: [10], visible: true, searchable: true, orderable: true },
+                    { targets: [11], visible: true, searchable: false, orderable: true },
+                    { targets: [12], visible: true, searchable: false, orderable: true },
+                    { targets: [13], visible: true, searchable: false, orderable: true },
+                    //{ targets: [14], visible: true, searchable: false, orderable: true },
+
+                ],
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero-",
+                        "sLast": "Último",
+                        "sNext": "  - Siguiente",
+                        "sPrevious": "Anterior -  "
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                select: true,
+                dom: 'lfrtip',
+                //buttons: [
+
+                //    {
+                //        //extend: 'excelHtml5',
+                //        //text: '<h5 class=" ">Exportar a Excel</h5>',
+                //        //filename: 'Informe_Permisos.xlsx',
+                //        //className: 'rounded text-white btn-info mb-1 pt-1 pl-2 pr-2 float-start mx-auto',
+                //    },
+
+                //]
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,138 @@
+﻿@model Adm_AutoGestion.Models.DetalleEntregaEPP
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "EditarCopiaActa";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "Primera Vez", Value = "Primera Vez" },
+        new ListItem { Text = "Pérdida", Value = "Pérdida" },
+        new ListItem { Text = "Vencimiento Vida Util", Value = "Vencimiento Vida Util" } ,
+        new ListItem { Text = "Deterioro del EPP", Value = "Deterioro del EPP" }
+        };
+}
+
+
+<h2 class="text-center colorTitulo mt-3">Editar Detalle del Acta </h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="row justify-content-start">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header text-white fondoDegradado">Datos Basicos del Empleado</div>
+                    <div class="card-body">
+                        <div class="row justify-content-start">
+                            <div class="col-4 mt-3">
+                                <img src="~/Contents/image/Elementos.png">
+                            </div>
+                            <div class="col-8">
+
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            Elemento de Proteccion Personal
+                                        </div>
+                                        <div class="editor-field">
+                                            @*@Html.EditorFor(model => model.EPP)*@
+                                            @Html.DropDownList("EPP", new SelectList(ViewBag.Elementos, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                            @Html.ValidationMessageFor(model => model.EPP)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            Empleado
+                                        </div>
+                                        <div class="editor-field">
+                                            @* @Html.EditorFor(model => model.EmpleadoId)*@
+                                            @Html.DropDownList("EmpleadoId", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                            @Html.ValidationMessageFor(model => model.EmpleadoId)
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            Cantidad
+                                        </div>
+                                        <div class="editor-field">
+                                            @*@Html.EditorFor(model => model.Cantidad)*@
+                                            @Html.TextBox("Cantidad", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "EPP" })
+                                            @Html.ValidationMessageFor(model => model.Cantidad)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            Motivo Entrega
+                                        </div>
+                                        <div class="editor-field">
+                                            @*@Html.EditorFor(model => model.MotivoEntrega)*@
+                                            @Html.DropDownList("MotivoEntrega", new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.MotivoEntrega)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            Fecha Entrega
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("Fecha", null, new { @class = "form-control", @Value = Model.Fecha.ToString("yyyy-MM-dd") })
+                                            @Html.ValidationMessageFor(model => model.Fecha)
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            Fecha Vencimiento
+                                        </div>
+                                        @Html.TextBox("FechaFin", null, new { @class = "form-control", @Value = ((DateTime)Model.FechaFin).ToString("yyyy-MM-dd") })
+                                        @Html.ValidationMessageFor(model => model.FechaFin)
+                                    </div>
+                                </div>
+
+
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="editor-label">
+                                            @Html.LabelFor(model => model.Observacion)
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextArea("Observacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                                            @Html.ValidationMessageFor(model => model.Observacion)
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center mt-3">
+                                    <div class="col-4" style="text-align:end">
+                                        <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                                    </div>
+                                    <div class="col-4">
+                                        <a class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" href='javascript: history.go(-1)'> Atras</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}

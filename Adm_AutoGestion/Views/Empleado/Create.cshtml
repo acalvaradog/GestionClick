@@ -1,0 +1,174 @@
+﻿@model Adm_AutoGestion.Models.Empleado
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@{var ListItems = new List<ListItem> { 
+        new ListItem { Text = "SI", Value = "SI" }, 
+        new ListItem { Text = "NO", Value = "NO" } 
+        };
+}
+<div class="container">
+
+
+<br />
+<br />
+<h2>Crear Empleado</h2>
+<br />
+<br />
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+@*<div class="container">*@
+<div class="row justify-content-start">
+<div class="col-3" style="text-align:center">
+<br />
+<br />
+<br />
+<img src="~/Contents/image/afiliacion.png" >
+</div>
+<div class="col-9">
+<div class="card ">
+<div class="card-header text-white" style="background-color:#0B9ACF">Datos Basicos del Empleado</div>
+<div class="card-body">
+   <div class="row justify-content-start">
+     <div class="col-6">
+        <div class="editor-field">
+            @Html.TextBox("Documento", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Documento"  } )
+            @Html.ValidationMessageFor(model => model.Documento)
+        </div>
+     </div>
+     <div class="col-6">
+        <div class="editor-field">
+            @Html.TextBox("Nombres", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Nombres" } )
+            @Html.ValidationMessageFor(model => model.Nombres)
+        </div>
+     </div>
+  </div>
+  <br />
+  <div class="row justify-content-start">
+     <div class="col-6">
+        <div class="editor-field">
+            @Html.TextBox("NroEmpleado", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Numero Empleado"} )
+            @Html.ValidationMessageFor(model => model.NroEmpleado)
+        </div>
+     </div>
+     <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Empresa" } )
+                @Html.ValidationMessageFor(model => model.Empresa)
+            </div>
+     </div>
+  </div>
+  <br />
+  <div class="row justify-content-start">
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("Correo", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Correo" } )
+                @Html.ValidationMessageFor(model => model.Correo)
+                
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("CorreoPersonal", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Correo Personal" } )
+                @Html.ValidationMessageFor(model => model.CorreoPersonal)
+                
+            </div>
+        </div>
+   </div>
+   <br />
+   <div class="row justify-content-start">
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("Telefono", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Telefono" } )
+                @Html.ValidationMessageFor(model => model.Telefono)
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Area" } )
+                @Html.ValidationMessageFor(model => model.Area)
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-start">
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("Jefe", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Jefe" } )
+                @Html.ValidationMessageFor(model => model.Jefe)
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("Superior", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Superior" } )
+                @Html.ValidationMessageFor(model => model.Superior)
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-start">
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("Director", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Director" } )
+                @Html.ValidationMessageFor(model => model.Director)
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="editor-field">
+                @Html.TextBox("UnidadOrganizativa", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Unidad Organizativa" } )
+                @Html.ValidationMessageFor(model => model.UnidadOrganizativa)
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-start">
+        <div class="col-6">
+            <div class="editor-label">
+            Contraseña
+            </div>
+            @Html.TextBox("Contraseña", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Contraseña" } )
+            @Html.ValidationMessageFor(model => model.Contraseña)
+        </div>
+        <div class="col-6">
+            <div class="editor-label">
+            Activo
+            </div>
+            @Html.DropDownListFor(model => model.Activo, new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Activo"} )
+            @Html.ValidationMessageFor(model => model.Activo)
+        </div>
+    </div>
+   </div>
+  </div>
+<br />
+<br />
+<div class="row justify-content-center">
+     <div class="col-4 " style="text-align:end">
+        <input type="submit" value="Crear" class="btn" style="background-color:#96D44D; color:white" />
+     </div>
+     <div class="col-4">
+        @Html.ActionLink("Atras", "Index", null, new { @class="btn", style="background-color:#96D44D; color:white" })
+        
+     </div>
+</div>
+
+</div>
+</div>
+<br />
+<br />
+
+
+
+    </fieldset>
+}
+
+
+</div>

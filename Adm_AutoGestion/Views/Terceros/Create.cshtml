@@ -1,0 +1,296 @@
+﻿@model Adm_AutoGestion.Models.Tercero
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "SI", Value = "SI" },
+        new ListItem { Text = "NO", Value = "NO" }
+        };
+}
+<div class="container">
+
+    @*<br />
+        <br />
+         <h1>Crear Tercero</h1>
+        <br />
+        <br />*@
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <div class="row justify-content-start">
+
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header text-white" style="background: linear-gradient(90deg, #07ABDF 10%, #426AB0 90%);"><h4>Datos Basicos del Tercero</h4></div>
+                    <div class="card-body">
+                        <div class="row justify-content-start">
+                            <div class="col-4" style="text-align:center">
+                                <br />
+                                <img src="~/Contents/image/afiliacion.png">
+                                <br />
+                            </div>
+                            <div class="col-8">
+
+                                <br />
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="editor-label">
+                                            <label>Primer Apellido</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("PrimerApellido", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="editor-label">
+                                            <label>Segundo Apellido</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("SegundoApellido", null, htmlAttributes: new { @class = "form-control", @type = "text" })
+
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="editor-label">
+                                            <label>Primer Nombre</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("PrimerNombre", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+
+                                        </div>
+                                        <br />
+
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="editor-label">
+                                            <label>Segundo Nombre</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("SegundoNombre", null, htmlAttributes: new { @class = "form-control", @type = "text" })
+
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-12">
+                                        @Html.ValidationMessageFor(model => model.Nombres)
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <label> Documento</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("Documento", null, htmlAttributes: new { @class = "form-control", @type = "number" })
+                                            @Html.ValidationMessageFor(model => model.Documento)
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <label> Fecha de Nacimiento</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("FechaNacimiento", null, htmlAttributes: new { @class = "form-control", @type = "date" })
+                                            @Html.ValidationMessageFor(model => model.FechaNacimiento)
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <div><label> Telefono</label></div>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("Telefono", null, htmlAttributes: new { @class = "form-control", @type = "number", required = "required" })
+                                            @Html.ValidationMessageFor(model => model.Telefono)
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <label>Dirección</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("Direccion", null, htmlAttributes: new { @class = "form-control", @type = "text" })
+                                            @Html.ValidationMessageFor(model => model.Direccion)
+
+
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <div><label> Area</label></div>
+                                        </div>
+                                        <div class="editor-field">
+                                            @*   @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required" })
+                                                @Html.ValidationMessageFor(model => model.Area)*@
+                                            @Html.DropDownList("Area", new SelectList(ViewBag.Area, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "15" })
+                                            @Html.ValidationMessageFor(model => model.Area)
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <label> Cargo</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @* @Html.TextBox("Cargo", null, htmlAttributes: new {  @class = "form-control", @type="text"} )
+                                                @Html.ValidationMessageFor(model => model.Cargo)*@
+                                            @Html.DropDownList("Cargo", new SelectList(ViewBag.Cargo, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "15" })
+                                            @Html.ValidationMessageFor(model => model.Cargo)
+                                        </div>
+                                        <br />
+                                    </div>
+
+
+
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <div><label> Correo Electrónico</label></div>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.TextBox("CorreoPersonal", null, htmlAttributes: new { @class = "form-control", @type = "email", required = "required", @placeholder = "EjemploCorreo@gmail.com" })
+                                            @Html.ValidationMessageFor(model => model.CorreoPersonal)
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <label>Jefe inmediato</label>
+                                        </div>
+                                        <div class="editor-field">
+                                            @*  @Html.TextBox("Superior", null, htmlAttributes: new { @class = "form-control",@type="text",required="required"} )
+                                                @Html.ValidationMessageFor(model => model.Superior)*@
+                                            @Html.DropDownList("Superior", new SelectList(ViewBag.Jefe, "CodigoEmpleado", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", data_size = "15" })
+                                            @Html.ValidationMessageFor(model => model.Superior)
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <div><label> Estudiante</label></div>
+                                        </div>
+                                        <div class="editor-field">
+                                            @Html.DropDownListFor(model => model.Estudiante, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Estudiante", onchange = "javascript:mostrarInput();" })
+                                            @Html.ValidationMessageFor(model => model.Estudiante)
+
+                                        </div>
+                                        <br />
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <div><label> Fecha Inicio</label></div>
+                                        </div>
+                                        <div class="editor-field">
+                                            <div class="editor-field">
+                                                @Html.TextBox("FechaIngreso", null, htmlAttributes: new { @class = "form-control", @type = "date", @disabled = "disabled" })
+                                                @Html.ValidationMessageFor(model => model.FechaIngreso)
+                                            </div>
+                                        </div>
+                                        <br />
+
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="editor-label">
+                                            <div><label> Fecha Fin</label></div>
+                                        </div>
+                                        <div class="editor-field">
+                                            <div class="editor-field">
+                                                @Html.TextBox("FechaFin", null, htmlAttributes: new { @class = "form-control", @type = "date", @disabled = "disabled" })
+                                                @Html.ValidationMessageFor(model => model.FechaFin)
+                                            </div>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <br />
+                                    <div class="col-4 " style="text-align:end">
+                                        <br />
+                                        @*    <button type="button"  class="btn" id="AddCap" style="background-color:#96D44D; color:white">Guardar</button>
+                                        *@     @*<input type="submit" value="Crear" class="btn" style="background-color:#96D44D; color:white" />*@
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="  Guardar  " class="btn btn-sm" style="background-color:#96D44D; color:white" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <br />
+                                        @*@Html.ActionLink("Atras", "ListaPorCompletar", null, new { @class="btn", style="background-color:#96D44D; color:white" })*@
+                                        <div>
+
+                                            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-sm", style = "background-color:#96D44D; color:white" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <br />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    }
+
+
+</div>
+<script>
+    $(document).ready(function () {
+
+
+
+    });
+    $("#Estudiante").change(function () {
+        var fecha1 = document.getElementById('FechaIngreso');
+        var select = document.getElementById('Estudiante');
+        var fecha2 = document.getElementById('FechaFin')
+
+        //ocultar input fecha y numero
+        //inputNumero.style.display = "none";
+
+        var valorSeleccionado = select.value;
+        if (valorSeleccionado != 'SI') {
+
+            fecha1.disabled = true;
+            fecha2.disabled = true;
+
+
+        } else {
+            fecha1.disabled = false;
+            fecha2.disabled = false;
+        }
+        return false;
+    });
+
+</script>

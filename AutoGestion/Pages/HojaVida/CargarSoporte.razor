@@ -1,0 +1,134 @@
+﻿@page "/guardar-soporte"
+@using Microsoft.AspNetCore.Components.Forms
+@using System.IO
+@using System.Threading.Tasks
+@using MudBlazor
+@using AutoGestion.Helpers
+@inject IJSRuntime JS
+@inject HttpClient Http
+@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.SoporteHojaVida
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+
+<MudCard >
+        <MudCardContent>
+            
+
+<MudForm>
+    <MudGrid>
+                <MudItem xs="4" >
+
+    <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles2">
+    <ButtonTemplate>
+        <MudButton HtmlTag="label"
+                   Variant="Variant.Filled"
+                   Color="Color.Surface"
+                    StartIcon="@Icons.Material.Filled.CloudUpload"
+                   for="@context">
+           Seleccionar archivo
+        </MudButton>
+    </ButtonTemplate>
+    <SelectedTemplate>
+        @if (context != null)
+        {
+            <MudText>@context.Name</MudText>
+        }
+        else
+        {
+            <MudText>No se seleccionado archivo</MudText>
+        }
+    </SelectedTemplate>
+
+
+</MudFileUpload>
+                </MudItem>
+                 <MudItem xs="4" >
+          @if (ListTipoSoporte != null) { 
+
+                        <MudSelect T="int" Label="Tipo de soporte" AnchorOrigin="Origin.BottomCenter" @bind-Value="@soporte.TipoSoporteId" Required="true">
+                        <MudSelectItem Value="0"> Seleccionar</MudSelectItem>
+                        @foreach (var item in ListTipoSoporte)
+                    {
+                     <MudSelectItem Value="@(item.Id)"> @item.Nombre</MudSelectItem>
+
+                    }
+                </MudSelect>
+                  }
+                </MudItem>
+                <MudItem xs="4">
+                        <MudTextField @bind-Value="soporte.NombreArchivo" Label="Descripción del archivo" Variant="Variant.Text" Margin="Margin.Dense"></MudTextField>
+                    </MudItem>
+                <MudItem xs="4">
+  
+
+                    <MudFab Color="Color.Success" StartIcon="@Icons.Material.Filled.Save" OnClick="GuardarSoporte">Guardar</MudFab>
+     </MudItem>
+            </MudGrid>
+</MudForm>
+
+</MudCardContent>
+</MudCard>
+
+}
+@code {
+    private bool _loading;
+    private IBrowserFile inputFile;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    private List<TipoSoporteDTO> ListTipoSoporte = new List<TipoSoporteDTO>();
+    private SoporteHojaVidaDTO soporte = new SoporteHojaVidaDTO();
+    protected override async Task OnInitializedAsync()
+    {
+        ListTipoSoporte = await Http.GetFromJsonAsync<List<TipoSoporteDTO>>($"api/SoporteHojaVida/TipoSoportes");
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        StateHasChanged();
+    }
+
+    private async Task GuardarSoporte()
+    {
+        if (inputFile == null)
+        {
+            await JS.ShowMessage("Soporte", "debe seleccionar un archivo.", "error");
+            return;
+        }
+
+        var memoryStream = new MemoryStream();
+        await inputFile.OpenReadStream().CopyToAsync(memoryStream);
+        memoryStream.Position = 0;
+
+        // Enviar el archivo al servidor a través del API
+        var content = new MultipartFormDataContent();
+
+
+        content.Add(new StreamContent(memoryStream), "Archivo", inputFile.Name);
+        content.Add(new StringContent(soporte.TipoSoporteId.ToString()), "TipoSoporte");
+        content.Add(new StringContent(datosempleado.Id.ToString()), "EmpleadoId");
+        content.Add(new StringContent(soporte.NombreArchivo), "NombreArchivo");
+        _loading = true;
+        var response = await Http.PostAsync("api/SoporteHojaVida/GuardarSoporte", content);
+        _loading = false;
+        if (response.IsSuccessStatusCode)
+        {
+            await JS.ShowMessage("Soporte", "El soporte se ha guardado correctamente.", "success");
+   
+        }
+        else
+        {
+            await JS.ShowMessage("Error", "No se pudo guardar el soporte.", "error");
+         
+        }
+    }
+
+    private void UploadFiles2(IBrowserFile file)
+    {
+       inputFile = file;
+        //TODO upload the files to the server
+    }
+}

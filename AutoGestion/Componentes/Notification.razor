@@ -1,0 +1,112 @@
+﻿@inject HttpClient Http
+@using Autogestion.Shared.DTO.Notificaciones
+@using Autogestion.Shared.DTO.Empleado
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+<MudBadge Content="notificacioncount" Color="Color.Error" Overlap="true" Class="mx-6 my-4" >
+    <MudIcon Icon="@Icons.Material.Filled.Notifications" Color="Color.Inherit" onclick="@ToggleOpen" />
+</MudBadge>
+
+<MudPopover Open="_isOpen" OverflowBehavior="OverflowBehavior.FlipAlways" AnchorOrigin="Origin.CenterRight" TransformOrigin="Origin.TopRight"  Elevation="15" Fixed="true">
+        <MudPaper Outlined="true" Class="px-4 py-8">
+        @if (notifications != null)
+        {
+            <MudTable Items="@notifications" Dense="true">
+                <RowTemplate>
+                    <MudTd Style="width:400px" >
+
+
+                        <MudAlert Severity="Severity.Info" class="custom-mudalert"> @context.Mensaje   </MudAlert>
+
+                    </MudTd>
+                    <MudTd>
+                        <MudIconButton Icon="@Icons.Material.TwoTone.MarkChatRead" aria-label="delete" OnClick="() => MarkAsRead(context.Id)">Marcar Como Leido</MudIconButton>
+
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+    </MudPaper>
+    <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" OnClick="@ToggleOpen"></MudIconButton>
+</MudPopover>
+
+
+
+
+@code {
+    public bool _isOpen = false;
+    private List<NotificacionDTO> notifications = new List<NotificacionDTO>();
+    private EmpleadoReturnSapDTO DatosEmpleado = new EmpleadoReturnSapDTO();
+    public int notificacioncount { get; set; } = 0;
+    public void ToggleOpen()
+    {
+
+        if (_isOpen)
+            _isOpen = false;
+        else
+        if (notificacioncount > 0)    _isOpen = true;
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        DatosEmpleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+        try
+        {
+            if (DatosEmpleado != null)
+            {
+                await LoadNotification();
+            }
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task LoadNotification()
+    {
+        try
+        {
+            var NoticarEvaluación = await Http.PostAsJsonAsync<string> ($"api/EvaDesempeño/GenerarNotificaciones/{DatosEmpleado.PERNR}",DatosEmpleado.PERNR);
+
+            notifications = await Http.GetFromJsonAsync<List<NotificacionDTO>>($"api/notificacion/GetNotifications/{DatosEmpleado.Id}");
+
+            notificacioncount = notifications.Count();
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
+
+    }
+    private async Task MarkAsRead(int id)
+    {
+
+        var marcado = await Http.DeleteAsync($"api/notificacion/DeleteNotification/{id}");
+
+        if (marcado.IsSuccessStatusCode) {
+        await LoadNotification();
+      
+        await InvokeAsync(StateHasChanged);
+        if(notificacioncount < 1) ToggleOpen();
+       
+        }
+    }
+}
+
+<style>
+    /* Estilos personalizados para el MudAlert */
+    .custom-mudalert {
+        /* Cambia aquí los estilos según tus preferencias */
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        color: black;
+    }
+</style>

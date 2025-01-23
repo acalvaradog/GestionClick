@@ -1,0 +1,30 @@
+﻿@model Adm_AutoGestion.Models.AreasPazySalvo
+
+<div class="container">
+
+<h3>Esta seguro que desea eliminar el registro?</h3>
+<fieldset>
+    <br />
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Area)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Area)
+    </div>
+    <br />
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Responsable)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Responsable)
+    </div>
+</fieldset>
+<br />
+<br />
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Eliminar" /> 
+    </p>
+}
+</div>

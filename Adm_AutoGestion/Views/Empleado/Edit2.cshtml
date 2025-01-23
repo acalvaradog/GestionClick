@@ -1,0 +1,312 @@
+﻿
+@{
+    ViewBag.Title = "Edit2";
+}
+
+@model Adm_AutoGestion.Models.Empleado
+@using System.Web.UI.WebControls;
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "SI", Value = "SI" },
+        new ListItem { Text = "NO", Value = "NO" }
+        };
+}
+
+@{var ListItems1 = new List<ListItem> {
+        new ListItem { Text = "Femenino", Value = "2" },
+        new ListItem { Text = "Masculino", Value = "1" }
+        };
+}
+
+@{var ListItems2 = new List<ListItem> {
+        new ListItem { Text = "ALTERNANCIA", Value = "ALTERNANCIA" },
+        new ListItem { Text = "EN CASA", Value = "EN CASA" },
+        new ListItem { Text = "PRESENCIAL", Value = "PRESENCIAL" }
+        };
+}
+
+<div class="container-fluid">
+
+
+    <br />
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+
+
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="row justify-content-start">
+
+                <div class="col-12">
+                    <div class="card ">
+                        <div class="card-header text-white" style="background-color:#0B9ACF">Editar Datos del Empleado</div>
+                        <div class="card-body">
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Documento
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Documento", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Documento" })
+                                        @Html.ValidationMessageFor(model => model.Documento)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Nombres
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Nombres", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Nombres" })
+                                        @Html.ValidationMessageFor(model => model.Nombres)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Numero Empleado
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("NroEmpleado", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Numero Empleado" })
+                                        @Html.ValidationMessageFor(model => model.NroEmpleado)
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Fecha Nacimiento
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("FechaNacimiento", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Fecha Nacimiento" })
+                                        @Html.ValidationMessageFor(model => model.FechaNacimiento)
+
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Genero
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(model => model.Genero, new SelectList(ListItems1, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Genero" })
+                                        @*                @Html.TextBox("Genero", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Genero" } )*@
+                                        @Html.ValidationMessageFor(model => model.Genero)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        RH
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("RH", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "RH" })
+                                        @Html.ValidationMessageFor(model => model.RH)
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Telefono
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Telefono", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Telefono" })
+                                        @Html.ValidationMessageFor(model => model.Telefono)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Correo
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Correo", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Correo" })
+                                        @Html.ValidationMessageFor(model => model.Correo)
+
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Correo Personal
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("CorreoPersonal", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Correo Personal" })
+                                        @Html.ValidationMessageFor(model => model.CorreoPersonal)
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Cargo
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Cargo", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Cargo" })
+                                        @Html.ValidationMessageFor(model => model.Cargo)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Area
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Area" })
+                                        @Html.ValidationMessageFor(model => model.Area)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Area Descripcion
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("AreaDescripcion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "AreaDescripcion" })
+                                        @Html.ValidationMessageFor(model => model.AreaDescripcion)
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <br />
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Tipo Area
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("TipoArea", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "TipoArea" })
+                                        @Html.ValidationMessageFor(model => model.TipoArea)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Empresa
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Empresa" })
+                                        @Html.ValidationMessageFor(model => model.Empresa)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Fecha Ingreso
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("FechaIngreso", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "FechaIngreso" })
+                                        @Html.ValidationMessageFor(model => model.FechaIngreso)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br />
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Jefe
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Jefe", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Jefe" })
+                                        @Html.ValidationMessageFor(model => model.Jefe)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Superior
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Superior", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Superior" })
+                                        @Html.ValidationMessageFor(model => model.Superior)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Director
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Director", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Director" })
+                                        @Html.ValidationMessageFor(model => model.Director)
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Lider
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Lider", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Lider" })
+                                        @Html.ValidationMessageFor(model => model.Lider)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Unidad Organizativa
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("UnidadOrganizativa", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Unidad Organizativa" })
+                                        @Html.ValidationMessageFor(model => model.UnidadOrganizativa)
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Contraseña
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.TextBox("Contraseña", null, htmlAttributes: new { @class = "form-control", autocomplete = "new-password", type = "password", placeholder = "Contraseña" })
+                                        @Html.ValidationMessageFor(model => model.Contraseña)
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row justify-content-start">
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Modo Trabajo
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(model => model.ModoTrabajo, new SelectList(ListItems2, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                                        @Html.ValidationMessageFor(model => model.ModoTrabajo)
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="col-4">
+                                    <div class="editor-label">
+                                        Activo
+                                    </div>
+                                    <div class="editor-field">
+                                        @Html.DropDownListFor(model => model.Activo, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", placeholder = "Activo" })
+                                        @Html.ValidationMessageFor(model => model.Activo)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row justify-content-center">
+                            <div class="col-12 " style="text-align:center">
+                                <input type="submit" value="Guardar" class="btn" style="background-color:#96D44D; color:white" />
+                            </div>
+                            @*<div class="col-4">
+                                   @Html.ActionLink("Atras", "Index", null, new { @class="btn", style="background-color:#96D44D; color:white" })
+
+                                </div>*@
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
+                <br />
+                <br />
+
+        </fieldset>
+    }
+
+    <br />
+
+</div>
+

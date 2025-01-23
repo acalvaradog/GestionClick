@@ -1,0 +1,70 @@
+﻿@model Adm_AutoGestion.Models.Noticia
+
+
+<div class="card">
+    <div class="card">
+        <div class="card-header colorTitulo mb-3"><h5>Crear Noticia</h5></div>
+    </div>
+
+    <div class="card-body">
+
+        @using (Html.BeginForm("CrearNoticia", "Noticia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <div class="form-group">
+                <label for="Titulo">Título:</label>
+                @Html.TextBoxFor(m => m.Titulo, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label for="ContenidoHtml">Contenido:</label>
+                <div id="editor" style="height: 300px; border: 1px solid #ccc;"></div>
+                <input type="hidden" name="Contenido" />
+            </div>
+
+            <div class="form-group">
+                <label for="Imagenes">Imágenes:</label>
+                <input type="file" id="Imagenes" name="Imagenes" class="form-control" multiple />
+            </div>
+
+            <div class="form-group">
+                <label for="Activo">Activo:</label>
+                @Html.CheckBoxFor(m => m.Activo)
+            </div>
+        }
+        <div class="card-footer d-flex align-items-center justify-content-center">
+            <p>
+                <button type="submit" class="btn btn-outline-primary rounded-pill">Guardar</button>
+
+            </p>
+        </div>
+        <div>
+            @Html.ActionLink("Atras", "Index")
+        </div>
+
+
+    </div>
+    </div>
+
+        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+        <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var quill = new Quill('#editor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ header: [1, 2, false] }],
+                            ['bold', 'italic', 'underline'],
+                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            ['link', 'image']
+                        ]
+                    }
+                });
+
+                // Sincronizar contenido con el campo oculto al enviar el formulario
+                document.querySelector('form').addEventListener('submit', function () {
+                    var contenido = document.querySelector('input[name="Contenido"]');
+                    contenido.value = quill.root.innerHTML;
+                });
+            });
+        </script>

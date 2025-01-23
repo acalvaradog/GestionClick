@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.NotasProcesos>
+
+@{
+    ViewBag.Title = "NotaDetails";
+}
+
+
+<div class="table-responsive">
+    @foreach (var item in Model)
+    {
+        <div class="d-flex justify-content-center mt-3 mb-3">
+            <div class="col-md-6" id="anulados">
+                <div id="anulados1">
+                    <div class="card-header bg-warning" style="text-align:center">
+                        <h4>Nota</h4>
+                    </div>
+                    <div class="card-body" style="background:#F4D34A; text-align:left">
+                        <label><b>Usuario: </b></label> @item.Empleado2.Nombres<br />
+                        <label><b>Fecha: </b></label> @item.FechaHora<br />
+                        <label><b>Anotación: </b></label> @item.Anotacion<br />
+
+                    </div>
+                    <div class="card-footer bg-warning" style="text-align:center">
+                        @if (item.Anexo == "" || item.Anexo == null)
+                        {
+                            <div style="color:#FF0000;">
+                                <label><B>No hay un Archivo Anexado</B></label>
+                            </div>}
+                        else
+                        {
+
+                            @*@Html.DisplayFor(modelItem => item.Anexo)*@
+                            @Html.ActionLink("Descargar Archivo", "Download3", new { archivo = item.Anexo })
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

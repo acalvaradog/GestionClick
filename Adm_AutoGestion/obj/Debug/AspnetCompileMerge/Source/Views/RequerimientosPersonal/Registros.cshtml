@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Aprobacioneslog>
+<div class="container">
+    <br />
+    <div class="container-fluid">
+        <div class="table-responsive">
+            @if (ViewBag.NmrRegistros)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="row justify-content-center">
+                        <div class="col-md-6" id="anulados">
+                            <div class="card" id="anulados1">
+                                <div class="card-header" style="text-align:center;background:#D8D7D1">
+                                    @if (@item.EstadoAnterior == 1)
+                                    {<h4>Director de Area</h4>}
+                                    @if (@item.EstadoAnterior == 3)
+                                    {<h4>Gerencia</h4>}
+                                    @if (@item.EstadoAnterior == 4)
+                                    {<h4>Gestion Humana</h4>}
+                                    @if (@item.EstadoAnterior == 5)
+                                    {<h4>Encargado Contratación</h4>}
+
+                                </div>
+                                <div class="card-body" style="background:#F5F3E8; text-align:left">
+                                    <label><b>Usuario: </b></label> @item.DatosUsuario.Nombres<br />
+                                    <label><b>Fecha: </b></label> @item.Fecha<br />
+                                    @if (@item.Observación == "" || @item.Observación == null || @item.Observación == "undefined")
+                                    {<label><b>Sin observaciones al respecto</b><br /></label>
+                                    }
+                                    else
+                                    {<label><b>Observación: </b></label> @item.Observación<br />}
+
+                                </div>
+                                <div class="card-footer" style="text-align:center;background:#D8D7D1">
+                                    <label></label>
+
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+
+                }
+
+            }
+            else
+            {
+
+                <div class="row justify-content-center">
+                    <div class="col-md-6" id="anulados3">
+                        <div class="card" id="anulados2">
+                            <div class="card-header" style="text-align:center;background:#D8D7D1">
+                                <h4>MENSAJE</h4>
+
+
+                            </div>
+                            <div class="card-body" style="background:#F5F3E8; text-align:center">
+                                <label><b>No Hay Observaciones </b></label><br />
+
+                            </div>
+                            <div class="card-footer" style="text-align:center;background:#D8D7D1">
+                                <label></label>
+
+                            </div>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+
+
+            }
+            <br />
+            <br />
+        </div>
+    </div>
+</div>

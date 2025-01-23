@@ -1,0 +1,99 @@
+﻿@model  Adm_AutoGestion.Models.DetalleEntregaEPP
+
+@{
+    ViewBag.Title = "EliminarActa";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<h2 class="text-center colorTitulo mt-3">Eliminar Registro del Acta</h2>
+
+
+<h4 class="mt-2">Seguro quiere eliminar este registro?</h4>
+<fieldset>
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+
+                <div class="display-label">
+                    <strong> Numero Entrega</strong>
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.NumeroEntrega)
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong> Elemento de Proteccion Personal</strong>
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.ElementosProtecionPersonal.Nombre)
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong> Empleado</strong>
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Empleado.Nombres)
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong>Cantidad</strong>
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Cantidad)
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong>  Motivo Entrega</strong>
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.MotivoEntrega)
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong> Fecha Entrega</strong>
+                </div>
+                <div class="display-field">
+                    @*@Html.DisplayFor(model => model.Fecha)*@
+                    @Convert.ToDateTime(Model.Fecha).ToString("dd/MM/yyyy")
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong>  Fecha Vencimiento</strong>
+                </div>
+                <div class="display-field">
+                    @* @Html.DisplayFor(model => model.FechaFin)*@
+                    @Convert.ToDateTime(Model.FechaFin).ToString("dd/MM/yyyy")
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong>  Observacion</strong>
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Observacion)
+                </div>
+                <br />
+                <div class="display-label">
+                    <strong> Estado</strong>
+                </div>
+                <div class="display-field">
+                    @Html.DisplayFor(model => model.Estado)
+                </div>
+                <br />
+
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+
+
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <button type="submit" class="bi bi-x-square btn btn-outline-primary mb-2"> Eliminar</button> |
+        <a class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" href='javascript: history.go(-1)'> Atras</a>
+    </p>
+}

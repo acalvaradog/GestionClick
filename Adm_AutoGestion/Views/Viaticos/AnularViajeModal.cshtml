@@ -1,0 +1,90 @@
+﻿
+@model Adm_AutoGestion.Models.Viaticos
+
+@{
+
+    Adm_AutoGestion.Models.Viaticos Item = ViewBag.Viatico;
+}
+<div class="card m-2  p-2">
+    <div class="card-body">
+        <h3>
+            <label>
+                ¿ Esta seguro que desea cancelar el siguiente registro ?
+            </label>
+        </h3>
+        <div class="card-header col d-flex justify-content-center">
+            <h4>Viático</h4>
+
+        </div>
+
+        <div class="card-body m-3">
+
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    Número Solicitud
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    @Html.DisplayFor(model => model.Id  )
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    Empleado Solicitante
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    @Html.DisplayFor(model => model.Empleado.Nombres)
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    Destino
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    @Html.DisplayFor(model => model.Destino)
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    Fecha de Viaje
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                @Convert.ToDateTime( Item.FechaInicio).ToString("dd/MM/yyyy")
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-6 d-flex justify-content-center">
+                    Fecha de Retorno
+                </div>
+                <div class="col-6 d-flex justify-content-center">
+                    @Convert.ToDateTime(Item.FechaFin).ToString("dd/MM/yyyy")
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    @using (Html.BeginForm("AnularViaje" , "Viaticos", Item, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-actions no-color">
+                            <input type="submit" value="Cancelar Viático" class="bi bi-save btn btn-outline-primary mb-2" />
+
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+    </div>
+</div>

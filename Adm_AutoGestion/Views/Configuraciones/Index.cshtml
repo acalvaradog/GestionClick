@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Configuraciones>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<div class="card">
+    <div class="card-header colorTitulo mb-3"><h5>Variables de Configuracion</h5></div>
+    <div class="card-body">
+
+
+       
+                <div class="row justify-content-start mt-3">
+                    <div class="col-12" style="text-align:right">
+                        @Html.ActionLink(" Crear Nueva Configuración", "Create", null, new { @class = "btn btn-outline-success mb-2" })
+                    </div>
+                    <div class="col-8">
+                        <input class="form-control" id="myInput" type="text" placeholder="Buscar..">
+                    </div>
+                </div>
+         
+        <br />
+        <hr />
+
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+
+                            Editar
+                        </th>
+                        <th>
+
+                            Parámetro
+                        </th>
+                        <th>
+
+                            Descripción
+                        </th>
+                        <th>
+                            Valor Asignado
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="myTable">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="~/Configuraciones/Edit/@item.Id" title="Editar" class = "btn btn-outline-warning btn-sm">
+                                    Editar</a>
+                                @*  <a href="~/Configuraciones/Delete/@item.Id" title="Eliminar"><buttom class="bi bi-trash btn btn-outline-primary md-2"></buttom></a>*@
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Parametro)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Valor)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+
+
+
+@*<br />
+    <br />
+    <h2>Configuraciones</h2>
+    <br />
+    <br />
+
+    <p>
+        @Html.ActionLink("Crear Nuevo", "Create")
+    </p>
+    <br />
+    <div class = "table-responsive">
+    <table class= "table table-hover table-sm">
+        <tr class="table-info">
+            <th>
+                @Html.DisplayNameFor(model => model.Parametro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th></th>
+        </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Parametro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=item.Id })
+            </td>
+        </tr>
+    }
+
+    </table>
+    </div>*@

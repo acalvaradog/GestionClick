@@ -1,0 +1,1027 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+
+        <fieldset>
+           
+                    <div class="card">
+                        <div class="card-header text-white fondoDegradado"><h4>Datos de la Acción de Formación</h4></div>
+                        <div class="card-body">
+                            <br />
+                            <div class="row justify-content-start">
+                                @*<div class="col-md-4" style="text-align:center">
+                                    <br />
+                                    <img src="~/Contents/image/acta.png">
+                                    <br />
+                                </div>*@
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12 mt-3">
+                                            <label>Modalidad</label>
+                                            <select id="Modalidad" class="form-control selectpicker" onchange="javascript: ValidarModalidad()" data_live_search="true">
+                                                <option value="">Seleccione la modalidad...</option>
+                                                <option value="1">Presencial</option>
+                                                <option value="2">Virtual con conectividad (meet, teams, zoom)</option>
+                                                <option value="3">Híbrida (Presencial, y/o con conectividad y/o plataforma externa)</option>
+                                                <option value="4">Plataforma Virtual Formativa EduFoscal</option>
+                                            </select>
+                                        </div>
+
+                                        <div id="AFNDiv" style="display:none;" class="col-md-6 mt-3">
+                                            <label>Acción de Formación Normativa</label>
+                                            <select id="Normativa" name="Normativa" class="form-control selectpicker" title="Seleccione..." onchange="javascript: AlternarNormativa();">
+                                                <option value="SI">SI</option>
+                                                <option value="NO">NO</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-12 mt-3" style="display: none;" id="CursosNormativaDiv">
+                                            <label>Acciones de Formación Normativas</label>
+                                            @Html.DropDownList("CursosNormativa", new SelectList(ViewBag.CursosNormativa, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", onchange = "javascript: SeleccionCurso('CursosNormativa');" })
+                                        </div>
+
+                                        <div class="col-md-12 mt-3" id="CursosDiv" style="display:none;">
+                                            <label>Cursos Disponibles</label>
+                                            <select id="Curso" class="form-control selectpicker" onchange="javascript: SeleccionCurso('Curso');" data-live-search="true">
+                                                <option value="">Seleccione...</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-12 mt-3">
+                                            <label>Nombre de la Acción de Formación</label>
+                                            @Html.TextBox("Nombre", null, htmlAttributes: new { @class = "form-control", @type = "text" })
+                                            @Html.ValidationMessageFor(model => model.Nombre)
+                                        </div>
+
+                                        <div class="col-md-6 mt-3">
+                                            <label>Mes</label>
+                                            @Html.TextBox("Mes", null, htmlAttributes: new { @class = "form-control", @type = "month", @data_bs_toggle = "tooltip", @data_bs_placement = "right", title = "Seleccione el mes en que se planificará la acción de formación" })
+                                        </div>
+
+                                        <div class="col-md-6 mt-3">
+                                            <label>Tipo de PEC</label>
+                                            @Html.DropDownList("IdTipoPEC", new SelectList(ViewBag.TipoPEC, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", onchange = "javascript: AlternarPICO();" })
+                                        </div>
+                                        <div class="col-md-6 mt-3">
+                                            <label>Empresa</label>
+                                            @Html.DropDownList("Empresa", new SelectList(ViewBag.Sociedad, "Codigo", "Descripcion"), null, htmlAttributes: new { @class = "form-control selectpicker", title = "Seleccione la empresa a la cual va dirigida la acción de formación" })
+                                        </div>
+
+                                        <div class="col-md-6 mt-3">
+                                            <label>Sede</label>
+                                            @Html.DropDownList("IdSede", new SelectList(ViewBag.Sede, "Id", "Nombre"), null, htmlAttributes: new { @class = "form-control selectpicker" })
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Hora de Inicio</label>
+                                        @Html.TextBox("HoraInicio", null, htmlAttributes: new { @class = "form-control", @type = "time", onblur = "javascript: CalculoHorasPorSesion();" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Hora de Finalización</label>
+                                        @Html.TextBox("HoraFin", null, htmlAttributes: new { @class = "form-control", @type = "time", onblur = "javascript: CalculoHorasPorSesion();" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Duración de cada sesión (Decimal)</label>
+                                        @Html.TextBox("TotalHoras", null, htmlAttributes: new { @class = "form-control", @type = "number", @readonly = "true", @data_bs_toggle = "tooltip", @data_bs_placement = "right", title = "Tiempo en decimal. 0,5 equivale a media hora; 1,0 equivale a una hora." })
+                                    </div>
+
+                                  
+
+                                    <div class="col-md-4 mt-3" id="d">
+                                        <label>Gestor Educativo</label>
+                                        @Html.TextBox("Responsable", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true", @Value = ViewBag.Responsable })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3" id="e">
+                                        <label>Cargo del Gestor Educativo</label>
+                                        @Html.TextBox("CargoResponsable", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true", @Value = ViewBag.CargoResponsable })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3" hidden id="a">
+                                        <label>Programa Cultura Organizacional</label>
+                                        @Html.DropDownList("IdProgramaInstitucional", new SelectList(ViewBag.PICO, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3" hidden id="b">
+                                        <label>Lider del Programa</label>
+                                        @Html.TextBox("ResponsablePrograma", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true", @Value = ViewBag.Responsable })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3" hidden id="c">
+                                        <label>Cargo del Lider del Programa</label>
+                                        @Html.TextBox("CargoResponsablePrograma", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true", @Value = ViewBag.CargoResponsable })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Area</label>
+                                        @Html.TextBox("AreaObjetivo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true", @Value = ViewBag.AreaResponsable })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Total Sesiones</label>
+                                        <input id="TotalSesiones" name="TotalSesiones" class="form-control" type="text" onblur="javascript: ValidarInputSesiones(this);" maxlength="2" data-bs-toggle="tooltip" data-bs-placement="right" title="Escriba la cantidad de sesiones para la acción de formación" />
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Dirigido A</label>
+                                        @Html.DropDownList("DirigidoASelect", new SelectList(ViewBag.DirigidoA, "Id", "Valor"), null, htmlAttributes: new { @class = "form-control selectpicker", multiple = "multiple", title = "Seleccione...", onchange = "javascript: ValidarDirigidoA();" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Proveedor</label>
+                                        @Html.TextBox("Proveedor", null, htmlAttributes: new { @class = "form-control", @type = "text", @data_bs_toggle = "tooltip", @data_bs_placement = "right", title = "Escriba el proveedor" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Tipo de Docentes</label>
+                                        <select id="Docentes" name="Docentes" class="form-control selectpicker" multiple="multiple" title="Seleccione..." onchange="javascript: alternarDocente();">
+                                            <option value="1">Docente Institucional</option>
+                                            <option value="2">Docente Externo</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4 mt-3" id="DocenteInstitucionalDiv" style="display:none">
+                                        <labe>Docente Institucional</labe>
+                                        @Html.DropDownList("Docente", new SelectList(ViewBag.Docentes, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", multiple = "multiple", title = "Seleccione..." })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3" id="DocenteExternoDiv" style="display:none">
+                                        <label>Docente Externo</label>
+                                        @Html.TextBox("DocenteExterno", null, htmlAttributes: new { @class = "form-control", @type = "text", @data_bs_toggle = "tooltip", @data_bs_placement = "right", title = "Escriba el nombre completo del docente, puede escribir hasta 5 nombres separados por comas" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Meta Eficacia</label>
+                                        <select id="MetaEficacia" name="MetaEficacia" class="form-control selectpicker">
+                                            <option value="80">
+                                                80
+                                            </option>
+                                            <option value="85">
+                                                85
+                                            </option>
+                                            <option value="90">
+                                                90
+                                            </option>
+                                            <option value="95">
+                                                95
+                                            </option>
+                                            <option value="100">
+                                                100
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Requerimiento Institucional</label>
+                                        @Html.DropDownList("IdRequerimientoInstitucional", new SelectList(ViewBag.ReqInst, "Id", "Valor"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Especifique el Requerimiento</label>
+                                        @Html.TextBox("EspecificacionReq", null, htmlAttributes: new { @class = "form-control", @type = "text" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Tipo de Acción de Formación</label>
+                                        @Html.DropDownList("Metodologia", new SelectList(ViewBag.Metodologia, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" })
+                                    </div>
+
+                                    <div id="TotalPersonasDiv" class="col-md-4 mt-3" style="display:none">
+                                        <label>Total Asistentes</label>
+                                        @Html.TextBox("CtnProgramados", null, htmlAttributes: new { @class = "form-control", @type = "text", @data_bs_toggle = "tooltip", @data_bs_placement = "right", title = "Escriba el total de personas esperadas para la sesión", maxlength = "3" })
+                                    </div>
+
+                                    <div id="CiudadDiv" class="col-md-4 mt-3" hidden>
+                                        <label>Ciudad</label>
+                                        @Html.DropDownList("Ciudad", new SelectList(ViewBag.Ciudad, "Id", "Nombre"), null, htmlAttributes: new { @class = "form-control selectpicker", @data_live_search = "true", onchange = "javascript: MostrarOtraCiudad();", title = "Seleccione..." })
+                                    </div>
+
+                                    <div id="OtraCiudadDiv" class="col-md-4 mt-3" hidden>
+                                        <label>Especifique la Ciudad</label>
+                                        <input id="OtraCiudad" class="form-control" type="text" />
+                                    </div>
+
+                                    <div id="LugarDiv" class="col-md-4 mt-3" hidden>
+                                        <label>Lugar</label>
+                                        @Html.DropDownList("Lugar", new SelectList(ViewBag.Lugares, "Id", "Nombre"), null, htmlAttributes: new { @class = "form-control selectpicker", onchange = "javascript: MostrarOtroLugar();", title = "Seleccione..." })
+                                    </div>
+
+                                    <div id="OtroLugarDiv" class="col-md-4 mt-3" hidden>
+                                        <label>Especifique el Lugar</label>
+                                        <input id="OtroLugar" class="form-control" type="text" />
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Requiere Presupuesto?</label>
+                                        <select id="PresupuestoRequerido" name="PresupuestoRequerido" class="form-control selectpicker" onchange="javascript: AlternarPresupuesto();">
+                                            <option value="false">No</option>
+                                            <option value="true">Si</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-4 mt-3" hidden id="DivPresupuesto">
+                                        <label>Presupuesto</label>
+                                        @Html.TextBox("Presupuesto", null, htmlAttributes: new { @class = "form-control", @type = "text", @onblur = "javascript: ValidarInputPresupuesto(this);", @maxlength = "10" })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Enlace Evaluación Conocimientos</label>
+                                        @Html.TextBox("EvaluacionConocimiento", null, htmlAttributes: new { @class = "form-control", @type = "url", @autocomplete = "false", @placeholder = "https://www.docs.google.com", data_bs_toggle = "tooltip", data_bs_placement = "right", title = "Este campo no es obligatorio y se puede proporcionar despues." })
+                                    </div>
+
+                                    <div class="col-md-4 mt-3">
+                                        <label>Enlace Encuesta Satisfacción</label>
+                                        @Html.TextBox("EncuestaSatisfaccion", null, htmlAttributes: new { @class = "form-control", @type = "url", @autocomplete = "false", @placeholder = "https://www.docs.google.com", value = ViewBag.EncuestaSatisfaccion, @readonly = "true" })
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <label>Objetivos de la Acción de Formación</label>
+                                        @Html.TextArea("Objetivo", null, htmlAttributes: new { @class = "form-control", rows = "1", col = "1" })
+                                    </div>
+
+                                    <div class="col-md-12 mt-3">
+                                        <label>Temas de la Acción de Formación</label>
+                                        @Html.TextArea("temas", null, htmlAttributes: new { @class = "form-control", rows = "1", cols = "1" })
+                                    </div>
+
+                                    <div class="row mt-3" id="sesionesDiv">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-md-12 d-flex justify-content-evenly">
+                                        <div>
+                                            <button type="button" class="bi bi-save btn btn-outline-primary mb-2" onclick="javascript: CrearCap();"> Registrar</button>
+                                        </div>
+                                        <div>
+                                            @Html.ActionLink(" Atras", "ListaPorCompletar", null, new { @class = "bi bi-box-arrow-in-left  btn btn-outline-primary mb-2", style = "font-size:16px" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+        </fieldset>
+    }
+
+
+<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        function inputMayusculasAlfabeto(input) {
+            let valor = $(input).val().replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ\s]/g, '');
+            $(input).val(valor.toUpperCase());
+        }
+
+        function inputMayusculasAlfabetoComas(input) {
+            let valor = $(input).val().replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ,\s]/g, '');
+            $(input).val(valor.toUpperCase());
+        }
+
+        function inputMayusculasAlfabetoNumeros(input) {
+            let valor = $(input).val().replace(/[^a-zA-ZñÑáéíóúÁÉÍÓÚ0-9\s]/g, '');
+            $(input).val(valor.toUpperCase());
+        }
+
+        function inputMayusculas(input) {
+            let valor = $(input).val();
+            $(input).val(valor.toUpperCase());
+        }
+
+        function inputNumeros(input) {
+            let valor = $(input).val().replace(/[^0-9\s]/g, '');
+            $(input).val(valor.toUpperCase());
+        }
+
+        $('#CtnProgramados').on('input', function () {
+            inputNumeros(this);
+        });
+
+        $('#DocenteExterno').on('input', function () {
+            inputMayusculasAlfabetoComas(this);
+        });
+
+        $('#OtraCiudad').on('input', function () {
+            inputMayusculasAlfabeto(this);
+        });
+
+        $('#OtroLugar').on('input', function () {
+            inputMayusculasAlfabetoNumeros(this);
+        });
+
+        $('#Nombre').on('input', function () {
+            inputMayusculasAlfabetoNumeros(this);
+        });
+
+        $('#Proveedor').on('input', function () {
+            inputMayusculasAlfabeto(this);
+        });
+
+        $('#EspecificacionReq').on('input', function () {
+            inputMayusculasAlfabetoNumeros(this);
+        });
+
+        $('#temas').on('input', function () {
+            inputMayusculas(this);
+        });
+
+        $('#Objetivo').on('input', function () {
+            inputMayusculas(this);
+        });
+    });
+</script>
+
+<script>
+    function alternarDocente() {
+
+        if ($('#Docentes').val().includes("1")) {
+            $('#DocenteInstitucionalDiv').show("fast");
+        } else {
+            $('#DocenteInstitucionalDiv').hide("fast");
+        }
+
+        if ($('#Docentes').val().includes("2")) {
+            $('#DocenteExternoDiv').show("fast");
+        } else {
+            $('#DocenteExternoDiv').hide("fast");
+        }
+
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        var maxSelections = 5;
+
+        $('#Docente').on('change', function () {
+            var selectedValues = $(this).val();
+
+            if (selectedValues.length > maxSelections) {
+                $(this).val(selectedValues.slice(0, maxSelections));
+                $(this).selectpicker('refresh');
+                alertify.alert("Solo puedes seleccionar hasta " + maxSelections + " docentes institucionales.");
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('#DocenteExterno').on('input', function () {
+            var inputText = $(this).val();
+            var namesArray = inputText.split(',').map(name => name.trim());
+
+            if (namesArray.length > 5) {
+                $(this).val(namesArray.slice(0, 5).join(', '));
+                alertify.alert("Puedes ingresar hasta 5 nombres separados por comas.");
+            }
+        });
+
+        validarOpcionMetodologia();
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
+
+<script>
+    $('#Metodologia').change(function () {
+        AlternarTotalPersonas($(this).val());
+    });
+
+    function AlternarTotalPersonas(valor) {
+        if (valor == "2" || valor == "3" || valor == "4" || valor == "9") {
+            $('#TotalPersonasDiv').show("fast");
+        } else {
+            $('#TotalPersonasDiv').hide("fast");
+        }
+    }
+</script>
+
+<script>
+
+    function CalculoHorasPorSesion() {
+
+        var inicio = $('#HoraInicio').val();
+        var fin = $('#HoraFin').val();
+
+        var inicioDate = new Date("1970-01-01T" + inicio + "Z");
+        var finDate = new Date("1970-01-01T" + fin + "Z");
+
+        var diff = finDate - inicioDate;
+
+        var diffHoras = diff / (1000 * 60 * 60);
+        var diffHorasRedondeado = diffHoras.toFixed(1);
+
+        if (diffHoras < 0) {
+            alertify.alert("La hora inicio no puede ser mayor a la hora fin");
+            $('#TotalHoras').val('');
+        } else if (diffHoras < 0.5) {
+            alertify.alert("La duración de la sesión debe ser mínimo de media hora (0,5)");
+            $('#TotalHoras').val('');
+        }
+        else {
+            $('#TotalHoras').val(diffHorasRedondeado);
+        }
+    }
+
+    function ValidarModalidad() {
+        var opt = $('#Modalidad').val();
+        var ciudadDiv = document.getElementById("CiudadDiv");
+        var lugarDiv = document.getElementById("LugarDiv");
+        var OtraCiudadDiv = document.getElementById("OtraCiudadDiv");
+        var OtroLugarDiv = document.getElementById("OtroLugarDiv");
+        var NombreAF = $('#Nombre');
+        var NormativaDiv = $('#CursosNormativaDiv');
+        var AFNDiv = $('#AFNDiv');
+
+        if (opt == 1) {
+            ciudadDiv.hidden = false;
+            lugarDiv.hidden = false;
+            NombreAF.attr("readonly", false);
+            $('#CursosDiv').hide("fast");
+            NombreAF.val("");
+            AFNDiv.show("fast");
+        } else if (opt == 2) {
+            ciudadDiv.hidden = true;
+            lugarDiv.hidden = true;
+            OtraCiudadDiv.hidden = true;
+            OtroLugarDiv.hidden = true;
+            NombreAF.attr("readonly", false);
+            $('#CursosDiv').hide("fast");
+            NombreAF.val("");
+            AFNDiv.show("fast");
+        } else if (opt == 3) {
+            ciudadDiv.hidden = false;
+            lugarDiv.hidden = false;
+            NombreAF.attr("readonly", false);
+            $('#CursosDiv').hide("fast");
+            NombreAF.val("");
+            AFNDiv.show("fast");
+        } else if (opt == 4) {
+            ciudadDiv.hidden = true;
+            lugarDiv.hidden = true;
+            OtraCiudadDiv.hidden = true;
+            OtroLugarDiv.hidden = true;
+            NombreAF.attr("readonly", true);
+            NormativaDiv.hide("fast");
+            AFNDiv.hide("fast");
+
+            $.ajax({
+                url: "ListarCursos",
+                type: "GET",
+                dataType: "json",
+                success: function (result) {
+                    result.sort((a, b) => a.fullname.localeCompare(b.fullname));
+
+                    result.forEach(curso => {
+                        const cursoNombre = curso.fullname.toUpperCase();
+                        $('#Curso').append(new Option(cursoNombre, curso.id))
+                    });
+                    $('#Curso').selectpicker('refresh');
+                    $('#CursosDiv').show("fast");
+                },
+                error: function (error) { alertify.alert("Error: " + error); }
+
+            });
+        } else {
+            NombreAF.attr("readonly", false);
+            $('#CursosDiv').hide("fast");
+            AFNDiv.hide("fast");
+        }
+
+    }
+
+    function AlternarNormativa() {
+        var modalidad = $('#Modalidad').val();
+        var Normativa = $('#Normativa').val();
+        var NormativaDiv = $('#CursosNormativaDiv');
+        var NombreAF = $('#Nombre');
+
+        if (modalidad != "4" && modalidad != "" && Normativa == "SI") {
+            NormativaDiv.show("fast");
+            NombreAF.attr("readonly", true);
+        } else {
+            NormativaDiv.hide("fast");
+            NombreAF.val("");
+            NombreAF.attr("readonly", false);
+        }
+    }
+
+    function SeleccionCurso(id) {
+        var opt = $("#" + id + " option:selected").text();
+
+        $('#Nombre').val(opt);
+    }
+
+    function MostrarOtraCiudad() {
+        var opt = $('#Ciudad option:selected').text();
+        var div = document.getElementById("OtraCiudadDiv");
+
+        if (opt == "OTRO") {
+            div.hidden = false;
+        } else {
+            div.hidden = true;
+        }
+    }
+
+    function MostrarOtroLugar() {
+        var opt = $('#Lugar option:selected').text();
+        var div = document.getElementById("OtroLugarDiv");
+
+        if (opt == "OTRO") {
+            div.hidden = false;
+        } else {
+            div.hidden = true;
+        }
+    }
+
+    $('#Ciudad').append($('<option>', {
+        value: 'Otro',
+        text: 'OTRO'
+    }));
+
+    var añoActual = new Date().getFullYear();
+    var mesActual = new Date().getMonth() + 1;
+
+    document.getElementById("Mes").min = añoActual + "-" + mesActual;
+    document.getElementById("Mes").max = (añoActual + 1) + "-12";
+
+    function ValidarDirigidoA() {
+        let selectedValues = $('#DirigidoASelect').val();
+
+        if (selectedValues && selectedValues.includes('1')) {
+            $('#DirigidoASelect option[value="2"]').prop('disabled', true);
+            $('#DirigidoASelect option[value="3"]').prop('disabled', true);
+            $('#DirigidoASelect option[value="4"]').prop('disabled', true);
+        } else {
+            $('#DirigidoASelect option[value="2"]').prop('disabled', false);
+            $('#DirigidoASelect option[value="3"]').prop('disabled', false);
+            $('#DirigidoASelect option[value="4"]').prop('disabled', false);
+        }
+
+        if (selectedValues && selectedValues.includes('2') || selectedValues.includes('3') || selectedValues.includes('4')) {
+            $('#DirigidoASelect option[value="1"]').prop('disabled', true);
+        } else {
+            $('#DirigidoASelect option[value="1"]').prop('disabled', false);
+        }
+
+        $('#DirigidoASelect option[value="5"]').prop('disabled', false);
+        $('#DirigidoASelect option[value="6"]').prop('disabled', false);
+
+        $('#DirigidoASelect').selectpicker('refresh');
+
+        validarOpcionMetodologia();
+    }
+
+    function ValidarInputPresupuesto(valor) {
+        valor.value = valor.value.replace(/\D/g, '');
+        console.log(valor.value.length);
+        if (valor.value.length > 8) {
+            valor.value = valor.value.slice(0, 8);
+        }
+    }
+
+    function ValidarInputSesiones(valor) {
+        valor.value = valor.value.replace(/\D/g, '');
+        console.log(valor.value.length);
+
+        if (valor.value == 0) {
+            valor.value = 1
+        }
+
+        if (valor.value.length > 2) {
+            valor.value = valor.value.slice(0, 2);
+        } else {
+            AgregarSesiones(valor);
+        }
+    }
+
+    function AgregarSesiones(valor) {
+
+        var CantidadSesiones = parseInt(valor.value);
+
+        var sesionesDiv = document.getElementById('sesionesDiv');
+
+        sesionesDiv.innerHTML = '';
+
+        var fechaActual = new Date();
+        var anoMinimo = fechaActual.getUTCFullYear();
+        var anoMaximo = fechaActual.getUTCFullYear() + 1;
+
+        for (var i = 0; i < CantidadSesiones; i++) {
+            var div = document.createElement('div');
+            div.className = "col-md-4 mt-3";
+
+            var label = document.createElement('label');
+            label.textContent = 'Fecha - Sesión ' + (i + 1);
+
+            var inputFecha = document.createElement('input');
+            inputFecha.className = "form-control";
+            inputFecha.type = 'date';
+            inputFecha.name = 'FechaCapacitacion';
+            inputFecha.id = 'FechaCapacitacion_' + (i + 1);
+            inputFecha.setAttribute('min', anoMinimo + "-01-01");
+            inputFecha.setAttribute('max', anoMaximo + "-12-31");
+
+            div.appendChild(label);
+            div.appendChild(inputFecha);
+            sesionesDiv.appendChild(div);
+
+        }
+    }
+
+    function AlternarPICO() {
+        var a = document.getElementById('a');
+        var b = document.getElementById('b');
+        var c = document.getElementById('c');
+        var d = document.getElementById('d');
+        var e = document.getElementById('e');
+
+
+        var select = $('#IdTipoPEC :selected').val();
+
+        if (select != 2) {
+            a.hidden = true;
+            b.hidden = true;
+            c.hidden = true;
+            d.hidden = false;
+            e.hidden = false;
+
+        } else {
+            a.hidden = false;
+            b.hidden = false;
+            c.hidden = false;
+            d.hidden = true;
+            e.hidden = true;
+
+        }
+
+        validarOpcionMetodologia();
+    }
+
+    function AlternarPresupuesto() {
+        var DivPresupuesto = document.getElementById('DivPresupuesto');
+        var Presupuesto = document.getElementById('Presupuesto');
+        var select = $('#PresupuestoRequerido :selected').val();
+
+        if (select != "true") {
+            DivPresupuesto.hidden = true;
+            Presupuesto.value = '';
+        } else {
+            DivPresupuesto.hidden = false;
+            Presupuesto.value = '';
+        }
+    }
+
+    function validarOpcionMetodologia() {
+        const tipoPEC = $('#IdTipoPEC').val();
+        const dirigidoA = $('#DirigidoASelect').val() || [];
+
+        let habilitarOpcion = false;
+
+        if (tipoPEC == "1" && dirigidoA.includes("3")) {
+            habilitarOpcion = true;
+        } else if (tipoPEC == "2") {
+            habilitarOpcion = true;
+        } else if (tipoPEC == "3") {
+            habilitarOpcion = true;
+        }
+
+        if (tipoPEC == "1" && dirigidoA.includes("1")) {
+            habilitarOpcion = true;
+        }
+
+        if (habilitarOpcion) {
+            $('#Metodologia option[value="9"]').prop('disabled', false);
+        } else {
+            if ($('#Metodologia').val() == "9") {
+                $('#Metodologia').val("");
+            }
+            $('#Metodologia option[value="9"]').prop('disabled', true);
+
+        }
+
+        setTimeout(function () {
+            $('#Metodologia').selectpicker('refresh');
+        }, 100);
+
+    }
+
+    function CrearCap() {
+        try {
+            var frmData = new FormData();
+            var dirigidos = [];
+            var element = document.getElementById("DirigidoASelect");
+            var datos = Array.from(element.querySelectorAll("option:checked"), e => e.value);
+            dirigidos.push(datos);
+            var CantidadSesiones = $('#TotalSesiones').val();
+
+            var docentesInstitucionales = $('#Docente').val() || [];
+            var docentesExternos = $('#DocenteExterno').val().split(',').map(name => name.trim()).filter(name => name);
+
+            var concatenar = docentesInstitucionales.concat(docentesExternos);
+            var docentes = concatenar.join(',');
+
+
+            // LIMITAR LA CANTIDAD AL JUNTAR AMBOS
+            //if (concatenar.length > 5) {
+            //    concatenar = concatenar.slice(0, 5);
+            //}
+
+            if ($('#Modalidad').val() == "4") {
+                frmData.append("CursoId", $('#Curso').val());
+            } else {
+                frmData.append("CursoId", "0");
+            }
+
+            if ($('#Normativa').val() == "SI") {
+                frmData.append("IdCursoNormativo", $('#CursosNormativa').val());
+            } else {
+                frmData.append("IdCursoNormativo", "0");
+            }
+
+            if ($('#Modalidad').val() != "") {
+                frmData.append("Modalidad", $('#Modalidad').val());
+            } else { $('#Modalidad').focus(); throw "El campo Modalidad es obligatorio." }
+
+            if ($('#Nombre').val() != "") {
+                frmData.append("Nombre", $('#Nombre').val());
+            } else { $('#Nombre').focus(); throw "El campo Nombre es obligatorio." }
+
+            if ($('#Mes').val() != "") {
+                frmData.append("Mes", $('#Mes').val());
+            } else { $('#Mes').focus(); throw "El campo Mes es obligatorio." }
+
+            if ($('#IdTipoPEC').val() != "") {
+                frmData.append("IdTipoPEC", $('#IdTipoPEC').val());
+            } else { $('#IdTipoPEC').focus(); throw "El campo Tipo PEC es obligatorio." }
+
+            if ($('#Empresa').val() != "") {
+                frmData.append("Empresa", $('#Empresa').val());
+            } else { $('#Empresa').focus(); throw "El campo Empresa es obligatorio." }
+
+            if ($('#IdSede').val() != "") {
+                frmData.append("IdSede", $('#IdSede').val());
+            } else { $('#IdSede').focus(); throw "El campo Sede es obligatorio." }
+
+            if ($('#HoraInicio').val() != "") {
+                frmData.append("HoraInicio", $('#HoraInicio').val());
+            } else { $('#HoraInicio').focus(); throw "El campo Hora Inicio es obligatorio." }
+
+            if ($('#HoraFin').val() != "") {
+                frmData.append("HoraFin", $('#HoraFin').val());
+            } else { $('#HoraFin').focus(); throw "El campo Hora Fin es obligatorio." }
+
+            frmData.append("Responsable", $('#Responsable').val());
+            frmData.append("CargoResponsable", $('#CargoResponsable').val());
+            frmData.append("ResponsablePrograma", $('#ResponsablePrograma').val());
+            frmData.append("CargoResponsablePrograma", $('#CargoResponsablePrograma').val());
+
+            if ($('#IdTipoPEC').val() == "2") {
+                if ($('#IdProgramaInstitucional').val() != "") {
+                    frmData.append("IdProgramaInstitucional", $('#IdProgramaInstitucional').val());
+                } else { $('#IdProgramaInstitucional').focus(); throw "El campo Programa Cultura Organizacional es obligatorio." }
+            }
+
+            if ($('#AreaObjetivo').val() != "") {
+                frmData.append("AreaObjetivo", $('#AreaObjetivo').val());
+            } else { $('#AreaObjetivo').focus(); throw "El campo Area Objetivo es obligatorio." }
+
+            if ($('#TotalHoras').val() != "") {
+                frmData.append("TotalHoras", $('#TotalHoras').val());
+            } else { $('#TotalHoras').focus(); throw "El campo Duración Total de la Capacitación es obligatorio." }
+
+            if ($('#TotalSesiones').val() != "") {
+                frmData.append("TotalSesiones", $('#TotalSesiones').val());
+            } else { $('#TotalSesiones').focus(); throw "El campo Total Sesiones es obligatorio." }
+
+            if (dirigidos != "") {
+                frmData.append("DirigidoASelect", dirigidos);
+            } else { element.focus(); throw "El campo DirigidosA es obligatorio." }
+
+            if ($('#Proveedor').val() != "") {
+                frmData.append("Proveedor", $('#Proveedor').val());
+            } else { $('#Proveedor').focus(); throw "El campo Proveedor es obligatorio." }
+
+            if ($('#Docentes').val().includes("1")) {
+                if ($('#Docente').val() == "") {
+                    $('#Docente').focus(); throw "Seleccione los Docentes Institucionales."
+                }
+            } else if ($('#Docentes').val().includes("2")) {
+                if ($('#DocenteExterno').val() == "") {
+                    $('#DocenteExterno').focus(); throw "Escriba los Docentes Externos."
+                }
+            } else {
+                $('#Docentes').val().focus; throw "Seleccione el Tipo de Docente."
+            }
+
+            frmData.append("Docente", docentes);
+
+            if ($('#MetaEficacia').val() != "") {
+                frmData.append("MetaEficacia", $('#MetaEficacia').val());
+            } else { $('#MetaEficacia').focus(); throw "El campo Meta Eficacia es obligatorio." }
+
+            if ($('#IdRequerimientoInstitucional').val() != "") {
+                frmData.append("IdRequerimientoInstitucional", $('#IdRequerimientoInstitucional').val());
+            } else { $('#IdRequerimientoInstitucional').focus(); throw "El campo Requerimiento Institucional es obligatorio." }
+
+            if ($('#EspecificacionReq').val() != "") {
+                frmData.append("EspecificacionReq", $('#EspecificacionReq').val());
+            } else { $('#EspecificacionReq').focus(); throw "Especifique el requerimiento" }
+
+            if ($('#Metodologia').val() != "") {
+                frmData.append("Metodologia", $('#Metodologia').val());
+            } else { $('#Metodologia').focus(); throw "El campo Tipo de Acción de Formación es obligatorio." }
+
+            if ($('#Metodologia').val() == 2 || $('#Metodologia').val() == 3 || $('#Metodologia').val() == 4 || $('#Metodologia').val() == 9) {
+                if ($('#CtnProgramados').val() != "") {
+                    frmData.append("CtnProgramados", $('#CtnProgramados').val());
+                } else {
+                    $('#CtnProgramados').focus(); throw "El campo Total Personas es obligatorio."
+                }
+            }
+
+            if ($('#Modalidad').val() == "1" || $('#Modalidad').val() == "3") {
+                if ($('#Ciudad option:selected').text() != "") {
+                    frmData.append("Ciudad", $('#Ciudad option:selected').text());
+                } else { $('#Ciudad').focus(); throw "El campo Ciudad es obligatorio." }
+
+                if ($('#Lugar option:selected').text() != "") {
+                    frmData.append("Lugar", $('#Lugar option:selected').text());
+                } else { $('#Lugar').focus(); throw "El campo Lugar es obligatorio." }
+            }
+
+            if ($('#Ciudad option:selected').text() == "OTRO") {
+                if ($('#OtraCiudad').val() != "") {
+                    frmData.append("OtraCiudad", $('#OtraCiudad').val());
+                } else {
+                    $('#OtraCiudad').focus(); throw "Especifique la ciudad";
+                }
+            }
+
+            if ($('#Lugar option:selected').text() == "OTRO") {
+                if ($('#OtroLugar').val() != "") {
+                    frmData.append("OtroLugar", $('#OtroLugar').val());
+                } else {
+                    $('#OtroLugar').focus(); throw "Especifique el lugar";
+                }
+            }
+
+            frmData.append("PresupuestoRequerido", $('#PresupuestoRequerido').val());
+
+            if ($('#PresupuestoRequerido').val() == "true") {
+                if ($('#Presupuesto').val() != "") {
+                    frmData.append("Presupuesto", $('#Presupuesto').val());
+                } else {
+                    $('#Presupuesto').focus(); throw "Escriba el presupuesto";
+                }
+            }
+
+            frmData.append("EvaluacionConocimiento", $('#EvaluacionConocimiento').val());
+            frmData.append("EncuestaSatisfaccion", $('#EncuestaSatisfaccion').val());
+
+            if ($('#Objetivo').val() != "") {
+                frmData.append("Objetivo", $('#Objetivo').val());
+            } else { $('#Objetivo').focus(); throw "El campo Objetivos es obligatorio." }
+
+            if ($('#temas').val() != "") {
+                frmData.append("temas", $('#temas').val());
+            } else { $('#temas').focus(); throw "El campo Temas es obligatorio." }
+
+            var InputMes = new Date($('#Mes').val());
+            var ValorInputMes = InputMes.getUTCMonth() + 1;
+            var ValorInputAno = InputMes.getUTCFullYear();
+
+            var mesInicio = ValorInputMes;
+            var mesFin = ValorInputMes + 2;
+
+            function estaEnRangoDeMeses(fecha, mesInicio, mesFin, ano) {
+                var mesFecha = fecha.getUTCMonth() + 1;
+                var anoFecha = fecha.getUTCFullYear();
+                var anoSiguiente = ano + 1;
+
+                if (mesFin > 12 && anoFecha == anoSiguiente) {
+                    mesFecha += 12;
+                    return mesFecha >= mesInicio && mesFecha <= mesFin;
+                }
+
+                if (anoFecha === ano) {
+                    return mesFecha >= mesInicio && mesFecha <= mesFin;
+                }
+
+                return false;
+            }
+
+            var metodologiasConRango = ["5", "6", "8"];
+            var rangoPermitido = metodologiasConRango.includes($('#Metodologia').val());
+
+            var fechaValida = false;
+
+            if (rangoPermitido) {
+                for (i = 0; i < CantidadSesiones; i++) {
+                    var MesDeSesion = new Date($('#FechaCapacitacion_' + (i + 1)).val());
+
+                    if (estaEnRangoDeMeses(MesDeSesion, mesInicio, mesFin, ValorInputAno)) {
+                        if (MesDeSesion.getUTCMonth() + 1 === ValorInputMes) {
+                            fechaValida = true;
+                        }
+                        frmData.append("FechaCapacitacion_" + (i + 1), $('#FechaCapacitacion_' + (i + 1)).val());
+                    } else {
+                        throw "Todas las fechas deben estar dentro del rango de 3 meses.";
+                    }
+                }
+
+                if (!fechaValida) {
+                    throw "Al menos una de las fechas de las sesiones debe estar en el mes requerido.";
+                }
+            } else {
+                for (i = 0; i < CantidadSesiones; i++) {
+                    var MesDeSesion = new Date($('#FechaCapacitacion_' + (i + 1)).val());
+                    var MesSeleccionado = MesDeSesion.getUTCMonth() + 1;
+
+                    if (MesSeleccionado == ValorInputMes) {
+                        frmData.append("FechaCapacitacion_" + (i + 1), $('#FechaCapacitacion_' + (i + 1)).val());
+                    } else {
+                        throw "Las fechas de las sesiones deben estar en el rango del mes ingresado.";
+                    }
+                }
+            }
+
+            frmData.append("CantidadSesiones", CantidadSesiones);
+
+            $.ajax({
+                url: "CrearCap",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: frmData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == "true") {
+                        alertify.alert('Se registró la acción formativa correctamente.', function () { location.replace('ListaPorCompletar'); });
+                    } else {
+                        alertify.alert(result)
+                    }
+                },
+
+                error: function (xhr, status, error) { alertify.alert("" + error); }
+
+            });
+        } catch (err) { alertify.alert("" + err); }
+
+    }
+</script>

@@ -1,0 +1,202 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Vacaciones>
+
+@{
+    ViewBag.Title = "ExportarInformeGH";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+}
+
+
+   
+
+
+    <form>
+        <div class="card">
+
+            <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                    <h4 class="card-title">Exportar Histórico Vacaciones General</h4>
+                </div>
+
+
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-6" style="text-align:left">
+                        <label for="">Area:</label>
+                        @Html.DropDownList("Area", new SelectList(ViewBag.Area, "Value", "Text"), "Seleccione el Area", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="col-6" style="text-align:left">
+                        <label for="exampleFormControlSelect1">Empresa: </label>
+                        <select class="form-control" id="Empresa" name="Empresa">
+                            <option value="">Seleccione...</option>
+                            <option value="1000">FOSCAL</option>
+                            <option value="2000">FOSCAL INTERNACIONAL</option>
+                        </select>
+                    </div>
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-6" style="text-align:left">
+                        <label for="">Empleado:</label>
+                        @Html.DropDownList("Empleado", new SelectList(ViewBag.Empleados, "Nombres", "Nombres"), "Seleccione el Empleado", htmlAttributes: new { @class = "form-control ", data_live_search = "true" })
+                    </div>
+
+                </div>
+                <br />
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        @*<button type = "submit" id = "Search" class = "btn" style="background-color:#96D44D; color:white; "  onclick = "@Url.Action("ExportaInformeGH","Vacaciones")">Buscar</button>*@
+                        <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary rounded-pill mb-2" onclick="Buscar();return false;"> Buscar</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+    <div class="table-responsive">
+        <table class="table table-striped display dataTable table-sm" id="tabla">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Documento
+                    </th>
+                    <th>
+                        Codigo Empleado
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th>
+                        Correo
+                    </th>
+                    <th>
+                        Telefono
+                    </th>
+                    <th>
+                        Modo Trabajo
+                    </th>
+                    <th>
+                        Empresa
+                    </th>
+                    <th>
+                        Fechas  Último  Periodo
+                    </th>
+                    <th>
+                        Cantidad Dias Pendientes
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody id="tabla-body">
+            </tbody>
+        </table>
+    </div>
+
+
+<div class="modal fade" id="processState" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body text-center"> <img src="~/Contents/image/Spinner.gif"> Espere....</div>
+
+        </div>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+
+
+    function Buscar() {
+
+        var area = document.getElementById('Area').value;
+        var empresa = document.getElementById('Empresa').value;
+        var empleado = document.getElementById('Empleado').value;
+        var filaTotal;
+
+        $.ajax({
+            url: "DatosExportar",
+            data: { 'Area': area, 'Empresa': empresa, 'Empleado': empleado },
+            type: 'post',
+            dataType: 'html',
+            beforeSend: function () { $("#processState").modal("show") },
+            success: function (result) {
+
+                if (result != undefined || result != null) {
+                    var objdata = JSON.parse(result);
+
+
+                    $("#tabla").dataTable().fnDestroy();
+                    filaTotal = "";
+                    $("#tabla-body tr").remove();
+
+                    objdata.forEach(function (valor, indice) {
+
+                        if (valor.Empleado.Cargo == null) { valor.Empleado.Cargo = "Sin datos" }
+                        if (valor.Empleado.Correo == null) { valor.Empleado.Correo = "Sin datos" }
+                        if (valor.Empleado.Telefono == null) { valor.Empleado.Telefono = "Sin datos" }
+                        if (valor.Empleado.ModoTrabajo == null) { valor.Empleado.ModoTrabajo = "Sin datos" }
+                        if (valor.Empleado.Empresa == null) { valor.Empleado.Empresa = "Sin datos" }
+
+                        var fila = '<tr class=""><td>' + valor.Empleado.Nombres + '</td><td>' + valor.Empleado.Documento + '</td><td>' + valor.Empleado.NroEmpleado + '</td><td>' + valor.Empleado.Cargo + '</td><td>' + valor.Empleado.Correo + '</td><td>' + valor.Empleado.Telefono + '</td><td>' + valor.Empleado.ModoTrabajo + '</td><td>' + valor.Empleado.Empresa + '</td><td>' + valor.Periodo + '</td><td>' + valor.CantDiasPendientes + '</td></tr>';
+
+                        filaTotal = fila + filaTotal;
+
+                    });
+
+                    $("#tabla-body").append(filaTotal);
+                    $('#tabla').DataTable({
+                        language: {
+                            "sProcessing": "Procesando...",
+                            "sLengthMenu": "Mostrar _MENU_ registros",
+                            "sZeroRecords": "No se encontraron resultados",
+                            "sEmptyTable": "Ningún dato disponible en esta tabla",
+                            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                            "sInfoPostFix": "",
+                            "sSearch": "Buscar:",
+                            "sUrl": "",
+                            "sInfoThousands": ",",
+                            "sLoadingRecords": "Cargando...",
+                            "oPaginate": {
+                                "sFirst": "Primero-",
+                                "sLast": "Último",
+                                "sNext": "  - Siguiente",
+                                "sPrevious": "Anterior -  "
+                            },
+                            "oAria": {
+                                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                            }
+                        },
+
+                        "pagingType": "simple",
+                        dom: 'Brtip',
+                        paging: false,
+                        searching: false,
+
+                        buttons: [
+                            {
+
+                                extend: 'excelHtml5',
+                                text: '<i class="fas fa-file-excel"></i>',
+                                filename: 'Informe_Empleados.xlsx',
+                                titleAttr: 'Exportar a Excel',
+                                className: 'btn btn-success'
+                            }
+                        ]
+
+
+                    });
+                }
+                $("#processState").modal("hide")
+            }
+        });
+    }
+</script>

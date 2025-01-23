@@ -1,0 +1,101 @@
+﻿@using Autogestion.Shared.DTO.Eventos
+@using Autogestion.Shared.DTO.Empleado
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+
+
+<MudDialog OnBackdropClick="OverlayClick">
+    <TitleContent>
+        <MudText Typo="Typo.h5">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> Confirmar
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Esta seguro de inscribirlo al evento?</MudText>
+        <EditForm Model="@model" OnValidSubmit="@(args=>InscribirFamiliar(FamiliarId, eventoId))">
+            <MudTextField T="string" Label="Observacion" @bind-Text="model.Observaciones" Lines="3" />
+            <div class="d-flex mt-3 justify-content-between">
+                <MudButton Class="" MudBlazor.Color="Color.Primary" MudBlazor.ButtonType="ButtonType.Submit" Variant="Variant.Outlined">Si</MudButton>
+                <MudButton Class="" Variant="Variant.Outlined" MudBlazor.Color="Color.Error" OnClick="Submit">No</MudButton>
+            </div>
+        </EditForm>
+    </DialogContent>
+</MudDialog>
+
+@code {
+
+    private EmpleadoDTO? empleado { get; set; }
+
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    DetalleEventosDTO model = new DetalleEventosDTO();
+    [Parameter] public int FamiliarId { get; set; }
+    [Parameter] public string eventoId { get; set; }
+
+    [Parameter] public MudBlazor.Color Color { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(false));
+    void Cancel() => MudDialog.Cancel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+    }
+
+    private async void InscribirFamiliar(int FamiliarId, string eventoId)
+    {
+        model.FamiliarId = Convert.ToString(FamiliarId);
+        model.EmpleadoId = empleado.Id;
+        model.EventosId = Convert.ToInt32(eventoId);
+
+        var Respuesta = await Http.PostAsJsonAsync<DetalleEventosDTO>($"api/Eventos/GuardarEventoFamiliar/", model);
+
+        if (Respuesta.IsSuccessStatusCode)
+        {
+            var codigoRespuesta = await Respuesta.Content.ReadFromJsonAsync<string>();
+
+            if (codigoRespuesta == "true")
+            {
+                FamiliarId = 0;
+                eventoId = "";
+                model.Observaciones = "";
+                MudDialog.Close(DialogResult.Ok(codigoRespuesta));
+            }else if (codigoRespuesta == "Inscrito")
+            {
+                FamiliarId = 0;
+                eventoId = "";
+                model.Observaciones = "";
+                MudDialog.Close(DialogResult.Ok(codigoRespuesta));
+            }
+            else if (codigoRespuesta == "EstaInscritoEventoConcurrente")
+            {
+                FamiliarId = 0;
+                eventoId = "";
+                model.Observaciones = "";
+                MudDialog.Close(DialogResult.Ok(codigoRespuesta));
+            }
+            else if (codigoRespuesta == "SinCupos")
+            {
+                FamiliarId = 0;
+                eventoId = "";
+                model.Observaciones = "";
+                MudDialog.Close(DialogResult.Ok(codigoRespuesta));
+            }
+            else if (codigoRespuesta == "FechaLimite")
+            {
+                FamiliarId = 0;
+                eventoId = "";
+                model.Observaciones = "";
+                MudDialog.Close(DialogResult.Ok(codigoRespuesta));
+            }
+        }
+    }
+
+
+    private void OverlayClick()
+    {
+        Console.WriteLine("Entra");
+        Cancel();
+    }
+}

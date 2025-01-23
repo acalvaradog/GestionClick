@@ -1,0 +1,24 @@
+2023-12-19 16:20:04.249 -05:00 [INF] Inicia Proceso de Notificaciónes Diarias
+2023-12-19 16:20:04.561 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:20:06.709 -05:00 [INF] Termina Proceso de notificación de Seguimientos
+2023-12-19 16:22:31.084 -05:00 [INF] Inicia Proceso de Notificaciónes Diarias
+2023-12-19 16:22:31.222 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:22:32.548 -05:00 [INF] Termina Proceso de notificación de Seguimientos
+2023-12-19 16:24:45.595 -05:00 [INF] Inicia Proceso de Notificaciónes Diarias
+2023-12-19 16:24:45.896 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:24:47.756 -05:00 [INF] Termina Proceso de notificación de Seguimientos
+2023-12-19 16:25:24.835 -05:00 [INF] Inicia Proceso de Notificaciónes Diarias
+2023-12-19 16:25:25.413 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:25:27.278 -05:00 [INF] Termina Proceso de notificación de Seguimientos
+2023-12-19 16:26:10.484 -05:00 [INF] Inicia Proceso de Notificaciónes Diarias
+2023-12-19 16:26:16.949 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:26:18.435 -05:00 [INF] Termina Proceso de notificación de Seguimientos
+2023-12-19 16:27:02.622 -05:00 [INF] Inicia Proceso de Notificaciónes Diarias
+2023-12-19 16:27:05.943 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:27:07.791 -05:00 [INF] Termina Proceso de notificación de Seguimientos
+2023-12-19 16:33:18.767 -05:00 [INF] Inicia Proceso  Aplicación Consola NotificaciónDiariaEvadesh
+2023-12-19 16:33:21.391 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:33:24.088 -05:00 [INF] Termina Proceso de notificación de Seguimientos
+2023-12-19 16:33:40.689 -05:00 [INF] Inicia Proceso  Aplicación Consola NotificaciónDiariaEvadesh
+2023-12-19 16:33:41.582 -05:00 [INF] Inicia Proceso de Notificaciónes Seguimientos
+2023-12-19 16:33:43.329 -05:00 [INF] Termina Proceso de notificación de Seguimientos

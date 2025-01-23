@@ -1,0 +1,136 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration config
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@inject HttpClient Http
+@using Autogestion.Shared.DTO.Certificados
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    <MudText Typo="Typo.h6">Certificado ingresos y retenciones</MudText>
+    <MudCard>
+        <MudCardContent>
+            <MudGrid Container Justify="Justify.Center" AlignItems="AlignItems.Center">
+                <MudItem xs="12" md="6">
+                    <MudSelect Label="Año" @bind-Value="selectedYear" Outlined="true" Required="true">
+                        @for (int year = DateTime.Now.Year - 1; year >= 2020; year--)
+                        {
+                            <MudSelectItem Value="year.ToString()" Label="@year"></MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudCheckBox @bind-Checked="@sustituacion">Sustitucion</MudCheckBox>
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="@(!IsYearSelected)" OnClick="GenerarCertificado">Generar Certificado</MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+
+    @if (IsCertificadoGenerated)
+    {
+        <MudCard>
+            <MudCardContent>
+                <h4>Certificado Generado, por favor revise su correo @DatosEmpleado.Correo:</h4>
+                <p>Año: @selectedYear</p>
+            </MudCardContent>
+        </MudCard>
+    }
+}
+@code {
+    private bool sustituacion;
+    private string selectedYear;
+    private bool IsCertificadoGenerated = false;
+    private EmpleadoReturnSapDTO DatosEmpleado = new EmpleadoReturnSapDTO();
+    bool _loading = false;
+    private bool IsYearSelected => !string.IsNullOrEmpty(selectedYear);
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            DatosEmpleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+    private async void GenerarCertificado()
+    {
+        try
+        {
+            var url = config[$"CertificadoIngresos{DatosEmpleado.BUKRS}:URL{selectedYear}"];
+            var isgenerate = await Certificado(url);
+
+            if (sustituacion)
+
+            {
+                if (DatosEmpleado.BUKRS == "1000")
+                {
+
+                    url = config[$"CertificadoIngresos2000:URL{selectedYear}"];
+                    await Certificado(url);
+
+                }
+                else
+                {
+                    url = config[$"CertificadoIngresos1000:URL{selectedYear}"];
+                    await Certificado(url);
+
+                }
+            }
+            IsCertificadoGenerated = isgenerate;
+        }
+        catch (Exception)
+        {
+            _loading = false;
+            IsCertificadoGenerated = true;
+            throw;
+        }
+
+        //  @config["Configuraciones:URLAnexosEventos"]
+    }
+
+    private async Task<bool> Certificado(string Url)
+
+    {
+        try
+        {
+            _loading = true;
+
+            SolicitudCertificadoIngresosDTO solicitud = new SolicitudCertificadoIngresosDTO();
+            solicitud.url = Url;
+            solicitud.correo = DatosEmpleado.Correo;
+            solicitud.documento = DatosEmpleado.DOCUMENTO;
+            var response = await Http.PostAsJsonAsync<SolicitudCertificadoIngresosDTO>($"api/Trabajador/GenerarCertificado", solicitud);
+            _loading = false;
+            if (response.IsSuccessStatusCode)
+            {
+                var respuesta = await response.Content.ReadFromJsonAsync<bool>();
+
+                return respuesta;
+            }
+
+            _loading = false;
+            return false;
+
+        }
+        catch (Exception)
+        {
+            IsCertificadoGenerated = true;
+            _loading = false;
+            StateHasChanged();
+            return false;
+        }
+
+    }
+}

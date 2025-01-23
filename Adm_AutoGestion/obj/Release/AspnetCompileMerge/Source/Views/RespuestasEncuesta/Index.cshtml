@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Encuesta>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<br />
+<br />
+<br />
+<br />
+<h2>Detalle Informe</h2
+<br />
+<br />
+<div class="card">
+  <div class="card-header text-white bg-info mb-3" >Datos del Empleado</div>
+    <div class="card-body">
+      <div class="form-inline" role="form">
+        <div class ="form-group">
+          <label for="Nombre">Documento: </label>&nbsp&nbsp&nbsp
+                <input  type = "text" class="form-control" id = "Doc" value="@ViewBag.Empleado.Documento " disabled = "disabled" />
+            </div>&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp
+              <label for="Nombre">Nombre: </label>&nbsp&nbsp&nbsp
+                <input  type = "text" class="form-control col-sm-6" id = "Nom" value="@ViewBag.Empleado.Nombres " readonly/>  
+     </div>
+  </div>
+</div>
+
+
+<br />
+<br />
+
+
+<div class = "table-responsive">
+<table class= "table table-sm table-hover">
+    <tr class="table-info">
+        <th>
+            @Html.DisplayNameFor(model => model.NumeroPregunta)
+        </th>
+        <th>
+            Pregunta
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Respuesta)
+        </th>
+        
+    </tr>
+
+@foreach (var item in Model) {
+    foreach (var pregunta in item.ListadoPreguntas) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumeroPregunta)
+        </td>
+        <td>
+            @Html.DisplayFor(Preguntas => pregunta.Pregunta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Respuesta)
+        </td>
+     
+    </tr>
+}
+}
+
+</table>
+</div>
+<br />
+<br />
+<div>
+    @Html.ActionLink("Atras", "Index", "EncabezadoEncuesta")
+</div>

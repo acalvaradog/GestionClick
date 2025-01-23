@@ -1,0 +1,186 @@
+﻿@model Adm_AutoGestion.Models.Descuentos
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+    string message1 = string.Format("{0}", Session["message1"]);
+    string Nombres = string.Format("{0}", Session["Nombres"]);
+    string Documento = string.Format("{0}", Session["Documento"]);
+    string impresion = string.Format("{0}", Session["Impresion"]);
+}
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "SI", Value = "SI" },
+        new ListItem { Text = "NO", Value = "NO" }
+        };
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message");
+}
+
+@if (!string.IsNullOrWhiteSpace(message1))
+{
+
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">Error</h4>
+        <hr>
+        <p class="mb-0">@message1</p>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true"></span></button>
+    </div>
+
+
+    Session.Remove("message1");
+}
+
+<div class="container">
+    <br />
+
+    <h2 class="colorTitulo text-center">Registrar Descuento</h2>
+
+    <form action="~/Descuentos/Create">
+        <div class="card ">
+            <div class="card-header text-white fondoDegradado mb-2">Buscar</div>
+            <div class="card-body">
+                <div class="row justify-content-start">
+                    <div class="col-5">
+                        <div class="row justify-content-start">
+                            <div class="col-3">
+                                <label for="NroEmpleado" class="control-label  ">Codigo Empleado: </label>
+                            </div>
+                            <div class="col-9">
+                                <input type="number" class="form-control" id="Codigo" name="Codigo" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="row justify-content-start">
+                            <div class="col-3">
+                                <label for="NroEmpleado" class="control-label  ">Nro Documento: </label>
+                            </div>
+                            <div class="col-9">
+                                <input type="number" class="form-control" id="Documento" name="Documento" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2" style="text-align:left">
+                        <button class="bi bi-search btn btn-outline-primary mb-2" type="submit"> Buscar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+
+            <div class="card ">
+                <div class="card-header text-white fondoDegradado mb-2">Datos Basicos del Empleado</div>
+                <div class="card-body">
+                    <div class="row justify-content-start">
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Empleado
+                            </div>
+                            <div class="editor-field">
+                                <input type="text" class="form-control" id="Nom" value="@Nombres" desabled="desabled" readonly />
+                            </div>
+
+                        </div>
+                        <div class="editor-field">
+                            @*@Html.EditorFor(model => model.EmpleadoId)*@
+                            @Html.TextBox("EmpleadoId", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", type = "hidden" })
+                            @Html.ValidationMessageFor(model => model.EmpleadoId)
+                        </div>
+                        <br />
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Tope Maximo
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.TopeMaximo)*@
+                                @Html.TextBox("TopeMaximo", null, htmlAttributes: new { @class = "form-control", @readonly = "true", type = "number" })
+                                @Html.ValidationMessageFor(model => model.TopeMaximo)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row justify-content-start">
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Valor Descuento
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.ValorDescuento)*@
+                                @Html.TextBox("ValorDescuento", null, htmlAttributes: new { @class = "form-control", type = "number" })
+                                @Html.ValidationMessageFor(model => model.ValorDescuento)
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Fecha Inicio Vigencia
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.FechaInicioVigencia)*@
+                                @Html.TextBox("FechaInicioVigencia", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(model => model.FechaInicioVigencia)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row justify-content-start">
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Fecha Fin Vigencia
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.FechaFinVigencia)*@
+                                @Html.TextBox("FechaFinVigencia", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(model => model.FechaFinVigencia)
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-sm-6">
+                            <div class="editor-label">
+                                Servicio
+                            </div>
+                            <div class="editor-field">
+                                @*@Html.EditorFor(model => model.Activo)*@
+                                @Html.DropDownListFor(model => model.ServicioId, new SelectList(Model.ListadoServicios, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.ServicioId)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+
+                    <br />
+                    <br />
+                    <div class="row justify-content-center">
+                        <div class="col-12 " style="text-align:center">
+                            <button type="submit" class="bi bi-plus-square btn btn-outline-primary mb-2"> Crear</button>
+                            @*@Html.ActionLink("Imprimir", "Impresion", new { Nombre = @Nombres, Documento = @Documento}, new { @class="btn", style="background-color:#96D44D; color:white" })*@
+                            @Html.ActionLink(" Atras", "Index", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary mb-2" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    }
+</div>

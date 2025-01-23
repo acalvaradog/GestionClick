@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Rol>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<br />
+<div class="container">
+    
+    <h2 class="colorTitulo text-center mt-3">Asignación de Roles</h2>
+
+    <br />
+    <p>
+
+        @Html.ActionLink(" Crear Nuevo Rol", "Create", null, new { @class = "bi bi-plus-square btn btn-outline-primary mb-2" })
+    </p>
+    <br />
+
+    <div class="card ">
+        <div class="card-header text-white fondoDegradado">Buscar</div>
+        <div class="card-body">
+            <div class="row justify-content-start mt-3">
+                <div class="col-6">
+                    <input class="form-control" id="myInput" type="text" placeholder="Buscar..">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr class="text-white fondoDegradado">
+                    <th>
+
+                        Grupo
+                    </th>
+                    <th>
+
+                        Id Empleado
+                    </th>
+                    <th>
+
+                        Nombre Empleado
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GrupoEmpleados.Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EmpleadoId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                        </td>
+                        <td>
+                            <a href="~/Rol/Edit/@item.Id" title="Editar"><buttom class="bi bi-pencil-square btn btn-outline-primary md-2"></buttom></a>
+                            <a href="~/Rol/Delete/@item.Id" title="Eliminar"><buttom class="bi bi-trash btn btn-outline-primary md-2"></buttom></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

@@ -1,0 +1,70 @@
+﻿@model Adm_AutoGestion.Models.HabilitarVacaciones
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+
+
+<br />
+<h2>Habilitar Vacaciones</h2>
+<br />
+<br />
+<h4>Esta seguro que desea eliminar este registro?</h4>
+<fieldset>
+<br />
+<div class="container">
+    <div class="row">
+     <div class="col-sm-5">
+
+    <div class="display-label">
+     <strong> Codigo Empleado </strong>
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EmpleadoId)
+    </div>
+    <br />
+    <div class="display-label">
+        <strong>  @Html.DisplayNameFor(model => model.DiasMayor6)</strong>
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DiasMayor6)
+    </div>
+    <br />
+    <div class="display-label">
+        <strong>  @Html.DisplayNameFor(model => model.Anticipadas)</strong>
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Anticipadas)
+    </div>
+    <br />
+    <div class="display-label">
+        <strong>  @Html.DisplayNameFor(model => model.Pagadas)</strong>
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Pagadas)
+    </div>
+    <br />
+    <div class="display-label">
+       <strong>   Usuario Registra</strong>
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UsuarioRegistra)
+    </div>
+    </div>
+   </div>
+  </div>
+<br />
+<br />
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Eliminar" class="btn btn-primary"/> |
+        @Html.ActionLink("Atras", "Index")
+    </p>
+}
+
+</div>

@@ -1,0 +1,116 @@
+﻿@page "/miscursos"
+@using Autogestion.Shared.DTO.Incapacidad
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject NavigationManager NavigationManager
+@using Autogestion.Shared.DTO.Empleado
+@using Autogestion.Shared.DTO.Cursos
+@using System.Globalization;
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+    @if (ListCursos != null) { 
+         <MudPaper Elevation="25" Class="pa-4" Style="height:100%">
+             <h3>Mis Cursos</h3>
+            <MudTable Items="@ListCursos" Dense="true">
+                <HeaderContent>
+                    <MudTh>Nombre del curso</MudTh>
+                    <MudTh>Fecha Inicio</MudTh>
+                    <MudTh>Fecha Finalización</MudTh>
+                    <MudTh>Estado</MudTh>
+                    <MudTh>Certificados</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd> <MudLink href="@($"https://edufoscal.com/talentofoscal/course/view.php?id={context.id}")" Target="_blank">@context.displayname</MudLink></MudTd>
+                    <MudTd> @DateTimeOffset.FromUnixTimeSeconds(context.startdate).Date.ToShortDateString()</MudTd>
+                    <MudTd> @DateTimeOffset.FromUnixTimeSeconds(context.enddate).Date.ToShortDateString()</MudTd>
+                    <MudTd>
+                        @if (context.progress.HasValue)
+                        {
+                            <MudChip Color="@GetStatusColor(context.progress.Value)">
+                                @GetStatusText(context.progress.Value) @Math.Round(context.progress.Value, 1) %
+                            </MudChip>
+                        }
+                        else
+                        {
+                            <MudChip Color="Color.Error">
+                                 No completado 0,0 %
+                            </MudChip>
+                        }
+
+                    </MudTd>
+                     <MudTd><MudButton Class="ml-6" Variant="Variant.Outlined" Color="Color.Primary" Style="font-size: 12px;" @onclick="() => RedirectToCertificados(UsuarioMoodle.id, context.id)">Consultar certificados</MudButton></MudTd>
+                </RowTemplate>
+            </MudTable>
+        </MudPaper>
+    }
+}
+
+@code {
+    private string htmlTag = "h3";
+    private bool arrows = true;
+    private bool bullets = true;
+    private bool enableSwipeGesture = true;
+    private bool autocycle = true;
+    private Transition transition = Transition.Slide;
+    private List<CursoxUsuarioDTO> ListCursos { get; set; } = new List<CursoxUsuarioDTO>();
+    private UserMoodleDTO UsuarioMoodle = new UserMoodleDTO();
+    private bool _loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+        if (datosempleado == null)
+        {
+            await JS.ShowMessage("Debe volver a iniciar sesión en el aplicativo", "Sesión Expirada", "error");
+
+            NavigationManager.NavigateTo("pages/authentication/login", true);
+        }
+        else
+        {
+            if (datosempleado.Id == null || datosempleado.Id == 0)
+            {
+                await JS.ShowMessage("Debe volver a iniciar sesión en el aplicativo", "Sesión Expirada", "error");
+
+                NavigationManager.NavigateTo("pages/authentication/login", true);
+            }
+        }
+
+        if (datosempleado != null)
+        {
+            UsuarioMoodle = await Http.GetFromJsonAsync<UserMoodleDTO>($"api/EduFoscal/GetIdUserName/{datosempleado.DOCUMENTO}");
+
+            if(UsuarioMoodle != null)  ListCursos = await Http.GetFromJsonAsync<List<CursoxUsuarioDTO>>($"api/EduFoscal/GetCursosxUsuario/{UsuarioMoodle.id}");
+
+        }
+
+
+
+        _loading = false;
+        StateHasChanged();
+    }
+
+    string GetStatusText(decimal? progress)
+    {
+        return (progress == 100) ? "Completado" : "No completado";
+    }
+
+    Color GetStatusColor(decimal? progress)
+    {
+        return (progress == 100) ? Color.Success: Color.Error;
+    }
+
+    private void RedirectToCertificados(int userid, int courseid)
+    {
+        NavigationManager.NavigateTo($"Cursos/Certificados/{courseid}/{userid}");
+    }
+
+}

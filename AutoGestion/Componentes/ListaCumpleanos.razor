@@ -1,0 +1,58 @@
+﻿@using Autogestion.Shared.DTO.Incapacidad
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using AutoGestion.Helpers;
+@using Autogestion.Shared.DTO.Empleado
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+
+{
+    if (ListEmpleados.Count > 0) { 
+        <div style="max-height: 400px; overflow-y: auto;">
+    <MudPaper Elevation="25" Class="pa-4" Style="height:100%">
+
+        <MudIcon Icon="@Icons.Material.Filled.Celebration" Color="Color.Secondary" Class="mx-4" Style="width:54px; height:54px;"></MudIcon>
+        <MudText Typo="Typo.h5"> Hoy celebramos la vida de nuestros compañeros: </MudText>
+        <br>
+        @foreach(var item in ListEmpleados)
+        
+        {
+            <MudText Typo="Typo.button">@item.Nombres</MudText>
+            <MudText Typo="Typo.caption">@item.Area</MudText>
+            <hr />
+        }
+
+    </MudPaper>
+        </div>
+    }
+}
+
+@code {
+    private List<EmpleadoDTO> ListEmpleados { get; set; } = new List<EmpleadoDTO>();
+    private bool _loading = false;
+    EmpleadoReturnSapDTO DatosEmpleado;
+    string Sociedad  { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+
+
+        DatosEmpleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+        Sociedad = DatosEmpleado.BUKRS;
+
+        ListEmpleados = await Http.GetFromJsonAsync<List<EmpleadoDTO>>($"api/cumpleanos");
+
+        ListEmpleados = ListEmpleados.Where(x => x.Empresa == Sociedad).ToList();
+
+        _loading = false;
+        StateHasChanged();
+    }
+}

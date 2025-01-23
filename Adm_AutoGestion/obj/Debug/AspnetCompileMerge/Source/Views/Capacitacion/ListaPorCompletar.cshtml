@@ -1,0 +1,336 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Capacitacion>
+
+@{
+    ViewBag.Title = "ListaPorCompletar";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+<div class="card">
+    <div class="card-header colorTitulo mb-3"><h5>Capacitaciones Abiertas</h5></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover table-sm  table-bordered" id="tbl_registro_cap">
+                <thead style="color: #fff" class="fondoDegradado">
+                    <tr>
+                        <th style="text-align:center">
+                            No.
+                        </th>
+                        <!--<th>-->
+                        @*@Html.DisplayNameFor(model => model.Empleado.Nombres)*@
+                        <!--Nombre Empleado
+                        </th>-->
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.Nombre)*@
+                            Nombre Capacitación
+                        </th>
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.FechaCapacitacion)*@
+                            Fecha Capacitación
+                        </th>
+                        <!--<th>-->
+                        @* @Html.DisplayNameFor(model => model.FechaRegistro)*@
+                        <!--Fecha de Creación
+                        </th>-->
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.HoraInicio)*@
+                            Hora Inicio
+                        </th>
+                        <th style="text-align:center">
+                            @* @Html.DisplayNameFor(model => model.HoraFin)*@
+                            Hora Fin
+                        </th>
+                        <!--<th>-->
+                        @*            @Html.DisplayNameFor(model => model.temas)*@
+                        <!--Temas a Desarrollar
+                        </th>-->
+                        <th style="text-align:center">Registro Asistente</th>
+                        <th style="text-align:center">Ver Asistentes</th>
+                        <th style="text-align:center">Pendientes Firma</th>
+                        <th style="text-align:center">Enviar Correo</th>
+                        <th style="text-align:center">Generar QR</th>
+                        <th style="text-align:center">Añadir Expositores</th>
+                        <th style="text-align:center">Cerrar Capacitación</th>
+                        <th style="text-align:center">Editar Capacitación</th>
+                        <th style="text-align:center">Copiar</th>
+                        <th style="text-align:center">Enviar Encuesta</th>
+                        <th style="text-align:center">Link Expositores</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td>
+                                @* @Html.DisplayFor(modelItem => item.FechaCapacitacion)*@
+                                @Convert.ToDateTime(item.FechaCapacitacion).ToString("dd/MM/yyyy")
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.FechaRegistro)
+                                </td>*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoraInicio)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoraFin)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.temas)
+                                </td>*@
+                            <td style="text-align:center">
+                                @*@Html.ActionLink("Registrar Entrega", "RegistrarEntrega", "DetalleEntregaEPP", new { id = item.Id }, null)*@
+                                <a href='@Url.Action("RegistrarCapacitacion", "DetalleCapacitacion", new { id = item.Id }, null)'>
+                                    <img src='@Url.Content("~/Contents/image/anadir-evento.png" )' />
+                                </a>
+
+                            </td>
+                            <td style="text-align:center">
+                                <a href='@Url.Action("DetallesCapacitacion", "DetalleCapacitacion", new { id = item.Id }, null)'>
+                                    <img src='@Url.Content("~/Contents/image/entrega-realizada.png")' />
+                                </a>
+                            </td>
+                            <td style="text-align:center">
+                                <a href='@Url.Action("PendientePorFirmar", "Capacitacion", new { id = item.Id }, null)' data-modal2=''>
+                                    <img src="~/Contents/image/firma.png" alt="PendientesPorFirmar" />
+
+                                </a>
+                            </td>
+                            <td style="text-align:center">
+
+                                <a href="javascript:EnviarEmailFirmaCAP('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                                    <img src="~/Contents/image/sobre.png" alt="EnviarEmailFirma" />
+                                </a>
+                            </td>
+                            <td style="text-align:center">
+                                <a href="javascript:GenerarQR('@Html.DisplayFor(modelItem => item.Id)','@Html.DisplayFor(modelItem => item.FechaRegistro)','@Html.DisplayFor(modelItem => item.EmpleadoRegistraId)');" style="color:#FF0000;"><img src="~/Contents/image/codigo-qr.png" alt="GenerarQR" /></a>
+
+                            </td>
+                            <td style="text-align:center">
+                                @*          @Html.ActionLink("Añadir", "Expositores", new { Id=item.Id}, new { data_modalExposi = "" })*@
+                                <a href='@Url.Action("Expositores", "Capacitacion", new { id = item.Id }, null)' data-modalExposi=''>
+                                    <img src='@Url.Content("~/Contents/image/anadir.png")' />
+                                </a>
+                            </td>
+                            <td style="text-align:center">
+                                <a href='@Url.Action("CerrarCap", "Capacitacion", new { id = item.Id }, null)' data-modalCerrarCap=''>
+                                    @*  <a href="javascript:CerrarCapacitacion('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">*@
+                                    <img src='@Url.Content("~/Contents/image/secure-data.png")' />
+                                </a>
+
+                            </td>
+                            <td style="text-align:center">
+                                @if (item.Estado == "Cerrado")
+                                {
+                                    <a onclick="return false" href='@Url.Action("Edit", "Capacitacion", new { Id = item.Id}, null)'>
+                                        <img src="~/Contents/image/editar2.png" alt="AnularActa" class="disabled" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href='@Url.Action("Edit", "Capacitacion", new { Id = item.Id }, null)'>
+                                        <img src="~/Contents/image/editar.png" alt="AnularActa" />
+                                    </a>
+                                }
+                            </td>
+                            <td style="text-align:center">
+                                <a href='@Url.Action("CopiarCap", "Capacitacion", new { id = item.Id}, null)'>
+                                    <img src='@Url.Content("~/Contents/image/copiar.png")' />
+
+                                </a>
+                            </td>
+                            <td>
+                                @* if(item.EnvioEncuesta == "SI"){
+                                     <a href="javascript:ConfirmarEnc(@Html.DisplayFor(modelItem => item.Id));"style="color:green;">Reenviar Encuesta</a>
+                                    }else{
+                                     <a href="javascript:ConfirmarEnc(@Html.DisplayFor(modelItem => item.Id));" style="color:#FF0000;">Enviar Encuesta</a>
+                                    }*@
+
+                                <a href='@Url.Action("MostrarListaEncuestas", "Capacitacion", new { id = item.Id, page = 1 }, null)' data-modalEncuestas=''>
+                                    <img src="~/Contents/image/EnviarEncuesta.png" alt="Enviar Encuesta" style="font-size:16px" />
+                                </a>
+
+                            </td>
+                            <td>
+                                <a href='@Url.Action("LoginExpositor", "Capacitacion", null, null)'>
+                                    <img src='@Url.Content("~/Contents/image/copiar.png")' />
+
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" tabindex="-1" role="dialog" id="popupqr" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><label id="Label1" style="white-space: pre-wrap;"></label></p>
+                <img id="ItemPreview" src="" style="height:200px;width:200px" />
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="bi bi-box-arrow-in-left btn btn-outline-primary mb-2" data-bs-dismiss="modal"> Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_CerrarCap">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Cerrar Capacitación </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalCerrarCap">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Exposi">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Añadir Expositores </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalExposi">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade in" id="modal_Lista_Encuestas">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Encuestas </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalEncuestas">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade in" id="modal_Pendienteporfirma">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pendientes por Firmar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade in" id="modal_Pendienteporfirma">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Pendientes por Firmar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModal2">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function GenerarQR(id, fecha, idempleado) {
+        $('#popupqr').modal('show');
+
+        document.getElementById("ItemPreview").src = "~/Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: '@Url.Action("ObtenerQr", "EntregaEPP")',
+                data: { 'id': id, 'fecha': fecha, 'empleado': idempleado },
+                type: "post",
+                success: function (e) {
+                    if (e != null) {
+                        document.getElementById("ItemPreview").src = "data:image/png;base64," + e;
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+
+    function EnviarEmailFirmaCAP(id) {
+
+        $('#popupqr').modal('show');
+        document.getElementById("ItemPreview").src = "~/Contents/image/Spinner.gif"
+        try {
+            $.ajax({
+                url: '@Url.Action("EnviarEmailFirma", "Capacitacion")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+                    $('#popupqr').modal('hide');
+                    if (e != null) {
+
+                    }
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+        }
+        catch (e) { alert(e); }
+
+    }
+
+</script>

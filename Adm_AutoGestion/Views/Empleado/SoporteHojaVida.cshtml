@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.SoportesHojaDeVida>
+
+<div class="container">
+
+
+    <h2>Subir nuevo soporte</h2>
+
+    @using (Html.BeginForm("GuardarSoporte", "Empleado", FormMethod.Post, new { enctype = "multipart/form-data", @class = "needs-validation", novalidate = "novalidate" }))
+    {
+        <div class="form-group">
+            <input type="text" class="form-control" id="EmpleadoId" name="EmpleadoId" value="@Model.First().EmpleadoId" required hidden="hidden">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" id="NombreArchivo" name="NombreArchivo" required>
+            <div class="invalid-feedback">
+                El nombre es requerido.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="tipoSoporte">Tipo de soporte:</label>
+            @*@Html.DropDownListFor(model => model.tipo, new SelectList(ViewBag.TiposSoporte, "Value", "Text"), "--Seleccione--", new { id = "tipoSoporte", @class = "form-control", required = "required" })
+        <div class="invalid-feedback">
+            El tipo de soporte es requerido.
+        </div>*@
+            <select class="form-control" id="TipoSoporte" name="TipoSoporte" required>
+                <option value="">--Seleccione--</option>
+                @foreach (var tipoSoporte in ViewBag.TiposSoporte)
+                {
+                    <option value="@tipoSoporte.Id">@tipoSoporte.Nombre</option>
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="archivo">Archivo:</label>
+            <input type="file" class="form-control-file" id="archivo" name="archivo" required>
+            <div class="invalid-feedback">
+                El archivo es requerido.
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-primary">
+        </div>
+    }
+
+
+    <h2>Lista de Soportes</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Archivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var soporte in Model)
+            {
+                <tr>
+                    <td>@soporte.Titulo @soporte.Archivo @soporte.NombreArchivo </td>
+                    <td><a href="~/AnexosHojaVida/@soporte.NombreArchivo" target="_blank">Ver archivo</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

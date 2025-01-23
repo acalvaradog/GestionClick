@@ -1,0 +1,342 @@
+﻿@model Adm_AutoGestion.Models.Eventos
+
+@{
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    ViewBag.Title = "CrearEvento";
+
+}
+
+<script language="javascript" src="~/Contents/js/Eventos.js" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @*<div class="form-group">
+            <input class="form-control" hidden data-val="true" data-val-date="El campo FechaPublicacion debe ser una fecha." data-val-required="El campo FechaPublicacion es obligatorio." id="FechaPublicacion" name="FechaPublicacion" type="date">
+        </div>*@
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Crear Evento</h4>
+            </div>
+
+
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12 col-12">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="col-12">
+                            <label>Nombre del Evento</label>
+                            @Html.EditorFor(model => model.NombreEvento, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NombreEvento, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Dirigido A</label>
+                                <select name="DirigidoA" id="DirigidoA" class="form-control" onchange="javascript: mostrarCupo();">
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="Trabajadores">Trabajadores</option>
+                                    <option value="Familiares">Familiares</option>
+                                    <option value="Ambos">Trabajador - Familiar</option>
+                                    <option value="General">General</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.DirigidoA, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Cupo, new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Cupo, new { htmlAttributes = new { @class = "form-control", type = "number", min = "1", placeholder = "" } })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Tipo de Evento</label>
+                                <select name="TipoEvento" id="TipoEvento" class="form-control" onchange="javascript: mostrarFechaFin(); javascript: cambiarFechaFin();">
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="1">Evento unico</option>
+                                    <option value="2">Evento continuo</option>
+                                    <option value="3">Evento concurrente</option>
+                                </select>
+                                @Html.ValidationMessageFor(model => model.TipoEvento, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Fecha Inicio</label>
+                                @Html.TextBox("FechaInicio", "", htmlAttributes: new { @class = "form-control", type = "date", onchange = "javascript: cambiarFechaFin();" })
+                                @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Fecha Finalizacion</label>
+                                @Html.TextBox("FechaFin", "", htmlAttributes: new { @class = "form-control", type = "date", placeholder = "" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Hora de Inicio</label>
+                                @Html.TextBox("HoraInicio", "", htmlAttributes: new { @class = "form-control", type = "time" })
+                                @Html.ValidationMessageFor(model => model.HoraInicio, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Hora de Finalizacion</label>
+                                @Html.TextBox("HoraFin", "", htmlAttributes: new { @class = "form-control", type = "time" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Requiere Registro de Asistencia e Inscripciones?</label>
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.RegistroRequerido, new { htmlAttributes = new { @onclick = "javascript: registroReq();", @value = "false" } })
+                                    @Html.ValidationMessageFor(model => model.RegistroRequerido, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-3" hidden id="filaCierre">
+
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Fecha de Cierre Inscripciones</label>
+                                @Html.TextBox("FechaCierre", "", htmlAttributes: new { @class = "form-control", type = "date" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Hora de Cierre Inscripciones</label>
+                                @Html.TextBox("HoraCierre", "", htmlAttributes: new { @class = "form-control", type = "time" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label id="labelP">Es el evento principal?</label>
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.EsEventoPrincipal, new { htmlAttributes = new { @onclick = "javascript: ocultarRelaciones();", @value = "false" } })
+                                    @Html.ValidationMessageFor(model => model.EsEventoPrincipal, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3" hidden id="configEvento">
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Parentesco permitido</label>
+                                <select id="ParentescoPermitido" class="form-control">
+                                    <option value="" selected>Seleccione...</option>
+                                    <option value="Todos">Todos</option>
+                                    <option value="NucleoFamiliar">Nucleo Familiar</option>
+                                    <option value="Hijos">Hijos</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-12">
+                            <div class="form-group">
+                                <label>Edad limite</label>
+                                @Html.EditorFor(model => model.EdadLimite, new { htmlAttributes = new { @class = "form-control", placeholder = "Dejar vacio si no requiere limite de edad", min = 1, maxlength = 2, oninput = "this.value=this.value.slice(0,this.maxLength)" } })
+                            </div>
+                        </div>
+
+                        <div id="labelRelacionar" class="col-md-6 col-12">
+                            <div class="form-group">
+                                <label>Relacionar con</label>
+                                    @Html.DropDownList("Relacionar", new SelectList(ViewBag.EventosId, "Id", "NombreEvento"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" hidden id="filaLink1">
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <label>Link Encuesta Asistidos</label>
+                                @Html.EditorFor(model => model.LinkEncuestaAsistidos, new { htmlAttributes = new { @class = "form-control", placeholder = "Se puede suministrar despues" } })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" hidden id="filaLink2">
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                <label>Link Encuesta no Asistidos</label>
+                                @Html.EditorFor(model => model.LinkEncuestaNoAsistidos, new { htmlAttributes = new { @class = "form-control", placeholder = "Se puede suministrar despues" } })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 col-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label" })
+                                <textarea name="Descripcion" id="Descripcion" rows="4" style="display:flex;width:100%" class="form-control"></textarea>
+                                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="bi bi-upload btn btn-outline-primary mb-2">
+                                    <span id="labelFile"> Subir Imagen</span>
+                                    <input type="file" name="Imagen" id="Imagen" hidden onchange="mostrarNombreArchivo();" />
+                                </label>
+                                @Html.ValidationMessageFor(model => model.Imagen, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex justify-content-center">
+                            <button class="bi bi-plus-square btn btn-outline-primary  rounded-pill me-3 mb-2" onclick="crear(); return false;"> Crear</button>
+                            @Html.ActionLink(" Atras", "EventosRegistrados", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary  rounded-pill mb-2" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+<script>
+    function mostrarNombreArchivo() {
+        var file = $("#Imagen").get(0).files;
+        var archivo = file[0];
+        var texto = document.getElementById('labelFile');
+
+        texto.innerHTML = " Archivo subido: " + archivo.name;
+
+    }
+</script>
+
+<script>
+    function crear() {
+        var file = $("#Imagen").get(0).files;
+        try {
+
+            var NombreEvento = $("#NombreEvento").val();
+            var DirigidoA = $("#DirigidoA").val();
+            var Cupo = $("#Cupo").val();
+            var TipoEvento = $("#TipoEvento").val();
+            var FechaInicio = $("#FechaInicio").val();
+            var FechaFin = $("#FechaFin").val();
+            var HoraInicio = $("#HoraInicio").val();
+            var HoraFin = $("#HoraFin").val();
+            var Requerido = (document.getElementById("RegistroRequerido").checked);
+            var FechaCierre = $("#FechaCierre").val();
+            var HoraCierre = $("#HoraCierre").val();
+            var Descripcion = $("#Descripcion").val();
+            var ParentescoPermitido = $("#ParentescoPermitido").val();
+            var EsEventoPrincipal = $("#EsEventoPrincipal").val();
+            var Relacionar = $("#Relacionar").val();
+
+            if (NombreEvento == "") {
+                throw 'Se requiere el nombre del evento.';
+            }
+            if (DirigidoA == "") {
+                throw 'Se requiere seleccionar el campo Dirigido A.';
+            }
+            if (Cupo == "" && DirigidoA != "General") {
+                throw 'Se requiere la cantidad de cupos.';
+            }
+            if (Cupo == "0" && DirigidoA != "General") {
+                throw 'El cupo no puede ser 0';
+            }
+            if (TipoEvento == "") {
+                throw 'Se requiere seleccionar el tipo de evento.';
+            }
+            if (FechaInicio == "") {
+                throw 'Se requiere seleccionar la Fecha de Inicio del evento.';
+            }
+            if (FechaFin == "" && TipoEvento == "2") {
+                throw 'Se requiere seleccionar la Fecha de Finalizacion del evento.';
+            }
+            if (HoraInicio == "") {
+                throw 'Se requiere seleccionar la Hora de Inicio del evento.';
+            }
+            if (HoraFin == "") {
+                throw 'Se requiere seleccionar la Hora de Finalizacion del evento.';
+            }
+            if (Requerido == true && FechaCierre == "") {
+                throw 'Se requiere seleccionar la Fecha de Cierre de Inscripciones';
+            }
+            if (Requerido == true && HoraCierre == "") {
+                throw 'Se requiere seleccionar la Hora de Cierre de Inscripciones';
+            }
+            if (DirigidoA == "Familiares" && ParentescoPermitido == "") {
+                throw 'Se requiere seleccionar el parentesco permitido';
+            }
+            if (Descripcion == "") {
+                throw 'Se requiere la descripcion del evento.';
+            }
+            if (EsEventoPrincipal == false && Relacionar == ""){
+                throw 'Se requiere relacionar el evento al evento principal.';
+            }
+
+            var frmData = new FormData();
+            frmData.append("Eventos.NombreEvento", document.getElementById("NombreEvento").value);
+            frmData.append("Eventos.DirigidoA", document.getElementById("DirigidoA").value);
+            frmData.append("Eventos.Cupo", document.getElementById("Cupo").value);
+            frmData.append("Eventos.TipoEvento", document.getElementById("TipoEvento").value);
+            frmData.append("Eventos.FechaInicio", document.getElementById("FechaInicio").value);
+            frmData.append("Eventos.FechaFin", document.getElementById("FechaFin").value);
+            frmData.append("Eventos.HoraInicio", document.getElementById("HoraInicio").value);
+            frmData.append("Eventos.HoraFin", document.getElementById("HoraFin").value);
+            frmData.append("Eventos.FechaCierre", document.getElementById("FechaCierre").value);
+            frmData.append("Eventos.HoraCierre", document.getElementById("HoraCierre").value);
+            frmData.append("Eventos.RegistroRequerido", document.getElementById("RegistroRequerido").checked);
+            frmData.append("Eventos.LinkEncuestaAsistidos", document.getElementById("LinkEncuestaAsistidos").value);
+            frmData.append("Eventos.LinkEncuestaNoAsistidos", document.getElementById("LinkEncuestaNoAsistidos").value);
+            frmData.append("Eventos.Descripcion", document.getElementById("Descripcion").value);
+            frmData.append("Eventos.ParentescoPermitido", document.getElementById("ParentescoPermitido").value);
+            frmData.append("Eventos.EdadLimite", document.getElementById("EdadLimite").value);
+            frmData.append("Eventos.EsEventoPrincipal", document.getElementById("EsEventoPrincipal").checked);
+            frmData.append("Eventos.Relacionar", document.getElementById("Relacionar").value);
+            frmData.append("Imagen", file[0]);
+
+            $.ajax({
+                url: "Crear",
+                type: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: frmData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == "true") {
+                        alertify.alert('Los datos se guardaron correctamente.', function () { location.replace('EventosRegistrados'); });
+                    } else {
+                        alertify.alert(result)
+                    }
+                }
+            });
+        } catch (err) {
+            alertify.alert(err);
+        }
+
+    }
+</script>

@@ -1,0 +1,53 @@
+﻿
+@model IEnumerable <Adm_AutoGestion.Models.ViaticosLog>
+
+@{
+
+    List<Adm_AutoGestion.Models.ViaticosLog> Item = ViewBag.Viaticos;
+}
+<div class="modal-body">
+    <div class="card">
+        <div class="container-fluid">
+            <br />         
+                <div class="form-group col-md-12">
+                    <div class="table-responsive">
+                        @if (Model.Count() > 0)
+                        {
+<table id="Tabla_GH" class="table table-hover table-sm" style="width:100%">
+    <thead class="text-center text-capitalize ">
+        <tr class="fondoDegradado text-white">
+            <th>Nmr Registro</th>
+            <th>Usuario que Modifica</th>
+            <th>Fecha modificación</th>
+            <th>Valor Anterior</th>
+            <th>Valor Nuevo</th>
+            <th>Observaciones</th>
+        </tr>
+    </thead>
+    <tbody class="text-center text-capitalize">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td> @item.Id </td>
+                <td> @item.Empleado.Nombres </td>
+                <td> @item.Fecha </td>
+                <td> @item.ValorAnterior</td>
+                <td> @item.ValorNuevo</td>
+                <td> @item.Observaciones </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+                        }
+                        else
+                        {
+                            <p>No hay cambios Registrados</p>
+                            
+                        }
+
+                    </div>
+                </div>   
+        </div>
+    </div>
+</div>

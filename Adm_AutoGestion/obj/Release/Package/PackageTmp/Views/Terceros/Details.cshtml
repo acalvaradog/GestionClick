@@ -1,0 +1,157 @@
+﻿@model Adm_AutoGestion.Models.Tercero
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+
+
+
+<br />
+<h2>Tercero</h2>
+<br />
+
+
+<fieldset>
+   
+<div class="row justify-content-start">
+<div class="col-4" style="text-align:center">
+<br />
+<br />
+<br />
+<img src="~/Contents/image/afiliacion.png" >
+</div>
+<div class="col-8">
+<div class="card ">
+<div class="card-header text-white" style="background-color:#0B9ACF"><h3>Datos Basicos Tercero</h3></div>
+<div class="card-body">
+   <div class="row justify-content-start">
+     <div class="col-4">
+        <div class="display-label">
+            <strong>@Html.DisplayNameFor(model => model.Documento)</strong>
+        </div>
+        <div class="display-field">
+        @Html.DisplayFor(model => model.Documento)
+        </div>
+     </div>
+     <div class="col-4">
+        <div class="display-label">
+         <strong>@Html.DisplayNameFor(model => model.Nombres)</strong>
+        </div>
+        <div class="display-field">
+        @Html.DisplayFor(model => model.Nombres)
+        </div>
+     </div>
+
+       <div class="col-4">
+       <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.FechaNacimiento)</strong>
+            </div>
+            <div class="display-field">
+                @Convert.ToDateTime(Model.FechaNacimiento).ToString("dd/MM/yyyy")
+            </div>
+     </div>
+  </div>
+  <br />
+  <div class="row justify-content-start">
+     
+        
+  </div>
+  <br />
+  <div class="row justify-content-start">
+        <div class="col-4">
+        <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Telefono)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Telefono)
+            </div>
+        </div>
+         <div class="col-4">
+          <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.CorreoPersonal)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.CorreoPersonal)
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.CorreoPersonal)
+            </div>   
+        </div>
+        
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Cargo)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Cargo)
+            </div>
+        </div>
+        
+   </div>
+   <br />
+   <div class="row justify-content-start">
+        <div class="col-4">
+          <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Area)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Area)
+            </div> 
+        </div>
+       <div class="col-4">
+          <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Direccion)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Direccion)
+            </div> 
+        </div>
+        <div class="col-4">
+            <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Superior)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Superior)
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row justify-content-start">
+
+        
+        <div class="col-4">
+             
+        <div class="display-label">
+             <strong>@Html.DisplayNameFor(model => model.Activo)</strong>
+            </div>
+            <div class="display-field">
+                @Html.DisplayFor(model => model.Activo)
+            </div>
+    </div>
+        
+    </div>
+    <br />
+  </div>
+
+<br />
+<div class="row justify-content-center">
+     
+     <div class="col-12" style="text-align:center">
+        @Html.ActionLink("Atras", "Index", null, new { @class="btn", style="background-color:#96D44D; color:white" })
+     </div>
+</div>
+<br />
+
+</div>
+</div>
+
+<br />
+<br />
+        
+   </div>
+   
+    </fieldset>
+     </div>

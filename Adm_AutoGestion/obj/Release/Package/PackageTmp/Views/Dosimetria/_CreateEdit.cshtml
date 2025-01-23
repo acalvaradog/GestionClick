@@ -1,0 +1,36 @@
+﻿@model Adm_AutoGestion.Models.Dosimetria
+
+<form id="createEditForm" action="@Url.Action("Save", "Dosimetria")" method="post">
+    @Html.HiddenFor(m => m.Id)
+    <div class="form-group">
+        <label for="EmpleadoId">Empleado:</label>
+        @Html.DropDownListFor(m => m.EmpleadoId, new SelectList(ViewBag.Empleados, "Id", "Nombres"), "Seleccione", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="SedeId">Sede:</label>
+        @Html.DropDownListFor(m => m.SedeId, new SelectList(ViewBag.Sedes, "Id", "Nombre"), "Seleccione", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="Anio">Año:</label>
+        @Html.DropDownListFor(m => m.Anio, new SelectList(ViewBag.Anios, "Value", "Text"), "Seleccione un año", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label for="Mes">Mes:</label>
+        @Html.DropDownListFor(m => m.Mes, new SelectList(ViewBag.Meses, "Value", "Text"), "Seleccione un mes", new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="ValorHp10">Valor Hp(10):</label>
+        @Html.TextBoxFor(m => m.ValorHp10, new { @class = "form-control", type = "number" })
+    </div>
+    <div class="form-group">
+        <label for="ValorHp10">Valor Hp(3):</label>
+        @Html.TextBoxFor(m => m.ValorHp3, new { @class = "form-control", type = "number" })
+    </div>
+    <div class="row justify-content-start">
+        <div class="col-12" style="text-align:center">
+            <button type="submit" class="btn btn-outline-primary">Guardar</button>
+            </div>
+        </div>
+</form>
+

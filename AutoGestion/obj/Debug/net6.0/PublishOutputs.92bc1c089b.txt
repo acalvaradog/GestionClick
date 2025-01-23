@@ -1,0 +1,1 @@
+D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\AutoGestion\obj\Debug\net6.0\browser-wasm\PubTmp\Out\web.config

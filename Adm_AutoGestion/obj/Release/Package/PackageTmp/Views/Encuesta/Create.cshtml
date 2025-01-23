@@ -1,0 +1,88 @@
+﻿@model Adm_AutoGestion.Models.Encuesta
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Encuesta</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EmpleadoId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EmpleadoId)
+            @Html.ValidationMessageFor(model => model.EmpleadoId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FechaRegistro)
+        </div>
+        <div class="editor-field">
+           @* @Html.EditorFor(model => model.FechaRegistro)*@
+            @Html.ValidationMessageFor(model => model.FechaRegistro)
+            @Html.TextBoxFor(model => model.FechaRegistro, new { @Value = @DateTime.Now.ToString() })
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Cargo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Cargo)
+            @Html.ValidationMessageFor(model => model.Cargo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.UnidadOrganizativa)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.UnidadOrganizativa)
+            @Html.ValidationMessageFor(model => model.UnidadOrganizativa)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Eps)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Eps)
+            @Html.ValidationMessageFor(model => model.Eps)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NumeroPregunta)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.NumeroPregunta)*@
+            @Html.ValidationMessageFor(model => model.NumeroPregunta)
+            @Html.DropDownListFor(model => model.NumeroPregunta, new SelectList(Model.ListadoPreguntas, "Id", "Pregunta"),"Seleccione una pregunta")
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Respuesta)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.Respuesta)*@
+            @Html.ValidationMessageFor(model => model.Respuesta)
+            @Html.DropDownListFor(model => model.Respuesta, new SelectList(Model.Opciones, "Value", "Text" ),"Seleccione una respuesta")
+        </div>
+
+        <p>
+<br />
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

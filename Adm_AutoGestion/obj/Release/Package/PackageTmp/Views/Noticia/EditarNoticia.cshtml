@@ -1,0 +1,77 @@
+﻿@model Adm_AutoGestion.Models.Noticia
+
+
+<div class="card">
+    <div class="card">
+        <div class="card-header colorTitulo mb-3"><h5>Editar Noticia</h5></div>
+    </div>
+
+    <div class="card-body">
+
+        @using (Html.BeginForm("EditarNoticia", "Noticia", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+
+            <div class="form-group">
+                <label for="Titulo">Título:</label>
+                @Html.TextBoxFor(m => m.Titulo, new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                <label for="ContenidoHtml">Contenido:</label>
+                <div id="editor" style="height: 300px; border: 1px solid #ccc;">
+                    @Html.Raw(Model.Contenido) <!-- Esto cargará el contenido inicial del editor -->
+                </div>
+                <input type="hidden" name="Contenido" />
+            </div>
+
+            <div class="form-group">
+                <label for="Imagenes">Imágenes:</label>
+                <input type="file" id="Imagenes" name="Imagenes" class="form-control" multiple />
+            </div>
+
+            <div class="form-group">
+                <label for="Activo">Activo:</label>
+                @Html.CheckBoxFor(m => m.Activo)
+            </div>
+
+            <div class="card-footer d-flex align-items-center justify-content-center">
+                <p>
+                    <button type="submit" class="btn btn-outline-primary rounded-pill">Actualizar</button>
+
+                </p>
+            </div>
+            <div>
+                @Html.ActionLink("Atras", "Index")
+            </div>
+
+            @*<button type="submit" class="btn btn-primary">Actualizar</button>*@
+        }
+
+    </div>
+    </div>
+
+        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+        <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var quill = new Quill('#editor', {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: [
+                            [{ header: [1, 2, false] }],
+                            ['bold', 'italic', 'underline'],
+                            [{ list: 'ordered' }, { list: 'bullet' }],
+                            ['link', 'image']
+                        ]
+                    }
+                });
+
+                // Cargar contenido del editor al enviar el formulario
+                document.querySelector('form').addEventListener('submit', function () {
+                    var contenido = document.querySelector('input[name="Contenido"]');
+                    contenido.value = quill.root.innerHTML;
+                });
+            });
+        </script>

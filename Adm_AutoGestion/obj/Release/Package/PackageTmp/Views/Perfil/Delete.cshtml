@@ -1,0 +1,123 @@
+﻿@model Adm_AutoGestion.Models.Perfil
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<div class="container">
+    @using (Html.BeginForm())
+    {
+    <div class="card">
+        <div class="card-header  colorTitulo mb-3 d-flex align-items-center justify-content-center">
+            <h2>Eliminar Perfil</h2>
+
+        </div>
+
+        <div class="card-body">
+
+            <fieldset>
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="container mb-xxl-1 d-flex align-items-center justify-content-center">
+                    <div class="row">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <br />
+                            <h4>Esta seguro que desea eliminar este registro?</h4>
+                            <br />
+                        </div>
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-6">
+                            <center>
+                                <div class="display-label">
+                                    <strong> Id </strong>
+                                </div>
+                                <div class="display-field">
+                                    @Html.TextBoxFor(model => model.Id, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                                <br />
+                                <div class="display-label">
+                                    <strong> Grupo Id</strong>
+                                </div>
+                                <div class="display-field">
+                                    @Html.TextBoxFor(model => model.GrupoEmpleados.Descripcion, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                                <br />
+                                <div class="display-label">
+                                    <strong> Perfil</strong>
+                                </div>
+                                <div class="display-field">
+                                    @Html.TextBoxFor(model => model.Funcion, htmlAttributes: new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                                <br />
+                            </center>
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                    </div>
+                <br />
+                <br />
+                <div class="card-footer d-flex align-items-center justify-content-center">
+                    <p>
+                        <input type="submit" value="Eliminar" class="btn btn-primary" />
+                    </p>
+                </div>
+
+            </fieldset>
+        </div>
+
+    </div>
+    }
+
+    <div class="container">
+
+
+        @*<br />
+        <h2>Perfiles</h2>
+        <br />
+        <br />
+        <h4>Esta seguro que desea eliminar este registro?</h4>
+        <fieldset>
+            <br />
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-5">
+
+                        <div class="display-label">
+                            <strong> Id </strong>
+                        </div>
+                        <div class="display-field">
+                            @Html.DisplayFor(model => model.Id)
+                        </div>
+                        <br />
+                        <div class="display-label">
+                            <strong> Grupo Id</strong>
+                        </div>
+                        <div class="display-field">
+                            @Html.DisplayFor(model => model.GrupoId)
+                        </div>
+                        <br />
+                        <div class="display-label">
+                            <strong> Perfil</strong>
+                        </div>
+                        <div class="display-field">
+                            @Html.DisplayFor(model => model.Funcion)
+                        </div>
+                        <br />
+
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+
+        </fieldset>*@
+
+        <p>
+          
+            @Html.ActionLink("Atras", "Index")
+        </p>
+        
+
+    </div>

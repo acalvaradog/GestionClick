@@ -1,0 +1,22 @@
+﻿@model Adm_AutoGestion.Models.ProcesoDisciplinario
+@{
+    Adm_AutoGestion.Models.ProcesoDisciplinario Item = ViewBag.Proceso;
+}
+<div class="container" style="width:90%;">
+    <br />
+    <form>
+        <br />
+        <h5> <label>Porfavor, ingrese la justificación por la cual se ha de anular el proceso:</label></h5>
+
+
+        <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+        <br />
+        <textarea class="form-control" rows="4" id="Justificacion" name="Justificacion"></textarea>
+        <br />
+        <center>
+            <button type="button" class="bi bi-plus-square btn btn-outline-primary mb-2" id="Justificacionbtn" onclick="javascript: return Anular();"> Agregar</button>
+            <br />
+        </center>
+    </form>
+    <br />
+</div>

@@ -1,0 +1,194 @@
+﻿@model Adm_AutoGestion.Models.Capacitacion
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.Id)
+    <div class="container" style="width:90%">
+        <br />
+        <div class="form-row">
+            <div class="form-group col-md-12">
+                <div class="card ">
+                    <div class="card-header text-white fondoDegradado">
+                        <div class="col-12">
+                            <h2>Editar Capacitacion</h2>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <br />
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.Nombre, new { @class = "control-label" })*@
+                                    <label>Nombre Capacitación</label>
+
+                                    @Html.TextBox("Nombre", null, new { @class = "form-control", @Value = Model.Nombre })
+                                    @Html.ValidationMessageFor(model => model.DirigidoA)
+
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.Empleado, "EmpleadoRegistraId", new { @class = "control-label" })*@
+                                    <label>Empleado Creador</label>
+
+                                    @Html.TextBox("Empleado", null, new { @class = "form-control", @Value = Model.Empleado.Nombres, @readonly = "true" })
+                                    @Html.ValidationMessageFor(model => model.Empleado.Nombres)
+
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.Estado, new { @class = "control-label" })*@
+                                    <label>Estado</label>
+
+                                    @Html.TextBox("Estado", null, new { @class = "form-control", @Value = Model.Estado, @readonly = "true" })
+                                    @Html.ValidationMessageFor(model => model.Estado)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.FechaRegistro, new { @class = "control-label" })*@
+                                    <label>Fecha de Creación</label>
+
+                                    @Html.TextBoxFor(model => model.FechaRegistro, new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(model => model.FechaRegistro)
+
+                                </div>
+                            </div>
+                        </div>  <div class="row justify-content-start">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.FechaCapacitacion, new { @class = "control-label" })*@
+                                    <label>Fecha De la Capacitación</label>
+
+                                    @Html.TextBoxFor(model => model.FechaCapacitacion, new { @type = "date", @Value = Model.FechaCapacitacion.ToString("yyyy-MM-dd"), @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.FechaCapacitacion)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.HoraInicio, new { @class = "control-label" })*@
+                                    <label>Hora de Inicio</label>
+
+                                    @*@Html.TextBoxFor(model => model.HoraInicio, new { @type = "time", @Value = Model.HoraInicio.ToString("hh:mm"),@class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.HoraInicio)*@
+                                    @Html.TextBox("HoraInicio", null, new { @class = "form-control", @Value = Model.HoraInicio })
+                                    @Html.ValidationMessageFor(model => model.HoraInicio)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.HoraFin, new { @class = "control-label" })*@
+
+                                    <label>  Hora de Finalización</label>
+                                    @Html.TextBox("HoraFin", null, new { @class = "form-control", @Value = Model.HoraFin })
+                                    @Html.ValidationMessageFor(model => model.HoraInicio)
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-start">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    @* @Html.LabelFor(model => model.temas, new { @class = "control-label" })*@
+                                    <label>Temas</label>
+
+
+                                    @Html.TextArea("temas", null, new { @class = "form-control", @Value = Model.temas })
+                                    @Html.ValidationMessageFor(model => model.temas)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*  @Html.LabelFor(model => model.Empresa, new { @class = "control-label" })*@
+                                    <label>Empresa</label>
+
+                                    @Html.DropDownListFor(model => model.Empresa, new SelectList(Model.ListEmpresa, "Codigo", "Descripcion"), "---Seleccione---", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Empresa)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.IdSede, "IdSede", new { @class = "control-label" })*@
+                                    <label>Sede</label>
+
+                                    @Html.DropDownListFor(model => model.IdSede, new SelectList(Model.ListSede, "Id", "Nombre"), "---Seleccione---", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.IdSede)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.Objetivo, new { @class = "control-label" })*@
+                                    <label>Objetivo</label>
+
+                                    @Html.TextBox("Objetivo", null, new { @class = "form-control", @Value = Model.Objetivo })
+                                    @Html.ValidationMessageFor(model => model.Objetivo)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.DirigidoA, new { @class = "control-label" })*@
+                                    <label>Dirigido A</label>
+
+                                    @Html.TextBox("DirigidoA", null, new { @class = "form-control", @Value = Model.DirigidoA })
+                                    @Html.ValidationMessageFor(model => model.DirigidoA)
+
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.LugarlCiudad, new { @class = "control-label" })*@
+                                    <label>Lugar / Ciudad</label>
+
+                                    @Html.TextBox("LugarlCiudad", null, new { @class = "form-control", @Value = Model.LugarlCiudad })
+                                    @Html.ValidationMessageFor(model => model.LugarlCiudad)
+
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    @*@Html.LabelFor(model => model.Metodologia, new { @class = "control-label" })*@
+                                    <label>Metodología</label>
+
+                                    @Html.DropDownListFor(model => model.Metodologia, new SelectList(Model.ListMetodología, "Id", "Nombre"), "---Seleccione---", htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Metodologia)
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+                        <div class="row justify-content-start">
+                            <div class="col-md-6">
+                                <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                                @Html.ActionLink(" Regresar", "ListaPorCompletar", null, new { @class = "bi bi-box-arrow-in-left btn btn-outline-primary mb-2" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

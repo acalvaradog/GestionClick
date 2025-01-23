@@ -1,0 +1,478 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.DetalleEventos>
+
+@{
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<script src="~/Contents/js/html5-qrcode.js"></script>
+
+<div class="card m-3" style="margin-top:72px !important;">
+    <div class="card-header colorTitulo mb-3">
+        <h5>Pendientes por Firmar</h5>
+    </div>
+    <div class="card-body">
+
+        @if (ViewBag.BadPw == true)
+        {
+            <div>
+                <span class="text-danger">Clave incorrecta.</span>
+            </div>
+        }
+
+        @if (ViewBag.Acceder == false)
+        {
+            <form>
+                <div class="col-3">
+                    <label>Introduzca la clave</label>
+                    <input name="UserInput" id="UserInput" class="form-control" autocomplete="off" type="password" />
+                    <button type="submit" class="btn btn-outline-primary mb-2 mt-2" onclick="@Url.Action("PendienteFirma2", "Eventos")">Validar</button>
+                </div>
+            </form>
+        }
+
+        @if (ViewBag.Acceder == true)
+        {
+            <div class="col-12 mb-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <a class="btn btn-outline-primary" href="javascript:abrirQR(@ViewBag.EventoId);">
+                        Escanear QR
+                        <i class="bi bi-qr-code-scan" data-bs-placement="top" data-bs-toggle="tooltip" title="Leer QR"></i>
+                    </a>
+                </div>
+                <div>
+                    <!-- Nuevo botón en la parte derecha -->
+                    <button class="btn btn-outline-secondary" onclick="location.reload();">
+                        Actualizar registros
+                        <i class="bi bi-arrow-clockwise"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-responsive-sm table-bordered" id="tbl_pendientefirma2">
+                    @if (ViewBag.EsFamiliar != false || ViewBag.EsAmbos == true)
+                    {
+                        <thead>
+                            <tr class="text-center align-middle fondoDegradado text-white">
+                                <th>
+                                    Nombre del Familiar
+                                </th>
+                                <th>
+                                    Tipo de Documento
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Edad
+                                </th>
+                                <th>
+                                    Observaciones
+                                </th>
+                                <th>
+                                    Nombre del Trabajador
+                                </th>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Firma Manual
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var i in Model)
+                            {
+
+
+                                    if (i.Empleado.TipoArea == "SENA Pctivo/Pasante" && i.Empleado.TipoArea == "SENA Lectivo")
+                                    {
+                                     <tr class="text-center NaranjaSena">
+                                        @if (i.FamiliarId == null)
+                                        {
+                                            <td class="text-uppercase" name="nombreFamiliar">
+                                                @Html.DisplayFor(item => i.Empleado.Nombres)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Familiar.TipoDocumento)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Empleado.Documento)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Familiar.Edad)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Observaciones)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Empleado.Nombres)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Empleado.Documento)
+                                            </td>
+                                            <td>
+                                                <a href="javascript:firmaManual(@i.Id,@i.EventosId)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="text-uppercase" name="nombreFamiliar">
+                                                @Html.DisplayFor(item => i.Familiar.PrimerNombre)
+                                                @Html.DisplayFor(item => i.Familiar.SegundoNombre)
+                                                @Html.DisplayFor(item => i.Familiar.PrimerApellido)
+                                                @Html.DisplayFor(item => i.Familiar.SegundoApellido)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Familiar.TipoDocumento)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Familiar.Documento)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Familiar.Edad)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Observaciones)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Empleado.Nombres)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(item => i.Empleado.Documento)
+                                            </td>
+                                            <td>
+                                                <a href="javascript:firmaManual(@i.Id,@i.EventosId)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                            </td>
+                                        }
+                                    </tr>
+                                    }
+                                    else 
+                                    {
+                                     <tr class="text-center" id="FilaT">
+                            @if (i.FamiliarId == null)
+                            {
+                                <td class="text-uppercase" name="nombreFamiliar">
+                                    @Html.DisplayFor(item => i.Empleado.Nombres)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Familiar.TipoDocumento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Empleado.Documento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Familiar.Edad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Observaciones)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Empleado.Nombres)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Empleado.Documento)
+                                </td>
+                                <td>
+                                    <a href="javascript:firmaManual(@i.Id,@i.EventosId)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="text-uppercase" name="nombreFamiliar">
+                                    @Html.DisplayFor(item => i.Familiar.PrimerNombre)
+                                    @Html.DisplayFor(item => i.Familiar.SegundoNombre)
+                                    @Html.DisplayFor(item => i.Familiar.PrimerApellido)
+                                    @Html.DisplayFor(item => i.Familiar.SegundoApellido)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Familiar.TipoDocumento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Familiar.Documento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Familiar.Edad)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Observaciones)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Empleado.Nombres)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(item => i.Empleado.Documento)
+                                </td>
+                                <td>
+                                    <a href="javascript:firmaManual(@i.Id,@i.EventosId)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                </td>
+                            }
+                        </tr>
+
+                                    }
+                          }
+                        </tbody>
+                    }
+                    else
+                    {
+                        <thead>
+                            <tr class="text-center align-middle fondoDegradado text-white">
+                                <th>
+                                    Nombre del Trabajador
+                                </th>
+                                <th>
+                                    Documento
+                                </th>
+                                <th>
+                                    Codigo
+                                </th>
+                                <th>
+                                    Firma Manual
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var i in Model)
+                            {
+                                if (i.Empleado.TipoArea == "SENA Pctivo/Pasante" || i.Empleado.TipoArea == "SENA Lectivo")
+                                {
+                                    <tr class="text-center NaranjaSena" id="FilaT">
+                                        <td>
+                                            @Html.DisplayFor(item => i.Empleado.Nombres)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(item => i.Empleado.Documento)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                        </td>
+                                        <td>
+                                            <a href="javascript:firmaManual(@i.Id)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+
+                                    <tr class="text-center" id="FilaT">
+                                        <td>
+                                            @Html.DisplayFor(item => i.Empleado.Nombres)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(item => i.Empleado.Documento)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(item => i.Empleado.NroEmpleado)
+                                        </td>
+                                        <td>
+                                            <a href="javascript:firmaManual(@i.Id)" class="bi bi-pencil btn btn-outline-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Firma Manual"></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    }
+                </table>
+            </div>
+        }
+
+    </div>
+</div>
+
+<!-- Modal Leer QR-->
+<div class="modal fade in" role="dialog" id="modal_LeerQR">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white">Leer QR</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div id="contentModalLeerQR" height="200px">
+                <div class="alert alert-success alert-resultado-qr" role="alert" style="display: none;">
+
+                </div>
+                <div class="alert alert-danger alert-resultado-qr-error" role="alert" style="display: none;">
+
+                </div>
+                <div id="reader" class="reader" width="400px">
+
+                </div>
+                <div id="result" style="display: none;">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    function firmaManual(id) {
+
+        var Data = new FormData();
+        Data.append("id", id);
+
+        $.ajax({
+            url: "../FirmaManual",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: Data,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result == "true") {
+                    alertify.alert('Firma guardada correctamente', function () { location.reload(); });
+                } else {
+                    alertify.alert(result, function () { location.reload(); });
+                }
+            }
+        });
+    }
+
+    var idevento;
+
+    function abrirQR(id) {
+        $('#modal_LeerQR').modal('show');
+        idevento = id;
+    }
+
+    let scanner = new Html5QrcodeScanner(
+        "reader",
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        false);
+
+    scanner.render(success, error);
+
+    function success(result) {
+        document.getElementById('result').innerHTML = `<p>${result}</p>`;
+
+        var Data = new FormData();
+        Data.append("idevento", idevento);
+        Data.append("result", result);
+
+        $.ajax({
+            url: "../FirmaQR",
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: Data,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result === "true") {
+                    // Actualizar el modal con mensaje de éxito
+                    $('.alert-resultado-qr').show();
+                    $('#modal_LeerQR .alert-resultado-qr').html('<h2 align="center"><i class="bi bi-check-circle-fill"></i> Firma guardada correctamente</h2>');
+                    
+                } else if(result === "-1"){
+                    // Actualizar el modal con mensaje de error
+                    $('.alert-resultado-qr-error').show();
+                    $('#modal_LeerQR .alert-resultado-qr-error').html('<h2 align="center"><i class="bi bi-check-circle-fill"></i>El empleado no está inscrito a este evento.</h2>');
+                } else if (result === "-2") {
+                    // Actualizar el modal con mensaje de error
+                    $('.alert-resultado-qr-error').show();
+                    $('#modal_LeerQR .alert-resultado-qr-error').html('<h2 align="center"><i class="bi bi-check-circle-fill"></i>Intente nuevamente.</h2>');
+                } else if (result === "-3") {
+                    // Actualizar el modal con mensaje de error
+                    $('.alert-resultado-qr-error').show();
+                    $('#modal_LeerQR .alert-resultado-qr-error').html('<h2 align="center"><i class="bi bi-check-circle-fill"></i>Usuario ya firmó</h2>');
+                }
+            },
+            error: function (error) {
+                // Actualizar el modal con mensaje de error
+                /*$('.alert-resultado-qr-error').show();*/
+                /*$('#modal_LeerQR .alert-resultado-qr-error').html('<p>Error al procesar la solicitud</p>');*/
+            },
+            complete: function () {
+                // No limpiamos el escáner aquí para mantenerlo activo
+                // Mostrar mensaje de alerta después de un breve retraso para permitir la actualización del modal
+                setTimeout(function () {
+                    $('.alert-resultado-qr').fadeOut();
+                    $('.alert-resultado-qr-error').fadeOut();
+                }, 3000); // Se oculta después de 3 segundos
+            }
+        });
+    }
+
+    function error(err) {
+        console.error(err);
+    }
+
+    //$(document).ready(function () {
+    //    var nombreF = document.getElementsByName('nombreFamiliar');
+
+    //    for (let i = 0; i < nombreF.length; i++) {
+    //        if (nombreF[i].innerText == "") {
+    //            nombreF[i].style.color = "red";
+    //            nombreF[i].innerText = "Familiar Borrado";
+    //        }
+    //    }
+    //})
+
+    $(document).ready(function () {
+
+        var table = $('#tbl_pendientefirma2').DataTable({
+
+            /*"bFilter": false,*/
+
+            responsive: false,
+
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+            //bFilter": false,
+            pageLength: 5,
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+        });
+
+
+
+    })
+
+</script>

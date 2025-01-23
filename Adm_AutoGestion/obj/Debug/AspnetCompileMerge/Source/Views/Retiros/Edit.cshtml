@@ -1,0 +1,254 @@
+﻿@model Adm_AutoGestion.Models.Retiros
+@using System.Web.UI.WebControls;
+
+
+
+@{var ListItems = new List<ListItem> {
+        new ListItem { Text = "SI", Value = "SI" },
+        new ListItem { Text = "NO", Value = "NO" }
+        };
+}
+
+@{var ListItems1 = new List<ListItem> {
+        new ListItem { Text = "RETIRO VIGENTE", Value = "RETIRO VIGENTE" },
+        new ListItem { Text = "RETIRO ANULADO", Value = "RETIRO ANULADO" }
+        };
+}
+
+
+
+@{
+    ViewBag.Title = "Editar";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+}
+
+<div class="container">
+
+
+
+
+    @using (Html.BeginForm("Edit", "Retiros"))
+    {
+        @Html.ValidationSummary(true)
+
+    <fieldset>
+
+        @Html.HiddenFor(model => model.Id)
+        <br />
+        <div class="row justify-content-start">
+            <div class="col-6">
+                <div class="editor-label">
+                    Nombre
+                </div>
+                <div class="editor-field">
+                    <input type="text" class="form-control" id="Nom" value="@ViewBag.Nombres" desabled="desabled" readonly />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="editor-label">
+                    Codigo Empleado
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("CodigoEmpleado", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                    @Html.ValidationMessageFor(model => model.CodigoEmpleado)
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-start">
+            <div class="col-6">
+                <div class="editor-label">
+                    Telefono
+                </div>
+                <div class="editor-field">
+                    <input type="text" class="form-control" id="Telefono" name="Telefono" value="@ViewBag.Telefono" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="editor-label">
+                    Correo Institucional
+                </div>
+                <div class="editor-field">
+                    <input type="text" class="form-control" id="CorreoI" name="CorreoI" value="@ViewBag.CorreoI" />
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-start">
+            <div class="col-6">
+                <div class="editor-label">
+                    Correo Personal
+                </div>
+                <div class="editor-field">
+                    <input type="text" class="form-control" id="CorreoP" name="CorreoP" value="@ViewBag.CorreoP" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="editor-label">
+                    Area Personal
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("AreaPersonal", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                    @Html.ValidationMessageFor(model => model.AreaPersonal)
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-start">
+            <div class="col-6">
+                <div class="editor-label">
+                    Motivo Cancelación
+                </div>
+                <div class="editor-field">
+
+                    @Html.DropDownListFor(model => model.MotivoCancelacion, new SelectList(Model.ListadoMotivos, "Id", "Nombre"), "Seleccione Motivo", htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.MotivoCancelacion)
+
+
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="editor-label">
+                    Tipo Contrato
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("TipoContrato", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                    @Html.ValidationMessageFor(model => model.TipoContrato)
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-start">
+            <div class="col-6">
+                <div class="editor-label">
+                    Inicio Contrato
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("InicioContrato", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                    @Html.ValidationMessageFor(model => model.InicioContrato)
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="editor-label">
+                    Fecha Terminación
+                </div>
+                <div class="editor-field">
+                    @if (ViewBag.Estado == "RETIRO ANULADO")
+                    {
+                        @Html.TextBox("FechaTerminacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.FechaTerminacion)
+                    }
+                    else
+                    {
+                        @Html.TextBox("FechaTerminacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.FechaTerminacion)
+                    }
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-start">
+            <div class="col-6">
+                <div class="editor-label">
+                    Fecha Registro
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("Fecha", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                    @Html.ValidationMessageFor(model => model.Fecha)
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="editor-label">
+                    Liquidacion
+                </div>
+                <div class="editor-field">
+
+                    @if (ViewBag.Estado == "RETIRO ANULADO")
+                    {
+                        @Html.DropDownListFor(model => model.Liquidacion, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Liquidacion)
+                    }
+                    else
+                    {
+                        if (ViewBag.Liquidacion == "SI")
+                        {
+                            @*@Html.DropDownListFor(model => model.Liquidacion, new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", disabled="disabled"})*@
+                            @Html.TextBox("Liquidacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true" })
+                            @Html.ValidationMessageFor(model => model.Liquidacion)
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(model => model.Liquidacion, new SelectList(ListItems, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Liquidacion)
+
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-start">
+            <div class="col-12">
+                <div class="editor-label">
+                    Observacion
+                </div>
+                <div class="editor-field">
+                    @if (ViewBag.Estado == "RETIRO ANULADO")
+                    {
+                        @Html.TextArea("Observacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Observacion)
+                    }
+                    else
+                    {
+                        @Html.TextArea("Observacion", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.Observacion)
+                    }
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("UsuarioRegistra", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", type = "hidden" })
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("Fecha", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", type = "hidden" })
+                </div>
+                <div class="editor-field">
+                    @Html.TextBox("IdEmpleado", null, htmlAttributes: new { @class = "form-control", autocomplete = "off", type = "hidden" })
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-start">
+            <div class="col-6">
+                <div class="editor-label">
+                    Estado
+                </div>
+                <div class="editor-field">
+                    @if (ViewBag.Estado == "RETIRO ANULADO")
+                    {
+                        @Html.DropDownListFor(model => model.Estado, new SelectList(ListItems1, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off", @readonly = "true", disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.Liquidacion)
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(model => model.Estado, new SelectList(ListItems1, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off" })
+                        @Html.ValidationMessageFor(model => model.Liquidacion)
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-3">
+            <div class="col-12" style="text-align:center">
+                @if (ViewBag.Estado == "RETIRO ANULADO")
+                {
+                    <button type="submit" disabled class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                }
+                else
+                {
+                    <button type="submit" class="bi bi-save btn btn-outline-primary mb-2"> Guardar</button>
+                }
+            </div>
+        </div>
+    </fieldset>
+    }
+</div>

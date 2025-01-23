@@ -1,0 +1,240 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Eventos>
+
+@{
+    ViewBag.Title = "Informe";
+}
+
+<div class="col-12">
+    <h2 class="text-center colorTitulo">Informe</h2>
+</div>
+
+<div class="container">
+    <form>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between fondoDegradado text-white">Buscar <a href="#buscarcontent" class="buscarheader" data-bs-toggle="collapse" role="button" aria-expanded="true" aria-controls="buscarcontent"><i id="bAnimado" class="bi bi-chevron-up"></i></a></div>
+            <div class="card-body collapse show" id="buscarcontent">
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>Nombre de Evento</label>
+                        @Html.DropDownList("NombreEvento", new SelectList(ViewBag.NombreEvento, "NombreEvento", "NombreEvento"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-3">
+                        <label>Fecha Desde</label>
+                        @Html.TextBox("FechaInicio", "", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+
+                    <div class="col-3">
+                        <label>Fecha Hasta</label>
+                        @Html.TextBox("FechaFin", "", htmlAttributes: new { @class = "form-control", type = "date" })
+                    </div>
+
+                    <div class="col-3">
+                        <label>Dirigido A</label>
+                        <select name="DirigidoA" id="DirigidoA" class="form-control">
+                            <option value="" selected>Seleccione...</option>
+                            <option value="Trabajadores">Trabajadores</option>
+                            <option>Familiares</option>
+                            <option value="General">General</option>
+                        </select>
+                    </div>
+
+                    <div class="col-3">
+                        <label>Tipo de Evento</label>
+                        <select name="TipoEvento" id="TipoEvento" class="form-control">
+                            <option value="" selected>Seleccione...</option>
+                            <option value="1">Evento unico</option>
+                            <option value="2">Evento continuo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="submit" class="bi bi-search btn btn-outline-primary mb-2" onclick="@Url.Action("Informe", "Eventos")"> Buscar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm display dataTable table-hover" id="Exportar_a_Excel">
+        <thead>
+            <tr class="text-center fondoDegradado align-middle text-white">
+                <th>
+                    Nro
+                </th>
+                <th>
+                    Nombre Evento
+                </th>
+                <th>
+                    Tipo de Evento
+                </th>
+                <th>
+                    Dirigido a
+                </th>
+                <th>
+                    Cupo
+                </th>
+                <th>
+                    Fecha Inicio
+                </th>
+                <th>
+                    Fecha Fin
+                </th>
+                <th>
+                    Hora Inicio
+                </th>
+                <th>
+                    Hora Fin
+                </th>
+                <th>
+                    Fecha Publicacion
+                </th>
+                <th>
+                    Descripcion
+                </th>
+                <th>
+                    Estado
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="text-center">
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.NombreEvento)
+                    </td>
+                    @if (item.TipoEvento == "2")
+                    {
+                        <td>Continuo </td>
+                    }
+                    else
+                    {
+                        <td>Unico</td>
+                    }
+                    <td>
+                        @Html.DisplayFor(i => item.DirigidoA)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.Cupo)
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @if (item.FechaFin != null)
+                        {
+                            @Convert.ToDateTime(item.FechaFin).ToString("dd/MM/yyyy")
+                        }
+                        else
+                        {
+                            @Convert.ToDateTime(item.FechaInicio).ToString("dd/MM/yyyy")
+                        }
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.HoraInicio).ToString("t")
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.HoraFin).ToString("t")
+                    </td>
+                    <td>
+                        @Convert.ToDateTime(item.FechaPublicacion).ToString("dd/MM/yyyy")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.Descripcion)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(i => item.Estado)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    $(document).ready(function () {
+
+        var table = $('#Exportar_a_Excel').DataTable({
+            //$('#tabla').DataTable({
+
+
+
+
+            //"bFilter": true,
+            //"ordering": false,
+            //dom: 'Brtip',
+
+            dom: 'Brtip',
+            buttons: [
+                {
+
+
+
+                    extend: 'excelHtml5',
+                    //text: 'Exportar a Excel',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'InformeEventos',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success'
+
+
+                },
+
+            ],
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+
+
+
+
+        });
+
+
+
+
+    })
+
+</script>

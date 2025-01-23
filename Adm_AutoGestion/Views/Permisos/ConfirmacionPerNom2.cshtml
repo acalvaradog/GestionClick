@@ -1,0 +1,127 @@
+﻿@model Adm_AutoGestion.Models.Permiso
+@using System.Web.UI.WebControls;
+@{
+    Adm_AutoGestion.Models.Permiso Item = ViewBag.Permiso;
+}
+
+
+<div class="card">
+    @*<h2 style="text-align:center">Confirmación de Permisos</h2>*@
+    @* <div class="card">
+        <div class="card-header text-white" style="background-color:#0B9ACF">Detallado</div>*@
+    <div class="card-body">
+        <div class="row ">
+            <div class="col-md-3">
+                <div class="editor-label">Documento:</div>
+                <div class="editor-field">
+                    <input type="text" class="form-control" id="Doc" value="@Item.Empleado.Documento" disabled="disabled" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="editor-label">Nombre:</div>
+                <input type="text" class="form-control " id="Nom" value=" @Item.Empleado.Nombres" readonly />
+            </div>
+            <div class="col-md-3">
+                <div class="editor-label">Fecha Solicitud: </div>
+                <input type="text" class="form-control" id="Fso" value="@Convert.ToDateTime(Item.Fecha).ToString("dd/MM/yyyy")" disabled="disabled" />
+            </div>
+            <br />
+            <div class="col-md-3" style="text-align:left">
+                <label for="Nombre">Fecha Inicio Permiso: </label>
+                <input type="text" class="form-control" id="Fper" value="@Convert.ToDateTime(Item.FechaPermiso).ToString("dd/MM/yyyy")" disabled="disabled" />
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <label for="Nombre">Fecha Fin Permiso: </label>
+                <input type="text" class="form-control" id="Fper" value="@Convert.ToDateTime(Item.FechaFinPermiso).ToString("dd/MM/yyyy")" disabled="disabled" />
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <label for="Nombre">Hora Inicio Permiso: </label>
+                <input type="text" class="form-control" id="Hip" value="@Item.HoraInicioPermiso" disabled="disabled" />
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <label for="Nombre">Hora Fin Permiso: </label>
+                <input type="text" class="form-control" id="Hfp" value="@Item.HoraFinPermiso" disabled="disabled" />
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <label for="Nombre">Sociedad: </label>
+                <input type="text" class="form-control" id="Hfp" value="@Item.Empresa" disabled="disabled" />
+            </div>
+            <div class="col-md-6" style="text-align:left">
+                <label for="Nombre">Motivo Permiso: </label>
+                <input type="text" class="form-control" id="HMp" value="@Item.MotivoPermiso.Nombre" disabled="disabled" />
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <label for="Nombre">Remunerado: </label>
+                <input type="text" class="form-control" id="HMp" value="@Item.Remunerado"  />
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <label for="Nombre">Jornada Completa: </label>
+                <input type="text" class="form-control" id="Hfp" value="@Item.Jornada" />
+
+            </div>
+            @*<div class="col-md-6" style="text-align:left">
+                    <label for="Observaciones">Observacion Usuario: </label>
+                    <textarea class="form-control" rows="1" id="Observacion_Usu" name="Observacion_Usu" value="" disabled="disabled">@Item.Observacion</textarea>
+                </div>*@
+            @* <div class="col-md-9" style="text-align:left">
+
+                    <button id="Boton_Histo" class="btn btn-outline-info  " style="margin-top:32px; float:right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="@Item.Id" onclick="Historico($Id = @Item.Id)"><i class="fab fa-hive"></i></button>
+
+                    <button id="Boton_Desc" class="btn btn-outline-info mr-2" style="margin-top:32px; float:right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Descargar Adjuntos" value="" onclick="Descarga_Adjuntos_Per($Id = @Item.Id)"><i class="fas fa-cloud-download-alt"></i></button>
+
+                </div>*@
+
+
+
+            <div class="col-md-9" style="text-align:left">
+
+                <button id="Boton_Histo" class="btn btn-outline-primary" style="margin-top:32px; float:right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="@Item.Id" onclick="Historico($Id = @Item.Id)"><i class="fas fa-clock"></i></button>
+
+                <button id="Boton_Desc" class="btn btn-outline-primary me-3" style="margin-top:32px; float:right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Adjuntos" value="" onclick="Descarga_Adjuntos_Per($Id = @Item.Id)"><i class="fas fa-cloud-download-alt"></i></button>
+
+            </div>
+
+        </div>
+
+
+        <form action="../../Permisos/ConfirmacionPer1">
+
+            <div class="row">
+                <div class="col-md-12" style="text-align:left">
+                    <label for="comment">Observación:</label>
+                    <textarea class="form-control" rows="2" id="Observacion" name="Observacion"></textarea>
+                </div>
+
+                <br />
+                <div class="col-md-4 input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" style="height:38px; margin-top:33px;" for="inputGroupSelect01">Estado</label>
+                    </div>
+                    <select class="form-control" id="Estado" name="Estado" style="height:38px; margin-top:33px;">
+                        <option value="" selected>Seleccione...</option>
+                        <option value="4">Confirmado</option>
+                        <option value="10">Anulado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <input type="hidden" id="Id1" name="Id1" value="@Item.Id" />
+                <input type="hidden" id="Id" name="Id" value="@Item.Id" />
+                <input type="hidden" id="Empleado" name="Empleado" value="@Item.Empleado.Id" />
+                <input type="hidden" id="NroEmpleado" name="NroEmpleado" value="@Item.Empleado.NroEmpleado" />
+                <input type="hidden" id="FechaPermiso" name="FechaPermiso" value="@Item.FechaPermiso" />
+                <input type="hidden" id="HoraInicioPermiso" name="HoraInicioPermiso" value="@Item.HoraInicioPermiso" />
+                <input type="hidden" id="HoraFinPermiso" name="HoraFinPermiso" value="@Item.HoraFinPermiso" />
+                <input type="hidden" id="Jornada" name="Jornada" value="@Item.Jornada" />
+                <input type="hidden" id="tipo" name="tipo" value="1" />
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" class="bi bi-save btn btn-outline-primary rounded-pill mb-2"> Guardar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    @*</div>*@
+</div>

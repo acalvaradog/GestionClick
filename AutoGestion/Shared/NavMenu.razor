@@ -1,0 +1,190 @@
+﻿@using Autogestion.Shared.DTO.Empleado
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+
+<MudNavMenu Color="Color.Secondary" Style="background-color:#edf1f2" Bordered=true Rounded="true" Class="pa-2">
+
+    <MudNavLink Href="Index" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Página Inicial</MudNavLink>
+    <MudNavLink Href="personal/account" Icon="@Icons.Material.Filled.Person">Mi Perfil</MudNavLink>
+
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="ml-4 my-3">Procesos RRHH</MudText>
+
+    <MudNavGroup Title="Permisos" Icon="@Icons.Material.Outlined.AccountBox" HideExpandIcon="true">
+        <MudNavLink Href="registrarpermiso" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Email">Solicitar Permiso</MudNavLink>
+        <MudNavLink Href="historialpermisos" Icon="@Icons.Material.Outlined.ListAlt">Historial Permisos</MudNavLink>
+    </MudNavGroup>
+
+    <MudNavGroup Title="Bienestar" Icon="@Icons.Material.Outlined.AccessibilityNew" HideExpandIcon="true">
+    <MudNavLink Href="Eventos/EventosDisponibles" Icon="@Icons.Material.Outlined.EventAvailable">Eventos Disponibles</MudNavLink>
+    <MudNavLink Href="Eventos/EventosAgendados" Icon="@Icons.Material.Outlined.InsertLink">Eventos Agendados</MudNavLink>
+    <MudNavLink Href="Eventos/EventosCerrados" Icon="@Icons.Material.Outlined.Close">Eventos Cerrados</MudNavLink>
+    </MudNavGroup> 
+    
+   @*  <MudNavGroup Title="Vacaciones" Icon="@Icons.Material.Outlined.HolidayVillage" HideExpandIcon="true">
+        <MudNavLink Href="registrarvacaciones" Icon="@Icons.Material.Filled.LibraryAdd">Registrar Solicitud</MudNavLink>
+        <MudNavLink Href="estadosolicitud" Icon="@Icons.Material.Filled.AccessTimeFilled">Estado de Solicitud</MudNavLink>
+        <MudNavLink Href="autorizarvacaciones" Icon="@Icons.Material.Filled.AddTask">Autorizaciones</MudNavLink>
+    </MudNavGroup> *@
+
+    <MudNavGroup Title="Incapacidades" Icon="@Icons.Material.Outlined.Medication" HideExpandIcon="true">
+        <MudNavLink Href="registroincapacidad" Icon="@Icons.Material.Filled.AppRegistration">Registrar Incapacidad</MudNavLink>
+        <MudNavLink Href="historialincapacidad" Icon="@Icons.Material.Outlined.ListAlt">Historial</MudNavLink>
+    </MudNavGroup>
+
+@* 
+    <MudNavGroup Title="Viaticos" Icon="@Icons.Material.Outlined.DirectionsCar" HideExpandIcon="true">
+        <MudNavLink Href="viaticos/create" Icon="@Icons.Material.Outlined.LibraryAdd">Crear Solicitud de Viatico</MudNavLink>
+        <MudNavLink Href="viaticos/listaviaticos" Icon="@Icons.Material.Outlined.ListAlt">Historico de mis Viaticos</MudNavLink>
+    </MudNavGroup> *@
+
+    <MudNavGroup Title="HorasExtra" Icon="@Icons.Material.Filled.AccessTimeFilled" HideExpandIcon="true">
+        <MudNavLink Href="HorasExtra/CrearHorasExtra" Icon="@Icons.Material.Outlined.LibraryAdd">Crear Horas Extra</MudNavLink>
+        <MudNavLink Href="HorasExtra/HistoricoHorasExtra" Icon="@Icons.Material.Outlined.ListAlt">Historico Horas Extra</MudNavLink>
+    </MudNavGroup>
+
+    @* <MudNavGroup Title="Cesantias" Icon="@Icons.Material.Filled.AttachMoney" HideExpandIcon="true">
+        <MudNavLink Href="solicitudcesantia" Icon="@Icons.Material.Outlined.ListAlt">Solicitud Cesantias</MudNavLink>
+        <MudNavLink Href="historialcesantias" Icon="@Icons.Material.Outlined.LibraryAdd">Historico Cesantias</MudNavLink>
+        
+    </MudNavGroup> *@
+
+
+   @*  <MudNavGroup Title="Dosimetria" Icon="@Icons.Material.Filled.DeviceThermostat" HideExpandIcon="true">
+        <MudNavLink Href="dosimetria" Icon="@Icons.Material.Outlined.ListAlt">Dosimetria</MudNavLink> 
+       
+     
+    </MudNavGroup>*@
+
+
+
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="ml-4 my-3">Mis Documentos</MudText>
+    <MudNavGroup Title="Certificaciones" Icon="@Icons.Material.Outlined.DocumentScanner" HideExpandIcon="true">
+        <MudNavLink Href="PrincipalCertificaciones" Icon="@Icons.Material.Outlined.Print">Certificaciones</MudNavLink>
+    </MudNavGroup>
+
+   @*  <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="ml-4 my-3">Autoevaluación Covid</MudText>
+    <MudNavGroup Title="Autoevaluación síntomas" Icon="@Icons.Material.Outlined.MedicalServices" HideExpandIcon="true">
+        <MudNavLink Href="AutoEvaluacionCovid" Icon="@Icons.Material.Outlined.Medication">Registrar Síntomas</MudNavLink>
+        <MudNavLink Href="CertificadoSintomas" Icon="@Icons.Material.Outlined.MedicationLiquid">Generar Certificado Síntomas</MudNavLink>
+    </MudNavGroup> *@
+  
+  @*   <MudNavGroup Title="EPP" Icon="@Icons.Material.Outlined.Security" HideExpandIcon="true">
+        <MudNavLink Href="firmaEPP" Icon="@Icons.Material.Outlined.AppRegistration">Firma recibido EPP</MudNavLink>
+    </MudNavGroup> *@
+
+   @*  <MudNavGroup Title="Evaluación de Desempeño" Icon="@Icons.Material.Outlined.CollectionsBookmark" HideExpandIcon="true">
+        @if (Activar_Link == true)
+        {
+            <MudNavLink Href="Evadesh/Autoevaluacion" Icon="@Icons.Material.Filled.FilePresent">Ver Evaluación</MudNavLink>
+        }
+        <MudNavLink Href="@LinkEvadesh" Icon="@Icons.Material.Outlined.Book" Target="_blank">Ir a Evaluación Desempeño</MudNavLink>
+        <MudNavLink @onclick="DownloadFileFromURL" Icon="@Icons.Material.Outlined.BookOnline">Descargar Instructivo</MudNavLink>
+    </MudNavGroup> *@
+
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="ml-4 my-3">Ayuda</MudText>
+    <MudNavGroup Title="Instructivos y Manuales" Icon="@Icons.Material.Filled.MenuBook" HideExpandIcon="true">
+        <MudNavLink @onclick="DownloadFileIncapacidad" Icon="@Icons.Material.Outlined.BookOnline">Como registrar una incapacidad?</MudNavLink>
+    </MudNavGroup>
+
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="ml-4 my-3">Formación</MudText>
+
+   @*  <MudNavGroup Title="Educación" Icon="@Icons.Material.Outlined.Bookmarks" HideExpandIcon="true">
+        <MudNavLink Href="Educacion/FormacionesAbiertas" Icon="@Icons.Material.Filled.AppRegistration">Capacitaciones abiertas</MudNavLink>
+
+
+         <MudNavLink Href="Educacion/Capacitacion" Icon="@Icons.Material.Filled.AppRegistration">Capacitacion</MudNavLink> 
+         <MudNavLink Href="Educacion/Conferencia" Icon="@Icons.Material.Filled.AppRegistration">Conferencia</MudNavLink>
+        <MudNavLink Href="Educacion/Congreso" Icon="@Icons.Material.Filled.AppRegistration">Congreso</MudNavLink>
+        <MudNavLink Href="Educacion/Curso" Icon="@Icons.Material.Filled.AppRegistration">Curso</MudNavLink>
+        <MudNavLink Href="Educacion/Diplomado" Icon="@Icons.Material.Filled.AppRegistration">Diplomado</MudNavLink>
+        <MudNavLink Href="Educacion/Entrenamiento" Icon="@Icons.Material.Filled.AppRegistration">Entrenamiento</MudNavLink>
+        <MudNavLink Href="Educacion/Seminario" Icon="@Icons.Material.Filled.AppRegistration">Seminario</MudNavLink>
+        <MudNavLink Href="Educacion/Taller" Icon="@Icons.Material.Filled.AppRegistration">Taller</MudNavLink>
+        <MudNavLink Href="Educacion/Historico" Icon="@Icons.Material.Outlined.ListAlt">Historial</MudNavLink>
+        <MudNavLink Href="Educacion/MisCertificados" Icon="@Icons.Material.Outlined.ListAlt">Certificados</MudNavLink>
+        <MudNavLink Href="miscursos" Icon="@Icons.Material.Outlined.Book">Mis Cursos EduFoscal</MudNavLink> 
+    </MudNavGroup> *@
+
+
+    @*    ******************************* menu pruebas *******************************@
+  @*   <MudNavLink Href="application/todo" Icon="@Icons.Custom.Uncategorized.AlertSuccess" Disabled="true">Todo</MudNavLink>
+    <MudNavLink Href="application/users" Icon="@Icons.Material.Outlined.PeopleAlt" Disabled="true">Users</MudNavLink>  *@
+  @*   <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="ml-4 my-3">Formación</MudText>
+    <MudNavGroup Title="Cursos y Formación" Icon="@Icons.Material.Outlined.Bookmarks" HideExpandIcon="true">
+        <MudNavLink Href="miscursos" Icon="@Icons.Material.Outlined.Book">Mis Cursos</MudNavLink>
+        <MudNavLink Href="cursosdisponibles" Icon="@Icons.Material.Outlined.BookmarkAdd">Ver oferta de cursos</MudNavLink>
+    </MudNavGroup> *@
+ 
+
+   @*  <MudNavGroup Title="Dotación" Icon="@Icons.Material.Outlined.AccessibilityNew" HideExpandIcon="true">
+        <MudNavLink Href="Dotacion/ActualizarTallas" Icon="@Icons.Material.Outlined.Pin">Actualizar Tallas</MudNavLink>
+    </MudNavGroup> *@
+
+   
+
+   @*  <MudNavGroup Title="Reconocimiento" Icon="@Icons.Material.Filled.MilitaryTech" HideExpandIcon="true">
+        <MudNavLink Href="Reconocimiento/Crear" Icon="@Icons.Material.Outlined.LibraryAdd">Crear Reconocimiento</MudNavLink>
+        <MudNavLink Href="Reconocimiento/HistoricoReconocimiento" Icon="@Icons.Material.Outlined.ListAlt">Historico Reconocimiento</MudNavLink>
+        <MudNavLink Href="Reconocimiento/ReconocimientosUltimoMes" Icon="@Icons.Material.Outlined.FormatListBulleted">Reconocimientos Ultimo Mes</MudNavLink>
+    </MudNavGroup> *@
+
+
+
+   
+    <MudNavLink Href="PreguntasFrecuentes/Temas" Icon="@Icons.Material.Outlined.QuestionMark">Preguntas frecuentes</MudNavLink>
+   
+    <MudText Typo="Typo.subtitle1" Color="Color.Primary" Class="ml-4 my-3">Disponibilidad</MudText>
+    <MudNavGroup Title="Horarios Disponibilidad" Icon="@Icons.Material.Outlined.Alarm" HideExpandIcon="true">
+        <MudNavLink Href="HorarioSistemas" Icon="@Icons.Material.Outlined.Done">Sistemas</MudNavLink>
+        <MudNavLink Href="HorarioAdministrativo" Icon="@Icons.Material.Outlined.Done">Administrativo</MudNavLink>
+        <MudNavLink Href="HorarioEnfermeria" Icon="@Icons.Material.Outlined.Done">Enfermeria</MudNavLink>
+        
+    </MudNavGroup> 
+
+    
+    @* <MudNavLink Href="pages/authentication/login" Icon="@Icons.Material.Outlined.Build">S.O.S Soporte Tecnico</MudNavLink> *@
+    <MudNavLink Href="chat" Icon="@Icons.Material.Outlined.Chat">Chat</MudNavLink>
+
+@*    ****************************** fin menu **************************************+*@
+
+</MudNavMenu>
+
+@code {
+    [Parameter] public EmpleadoReturnSapDTO DatosEmpleado { get; set; }
+    [Parameter] public string Foto { get; set; }
+    string AlertAssignmentIcon { get; set; } = "<path d=\"M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H9.18C9.6,1.84 10.7,1 12,1C13.3,1 14.4,1.84 14.82,3H19M12,3A1,1 0 0,0 11,4A1,1 0 0,0 12,5A1,1 0 0,0 13,4A1,1 0 0,0 12,3M7,7V5H5V19H19V5H17V7H7M11,9H13V13.5H11V9M11,15H13V17H11V15Z\" />";
+    public bool Activar_Link { get; set; } = true;
+    bool DisabledForm = false;
+    int NmrEmp = 0;
+    public string LinkEvadesh { get; set; } = "";
+    protected override async Task OnInitializedAsync()
+    {
+        DatosEmpleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+
+        //Activar_Link = await Http.GetFromJsonAsync<bool>($"api/EvaDesempeño/ConsultarUltimaEva/{DatosEmpleado.PERNR}");
+        LinkEvadesh = "http://" + await Http.GetFromJsonAsync<string>(($"api/ConsultarConfiguracion/{"LINKEVADESH"}"));
+
+    }
+    
+    private async Task DownloadFileFromURL()
+    {
+        var nombre = "Instructivo Evaluación De Desempeño.pdf";
+        var fileURL = "" + nombre;
+        await JS.InvokeVoidAsync("Descargar", nombre, fileURL);
+        Console.WriteLine(fileURL);
+    }
+    private async Task DownloadFileIncapacidad()
+    {
+        var nombre = "Instructivo de Incapacidades.pdf";
+        var fileURL = "" + nombre;
+        await JS.InvokeVoidAsync("Descargar", nombre, fileURL);
+        Console.WriteLine(fileURL);
+    }
+} 
+
+
+
+
+  

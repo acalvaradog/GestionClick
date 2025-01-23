@@ -1,0 +1,190 @@
+﻿
+@page "/pages/authentication/login"
+@layout LoginLayout
+@inject HttpClient Http
+@using Autogestion.Shared.DTO.Empleado
+@using Blazored.LocalStorage
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using System.Text.Json
+@inject NavigationManager Navigation
+@using System.Collections.Generic;
+@using AutoGestion.Helpers;
+@inject IJSRuntime JS
+@inject IDialogService DialogService
+@using AutoGestion.Componentes;
+
+@if (mostrarSelecEmpresa)
+{
+    <SelectEmpresa Empleados="@listaempleado"
+                   OnClose="HandleEmpleadoSeleccionado">
+    </SelectEmpresa>
+}
+
+@if (loading) { 
+    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
+}
+else{
+    <MudText Typo="Typo.h4" GutterBottom="true">Iniciar Sesión</MudText>
+
+    <MudTextField @bind-Value="@nrodumento" Label="Nro Documento" Variant="Variant.Outlined" Class="my-6"></MudTextField>
+    <MudTextField @bind-Value="@nroempleado" Label="Codigo Empleado" Variant="Variant.Outlined" Class="my-6"></MudTextField>
+    <MudTextField @bind-Value="@Password" Label="Contraseña" Variant="Variant.Outlined" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="TogglePasswordVisibility" />
+
+    <div Class="d-flex justify-space-between align-center">
+        <MudCheckBox T="bool" Label="Recordarme?" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
+        <MudLink Href="pages/authentication/forgot-password">Olvide Contraseña</MudLink>
+    </div>
+
+
+    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Login" Color="Color.Primary"  Size="Size.Large" FullWidth="true" OnClick="Ingresar">Ingresar</MudButton>
+}
+
+@code {
+    string nrodumento { get; set; }
+    string nroempleado { get; set; }
+    string Password { get; set; } 
+    private bool loading = false;
+    bool PasswordVisibility;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    private List<EmpleadoReturnSapDTO> listaempleado;
+    private EmpleadoReturnSapDTO empleadoseleccionado;
+    private TaskCompletionSource<EmpleadoReturnSapDTO> tcsSeleccionEmpleado;
+    private bool mostrarSelecEmpresa = false;
+    void TogglePasswordVisibility()
+    {
+        @if (PasswordVisibility)
+        {
+            PasswordVisibility = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            PasswordVisibility = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+    private async Task validardobleempresa()
+    {
+        var response = await Http.GetFromJsonAsync<string>($"api/empleado/{nrodumento}");
+
+        listaempleado = JsonSerializer.Deserialize<List<EmpleadoReturnSapDTO>>(response);
+
+        if (listaempleado.Count > 0)
+        {
+            if (listaempleado.Count > 1)
+            {
+                // Inicializar TaskCompletionSource
+                tcsSeleccionEmpleado = new TaskCompletionSource<EmpleadoReturnSapDTO>();
+
+                mostrarSelecEmpresa = true;
+                StateHasChanged();
+
+                // Esperar la selección del usuario
+                empleadoseleccionado = await tcsSeleccionEmpleado.Task;
+            }
+            else
+            {
+                empleadoseleccionado = listaempleado
+                    .Where(x => x.PERNR == nroempleado.Trim())
+                    .FirstOrDefault();
+            }
+        }
+    }
+    private async void Ingresar()
+    {
+         loading = true;
+        try
+        {
+
+
+            EmpleadoReturnSapDTO empleado = new EmpleadoReturnSapDTO();
+
+            await validardobleempresa();
+            if (empleadoseleccionado == null) { 
+                await JS.ShowMessage("Error del Sistema: ", "no se encontraron datos de trabajador", "error");
+                return;
+            }
+         
+            empleado = empleadoseleccionado;
+                string[] respuesta = await Http.GetFromJsonAsync<string[]>($"api/validaringreso/{nrodumento}/{Password}/{nroempleado}");
+
+                if (empleado == null)
+                {
+                    empleado = new EmpleadoReturnSapDTO();
+                }
+                switch (respuesta[0])
+                {
+                    case "2":
+
+                        await JS.ShowMessage("Atención!", "se asignó nueva contraseña de ingreso", "success");
+                        empleado.Id = Convert.ToInt32(respuesta[1]);
+                        empleado.Correo = respuesta[3];
+                        empleado.CorreoPersonal = respuesta[4];
+                        empleado.Telefono = respuesta[2];
+                        empleado.DesplazamientosLaborales = respuesta[5];
+                        empleado.Barrio = respuesta[6];
+                        empleado.Direccion = respuesta[7];
+                        empleado.MunicipioId = Convert.ToInt32(respuesta[8]);
+                        empleado.Estrato = respuesta[9];
+                        empleado.TipoViviendaId = Convert.ToInt32(respuesta[10]);
+                        
+                        break;
+                    case "1":
+                        await JS.ShowMessage("Error credenciales", "Contraseña Erronea", "error");
+
+                        break;
+                    case "0":
+                        empleado.Id = Convert.ToInt32(respuesta[1]);
+                        empleado.Correo = respuesta[3];
+                        empleado.CorreoPersonal = respuesta[4];
+                        empleado.Telefono = respuesta[2];
+                        empleado.DesplazamientosLaborales = respuesta[5];
+                        empleado.Barrio = respuesta[6];
+                        empleado.Direccion = respuesta[7];
+                        empleado.MunicipioId = Convert.ToInt32(respuesta[8]);
+                        empleado.Estrato = respuesta[9];
+                        empleado.TipoViviendaId = Convert.ToInt32(respuesta[10]);
+                        break;
+                    case "3":
+                        await JS.ShowMessage("Error credenciales", "Codigo Empleado o Documento no existe", "error");
+                        break;
+                    default:
+                        break;
+
+                }
+
+                if (respuesta[0] == "0" || respuesta[0] == "2")
+                {
+               
+                    empleado.DOCUMENTO = nrodumento;
+                    await localStore.SetItemAsync("User", empleado);
+                    Navigation.NavigateTo("");
+                    
+                }
+
+            loading = false;
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await JS.ShowMessage("Error del Sistema: ", ""+ex.Message, "error");
+            Console.WriteLine(ex.Message);
+            loading = false;
+            StateHasChanged();
+        }
+
+    }
+
+    private async Task HandleEmpleadoSeleccionado(EmpleadoReturnSapDTO empleado)
+    {
+        empleadoseleccionado = empleado;
+        tcsSeleccionEmpleado?.SetResult(empleado);
+        mostrarSelecEmpresa = false;
+        StateHasChanged();
+    }
+
+
+}

@@ -1,0 +1,290 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.PazySalvo>
+
+@{
+    ViewBag.Title = "Informe";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+
+<form action="~/PazySalvo/Informe">
+
+    <div class="card">
+        <div class="card-header d-flex justify-content-between">
+            <div class="header-title">
+                <h4 class="card-title">Consultar Paz y Salvo</h4>
+            </div>
+
+
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-start">
+                <div class="col-4" style="text-align:left">
+                    <label for="Nombre">Documento: </label>
+                    @Html.TextBox("Documento", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-4" style="text-align:left">
+                    <label for="Nombre">Codigo Empleado: </label>
+                    @Html.TextBox("Codigo", null, htmlAttributes: new { @class = "form-control" })
+                </div>
+                <div class="col-4" style="text-align:left">
+                    <label for="exampleFormControlSelect1">Estado: </label>
+                    <select class="form-control" id="Estado" name="Estado">
+                        <option value="0">Seleccionar...</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Cerrado">Cerrado</option>
+                        <option value="Anulado">Anulado</option>
+                    </select>
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-4" style="text-align:left">
+                    <label for="Nombre">Fecha Registro Desde: </label>
+                    @Html.TextBox("FechaIni", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                </div>
+                <div class="col-4" style="text-align:left">
+                    <label for="Nombre">Fecha Registro Hasta: </label>
+                    @Html.TextBox("FechaFin", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date" })
+                </div>
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class="btn btn btn-outline-primary rounded-pill" onclick="@Url.Action("Informe","Vacaciones")">Buscar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+   
+
+</form>
+
+    <div class="table-responsive">
+        <table class="table table-striped display dataTable table-sm" id="Exportar_a_Excel">
+            <thead>
+                <tr >
+                    <th>
+                        Fecha Registro
+                    </th>
+                    <th>
+                        Codigo
+                    </th>
+                    <th>
+                        Documento
+                    </th>
+                    <th>
+                        Empleado
+                    </th>
+                    <th>
+                        Cargo
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Paz y Salvo
+                    </th>
+                    <th>Ver Detalle</th>
+                    <th>Anular</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Fecha)*@
+                            @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Documento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Cargo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Empleado.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        <td>
+                            @if (item.Estado == "Cerrado")
+                            {
+                                <h5 style="color:#73DA26">Paz y Salvo </h5>
+                            }
+                        </td>
+                        <td>
+                            @*<a href='@Url.Action("DetallePazySalvo", "PazySalvo", new { id = item.Id }, null)' data_modal5=''>*@
+                            @Html.ActionLink("ver", "DetallePazySalvo", "PazySalvo", new { id = item.Id }, new { data_modal5 = "" })
+                            @*<img src='@Url.Content("~/Contents/image/entrega-realizada.png")' />*@
+                            @*</a>*@
+                        </td>
+                        <td>
+                            <a href="javascript:AnularPazySalvo1('@Html.DisplayFor(modelItem => item.Id)');" style="color:#FF0000;">
+                                <img src="~/Contents/image/anular.png" alt="AnularPazySalvo" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+
+
+<div class="modal fade in" id="modal_DetallePS">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h5 class="modal-title text-white"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="contentModal5">
+                <br />
+                <br />
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="processState" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">&nbsp;Mensaje</h5>
+            </div>
+            <div class="modal-body">
+                <input class="form-control border-0" id="mensaje" name="mensaje"></input>
+            </div>
+            <div class="modal-footer">
+                <button id="signatureSbmt" type="submit" class="btn  btn-outline-primary  rounded-pill" onclick="return reloadPage();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $.ajaxSetup({ cache: false });
+        $("a[data-modal5]").on("click", function (e) {
+            openmodal5(this.href);
+            return false;
+        });
+        $('#modal_DetallePS').on('hidden.bs.modal', function () {
+            $('#contentModal5').html('');
+        })
+    });
+
+
+    function openmodal5(url) {
+        $('#contentModal5').load(url, function () {
+            $('#modal_DetallePS').modal({
+                keyboard: true
+            }, 'show');
+            //bindForm(this);
+        });
+    }
+
+    function AnularPazySalvo1(id) {
+
+        alertify.confirm("Esta Seguro que Desea anular el Paz y Salvo?", function (e) {
+            if (e) {
+
+                AnularPazySalvo(id);
+            } else {
+
+            }
+        });
+    }
+
+    function AnularPazySalvo(id) {
+
+
+        try {
+            $.ajax({
+                url: '@Url.Action("AnularPazySalvo", "PazySalvo")',
+                data: { 'id': id },
+                type: "post",
+                success: function (e) {
+
+                    $("#mensaje").val(e);
+                    $("#processState").modal("show");
+
+
+
+                },
+                error: function (xhr, status, error) { alert(error); }
+            });
+
+        } catch (e) { alert(e); }
+    }
+
+    function reloadPage() {
+        location.reload();
+    }
+
+    $(document).ready(function () {
+        var table = $('#Exportar_a_Excel').DataTable({
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+            "pagingType": "simple",
+            dom: 'Brtip',
+
+            buttons: [
+			{
+
+			    extend: 'excelHtml5',
+			    text: 'Exportar a Excel',
+			    filename: 'Informe_Paz_y_Salvo.xlsx',
+			    className: 'btn btn-primary d-block mx-auto',
+			}
+            ]
+        });
+
+
+
+    });
+
+</script>

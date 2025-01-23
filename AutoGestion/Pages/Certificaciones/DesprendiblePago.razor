@@ -1,0 +1,78 @@
+﻿@page "/DesprendiblePago"
+@inject IJSRuntime JSRuntime
+@inject HttpClient Http
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@if (_loading)
+
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else{
+<MudText Typo="Typo.h6">Desprendible de Pago</MudText>
+ <MudCard>
+    <MudCardContent>
+            <MudDatePicker Label="Periodo" @bind-Date="_yearMonth" OpenTo="OpenTo.Year" FixDay="1" DateFormat="yyyy/MM" PickerClosed="QuitarBoton" />
+            <MudButton OnClick="DownloadPdf" Variant="Variant.Filled" disabled="@Habilitarboton">Descargar</MudButton>
+    </MudCardContent>
+@if (!string.IsNullOrEmpty(PdfBase64))
+{
+
+            <a href="data:application/pdf;base64,@PdfBase64" download="@Nombre_archivo" hidden="@Habilitarboton"><MudButton Variant="Variant.Filled" Color="Color.Success" hidden="@Habilitarboton">Descargar Desprendible @_yearMonth.Value.ToShortDateString()</MudButton></a>
+}
+</MudCard>   
+
+}
+
+@code {
+    bool _loading = false;
+    DateTime? _yearMonth = DateTime.Now;
+    private EmpleadoReturnSapDTO DatosEmpleado = new EmpleadoReturnSapDTO();
+    private DateTime selectedDate = DateTime.Now;
+    private string PdfBase64;
+    private string Nombre_archivo { get; set; } ="Archivo.pdf";
+    private string Parametro = "";
+    private bool Habilitarboton = false;
+    protected override async Task OnInitializedAsync()
+    {
+
+        try
+        {
+            DatosEmpleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+            Parametro = await Http.GetFromJsonAsync<string>($"api/ConsultarConfiguracion/{"CE_BTN_DESPRENDIBLE"}");
+            Habilitarboton = Convert.ToBoolean(Parametro);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+    private async Task DownloadPdf()
+    {
+
+        try
+        {
+            _loading = true;
+            DateTime ultimoDiaDelMes = new DateTime(_yearMonth.Value.Year, _yearMonth.Value.Month, DateTime.DaysInMonth(_yearMonth.Value.Year, _yearMonth.Value.Month));
+
+            var httpClient = new HttpClient();
+            PdfBase64 = await Http.GetFromJsonAsync<string>($"api/comprobanteContingencia/{DatosEmpleado.PERNR}/{"1"}-{_yearMonth.Value.Month}-{_yearMonth.Value.Year}/{ultimoDiaDelMes.Day}-{ultimoDiaDelMes.Month}-{ultimoDiaDelMes.Year}/{DatosEmpleado.BUKRS}");
+            Nombre_archivo = "Desprendible " + _yearMonth.Value.ToString("MMMM") + "/" + _yearMonth.Value.Year + "_" + DatosEmpleado.PERNR + ".pdf";
+            _loading = false;
+        }
+        catch (Exception)
+        {
+            _loading = false;
+
+        }
+
+
+    }
+
+    private async void QuitarBoton()
+    {
+        PdfBase64 = "";
+    }
+}

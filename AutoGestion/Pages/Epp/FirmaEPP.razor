@@ -1,0 +1,106 @@
+﻿@page "/firmaEPP"
+@using AutoGestion.Componentes
+@using Autogestion.Shared.DTO.Empleado
+@inject HttpClient Http
+@using AutoGestion.Helpers;
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@inject IJSRuntime JS
+@if (loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Large" Value="75" />
+}
+else{
+
+<MudContainer>
+    <MudGrid JustifyContent="Center">
+        <MudItem xs="12" md="6" lg="4">
+            <MudPaper Elevation="4" Square="true" BackgroundColor="Color.FromRgb(236, 242, 247)">
+                <MudCardContent>
+                    <MudGrid>
+                        <MudItem xs="12" style="text-align:center">
+                            <h3>¡Firma Recibido EPP!</h3>
+                            <p>Por favor seleccione una opción:</p>
+                        </MudItem>
+                        <MudItem xs="12" style="text-align:center">
+                            <MudButton Color="Color.Primary" Style="margin-right: 10px" OnClick="ShowDialog">Lectura QR</MudButton>
+                       @*     <MudButton Color="Color.Secondary" OnClick="ShowInputDialog">Escribir Episodio</MudButton>*@
+                        </MudItem>
+                    </MudGrid>
+                </MudCardContent>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+}
+@if (showDialog)
+{
+    <LecturaQR OnClose="@OnDialogRoleClose" />
+}
+
+
+
+@code {
+
+
+
+    private bool showDialog = false;
+    private string operationResult;
+
+    private bool loading = false;
+    private EmpleadoReturnSapDTO datosempleado { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+    }
+
+    private  void ShowDialog()
+    {
+
+        showDialog = true;
+        StateHasChanged();
+    }
+
+
+    private async Task OnDialogRoleClose(string result)
+    {
+        if (result == "" || result == null)
+        {
+            loading = false;
+            showDialog = false;
+            StateHasChanged();
+        return;
+        } 
+     
+
+        Console.WriteLine("Resultado lectura: " + result);
+        showDialog = false;
+
+        var contenidoqr = result.Split("|");
+        var id_entrega = contenidoqr[0];
+
+        loading = true;
+        var resultafirma = await Http.GetFromJsonAsync<string>($"api/detallentrega/firmarentrega/{id_entrega}/{datosempleado.Id}/QR");
+        Console.WriteLine(resultafirma +  "resultado");
+        if (resultafirma == "ok")
+        {
+            await JS.ShowMessage("Error", $"Se ha firmado el acta {contenidoqr[0]}" , "success");
+
+
+        }
+        else if (resultafirma == "nopendiente")
+        {
+            await JS.ShowMessage("Error", $"No tiene entregas para firmar en el acta N° {contenidoqr[0]}", "warning");
+        }
+        else
+        {
+            await JS.ShowMessage("Error", $"Ocurrio un error al firmar, por favor intentarlo nuevamente. Acta N° {contenidoqr[0]}", "error");
+        }
+
+
+        loading = false;
+        StateHasChanged();
+    }
+
+
+}

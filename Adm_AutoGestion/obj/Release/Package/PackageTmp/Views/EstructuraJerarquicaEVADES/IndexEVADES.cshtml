@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EvaDesempeno.Estructura_Jerarquica_EVADES>
+@{
+    ViewBag.Title = "IndexEVADES";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+<div class="container">
+    <h2 class="colorTitulo text-center mt-3">Estructura Jerarquica  Evaluación de Desempeño</h2>
+
+    <p>
+        @Html.ActionLink(" Crear Estructura", "CreateEVADES", null, new { @class = "bi bi-plus-square btn btn-outline-primary md-2" })
+    </p>
+
+
+    <div class="card ">
+        <div class="card-header text-white fondoDegradado">Buscar</div>
+        <div class="card-body">
+            <div class="row justify-content-start mt-3">
+                <div class="col-6">
+                    <input class="form-control" id="myInput" type="text" placeholder="Buscar..">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-sm" id="Informe_STRJerarquica">
+            <thead>
+                <tr class="text-white fondoDegradado">
+                    <th>
+                        Unidad Org
+                    </th>
+                    <th>
+                        Sociedad
+                    </th>
+                    <th>
+                        Area
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Jefe)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Superior)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Director)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="myTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnidadOrg)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Sociedad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Area)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DJefe.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DSuperior.Nombres)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DDirector.Nombres)
+                        </td>
+                        <td class="align-middle">
+                            @*<a href="/EstructuraJerarquicaEVADES/EditEVADES/@item.Id" title="Editar"><buttom class="bi bi-pencil-square btn btn-outline-primary md-2"></buttom></a>*@
+                            @Html.ActionLink(" ", "EditEVADES", new { Id = item.Id }, new { @class = "bi bi-pencil-square btn btn-outline-primary md-2" })
+
+                        </td>
+                        <td class="align-middle">
+                            <center>
+                                @Html.ActionLink(" ", "DeleteEVADES", new { Id = item.Id }, new { data_modalSTRDelete = "", @class = "bi bi-x-square btn btn-outline-primary md-2" })
+                            </center>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<br />
+<div class="modal fade in" id="modal_STRDelete" data-backdrop="true" tabindex="-1" data-dismiss="modal" style="overflow-y: inherit">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#0B9ACF">
+                <h2 class="modal-title text-white"> Eliminar Estructura</h2>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalSTRDelete">
+                <br />
+                <br />
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

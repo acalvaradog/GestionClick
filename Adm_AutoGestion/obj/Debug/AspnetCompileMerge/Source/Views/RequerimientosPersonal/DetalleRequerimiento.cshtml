@@ -1,0 +1,164 @@
+﻿@model Adm_AutoGestion.Models.RequerimientosDelPersonal
+
+@{
+    Adm_AutoGestion.Models.RequerimientosDelPersonal Item = ViewBag.Requerimiento;
+}
+
+<div class="container-fluid" style="width:95%">
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <br />
+            <h2 style="text-align:center">Detalle del Requerimiento</h2>
+            <br />
+            <input id="Id" name="Id" value="@Model.Id" hidden readonly="true" />
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <label>Empresa</label>
+                        @Html.TextBox("EmpresaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Empresa.Descripcion })
+                    </div>
+                    <div class="col-6">
+                        <label>Motivo Solicitud</label>
+                        @Html.TextBox("MtvSolicitudID2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.MtvSolicitud.Nombre })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Cargo</label>
+                        @Html.TextBox("Cargo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Area a la que Pertenece</label>
+                        @Html.TextBox("Area", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Direccion a la que Pertenece</label>
+                        @Html.TextBox("Direccion", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Numero de Personas</label>
+                        @Html.TextBox("NumeroPresonas", null, htmlAttributes: new { @class = "form-control", @type = "number", @readonly = "true" })
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Sexo</label>
+                        @Html.TextBox("Sexo", null, htmlAttributes: new { @class = "form-control", @type = "text", @readonly = "true" })
+
+                    </div>
+
+                </div>
+
+                <br />
+                <hr />
+
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <br />
+                        <label>Jornada </label>
+                        @Html.TextBox("JornadaRequeridaId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Jornada.Nombre + " " + "Horas" })
+
+                        @* @Html.DropDownList("JornadaRequeridaId", new SelectList(ViewBag.Jornada, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+                    <div class="col-6">
+                        <br />
+                        <label>Horario</label>
+                        @Html.TextBox("HorarioTrabajoId2", null, htmlAttributes: new { @class = "form-control", @readonly = "true", @Value = Model.Horario.Nombre })
+
+                        @*@Html.DropDownList("HorarioTrabajoId", new SelectList(ViewBag.Horario, "Id", "Nombre"), "Seleccione...", htmlAttributes: new { @class="form-control"})*@
+                    </div>
+
+                    @*<div class="col-6">
+                              <br />
+                         <label>Fecha Sugerida de Ingreso</label>
+                        @Html.TextBox("FechaSugeridaIngreso", null, htmlAttributes: new { @class = "form-control", @type = "date", required = "required",@Value=Model.FechaSugeridaIngreso,@readonly="true" })
+                         </div> *@
+
+                    <div class="col-6">
+                        <br />
+                        <label>Tiempo de Contratacion</label>
+                        @Html.TextBox("Contratacion", null, htmlAttributes: new { @class = "form-control", @type = "text", required = "required", @readonly = "true" })
+                    </div>
+
+                    <div class="col-12">
+                        <br />
+                        <div class="table-responsive">
+                            <table class="table table-hover ">
+                                <tr class="table-info">
+
+                                    <th>
+                                        Empleado
+                                    </th>
+                                    <th>
+                                        Motivo Egreso
+                                    </th>
+
+
+                                </tr>
+                                @foreach (var item2 in Item.DetalleRequerimiento)
+                                {
+
+
+                                    <tr>
+                                        <td>
+                                            @item2.Empleado.Nombres
+                                        </td>
+                                        <td>
+                                            @item2.MotivoEgreso.Nombre
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            </table>
+                        </div>
+
+
+                    </div>
+                    <br />
+                </div>
+                <hr />
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <br />
+                        <label>Justificación del Cargo</label>
+
+                        @Html.TextArea("JustificacionCargo", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+                    <div class="col-12">
+                        <br />
+                        <label>Requisitos adicionales</label>
+
+                        @Html.TextArea("RequisitosAdicionales", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20", @readonly = "true" })
+                    </div>
+                    <div class="col-12">
+                        <br />
+                        <label>Observaciones</label>
+
+                        @Html.TextArea("Observaciones", null, htmlAttributes: new { @class = "form-control", rows = "4", cols = "20" })
+                    </div>
+                </div>
+                <br />
+
+                <br />
+
+
+                <input id="Accion" name="Accion" value="DirectorArea" hidden readonly="true" />
+
+
+            </div>
+            <div style="text-align:center">
+                <a data-bs-toggle="modal" href="#modal_Registros" class="btn  btn-lg btn-outline-dark  btn-info" style="color:white;">Ver Observaciones</a>
+
+                <button type="button" class="btn btn-lg btn-outline-dark btn-info" style="color:white;" id="Addformc2" onclick="javascript: return CambioEstadoRdP( @Model.Id);">Aprobar</button>
+                <button type="button" class="btn  btn-lg btn-outline-dark  btn-info" style="color:white;" id="Anular" onclick="javascript: return AnularRdP( @Model.Id);">Anular</button>
+
+            </div>
+        </div>
+        <br />
+
+    </div>
+</div>
+<br />

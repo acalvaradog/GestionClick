@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+  </PropertyGroup>
+	<Target Name="PWAExclude" BeforeTargets="CreatePWA">
+		<PropertyGroup>
+			<ServiceWorkerPreCacheExcludeFiles>
+				$(OutputPath)dist\_redirects;
+				$(WWWRoot)_redirects;
+			</ServiceWorkerPreCacheExcludeFiles>
+		</PropertyGroup>
+		<Message Importance="high" Text="Removing: $(ServiceWorkerPreCacheExcludeFiles)" />
+	</Target>
+
+	<PropertyGroup>
+		<ServiceWorkerCacheVersion>7</ServiceWorkerCacheVersion>
+		<ServiceWorkerForce>true</ServiceWorkerForce>
+
+		<ServiceWorkerRegisterInstallableType>installable-blazor</ServiceWorkerRegisterInstallableType>
+
+		<ManifestShortName>FIRE Calculator</ManifestShortName>
+		<ManifestLongName>Blazor FIRE Calculator</ManifestLongName>
+	</PropertyGroup>
+	
+	
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlazorBarcodeScanner.ZXing.JS" Version="1.0.3" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+    <PackageReference Include="BootstrapBlazor" Version="8.9.1" />
+    <PackageReference Include="BootstrapBlazor.Analyzers" Version="1.0.0" />
+    <PackageReference Include="BootstrapBlazor.SignaturePad" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.13" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="MudBlazor" Version="6.17.0" />
+    <PackageReference Include="MudBlazor.ThemeManager" Version="1.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Autogestion.Shared\Autogestion.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ServiceWorker Include="wwwroot\service-worker.js" PublishedContent="wwwroot\service-worker.published.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,105 @@
+﻿@model Adm_AutoGestion.Models.DescuentosReportados
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "GenerarCSV";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+@{var ListItems = new List<ListItem> { 
+        new ListItem { Text = "Enero", Value = "Enero" }, 
+        new ListItem { Text = "Febrero", Value = "Febrero" },
+        new ListItem { Text = "Marzo", Value = "Marzo" },
+        new ListItem { Text = "Abril", Value = "Abril" },
+        new ListItem { Text = "Mayo", Value = "Mayo" },
+        new ListItem { Text = "Junio", Value = "Junio" },
+        new ListItem { Text = "Julio", Value = "Julio" },
+        new ListItem { Text = "Agosto", Value = "Agosto" },
+        new ListItem { Text = "Septiembre", Value = "Septiembre" },
+        new ListItem { Text = "Octubre", Value = "Octubre" },
+        new ListItem { Text = "Noviembre", Value = "Noviembre" },
+        new ListItem { Text = "Diciembre", Value = "Diciembre" } 
+        };
+}
+
+
+<div class="container">
+
+<br />
+<br />
+<br />
+
+<h2>Descargar Descuentos</h2>
+
+<br />
+<br />
+
+@using (Html.BeginForm("GenerarCSV", "Descuentos")) {
+    @Html.ValidationSummary(true)
+
+<fieldset>
+    <div class="row justify-content-start">
+<div class="col-3" style="text-align:center">
+
+<img src="~/Contents/image/cuenta.png" >
+</div>
+<div class="col-9">
+<div class="card ">
+<div class="card-header text-white" style="background-color:#0B9ACF">Descuentos</div>
+<div class="card-body">
+   <div class="row justify-content-start">
+     <div class="col-6">
+        <div class="editor-label">
+            Mes
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.Mes, new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control", autocomplete = "off"})
+            @Html.ValidationMessageFor(model => model.Mes)
+        </div>
+    </div>
+    <div class="col-6" >
+        <div class="editor-label">
+           
+            Año
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.anio)*@
+            @Html.TextBox("anio", null, htmlAttributes: new { @class = "form-control", autocomplete = "off" } )
+            @Html.ValidationMessageFor(model => model.anio)
+        </div>
+
+    </div>
+   
+
+</div>
+
+
+</div>
+</div>
+
+<br />
+<br />
+<div class="row justify-content-center">
+     <div class="col-4 " style="text-align:end">
+        <button type="submit" class="btn" style="background-color:#96D44D; color:white" >Descargar Archivo</button>
+     </div>
+     <div class="col-4">
+        @Html.ActionLink("Atras", "Index", null, new { @class="btn", style="background-color:#96D44D; color:white" })
+        
+     </div>
+</div>
+
+
+
+
+</div>
+</div>
+
+    <br />
+    <br />
+
+
+    </fieldset>
+}
+</div>

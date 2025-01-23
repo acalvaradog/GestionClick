@@ -1,0 +1,40 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=DESKTOP-S6CO4QI\\SQLEXPRESS;Database=WhatsApi;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "IdentityServer": {
+    "Clients": {
+      "WhatsApi.Client": {
+        "Profile": "IdentityServerSPA"
+      }
+    },
+    "Key": {
+      "Type": "File",
+      "FilePath": "identity.pfx",
+      "Password": "mecas"
+    }
+  },
+  "AllowedHosts": "*",
+  "SapConfiguration": {
+    "Servidor": "172.17.1.115",
+    "Id": "00",
+    "Mandante": "120",
+    "SapRouter": "/H/200.116.209.150",
+    //"Contraseña": "Zm9zY29t",
+    //"User": "foscom"
+    "Contraseña": "QWxlam8yMDI1Kg==",
+    "User": "anaa"
+  },
+  "api": {
+    //"url": "http://localhost/admautogestion/",
+    "url": "http://localhost:55389/",
+    "Token": "EAAMZAXC7dsFoBAK9m1zgvnQUDq32YvQLiaKxJZApsXgFN5N61ypM5tAuEWZAFOuJqLHcWpiRbkQyA84K3GKeEDxjcWaptZAlWThSUE7rG33ZBNIkj5OyCFhn2faNMLtL3dPZAzKzSI8I5SvDZBGP6bPJpF78w5K91EaeMjBT7Thdnf2KLlS4nmp0NFt3Npp9poZD",
+    //"Token": "EAAMZAXC7dsFoBAK9m1zgvnQUDq32YvQLiaKxJZApsXgFN5N61ypM5tAuEWZAFOuJqLHcWpiRbkQyA84K3GKeEDxjcWaptZAlWThSUE7rG33ZBNIkj5OyCFhn2faNMLtL3dPZAzKzSI8I5SvDZBGP6bPJpF78w5K91EaeMjBT7Thdnf2KLlS4nmp0NFt3Npp9poZD"
+  }
+}

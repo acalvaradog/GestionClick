@@ -1,0 +1,205 @@
+﻿@model Adm_AutoGestion.Models.CursoxEmpleado
+@{
+    ViewBag.Title = "RegistroParticipantes";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<div class="card mt-3">
+    <div class="card-header d-flex justify-content-between">
+        <div class="header-title">
+            <h4 class="card-title">Registro de Participantes</h4>
+        </div>
+
+
+    </div>
+    <div class="card-body">
+        @using (Html.BeginForm())
+        {
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label>Área</label>
+                    @Html.DropDownList("Area", new SelectList(ViewBag.Areas, "Key", "Key"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                </div>
+                <div class="col-md-6">
+                    <label>Cargo</label>
+                    @Html.DropDownList("Cargo", new SelectList(ViewBag.Cargo, "Key", "Key"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <label>Empresa</label>
+                    @Html.DropDownList("Empresa", new SelectList(ViewBag.Empresa, "Key", "Key"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                </div>
+
+                <div class="col-md-6">
+                    <label>Tipo de Área</label>
+                    @Html.DropDownList("TipoArea", new SelectList(ViewBag.TipoArea, "Key", "Key"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 d-flex justify-content-center">
+                    <button type="submit" class="bi bi-search btn btn-outline-primary  rounded-pill mb-2"> Buscar</button>
+                </div>
+            </div>
+        }
+        <hr />
+
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <label>Listado de Empleados</label>
+                @Html.DropDownList("Empleados", new SelectList(ViewBag.Empleados, "Id", "Nombres"), null, htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true", multiple = "true" })
+            </div>
+
+            <div class="col-md-6">
+                <label>Seleccione el Curso</label>
+                @Html.DropDownList("Curso", new SelectList(ViewBag.Cursos, "Id", "FullName"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            @*<div class="col-md-3">
+            <button type="button" class="bi bi-plus-square btn btn-outline-primary mb-2" onclick="javascript: Agregar();"> Agregar Seleccionados</button>
+        </div>*@
+            <div class="col-md-3">
+                <button type="button" class="bi bi-plus-square btn btn-outline-primary  rounded-pill mb-2" onclick="javascript: AgregarTodo();"> Agregar Todo</button>
+            </div>
+            <div class="col-md-3">
+                <button type="button" class="bi bi- btn btn-outline-primary  rounded-pill mb-2" onclick="javascript: BorrarTodo();"> Borrar Todo</button>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            Nro
+                        </th>
+                        <th>
+                            Nombres
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody id="emp" class="text-center align-middle">
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <button type="button" class="btn bi bi-save btn-outline-primary   rounded-pill mb-2" onclick="javascript: RegistrarEmpleados()"> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var dropdown = $("#Empleados").next().next();
+        dropdown.prepend('<button type="button" class="bi bi-plus-square btn btn-outline-primary  rounded-pill ms-2 mb-2" onclick="javascript: Agregar();"> Agregar Seleccionados</button>');
+    });
+
+    function Agregar() {
+        try {
+            const selectedOptions = $("#Empleados").find("option:selected");
+
+            selectedOptions.each(function () {
+                const value = $(this).val();
+                const nombre = $(this).text();
+
+                if (!optionExistsInTable(value)) {
+                    var nuevaFila = $("<tr><td><a href='' onclick='eliminarFila(this); return false;'><img alt='Quitar' src='../Contents/image/Trash.png' title='Quitar' /></a></td><td>" + value + "</td><td>" + nombre + "</td></tr>");
+                    $("#emp").append(nuevaFila);
+                }
+            });
+
+        }
+        catch (err) { alertify.alert(err); }
+        return false;
+    }
+
+    function optionExistsInTable(value) {
+        var exists = false;
+        $("#emp tr").each(function (index, item) {
+            if (item.cells[1].innerText === value) {
+                exists = true;
+                return false;
+            }
+        });
+        return exists;
+    }
+
+    function eliminarFila(elemento) {
+        $(elemento).parent().parent().remove();
+    }
+
+    function AgregarTodo() {
+        BorrarTodo();
+
+        $("#Empleados option").each(function () {
+            var value = $(this).val();
+            var nombre = $(this).text();
+
+            var newRow = $("<tr><td><a href='' onclick='eliminarFila(this); return false;'><img alt='Quitar' src='../Contents/image/Trash.png' title='Quitar' /></a></td><td>" + value + "</td><td>" + nombre + "</td></tr>");
+            $("#emp").append(newRow);
+            
+        });
+    }
+
+    function BorrarTodo() {
+        $("#emp").empty();
+    }
+
+</script>
+
+<script>
+
+    function RegistrarEmpleados() {
+        try {
+            var frmData = new FormData();
+            var emp = [];
+            var filasemp = $("#emp").find("tr");
+            var curso = $("#Curso :selected").val();
+
+            if (filasemp.length != 0) {
+                $("#emp tr").each(function (index, item, array) {
+                    var fila = item.cells[2].innerText;
+                    emp.push(fila);
+                });
+
+                frmData.append("Empleados", emp);
+                frmData.append("Curso", curso);
+            } else { throw "Para continuar, Primero debe ingresar los datos."; }
+
+            $.ajax({
+                url: "RegistrarEmpleados",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: frmData,
+                contentType: false,
+                processData: false,
+                success: function (result) {
+                    if (result == "true") {
+                        alertify.alert('Los empleados se registraron correctamente.', function () { location.replace('RegistroParticipantes'); });
+                    } else {
+                        alertify.alert(result)
+                    }
+                },
+
+                error: function (xhr, status, error) { alertify.alert("" + error); }
+
+            });
+        } catch (err) { alertify.alert("" + err); }
+
+    }
+
+</script>

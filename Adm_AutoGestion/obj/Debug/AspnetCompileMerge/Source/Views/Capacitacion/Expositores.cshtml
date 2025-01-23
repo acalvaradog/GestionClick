@@ -1,0 +1,105 @@
+﻿@model Adm_AutoGestion.Models.Expositor
+@using System.Web.UI.WebControls;
+
+<div class="container" style="width:90%">
+    <br />
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <div class="card ">
+
+                        <div class="card-body">
+                            <div class="row justify-content-start">
+                                <div class="col-12">
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+
+                                            <div class="editor-label">
+                                                @*@Html.LabelFor(model => model.EmpleadoId)*@
+                                                Empleado
+                                            </div>
+                                            <div class="editor-field">
+                                                @Html.DropDownList("EmpleadoId", new SelectList(ViewBag.Empleado, "nomcodigo", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control js-example-basic-single select2-selection select2-selection--single", data_live_search = "true" })
+                                                @Html.ValidationMessageFor(model => model.EmpleadoId)
+
+                                                @*@Html.DropDownList("MotivoEntrega",  new SelectList(ListItems, "Value", "Text"),"Seleccione...", htmlAttributes: new { @class = "form-control"})*@
+                                                @* <select id="EmpleadoId" name="EmpleadoId" class="form-control js-example-basic-single" style="width:100%; height:50px">
+                                                        <option>Seleccione...</option>
+                                                    </select>*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            Nmr Capacitación
+                                            <input type="text" class="form-control" value="@ViewBag.Capacitacion.Id" disabled id="NmrCapacitacion" name="NmrCapacitacion" />
+                                        </div>
+                                    </div>
+
+                                    <br />
+                                    <div class="row justify-content-center">
+                                        <div class="col-12" style="text-align:center">
+                                            <button type="button" class="bi bi-plus-square btn btn-outline-primary mb-2" id="AddElemento" onclick="javascript: return AddRowExpo('AddEmp2', true );"> Agregar</button>
+                                        </div>
+                                    </div>
+
+
+
+                                    <br />
+                                    <div class="panel-body">
+                                        <div class="panel panel-default">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead><tr class="fondoDegradado text-white"><th></th><th>Nombre</th><th>Documento</th><th>Area</th><th>Cargo</th><th>Tercero</th><th></th></tr></thead>
+                                                    <tbody id="AddItemsCap"></tbody>
+                                                    <tfoot><tr><td colspan="12"></td></tr></tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <br />
+
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row justify-content-start">
+
+                        <div class="col-12 " style="text-align:center">
+                            <button type="button" class="bi bi-save btn btn-outline-primary mb-2" id="AddCap" onclick="javascript: return SaveExpo();"> Guardar</button>
+                        </div>
+                        @*     <div class="col-6">
+                               @Html.ActionLink("Atras", "ListaPorCompletar", "Capacitacion",null, new { @class="btn", style="background-color:#96D44D; color:white" })
+
+                            </div>*@
+                    </div>
+                </div>
+
+
+            </div>
+        </fieldset>
+    }
+
+    <br />
+</div>
+<script>
+    $('.js-example-basic-single').select2({ width: '100%' });
+</script>
+<style type="text/css">
+    .select2-container .select2-selection--single {
+        box-sizing: border-box;
+        cursor: pointer;
+        display: block;
+        height: 38px;
+        -webkit-user-select: none;
+        padding-top: 5px;
+    }
+</style>

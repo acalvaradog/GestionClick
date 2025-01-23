@@ -1,0 +1,79 @@
+﻿@using Autogestion.Shared.DTO.Viaticos;
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+<MudDialog OnBackdropClick="OverlayClick">
+    <TitleContent>
+        <MudText Typo="Typo.h5">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> Confirmar
+        </MudText>
+    </TitleContent>
+    <DialogContent>            
+        <MudText Typo="Typo.h6">¿ Porqué desea cancelar el la solicitud del viático con número de solicitud "@ViaticoMod.Id" ?</MudText>
+        <EditForm Model="@ViaticoMod" OnInvalidSubmit="@(args=>CancelarSolicitud(ViaticoMod.Id))">
+            <MudTextField T="string" Required Label="Observacion" Variant="Variant.Outlined" @bind-Text="ViaticoMod.Observacion" Lines="3" Placeholder="Definir motivo de la Cancelación" />
+            <ValidationMessage For="@(()=> ViaticoMod.Observacion)"></ValidationMessage>
+          <br />
+            <MudGrid>
+                <MudItem xs="6" Class="d-flex mt-3 justify-content-center">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="@(args=>CancelarSolicitud(ViaticoMod.Id))" Class="">Enviar</MudButton>
+                </MudItem>
+                <MudItem xs="6" Class="d-flex mt-3 justify-content-center">
+                    <MudButton Variant="Variant.Outlined" Color="Color.Warning" OnClick="Cancel" Class="">Cerrar</MudButton>
+                </MudItem>
+            </MudGrid>
+            <DataAnnotationsValidator />
+            </EditForm>
+             
+        </DialogContent>
+        <DialogActions></DialogActions>
+        </MudDialog>
+
+        @code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public ViaticosDTO ViaticoMod { get; set; }
+
+    [Parameter] public string ButtonText { get; set; }
+
+    [Parameter] public Color Color { get; set; }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+
+    private async void CancelarSolicitud(int Id)
+    {
+        ViaticoMod.Id = Id;
+
+        if (ViaticoMod.Observacion == "" || ViaticoMod.Observacion == null)
+        {
+            var error = "Observación";
+            MudDialog.Close(DialogResult.Ok(error));
+
+        }
+        else
+        {
+            var Respuesta = await Http.PostAsJsonAsync<ViaticosDTO>($"api/Viaticos/CancelarSolicitud/", ViaticoMod);
+
+            if (Respuesta.IsSuccessStatusCode)
+            {
+                var codigoRespuesta = await Respuesta.Content.ReadFromJsonAsync<bool>();
+
+                ViaticoMod.Id = 0;
+                ViaticoMod.Observacion = "";
+                MudDialog.Close(DialogResult.Ok(codigoRespuesta));
+
+            }
+
+
+        }
+
+
+    }
+
+    private void OverlayClick()
+    {
+        Console.WriteLine("Entra");
+        Cancel();
+    }
+}

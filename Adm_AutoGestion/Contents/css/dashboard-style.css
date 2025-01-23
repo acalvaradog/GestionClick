@@ -1,0 +1,26 @@
+﻿.fondoDegradado {
+    background-color: #3b83bd;
+    background-image: linear-gradient(to right, #3b83bd, #3b83be);
+    /*#183357, #274C65*/
+}
+
+.tablaheader {
+    font-weight: bold;
+    font-size:14px;
+}
+
+.tablabody {
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.tablaoddbody {
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}

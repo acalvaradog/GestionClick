@@ -1,0 +1,108 @@
+﻿@page "/Dotacion/ActualizarTallas"
+@inject Blazored.LocalStorage.ILocalStorageService localStore
+@using Autogestion.Shared.DTO.Empleado
+@using Autogestion.Shared.DTO.Dotacion
+@inject HttpClient Http
+@using AutoGestion.Helpers
+@inject IJSRuntime JS
+@inject NavigationManager Navigation
+@inject Microsoft.Extensions.Configuration.IConfiguration config
+
+<MudText Typo="Typo.h5" Color="Color.Primary" Class="mb-4">Actualizar Tallas</MudText>
+
+@if (_loading)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+}
+else
+{
+    if (Acceso == "false")
+    {
+        <MudText>Aún no tiene derecho a dotación</MudText>
+    }
+    else
+    {
+        <EditForm Model="@Tallas" OnValidSubmit="@GuardarTallas">
+            <DataAnnotationsValidator />
+            <MudCard Class="mb-5">
+                <MudCardContent>
+                    <MudGrid>
+                        @if (Acceso == "asi")
+                        {
+                            <MudItem xs="12" sm="4">
+                                <MudTextField T="string" MaxLength="3" Label="Camisa" @bind-Value="Tallas.Camisa" />
+                            </MudItem>
+                            <MudItem xs="12" sm="4">
+                                <MudTextField T="string" MaxLength="3" Label="Pantalón" @bind-Value="Tallas.Pantalon" />
+                            </MudItem>
+                            <MudItem xs="12" sm="4">
+                                <MudTextField T="string" MaxLength="3" Label="Zapatos" @bind-Value="Tallas.Zapatos" />
+                            </MudItem>
+                        }else if (Acceso == "adm")
+                        {
+                            <MudItem xs="12" sm="6">
+                                <MudTextField T="string" MaxLength="3" Label="Camisa" @bind-Value="Tallas.Camisa" />
+                            </MudItem>
+                            <MudItem xs="12" sm="6">
+                                <MudTextField T="string" MaxLength="3" Label="Pantalón" @bind-Value="Tallas.Pantalon" />
+                            </MudItem>
+                        }
+
+                    </MudGrid>
+                    <MudCardActions>
+                        <MudButton Class="mt-3" Color="Color.Primary" ButtonType="ButtonType.Submit" Variant="Variant.Outlined">Guardar</MudButton>
+                    </MudCardActions>
+                </MudCardContent>
+            </MudCard>
+        </EditForm>
+        @if (Acceso == "asi")
+        {
+            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-4">MEDIDAS DE UNIFORMES EN CENTIMETROS PERSONAL ASISTENCIAL Y CAMILLEROS QUE UTILIZA UNIFORME BLANCO – CAMISA</MudText>
+            <MudImage Style="width:-webkit-fill-available;height:190px;margin:0px 16px 0 16px" Src="@($"{@config["Configuraciones:URLTallasDotacion"]}/{"homblanco_camisa.png"}")" />
+            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-4">MEDIDAS DE UNIFORMES EN CENTIMETROS PERSONAL ASISTENCIAL Y CAMILLEROS QUE UTILIZA UNIFORME BLANCO – PANTALON</MudText>
+            <MudImage Style="width:-webkit-fill-available;height:190px;margin:0px 16px 0 16px" Src="@($"{@config["Configuraciones:URLTallasDotacion"]}/{"homblanco_pantalon.png"}")" />
+            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-4">MEDIDAS DE UNIFORMES EN CENTIMETROS ANTIFLUIDOS – CAMISA</MudText>
+            <MudImage Style="width:-webkit-fill-available;height:190px;margin:0px 16px 0 16px" Src="@($"{@config["Configuraciones:URLTallasDotacion"]}/{"homantifluido_camisa.png"}")" />
+            <MudText Typo="Typo.h6" Color="Color.Primary" Class="mb-4">MEDIDAS DE UNIFORMES EN CENTIMETROS ANTIFLUIDOS – PANTALON</MudText>
+            <MudImage Style="width:-webkit-fill-available;height:190px;margin:0px 16px 0 16px" Src="@($"{@config["Configuraciones:URLTallasDotacion"]}/{"homantifluido_pantalon.png"}")" />
+        }
+
+    }
+}
+
+@code {
+    private EmpleadoDTO? empleado { get; set; }
+    private bool _loading;
+    private string? Acceso;
+    private DotacionDTO? Tallas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _loading = true;
+        empleado = await localStore.GetItemAsync<EmpleadoDTO>("User");
+        Acceso = await Http.GetFromJsonAsync<string>($"api/Dotacion/ComprobarDotacion/{empleado.Id}");
+        Tallas = await Http.GetFromJsonAsync<DotacionDTO>($"api/Dotacion/ObtenerTallas/{empleado.Id}");
+        _loading = false;
+        StateHasChanged();
+    }
+
+    private async void GuardarTallas()
+    {
+        var Respuesta = await Http.PostAsJsonAsync<DotacionDTO>($"api/Dotacion/GuardarTallas/", Tallas);
+
+        if (Respuesta.IsSuccessStatusCode)
+        {
+            var codigoRespuesta = await Respuesta.Content.ReadFromJsonAsync<bool>();
+
+            if (codigoRespuesta == true)
+            {
+                await JS.ShowMessage("Guardado", "Se han actualizado las tallas", "success");
+                Navigation.NavigateTo("reload/Dotacion.ActualizarTallas");
+            }
+            else
+            {
+                await JS.ShowMessage("Error", "Ha ocurrido un error", "error");
+            }
+        }
+    }
+}

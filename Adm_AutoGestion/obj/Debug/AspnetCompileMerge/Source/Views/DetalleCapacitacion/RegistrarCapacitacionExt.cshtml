@@ -1,0 +1,117 @@
+﻿@model Adm_AutoGestion.Models.DetalleCapacitacion
+@using System.Web.UI.WebControls;
+@{
+    ViewBag.Title = "RegistrarCapacitacion";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+<div class="container-fluid" style=" padding-right: 60px;padding-left: 60px; width:80%" center>
+
+<br/>
+<h2>Registrar Capacitacion</h2>
+<br/>
+
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+
+<div class="form-row">
+   <div class="form-group col-md-3" style="text-align:center">
+    <br />
+    <br />
+    <br />
+    <img class="visible-xs" src="~/Contents/image/acta.png" >
+    </div>
+    <div class="form-group col-md-9">
+        <div class="card ">
+            <div class="card-header text-white" style="background-color:#0B9ACF">Detalles</div>
+                <div class="card-body">
+                    <div class="row justify-content-start">
+                        <div class="col-12" >
+                                    
+                                 
+                            
+                                    
+                                    <div class="form-row">
+                                            <div class="form-group col-md-6" >
+                                                <div class="editor-label">
+                                                    @*@Html.LabelFor(model => model.EmpleadoId)*@
+                                                    Empleado
+                                                </div>
+                                                <div class="editor-field">
+                                                    @Html.DropDownList("EmpleadoId", new SelectList( ViewBag.Empleado, "nomcodigo", "Nombres"),"Seleccione...", htmlAttributes: new {  @class = "form-control selectpicker" ,data_live_search="true"} )
+                                                    @Html.ValidationMessageFor(model => model.EmpleadoId)
+                                                </div>
+                                            </div>  
+                                        <div class="form-group col-md-6" >
+                                            Nmr Capacitación
+                                            <input type="text" class="form-control" value="@ViewBag.Numero" disabled id="NmrCapacitacion" name="NmrCapacitacion"/>
+                                        </div>
+                                    </div>
+
+                                    <br />
+                                    <div class="row justify-content-center">
+                                        <div class ="col-12" style="text-align:center">
+                                          <button type = "button" class = "btn btn-info" id="AddElemento" onclick = "javascript: return AddRowCap('AddEmp2', true );" >Agregar</button>
+                                        </div>
+                                    </div>
+                                
+                            
+
+                            <br />
+                <div class="panel-body">
+                  <div class = "panel panel-default">                        
+                    <div class = "table-responsive">
+                      <table class = "table table-hover">                                
+                         <thead><tr class = "table-info"><th></th><th>Nombre</th><th>Documento</th><th>Area</th><th>Cargo</th><th>Tercero</th><th></th></tr></thead>
+                         <tbody id = "AddItemsCap"></tbody>
+                         <tfoot><tr><td colspan = "12"></td></tr></tfoot>
+                       </table>
+                     </div>
+                   </div> 
+                 </div>
+
+                        </div>
+                    </div>
+                    <br />
+                   
+                </div>
+        </div>
+    <br />
+    <br />
+    <div class="row justify-content-start" >
+     <div class="col-6 " style="text-align:end">
+        <button type = "button" class = "btn" id="AddCap" style="background-color:#96D44D; color:white" onclick = "javascript: return SaveCap();" >Guardar</button>
+     </div>
+     <div class="col-6">
+        @Html.ActionLink("Atras", "VistaExpositor", "Capacitacion",null, new { @class="btn", style="background-color:#96D44D; color:white" })
+        
+     </div>
+    </div>
+ </div>
+
+    
+</div>
+    </fieldset>
+}
+
+</div>
+
+<div class = "modal fade" id = "processState" data-backdrop="static">
+        <div class = "modal-dialog modal-lg">
+            <div class = "modal-content">
+                <div class = "modal-header">                    
+                     <h5 class="modal-title">&nbsp;Mensaje</h5>                         
+                 </div>
+                <div class = "modal-body">
+                    <input class="form-control border-0"  id="mensaje" name="mensaje"></input>
+                </div>
+            <div class = "modal-footer">
+                <button id = "signatureSbmt" type ="submit" class="btn btn-primary" onclick = "return reloadPage();">Aceptar</button>
+             </div>
+        </div>
+       </div>
+

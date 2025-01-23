@@ -1,0 +1,411 @@
+﻿@model Adm_AutoGestion.Models.DetallePersonalSalud
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+    string message = string.Format("{0}", Session["message"]);
+}
+
+@if(!string.IsNullOrWhiteSpace(message)) { 
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading">Error</h4>
+            <hr>
+            <p class="mb-0">@message</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+        </div>  
+
+
+Session.Remove("message"); }
+
+<div class="container">
+    </br>
+    </br>
+
+    <h4>Registrar Personal Vacuna</h4>
+    </br>
+
+</div>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <div class="container">
+        <div class="row">
+
+        <div class="col-12">
+                <div class="editor-label">
+                    Empleado
+                </div>
+                <div>
+                    <div class="editor-field">
+                        @Html.DropDownList("Empleado", new SelectList(Model.ListadoEmpleados, "Id", "Nombres" ),"---Seleccione---", htmlAttributes: new { @class = "form-control selectpicker" ,data_live_search="true"})
+                        @Html.ValidationMessageFor(model => model.IdServicioCovid)
+                    </div>
+
+                </div>
+            </div>
+        <div class="col-6">
+                <div class="editor-label">Tipo Registro: </div>
+                <select class="form-control" id="TipoRegistro" name="TipoRegistro">
+                    <option value="null">---Seleccione---</option>
+                    <option value="2">Talento humano en salud</option>
+                    <option value="3">Apoyo logistico para la atención en Salud</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.TipoRegistro)
+            </div>
+
+@*<div class="col-6">
+                <div class="editor-label">
+                    Indicador Actualización: 
+                </div>
+                <div>
+                            
+            @Html.DropDownListFor( model => model.IdIndicadorActualizacion, new SelectList(Model.ListadoActualizacionRegistro, "Id", "Nombre" ),"---Seleccione---", htmlAttributes: new { @class = "form-control"})
+           @Html.ValidationMessageFor(model => model.IdIndicadorActualizacion)
+                </div>
+            </div>*@
+<div class="col-6">
+                <div class="editor-label">
+                   Sociedad
+                </div>
+                <div class="form-group">
+                    <input type="" id="Empresa" name="Empresa" value="@ViewBag.sociedad" class="form-control " type="hidden" readonly />
+                     @Html.ValidationMessageFor(model => model.Empresa)
+                </div>
+
+            </div>
+
+        <div class="col-6">
+                <div class="editor-label">
+                    Tipo Documento:
+                </div>
+                <div>
+                    @Html.DropDownListFor( model => model.IdTipoDocumento, new SelectList(Model.ListadoTipoDocumento, "Id", "Nombre" ),"---Seleccione---", htmlAttributes: new { @class = "form-control"})
+                     @Html.ValidationMessageFor(model => model.IdTipoDocumento)
+                </div>
+            </div>
+
+            <div class="col-6">
+                <div class="editor-label">
+                    Documento Identificación: 
+                </div>
+                <div class="form-group">
+                    <input type="" id="NumeroIdentificacion" name="NumeroIdentificacion" value="@ViewBag.documento" class="form-control " type="hidden" readonly />
+                     @Html.ValidationMessageFor(model => model.NumeroIdentificacion)
+                </div>
+
+            </div>
+
+            <div class="col-6">
+                <div class="editor-label">
+                    Primer Apellido: 
+                </div>
+                <div class="form-group">
+                    <input type="" id="PrimerApellido" name="PrimerApellido" value="@ViewBag.Papellido" class="form-control " type="hidden" readonly />
+                    @Html.ValidationMessageFor(model => model.PrimerApellido)
+                </div>
+            </div>
+
+        <div class="col-6">
+                <div class="editor-label">
+                    Segundo Apellido: 
+                </div>
+               <div class="form-group">
+                    <input type="" id="SegundoApellido" name="SegundoApellido" value="@ViewBag.Sapellido" class="form-control " type="hidden" readonly />
+                    @Html.ValidationMessageFor(model => model.SegundoApellido)
+               </div>
+              
+            </div>
+
+            <div class="col-6">
+                <div class="editor-label">
+                    Primer Nombre : 
+                </div>
+                <div class="form-group">
+                    <input type="" id="PrimerNombre" name="PrimerNombre" value="@ViewBag.PNombre" class="form-control " type="hidden" readonly />
+                    @Html.ValidationMessageFor(model => model.PrimerNombre)
+            </div>
+            </div>
+
+            <div class="col-6">
+                <div class="editor-label">
+                    Segundo Nombre : 
+                </div>
+                <div class="form-group">
+                    <input type="" id="SegundoNombre" name="SegundoNombre" value="@ViewBag.SNombre" class="form-control " type="hidden" readonly />
+                     @Html.ValidationMessageFor(model => model.SegundoNombre)
+                    </div>
+
+            </div>
+
+            <div class="col-6">
+                <div class="editor-label">
+                    Perfil Profesional:
+                </div>
+                <div>
+
+                    <div class="editor-field">
+                        @Html.DropDownList("IdPerfilProfesional", new SelectList(ViewBag.perfil, "Id", "nomcodigo" ),"Seleccione...", htmlAttributes: new { @class = "form-control selectpicker" ,data_live_search="true"})
+                        @Html.ValidationMessageFor(model => model.IdPerfilProfesional)
+                   
+                    </div>
+
+                </div>
+            </div>
+
+        <div class="col-6">
+                <div class="editor-label">
+                    Servicio Covid:
+                </div>
+                <div>
+                    <div class="editor-field">
+                        @Html.DropDownList("IdServicioCovid", new SelectList(ViewBag.servicio, "Id", "nomservicio" ),"---Seleccione---", htmlAttributes: new { @class = "form-control selectpicker" ,data_live_search="true"})
+                        @Html.ValidationMessageFor(model => model.IdServicioCovid)
+                    </div>
+
+                </div>
+            </div>
+
+        <div class="col-6">
+                <div class="editor-label">
+                    Area Covid: 
+                </div>
+                <div>
+                    @Html.DropDownListFor( model => model.IdAreaCovid, new SelectList(Model.ListadoAreaCovid, "Id", "Nombre" ),"---Seleccione---", htmlAttributes: new { @class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.IdAreaCovid)
+                </div>
+            </div>
+
+ <div class="col-6">
+                <div class="editor-label">
+                    Tiempo Dedicación:
+                </div>
+                <div>
+                    @Html.DropDownListFor( model => model.IdDedicacion, new SelectList(Model.ListadoTiempoDedicacion, "Id", "Nombre" ),"---Seleccione---", htmlAttributes: new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.IdDedicacion)
+                </div>
+            </div>
+
+ <div class="col-6">
+                <div class="editor-label" for="exampleFormControlSelect1">Cargo: </div>
+                <select class="form-control" id="IdCargo" name="IdCargo">
+                    <option value="">---Seleccione---</option>
+
+                </select>
+            @Html.ValidationMessageFor(model => model.IdCargo)
+            </div>
+
+ 
+
+</div>
+</div>
+
+<br />
+
+        <div class="container">
+            <p>
+                <input type="submit" value="Crear" class="btn btn-primary"/>
+            </p>
+
+        </div>
+        
+    
+
+</fieldset>
+}
+
+<div>
+    @Html.ActionLink("Atras", "Index")
+</div>
+
+<script>
+    $(document).ready(function () {
+
+      
+
+        $("#TipoRegistro").change(function () {
+            var TipoRegistro = $("#TipoRegistro").val();
+
+            llenarcargo(TipoRegistro)
+
+        });
+
+
+        $("#Empleado").change(function () {
+            var IdEmpleado= $("#Empleado").val();
+
+            llegardatosempleados(IdEmpleado)
+
+        });
+
+
+
+    });
+
+    function llenarcargo(id) {
+
+        try {
+
+            if (id == "2") {
+                
+
+                $.ajax({
+                    url: "llenarcargoAsistencial",
+                    type: "post",
+                    dataType: "html",
+                    success: function (result) {
+
+                        if (result == undefined || result == null || result == "[]") {
+                            alertify.alert("No se encuentran Registros")
+
+                        } else {
+                            $("#IdCargo").empty();
+                            var obj = jQuery.parseJSON(result);
+                            obj.forEach(function (valor, indice) {
+                                $("#IdCargo").append('<option value=' + valor.Id + '>' + valor.Nombre + '</option>');
+
+
+                            });
+
+
+
+
+                        }
+
+
+
+
+
+                    }
+
+                });
+
+
+            } else if (id == "3") {
+               
+
+
+
+                $.ajax({
+                    url: "llenarcargoApoyo",
+                    type: "post",
+                    dataType: "html",
+                    success: function (result) {
+
+                        if (result == undefined || result == null || result == "[]") {
+                            alertify.alert("No se encuentran Registros")
+
+                        } else {
+                            $("#IdCargo").empty();
+                            var obj = jQuery.parseJSON(result);
+                            obj.forEach(function (valor, indice) {
+                                $("#IdCargo").append('<option value=' + valor.Id + '>' + valor.Nombre + '</option>');
+
+
+                            });
+
+
+
+
+                        }
+
+
+
+
+
+                    }
+
+                });
+
+
+            } else {
+                $("#IdCargo").empty();
+
+            }
+
+
+
+
+
+
+        } catch (e) { alert(e); }
+
+
+    }
+
+    function llegardatosempleados(Id) {
+
+        $.ajax({
+
+            url: "llenarEmpleado",
+            data: { 'Id': Id },
+            type: "post",
+            dataType: "html",
+            success: function (result) {
+
+                if (result == undefined || result == null || result == "[]") {
+                    alertify.alert("No se encuentran Registros")
+                } else {
+                    nuevo_res = result.substring(1, result.length - 1);
+                    var obj = jQuery.parseJSON(nuevo_res);
+
+                    $("#NumeroIdentificacion").val(obj.Documento);
+                    $("#Empresa").val(obj.Empresa);
+
+                    var lista = obj.Nombres.split(" ");
+
+                    if (lista.length == 3) {
+
+                        papellido = lista[0];
+                        sapellido = lista[1];
+                        pnombre = lista[2];
+
+                    } else if (lista.length == 4) {
+
+                        papellido = lista[0];
+                        sapellido = lista[1];
+                        pnombre = lista[2];
+                        snombre = lista[3];
+                    } else if (lista.length == 5) {
+
+                        papellido = lista[0];
+                        sapellido = lista[1];
+                        pnombre = lista[2];
+                        snombre = lista[3] + " " + lista[4];
+
+
+
+
+
+                    } else if (lista.length == 6) {
+
+                        papellido = lista[0];
+                        sapellido = lista[1];
+                        pnombre = lista[2];
+                        snombre = lista[3] + " " + lista[4] + " " + lista[5];
+
+
+                    }
+
+                    $("#PrimerApellido").val(papellido);
+                    $("#SegundoApellido").val(sapellido);
+                    $("#PrimerNombre").val(pnombre);
+                    $("#SegundoNombre").val(snombre);
+
+                }
+
+
+
+            }
+
+        });
+        
+    }
+
+
+
+</script>

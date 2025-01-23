@@ -1,0 +1,76 @@
+﻿@model Adm_AutoGestion.Models.Rol
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+<br />
+<br />
+<br />
+<br />
+<div class="container">
+
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <div class="card">
+            <div class="card-header  colorTitulo mb-3 d-flex align-items-center justify-content-center">
+             <h2>Asignar Rol</h2>
+              
+            </div>
+
+            <div class="card-body">
+                <fieldset>
+                    <br />
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                                <div class="editor-label">
+                                    @*@Html.LabelFor(model => model.GrupoId)*@
+                                    Grupo
+                                </div>
+                                <div class="editor-field">
+                                    @*@Html.EditorFor(model => model.GrupoId)*@
+                                    @Html.ValidationMessageFor(model => model.GrupoId)
+                                    @Html.DropDownListFor(model => model.GrupoId, new SelectList(Model.ListadoGrupos, "Id", "Descripcion"), "Seleccione un grupo", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                </div>
+                            </div>
+                    
+                            <div class="col-sm-6">
+                                <div class="editor-label">
+                                    @*@Html.LabelFor(model => model.EmpleadoId)*@
+                                     Empleado
+                                </div>
+                                <div class="editor-field">
+                                    @* @Html.EditorFor(model => model.EmpleadoId)*@
+                                    @Html.DropDownListFor(model => model.EmpleadoId, new SelectList(ViewBag.Empleados, "Id", "Nombres"), "Seleccione un Empleado", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                                    @Html.ValidationMessageFor(model => model.EmpleadoId)
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="card-footer d-flex align-items-center justify-content-center">
+                        <p>
+                            <input type="submit" value="Crear" class="btn btn-primary" />
+                        </p>
+                    </div>
+                    
+                </fieldset>
+            </div>
+
+        </div>
+       
+    }
+    <br />
+    <br />
+    <div>
+        @Html.ActionLink("Atras", "Index")
+    </div>
+
+</div>
