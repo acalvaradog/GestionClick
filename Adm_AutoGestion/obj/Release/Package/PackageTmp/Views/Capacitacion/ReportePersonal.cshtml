@@ -1,0 +1,266 @@
+﻿@model IEnumerable<Adm_AutoGestion.Controllers.CapacitacionController.ModeloReportePersonal>
+@using System.Web.UI.WebControls;
+
+@{
+    ViewBag.Title = "Reporte Personal";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+@using (Html.BeginForm("ReportePersonal", "Capacitacion", FormMethod.Get))
+{
+    <div class="card">
+        <div class="card-header text-white fondoDegradado">
+            <h4>Reporte personal formado</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mt-3">
+
+                <div class="col-3">
+                    <label>Año</label>
+                    <select id="Year" name="Year" class="form-control selectpicker">
+                        <option value="2024" @(Request.QueryString["Year"] == "2024" ? "selected" : "")>2024</option>
+                        <option value="2025" @(Request.QueryString["Year"] == "2025" ? "selected" : "")>2025</option>
+                        <option value="2026" @(Request.QueryString["Year"] == "2026" ? "selected" : "")>2026</option>
+                        <option value="2027" @(Request.QueryString["Year"] == "2027" ? "selected" : "")>2027</option>
+                        <option value="2028" @(Request.QueryString["Year"] == "2028" ? "selected" : "")>2028</option>
+                        <option value="2029" @(Request.QueryString["Year"] == "2029" ? "selected" : "")>2029</option>
+                        <option value="2030" @(Request.QueryString["Year"] == "2030" ? "selected" : "")>2030</option>
+                        <option value="2031" @(Request.QueryString["Year"] == "2031" ? "selected" : "")>2031</option>
+                        <option value="2032" @(Request.QueryString["Year"] == "2032" ? "selected" : "")>2032</option>
+                        <option value="2033" @(Request.QueryString["Year"] == "2033" ? "selected" : "")>2033</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <label>Periodo</label>
+                    <select id="Periodo" name="Periodo" class="form-control selectpicker">
+                        <option value="1" @(Request.QueryString["Periodo"] == "1" ? "selected" : "")>Primer Trimestre</option>
+                        <option value="2" @(Request.QueryString["Periodo"] == "2" ? "selected" : "")>Segundo Trimestre</option>
+                        <option value="3" @(Request.QueryString["Periodo"] == "3" ? "selected" : "")>Tercer Trimestre</option>
+                        <option value="4" @(Request.QueryString["Periodo"] == "4" ? "selected" : "")>Cuarto Trimestre</option>
+                        <option value="5" @(Request.QueryString["Periodo"] == "5" ? "selected" : "")>Año</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <label>Tipo de personal</label>
+                    <select id="Personal" name="Personal" class="form-control selectpicker" onchange="javascript: alternarCampoPerfil();">
+                        <option value="1" @(Request.QueryString["Personal"] == "1" ? "selected" : "")>Empleados</option>
+                        <option value="2" @(Request.QueryString["Personal"] == "2" ? "selected" : "")>Terceros</option>
+                        <option value="3" @(Request.QueryString["Personal"] == "3" ? "selected" : "")>Estudiantes</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <label>Empresa</label>
+                    <select id="Empresa" name="Empresa" class="form-control selectpicker">
+                        <option value="1000" @(Request.QueryString["Empresa"] == "1000" ? "selected" : "")>FOSCAL</option>
+                        <option value="2000" @(Request.QueryString["Empresa"] == "2000" ? "selected" : "")>FOSUNAB</option>
+                    </select>
+                </div>
+
+                <div class="col-3 mt-3" id="PerfilDiv" style="display: none;">
+                    <label>Perfil</label>
+                    <select id="Perfil" name="Perfil" class="form-control selectpicker">
+                        <option value="Todos" @(Request.QueryString["Perfil"] == "Todos" ? "selected" : "")>Todos</option>
+                        <option value="Administrativos CO" @(Request.QueryString["Perfil"] == "Administrativos CO" ? "selected" : "")>Administrativos</option>
+                        <option value="Asistenciales CO" @(Request.QueryString["Perfil"] == "Asistenciales CO" ? "selected" : "")>Asistenciales</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="row mt-3 justify-content-center">
+                <div class="col-2">
+                    <button type="submit" class="bi bi-search btn btn-outline-primary mb-2" style="font-size:16px"> Filtrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<hr />
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="row mt-3">
+
+            <span>Cantidad de personal formado: <b>@ViewBag.CantidadSI</b></span>
+            <br>
+            <span>Cantidad de personal no formado: <b>@ViewBag.CantidadNO</b></span>
+            
+            @if (!string.IsNullOrEmpty(ViewBag.selectedPerfil))
+            {
+                <br />
+                <span>Porcentaje de cumplimiento del perfil @ViewBag.selectedPerfil: <b>@ViewBag.Porcentaje</b> </span>
+            }
+            
+        </div>
+
+    </div>
+</div>
+
+
+<div class="table-responsive">
+    <table class="table table-hover display dataTable table-sm" id="Exportar_a_Excel">
+        <thead class="fondoDegradado" style="color: #fff">
+            <tr style="text-align:center">
+                <th>
+                    Número de identidad
+                </th>
+                <th>
+                    Nombre completo
+                </th>
+                <th>
+                    Unidad Organizativa
+                </th>
+                <th>
+                    Cargo
+                </th>
+                <th>
+                    Formación
+                </th>
+                <th>
+                    Total de horas
+                </th>
+                <th>
+                    Acciones formativas
+                </th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(i => item.Documento)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => item.Empleado)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => item.Area)
+                </td>
+                <td>
+                    @Html.DisplayFor(i => item.Cargo)
+                </td>
+                <td>@(item.Capacitado ? "SI" : "NO")</td>
+                <td>
+                    @Html.DisplayFor(i => item.Horas)
+                </td>
+                <td>
+                    @if (item.NombresAF.Any())
+                    {
+                        <button class="btn-toggle btn btn-outline-primary mb-2">Ver listado</button>
+                        <ul style="display:none;">
+                            @foreach (var name in item.NombresAF)
+                            {
+                                <li>@name</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No hay capacitaciones</span>
+                    }
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<style>
+    .dataTables_wrapper .top {
+        display: flex;
+        justify-content: space-between;
+    }
+</style>
+
+<script>
+    document.querySelectorAll('.btn-toggle').forEach(button => {
+        button.addEventListener('click', () => {
+            const list = button.nextElementSibling;
+            list.style.display = list.style.display === 'none' ? 'block' : 'none';
+        });
+    });
+</script>
+
+<script>
+    function alternarCampoPerfil() {
+        if ($("#Personal").val() == "1") {
+            $("#PerfilDiv").show("fast");
+        } else {
+            $("#PerfilDiv").hide("fast");
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        alternarCampoPerfil();
+
+        var table = $('#Exportar_a_Excel').DataTable({
+
+            lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Todos']],
+            pageLength: 5,
+            dom: '<"top"Blf>rt<"bottom"ip><"clear">',
+            buttons: [
+                {
+
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    filename: 'ReportePersonal',
+                    titleAttr: 'Exportar a Excel',
+                    className: 'btn btn-success',
+                    exportOptions: {
+                        format: {
+                            body: function (data, row, column, node) {
+                                if (column === 6) { 
+                                    
+                                    var text = $(node).find('ul li').map(function () {
+                                        return $(this).text();
+                                    }).get().join('\n');
+                                    return text;
+                                }
+                                return data;
+                            }
+                        }
+                    }
+
+                },
+
+
+            ],
+
+            language: {
+                "sProcessing": "Procesando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "No se encontraron resultados",
+                "sEmptyTable": "Ningún dato disponible en esta tabla",
+                "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar:",
+                "sUrl": "",
+
+
+                "sInfoThousands": ",",
+                "sLoadingRecords": "Cargando...",
+                "oPaginate": {
+                    "sFirst": "Primero-",
+                    "sLast": "Último",
+                    "sNext": "  - Siguiente",
+                    "sPrevious": "Anterior -  "
+                },
+                "oAria": {
+                    "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                    "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+            },
+
+        });
+    })
+
+</script>
