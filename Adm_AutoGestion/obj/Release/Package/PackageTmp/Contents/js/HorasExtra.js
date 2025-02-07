@@ -14,6 +14,11 @@ $(document).ready(function () {
 
         return false;
     });
+
+    $("a[data-modalRechazarHora]").on("click", function (e) {
+        openmodalRechazarHora(this.href);
+        return false;
+    });
     //limpiar html''
     $('#modal_HEDetailJefe').on('hidden.bs.modal', function () {
         $('#contentHE1ModalJefe').html('');
@@ -30,6 +35,10 @@ $(document).ready(function () {
         var modalBody = modalObservacion.querySelector('.modal-body p');
         modalBody.textContent = observacion;
     });
+
+   
+
+   
 
     //$("#btnMostrarModal").click(function () {
     //    // Obtenemos la observación del atributo data-observacion del botón
@@ -95,6 +104,66 @@ function openmodalHE02(url, modalTitle) {
 
         //bindForm(this);
     });
+}
+
+
+function openmodalRechazarHora(url) {
+    $('#contentModalRechazarHora').load(url, function () {
+        $('#modal_RechazarHora').modal('show');
+
+        //bindForm(this);
+    });
+}
+
+
+function RechazarHora() {
+    try {
+
+        var frmData = new FormData();
+        var IdHora = $("#IdHora").val();
+       
+        var Observaciones = $("#Observaciones").val();
+       
+        if (Observaciones == "") {
+            throw 'Campo Observación Obligarorio'
+        }
+       
+       
+
+        
+        //----------------------------------------------------//
+        frmData.append("IdHora", IdHora);
+        //frmData.append("Conocimientos", conocimientos);
+        frmData.append("Observaciones", Observaciones);
+       
+       
+
+        $.ajax({
+
+            url: "RechazarHora2",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            data: frmData,
+            contentType: false,
+            processData: false,
+            success: function (json) {
+                if (json.respuesta != "") {
+                    alertify.alert(json.respuesta);
+                    if (json.isRedirect) {
+                        //setTimeout(function () { window.location.href = json.redirectUrl }, 2500);
+                        setTimeout(function () { window.location.reload(true) }, 1800);
+
+                    }
+                }
+
+            },
+            error: function (xhr, status, error) { alertify.alert(error); }
+
+        });
+
+    } catch (err) { alertify.alert(err); }//(err) { Message(err); alert(err);}
+
 }
 
 //-------------------------FUNCIONES--------------------------//

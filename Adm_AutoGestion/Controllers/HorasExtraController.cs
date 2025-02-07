@@ -1,8 +1,10 @@
 ﻿using Adm_AutoGestion.Models;
 using Adm_AutoGestion.Services;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 
 
 
@@ -574,6 +577,107 @@ namespace Adm_AutoGestion.Controllers
             }
 
         }
+
+
+        public ActionResult RechazarHoraExtra(string Id)
+        {
+
+            Int32.TryParse(Id, out int id);
+
+            using (var db = new AutogestionContext())
+            {
+
+                ViewBag.HoraExtra = db.HorasExtra.FirstOrDefault(x => x.Id == id);
+            }
+
+            return PartialView();
+        }
+
+
+
+
+        public JsonResult RechazarHora2()
+        {
+            var respuesta = "0";
+
+            int IdUsuarioM = 0;
+            string modifica = String.Format("{0}", Session["Empleado"]);
+            Int32.TryParse(modifica, out IdUsuarioM);
+            bool mensaje = true;
+
+            try
+            {
+                var IdHora = HttpContext.Request.Params["IdHora"];
+                var Observaciones = HttpContext.Request.Params["Observaciones"];
+                
+                
+
+              
+                    var id = Convert.ToInt32(IdHora);
+                    var HoraExtra = db.HorasExtra.FirstOrDefault(z => z.Id == id);
+
+
+                    mensaje = _repo.EnviarRechazados2(id, IdUsuarioM, Observaciones);
+              
+                if (mensaje == true)
+                {
+
+                    var Emp = db.HorasExtra.Include(x => x.Empleado).Where(x => x.Id == id).FirstOrDefault();
+                    HorasExtra horasExtra = db.HorasExtra.Where(x => x.Id == id).FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(Emp.Empleado.Lider))
+                    // if (Emp.Empleado.Lider != null|| Emp.Empleado.Lider != "")
+                    {
+
+
+                        var CorreoLider = db.Empleados.FirstOrDefault(x => x.NroEmpleado == Emp.Empleado.Lider);
+                        _repo.notificar_Rechazado(id, CorreoLider.Correo, Emp.EmpleadoId, horasExtra.FechaDeRegistro, Observaciones, "Rechazado");
+
+                    }
+
+                    //CORREO JEFE
+
+                    var CorreoJefe = db.Empleados.FirstOrDefault(x => x.NroEmpleado == Emp.Empleado.Jefe);
+                    _repo.notificar_Rechazado(id, CorreoJefe.Correo, Emp.EmpleadoId, horasExtra.FechaDeRegistro, Observaciones, "Rechazado");
+
+                    _repo.notificar_Rechazado(id, Emp.Empleado.Correo, Emp.EmpleadoId, horasExtra.FechaDeRegistro, Observaciones, "Rechazado");
+
+                    respuesta = "Hora Extra  " + IdHora + " ha sido rechazada";
+
+
+                }
+
+                else {
+
+                    respuesta = "Error al Guardar registro";
+
+                }
+
+                  
+
+                
+                return Json(new
+                {
+                    respuesta,
+                    isRedirect = true
+                });
+            }
+            catch (SystemException ex)
+            {
+                respuesta = String.Format("Error al guardar. {0}", ex.Message);
+                return Json(new
+                {
+                    respuesta,
+                    isRedirect = false
+                });
+
+
+            }
+
+
+        }
+
+
 
 
         public ActionResult EnviarRechazadosJefe(int[] ids, string observaciones)

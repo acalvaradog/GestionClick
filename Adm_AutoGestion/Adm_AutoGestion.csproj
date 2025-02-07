@@ -4255,6 +4255,7 @@
     <Content Include="Views\Cesantias\_DetallePorPagar.cshtml" />
     <Content Include="Views\Noticia\CrearNoticia.cshtml" />
     <Content Include="Views\Noticia\EditarNoticia.cshtml" />
+    <Content Include="Views\HorasExtra\RechazarHoraExtra.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

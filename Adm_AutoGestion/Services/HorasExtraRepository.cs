@@ -374,6 +374,8 @@ namespace Adm_AutoGestion.Services
                     texto = texto.Replace("$NMREMP", EMP.NroEmpleado);
                     texto = texto.Replace("$OBSERVACIONESJEFE", Observaciones);
 
+
+
                 }
 
                 textocorreo = texto;
@@ -724,5 +726,57 @@ namespace Adm_AutoGestion.Services
 
             }
         }
+
+
+
+        internal bool EnviarRechazados2(int Id , int IdUsuarioM, string Observaciones)
+        {
+
+            using (var db = new AutogestionContext())
+            {
+                try
+                {
+
+
+
+                    HorasExtra model = new HorasExtra();
+                    HistoricoHorasExtra Historial = new HistoricoHorasExtra();
+
+                   
+                        model = db.HorasExtra.FirstOrDefault(x => x.Id == Id);
+                        db.HorasExtra.Attach(model);
+                        model.Estado = 4;
+                        model.FechaPago = null;
+                        db.SaveChanges();
+
+                        var estado = db.EstadosHorasExtra.FirstOrDefault(x => x.Id == model.Estado);
+
+                        Historial.HorasExtraId = Id;
+                        Historial.EstadoNombre = estado.Nombre;
+                        Historial.FechaSolicitud = DateTime.Now;
+                        Historial.UsuarioModifica = IdUsuarioM.ToString();
+                        Historial.Observaciones = Observaciones;
+                        db.HistoricoHorasExtra.Add(Historial);
+                        db.SaveChanges();
+
+
+
+
+                    
+
+                    return true;
+
+                }
+                catch
+                {
+
+                    return false;
+
+
+                }
+
+            }
+        }
+
     }
 }

@@ -115,7 +115,7 @@
                             <th></th>
                             @*<th>
             Ver detalle
-        </th>*@
+        </th>*@             <th></th>
                             <th>
                                 No.Registro
                             </th>
@@ -267,9 +267,16 @@
                     <tr>
                         <td>
                             <a href='@Url.Action("DescargarPDF", "HorasExtra", new { id = item.Id }, null)' target="_blank">
-                                <i class="fas fa-file-pdf text-primary"></i>
+                                <i class="fas fa-file-pdf text-primary"  style="font-size:24px"></i>
                             </a>
                         </td>
+                        
+                        <td style="text-align:center">
+                            <a href='@Url.Action("RechazarHoraExtra", "HorasExtra", new { id = item.Id }, null)' data-modalRechazarHora=''>
+                                <i class="fas fa-times-circle text-primary"  style="font-size:24px"></i>
+                                @*<img src='@Url.Content("~/Contents/image/secure-data.png")' />*@
+                            </a>
+                        </td> 
 
                         @*<td>
             @Html.ActionLink(" ", "DetalleHorasExtraGestion2", new { id = item.Id }, new { data_modalHEJefeDetail = "", @class = "btn close fas fa-eye text-primary mr-4", onclick = "openmodalHE01(this.href, 'Detalle horas extras')" })
@@ -381,6 +388,23 @@
 </div>
 
 
+<div class="modal fade in" id="modal_RechazarHora">
+    <div class="modal-dialog modal-xl ">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h5 class="modal-title text-white">Rechazar Hora Extra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div id="contentModalRechazarHora">
+                <br />
+                <br />
+                <br />
+            </div>
 
+        </div>
+    </div>
+</div>
 
 

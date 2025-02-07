@@ -69,7 +69,7 @@ namespace Adm_AutoGestion.Services
 
                     Configuraciones Configura = new Configuraciones();
 
-                    Configura = db.Configuraciones.FirstOrDefault(e => e.Id == 1);
+                    Configura = db.Configuraciones.FirstOrDefault(e => e.Parametro == "HD001");
                     db.Configuraciones.Attach(Configura);
                     Configura.Valor = Valor;
                     db.SaveChanges();

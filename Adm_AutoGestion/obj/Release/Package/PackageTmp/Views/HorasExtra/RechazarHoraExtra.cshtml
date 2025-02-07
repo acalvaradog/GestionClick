@@ -1,0 +1,36 @@
+﻿@model Adm_AutoGestion.Models.HorasExtra
+@{
+
+Adm_AutoGestion.Models.HorasExtra Item = ViewBag.HoraExtra;
+}
+
+<div class="container">
+
+    <form action="javascript:;" method="post" id="form" enctype="multipart/form-data">
+        <div class="row justify-content-start">
+            <div class="col-12" hidden>
+                Id Hora
+                <input type="text" disabled value="@Item.Id" class="form-control" id="IdHora" />
+
+            </div>
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <label>Observaciones: </label>
+                    <textarea class="form-control" rows="4" id="Observaciones" name="Observaciones"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row justify-content-start" style="text-align:center">
+            <div class="col-12">
+                <br />
+                <button type="submit" id="Rechazar" class="bi bi-save btn btn-outline-primary rounded-pill mb-2" onclick="javascript: return RechazarHora();"> Rechazar</button>
+            </div>
+        </div>
+
+        <br />
+    </form>
+</div>
+

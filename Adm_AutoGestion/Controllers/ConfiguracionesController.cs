@@ -166,7 +166,8 @@ namespace Adm_AutoGestion.Controllers
             {
                 if(Valor != null){
                 _repo.Modificar(Valor);
-                    return RedirectToAction("Index");
+
+                    return RedirectToAction("HabilitarDescarga");
                 }
             }
             catch
