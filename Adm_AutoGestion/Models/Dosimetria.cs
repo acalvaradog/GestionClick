@@ -24,8 +24,10 @@ namespace Adm_AutoGestion.Models
             public int Mes { get; set; } // Mes del registro (1-12).
 
             [Required]
-            public decimal ValorHp10 { get; set; } // Valor de dosimetría (Hp(10)).
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
+        public decimal ValorHp10 { get; set; } // Valor de dosimetría (Hp(10)).
         [Required]
+        [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
         public decimal ValorHp3 { get; set; } // Valor de dosimetría (Hp(10)).
 
         [Required]

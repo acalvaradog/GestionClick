@@ -8,9 +8,9 @@
 @using Autogestion.Shared.DTO.Empleado;
 
 @if (_loading)
-
 {
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Small" Class="my-7" />
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Large" Class="my-7" />
+    <MudText Align="Align.Center" Typo="Typo.body1">Procesando...</MudText>
 }
 else{
     <MudTable Items="@solicitudes" Dense="true">
@@ -20,6 +20,7 @@ else{
             <MudTh>Valor Solicitado</MudTh>
             <MudTh>Destino</MudTh>
             <MudTh>Estado</MudTh>
+            <MudTh>Acciones</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd>@context.Id</MudTd>
@@ -27,6 +28,13 @@ else{
             <MudTd>@context.ValorRetiro</MudTd>
             <MudTd>@context.Destino.Nombre</MudTd>
             <MudTd>@context.Estado.Nombre</MudTd>
+            <MudTd>
+                @if (context.EstadoId == 2) { 
+                <MudIconButton Icon="@Icons.Material.Filled.PictureAsPdf"
+                Color="Color.Primary"
+                                   OnClick="() => DescargarPdf(context.Id)" />
+                }
+            </MudTd>
         </RowTemplate>
     </MudTable>
 }
@@ -40,6 +48,7 @@ else{
     {
         datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
         await ConsultarSolicitudes();
+        StateHasChanged();
 
     }
 
@@ -55,7 +64,45 @@ else{
         {
             await JS.ShowMessage("Ok", $"Error al consultar", "Error");
             _loading = false;
-         
+
+        }
+    }
+
+    private async Task DescargarPdf(int solicitudId)
+    {
+        try
+        {
+            _loading = true;
+            // Llamar a la API para obtener el PDF en base64
+            var response = await Http.GetAsync($"api/cesantias/GenerarCarta/{solicitudId}");
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<string>();
+                if (result != null)
+                {
+                    // Convertir base64 a bytes
+                    var pdfBytes = Convert.FromBase64String(result);
+
+                    // Descargar el PDF
+                    var fileName = $"CartaCesantia_{solicitudId}.pdf";
+                    await JS.InvokeVoidAsync("descargarArchivo", fileName, result);
+                }
+                else
+                {
+                    await JS.ShowMessage("Ok", "No se pudo generar el PDF.", "Error");
+                }
+            }
+            else
+            {
+                await JS.ShowMessage("Ok", "Error al llamar a la API.", "Error");
+            }
+
+            _loading = false;
+        }
+        catch (Exception ex)
+        {
+            _loading = false;
+            await JS.ShowMessage("Ok", $"Error al descargar el PDF: {ex.Message}", "Error");
         }
     }
 }

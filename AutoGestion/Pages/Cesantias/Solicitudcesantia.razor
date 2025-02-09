@@ -23,7 +23,18 @@
             <MudItem xs="12" sm="6">
                 <MudNumericField Label="Valor a Retirar" Format="N2" Culture="@CultureInfo.GetCultureInfo("en-ES")" T="decimal" @bind-Value="solicitud.ValorRetiro" Required="true" Variant="Variant.Outlined" FullWidth="true" />
             </MudItem>
-
+            <MudItem xs="12" sm="6">
+                <MudSelect T="int" Label="Fondo de Cesantias" Required="true" @bind-Value="@solicitud.FondoCesantiasId" Variant="Variant.Outlined" FullWidth="true">
+                    <MudSelectItem Value="0">Seleccionar</MudSelectItem>
+                    @foreach (var destino in fondocesantias)
+                    {
+                        <MudSelectItem T="int" Value="@(destino.Id)">@destino.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem>
+                El destino de las cesantias es para un familiar o la vivienda esta a nombre de su cónyuge?  <MudCheckBox  ValueChanged="(bool value) => OnFamiliarChanged(value)" Color="Color.Primary"></MudCheckBox>
+            </MudItem>
             <MudItem xs="12" sm="6">
                 <MudSelect T="int" Label="Destino" Required="true" Value="@solicitud.DestinoId" ValueChanged="value => CargarSoportesRequeridos(value)" Variant="Variant.Outlined" FullWidth="true">
                     <MudSelectItem Value="0">Seleccionar</MudSelectItem>
@@ -33,6 +44,7 @@
                     }
                 </MudSelect>
             </MudItem>
+
         </MudGrid>
     </MudCard>
 
@@ -70,6 +82,7 @@
     private SolicitudCesantiaDTO solicitud = new();
     private List<DestinoCesantiaDTO> destinos = new();
     private List<SoporteDestinoDTO> soportesRequeridos = new();
+    private List<FondoCesantiasDTO> fondocesantias = new();
     private List<IBrowserFile> soporteFiles = new();
     private int empleadoIdBusqueda;
     private List<int> tiposAdjuntos = new List<int>();
@@ -78,11 +91,21 @@
     string pesoMaximo;
     private bool _loading = false;
     private EmpleadoReturnSapDTO datosempleado { get; set; }
-
+    private bool _isFamiliar = false;
     protected override async Task OnInitializedAsync()
     {
-        datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
-        await CargarDestinos();
+        try
+        {
+            datosempleado = await localStore.GetItemAsync<EmpleadoReturnSapDTO>("User");
+            fondocesantias = await Http.GetFromJsonAsync<List<FondoCesantiasDTO>>("api/cesantias/listar-fondos");
+            await CargarDestinos();
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine($"Error al cargar datos: {ex.Message}");
+        }
+
     }
 
     private async Task CargarDestinos()
@@ -97,12 +120,20 @@
         }
     }
 
+
+    private async Task OnFamiliarChanged(bool value)
+    {
+        _isFamiliar = value; // Actualiza el estado del checkbox
+        await CargarSoportesRequeridos(solicitud.DestinoId); // Llama al método para cargar soportes
+    }
+
     private async Task CargarSoportesRequeridos(int destino)
     {
         try
         {
             solicitud.DestinoId = destino;
             soportesRequeridos = await Http.GetFromJsonAsync<List<SoporteDestinoDTO>>($"api/cesantias/listar-soportes-por-destino/{destino}");
+            if (_isFamiliar) soportesRequeridos.Add(new SoporteDestinoDTO { Nombre = "Acta Matimonio/registro Civil" });
             soporteFiles.Clear(); // Reinicia los archivos seleccionados
         }
         catch (Exception ex)
@@ -124,6 +155,7 @@
             frmData.Add(new StringContent(datosempleado.Id.ToString()), "solicitud.EmpleadoId");
             frmData.Add(new StringContent(solicitud.EstadoId.ToString()), "solicitud.EstadoId");
             frmData.Add(new StringContent(solicitud.DestinoId.ToString()), "solicitud.DestinoId");
+            frmData.Add(new StringContent(solicitud.FondoCesantiasId.ToString()), "solicitud.FondoCesantiasId");
             frmData.Add(new StringContent(solicitud.ValorRetiro.ToString()), "solicitud.ValorRetiro");
             frmData.Add(new StringContent(soporteFiles.Count.ToString()), "solicitud.CantidadAdjuntos");
 
@@ -158,18 +190,18 @@
             var response = await Http.PostAsync("api/cesantias/registrar-solicitud-con-soportes", frmData);
             if (response.IsSuccessStatusCode)
             {
-                await JS.ShowMessage("Ok", "Solicitud registrada con éxito", "");
+                await JS.ShowMessage("Solicitud registrada con éxito", "Registro Cesantias", "");
             }
             else
             {
-                await JS.ShowMessage("Error", "Ocurrió un error al guardar, vuelve a intentarlo", "");
+                await JS.ShowMessage("Ocurrió un error al guardar, vuelve a intentarlo", "Error", "");
             }
             _loading = false;
         }
         catch (Exception ex)
         {
             _loading = false;
-            Console.WriteLine($"Error al registrar la solicitud: {ex.Message}");
+            await JS.ShowMessage($"Ocurrió un error al guardar, vuelve a intentarlo {ex.Message}", "Error", "");
         }
     }
 

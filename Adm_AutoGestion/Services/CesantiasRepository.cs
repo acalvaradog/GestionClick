@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-
+using PuppeteerSharp;
+using PuppeteerSharp.Media;
+using System.Web.Hosting;
 namespace Adm_AutoGestion.Services
 {
     public class CesantiasRepository
@@ -48,6 +51,7 @@ namespace Adm_AutoGestion.Services
                 .Include("Soportes")
                 .Include("Destino")
                 .Include("Estado")
+                  .Include(x => x.FondoCesantias)
                 .Where(s => s.EmpleadoId == empleadoId)
                 .ToList();
         }
@@ -55,6 +59,11 @@ namespace Adm_AutoGestion.Services
         public List<DestinoCesantia> ListarDestinos()
         {
             return _context.DestinoCesantia.ToList();
+        }
+
+        public List<FondoCesantias> ListarFondos()
+        {
+            return _context.FondoCesantias.ToList();
         }
 
         public List<SoporteDestino> ListarSoportesPorDestino(int destinoId)
@@ -71,6 +80,7 @@ namespace Adm_AutoGestion.Services
                 .Include(s => s.Destino)
                 .Include(s => s.Estado)
                 .Include(s => s.Empleado)
+                  .Include(x => x.FondoCesantias)
                 .Where(x=> x.Empleado.Empresa == empresa)
                 .AsQueryable();
 
@@ -97,6 +107,7 @@ namespace Adm_AutoGestion.Services
                 .Include(s => s.Destino)
                 .Include(x=> x.Log)
                  .Include(x => x.Empleado)
+                 .Include(x=> x.FondoCesantias)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -127,6 +138,93 @@ namespace Adm_AutoGestion.Services
                 _context.LogSolicitudCesantia.Add(log);
                 await _context.SaveChangesAsync();
             }
+        }
+
+
+        public async Task<string> GenerarCartaPdfBase64(int solicitudId)
+        {
+            // Obtener datos de la base de datos
+            var solicitud = await ObtenerSolicitudConDetallesAsync(solicitudId);
+
+
+            // Generar HTML
+            var html = GenerarHtml(solicitud);
+
+            // Convertir HTML a PDF
+            var pdfBytes = await ConvertirHtmlAPdf(html);
+
+            // Convertir PDF a base64
+            return Convert.ToBase64String(pdfBytes);
+        }
+
+        public string GenerarHtml(SolicitudCesantia solicitud)
+        {
+
+            string rutaBase = HostingEnvironment.ApplicationPhysicalPath;
+
+            // Construir la ruta completa al archivo HTML
+            string rutaPlantilla = Path.Combine(rutaBase, "PlantillasPDF", "CartaCesantias.html");
+
+
+            string htmlTemplate = File.ReadAllText(rutaPlantilla);
+
+            var datos = new Dictionary<string, string>
+    {
+        { "{{Fecha}}", DateTime.Now.ToString("dd/MM/yyyy") },
+        { "{{FondoCesantias}}", solicitud.FondoCesantias.Name },
+        { "{{NombreTrabajador}}", solicitud.Empleado.Nombres},
+        { "{{Identificacion}}", solicitud.Empleado.Documento},
+        { "{{ValorRetiro}}", solicitud.ValorRetiro.ToString("C") },
+        { "{{ConceptoRetiro}}",  solicitud.Destino.Nombre },
+        { "{{RepresentanteLegal}}", "JUAN CARLOS MANTILLA SUAREZ" },
+        { "{{CCRepresentante}}", "13.827.980" },
+        { "{{LugarExpedicion}}", "Bucaramanga" },
+        { "{{Telefono}}", "6059355" },
+        { "{{Extension}}", "1538" }
+    };
+
+            foreach (var dato in datos)
+            {
+                htmlTemplate = htmlTemplate.Replace(dato.Key, dato.Value);
+            }
+
+            return htmlTemplate;
+        }
+
+        public async Task<byte[]> ConvertirHtmlAPdf(string html)
+        {
+            await new BrowserFetcher().DownloadAsync();
+
+            // Lanzar el navegador
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
+
+            // Crear una nueva página
+            var page = await browser.NewPageAsync();
+
+            // Establecer el contenido HTML
+            await page.SetContentAsync(html);
+
+            // Configurar opciones para el PDF
+            var pdfOptions = new PdfOptions
+            {
+                Format = PaperFormat.A4, // Formato A4
+                MarginOptions = new MarginOptions // Márgenes
+                {
+                    Top = "20mm",
+                    Right = "20mm",
+                    Bottom = "20mm",
+                    Left = "20mm"
+                },
+                PrintBackground = true // Incluir fondos (útil si usas colores o imágenes de fondo)
+            };
+
+            // Generar el PDF como un arreglo de bytes
+            var pdfBytes = await page.PdfDataAsync(pdfOptions);
+
+            // Cerrar el navegador
+            await browser.CloseAsync();
+
+            return pdfBytes;
         }
     }
 

@@ -6,11 +6,11 @@
     <p><strong>Fecha de Registro:</strong> @Model.FechaRegistro.ToShortDateString()</p>
     <p><strong>Valor Retiro:</strong> @Model.ValorRetiro.ToString("C")</p>
     <p><strong>Destino:</strong> @Model.Destino.Nombre</p>
-
+    <p><strong>Fondo Cesantias:</strong> @Model.FondoCesantias.Name</p>
     <h4>Soportes</h4>
     <ul>
-   
-        
+
+
         @foreach (var soporte in Model.Soportes)
         {
             <li>

@@ -1771,23 +1771,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Cata\\.nuget\\packages\\": {},
+    "C:\\Users\\User\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\GestionClick\\CumpleañosAniversarios\\CumpleañosAniversarios.csproj",
+      "projectUniqueName": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\CumpleañosAniversarios\\CumpleañosAniversarios.csproj",
       "projectName": "CumpleañosAniversarios",
-      "projectPath": "C:\\GestionClick\\CumpleañosAniversarios\\CumpleañosAniversarios.csproj",
-      "packagesPath": "C:\\Users\\Cata\\.nuget\\packages\\",
-      "outputPath": "C:\\GestionClick\\CumpleañosAniversarios\\obj\\",
+      "projectPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\CumpleañosAniversarios\\CumpleañosAniversarios.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\CumpleañosAniversarios\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Cata\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1803,8 +1803,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
-              "projectPath": "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
+            "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
+              "projectPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
             }
           }
         }
@@ -1813,7 +1813,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "all"
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net6.0": {
@@ -1868,8 +1874,20 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"System.Text.Json\" 7.0.0 tiene una vulnerabilidad de gravedad alta conocida, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
 }

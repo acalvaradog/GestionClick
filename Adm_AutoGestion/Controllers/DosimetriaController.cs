@@ -74,6 +74,8 @@ namespace Adm_AutoGestion.Controllers
         [System.Web.Http.HttpPost]
         public JsonResult Save(Dosimetria model)
         {
+
+
             if (ModelState.IsValid)
             {
                 if (model.Id == 0)
@@ -84,6 +86,7 @@ namespace Adm_AutoGestion.Controllers
                 {
                     _repository.Update(model);
                 }
+                
                 return Json(new { success = true });
             }
             return Json(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage)) });

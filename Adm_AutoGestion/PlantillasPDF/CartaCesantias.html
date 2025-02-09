@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+
+        .header {
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .content {
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Floridablanca, {{Fecha}}
+    </div>
+    <div class="content">
+        <p>SEÑORES</p>
+        <p><strong>{{FondoCesantias}}</strong></p>
+        <p>Ciudad</p>
+        <p>Asunto: Retiro de cesantías</p>
+        <p>
+            Según lo dispuesto en el Artículo 21 de la ley 1429 de 2010 (que modificó
+            el Art. 256 del código sustantivo del trabajo) y a la aclaración
+            contenida en la carta circular 011 del 7 de Febrero de 2011 del
+            Ministerio de la protección social, nos permitimos informarles que hemos
+            autorizado el retiro parcial de vivienda del trabajador(a) señalado más
+            adelante, en las siguientes condiciones:
+        </p>
+        <p>Nombre del Trabajador: {{NombreTrabajador}}</p>
+        <p>Identificación: {{Identificacion}}</p>
+        <p>Valor Retiro: {{ValorRetiro}}</p>
+        <p>Concepto Retiro: {{ConceptoRetiro}}</p>
+        <p>
+            La empresa se compromete a vigilar la inversión de las cesantías de
+            acuerdo con lo estipulado en las normas antes señaladas.
+        </p>
+    </div>
+    <div class="footer">
+        <p><strong>{{RepresentanteLegal}}</strong></p>
+        <p>CC. {{CCRepresentante}} expedida {{LugarExpedicion}}</p>
+        <p>Pbx. {{Telefono}} extensión {{Extension}}</p>
+    </div>
+</body>
+</html>

@@ -43,6 +43,7 @@ namespace Adm_AutoGestion.Services
             if (dosimetriaInDb != null)
             {
                 dosimetriaInDb.ValorHp10 = dosimetria.ValorHp10;
+                dosimetriaInDb.ValorHp3 = dosimetria.ValorHp3;
                 dosimetriaInDb.Anio = dosimetria.Anio;
                 dosimetriaInDb.Mes = dosimetria.Mes;
                 dosimetriaInDb.SedeId = dosimetria.SedeId;

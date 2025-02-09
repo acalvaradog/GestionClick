@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Adm_AutoGestion.Controllers.Api
 {
@@ -39,6 +40,7 @@ namespace Adm_AutoGestion.Controllers.Api
                     FechaRegistro = DateTime.Now,
                     ValorRetiro = Convert.ToDecimal(HttpContext.Current.Request.Params["solicitud.ValorRetiro"]),
                     DestinoId = Convert.ToInt16(HttpContext.Current.Request.Params["solicitud.DestinoId"]),
+                    FondoCesantiasId = Convert.ToInt16(HttpContext.Current.Request.Params["solicitud.FondoCesantiasId"]),
                     EstadoId = 1
                 };
 
@@ -174,6 +176,36 @@ namespace Adm_AutoGestion.Controllers.Api
             catch (Exception ex)
             {
                 return BadRequest($"Error al listar los soportes: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("api/cesantias/GenerarCarta/{solicitudid}")]
+        public async Task<IHttpActionResult> GenerarCarta(int solicitudid)
+        {
+            try
+            {
+                var carta = await _repository.GenerarCartaPdfBase64(solicitudid);
+                return Ok(carta);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al listar los soportes: {ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("api/cesantias/listar-fondos")]
+        public IHttpActionResult listarfondos()
+        {
+            try
+            {
+                var destinos = _repository.ListarFondos();
+                return Ok(destinos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al listar los destinos: {ex.Message}");
             }
         }
     }

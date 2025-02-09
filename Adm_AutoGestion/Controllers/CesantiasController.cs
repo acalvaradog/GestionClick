@@ -110,7 +110,7 @@ namespace Adm_AutoGestion.Controllers
 
             var logs = await _cesantiasRepository.ObtenerLogsPorSolicitudAsync(id);
             ViewBag.Logs = logs;
-            ViewBag.Estados = _context.EstadoCesantia.Where(x => x.Id == 2).ToList();
+            ViewBag.Estados = _context.EstadoCesantia.Where(x => x.Id != 2).ToList();
             return PartialView("_DetallePorPagarModal", solicitud);
         }
 

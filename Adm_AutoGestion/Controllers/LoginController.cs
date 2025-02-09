@@ -219,9 +219,9 @@ namespace Adm_AutoGestion.Controllers
                 ViewBag.CntPermisos = db.Permisos.Where(e => e.EstadoId == 1 &&  e.Empleado.Jefe == datos.NroEmpleado).Count();
                 ViewBag.CntProcesosDisc = db.ProcesoDisciplinario.Where(x => x.Estado == "Cerrado" && x.Sanciones == "Suspension" && x.EmpleadoRegistraId == datos.Id && x.FechaSuspencion == null ).Count();
                 ViewBag.CntViaticos = db.Viaticos.Where(x => x.Estado == 1 && x.Empleado.Jefe == datos.NroEmpleado).Count();
-                List<EvaDesempenoController.RestEmp> listEva = EvaDesempeño.ConsultaEmpleado(datos.NroEmpleado,"");
-                ViewBag.CntEvaDesempeñoEnt = listEva.Where(x=>x.EstadoE== 1).Count();
-                ViewBag.CntEvaDesempeñoPer = listEva.Where(x => x.EstadoP == 1).Count();
+                //List<EvaDesempenoController.RestEmp> listEva = EvaDesempeño.ConsultaEmpleado(datos.NroEmpleado,"");
+                //ViewBag.CntEvaDesempeñoEnt = listEva.Where(x=>x.EstadoE== 1).Count();
+                //ViewBag.CntEvaDesempeñoPer = listEva.Where(x => x.EstadoP == 1).Count();
 
 
 

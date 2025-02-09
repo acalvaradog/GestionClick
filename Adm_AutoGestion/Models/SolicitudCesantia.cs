@@ -21,7 +21,9 @@ namespace Adm_AutoGestion.Models
         // Relación con Estado
         public int EstadoId { get; set; }
         public EstadoCesantia Estado { get; set; }
-    
+
+        public int FondoCesantiasId { get; set; }
+        public FondoCesantias FondoCesantias { get; set; }
         public Empleado Empleado { get; set; }
         public List<SoporteCesantia> Soportes { get; set; }
         public List<LogSolicitudCesantia> Log { get; set; }

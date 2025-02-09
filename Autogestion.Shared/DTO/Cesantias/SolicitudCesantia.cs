@@ -18,6 +18,10 @@ namespace Autogestion.Shared.DTO.Cesantias
         public DestinoCesantiaDTO? Destino { get; set; }
 
         // Relación con Estado
+        public int FondoCesantiasId { get; set; }
+        public FondoCesantiasDTO FondoCesantias { get; set; }
+
+
         public int EstadoId { get; set; }
         public EstadoCesantiaDTO? Estado { get; set; }
         public List<SoporteCesantiaDTO>? Soportes { get; set; }

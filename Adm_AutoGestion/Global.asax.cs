@@ -23,7 +23,7 @@ namespace Adm_AutoGestion
             //Planificacion.StartNotificacion();
             //Planificacion.StartActualizacionEmpleados();
             //Planificacion.StartActualizacionEstructuraJerarquicadeEmpleados();
-          
+
         }
     }
 }

@@ -155,5 +155,6 @@ namespace Adm_AutoGestion.Models
         public DbSet<LogSolicitudCesantia> LogSolicitudCesantia { get; set; }
         public DbSet<EstadoCesantia> EstadoCesantia { get; set; }
         public DbSet<NoticiaImagen> NoticiaImagen { get; set; }
+        public DbSet<FondoCesantias> FondoCesantias { get; set; }
     }
 }

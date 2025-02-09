@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
 }
 <div class="card">
-    <h2>Solicitudes por Aprobar</h2>
+    <h2>Reporte</h2>
 
     <div>
         <form method="get">
@@ -58,7 +58,9 @@
                 <th>Trabajador</th>
                 <th>Fecha de Registro</th>
                 <th>Valor Retiro</th>
+                <th>Estado</th>
                 <th>Destino</th>
+                <th>Fondo</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -70,12 +72,19 @@
                     <td>@solicitud.Empleado.Nombres</td>
                     <td>@solicitud.FechaRegistro.ToShortDateString()</td>
                     <td>@solicitud.ValorRetiro.ToString("C")</td>
+                    <td>@solicitud.Estado.Nombre</td>
                     <td>@solicitud.Destino.Nombre</td>
+                    <td>@solicitud.FondoCesantias.Name</td>
                     <td>
                         <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detalleModal"
                                 data-id="@solicitud.Id">
                             Ver Detalle
                         </button>
+                        @if(solicitud.EstadoId == 2) {
+                        <button type="button" class="btn btn-danger btn-pdf" data-id="@solicitud.Id">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                        }
                     </td>
                 </tr>
             }
@@ -116,6 +125,28 @@
                 // Cargar contenido desde el servidor
                 $.get('../Cesantias/Detalle/' + solicitudId, function (data) {
                     modalBody.html(data);
+                });
+            });
+
+            $('.btn-pdf').on('click', function () {
+                var solicitudId = $(this).data('id'); // Obtener el ID de la solicitud
+                var url = '/api/cesantias/GenerarCarta/' + solicitudId;
+
+                // Hacer la solicitud GET a la API
+                $.get(url, function (data) {
+                    if (data) {
+                        // Crear un enlace temporal para descargar el PDF
+                        var link = document.createElement('a');
+                        link.href = 'data:application/pdf;base64,' + data;
+                        link.download = 'CartaCesantia_' + solicitudId + '.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else {
+                        alert('No se pudo generar el PDF.');
+                    }
+                }).fail(function () {
+                    alert('Error al generar el PDF.');
                 });
             });
         </script>
