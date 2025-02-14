@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "Joih0E5M",
+  "version": "xSUlweZ2",
   "assets": [
     {
       "hash": "sha256-d34CCz/uy3zyE4SomG0cr8Piqj1ZqDlEWdV/NwYjjZo=",
@@ -454,19 +454,19 @@ self.assetsManifest = {
       "url": "_content/MudBlazor/MudBlazor.min.js"
     },
     {
-      "hash": "sha256-9M2BWOuWwfPKBB8v9CTypipRmPrnthoBTKGn7GMvgaA=",
+      "hash": "sha256-iDiZYWDY6sT2dvO58cOKy3L0eHCkWMER0+iAy7QTSnY=",
       "url": "_framework/AutoGestion.dll"
     },
     {
-      "hash": "sha256-adBKrDXkM2NZ53YSrMpL+R0uV68Q7Q/epjdQMUK0kKQ=",
+      "hash": "sha256-Ga81QIMksrg0K6d3jcpoxBOADTzli1Sef+w43x2vgKY=",
       "url": "_framework/AutoGestion.pdb"
     },
     {
-      "hash": "sha256-gK2d5JzxCahhtT1XurjfnkhkNmgRCn7Q5bCwk5OmaXQ=",
+      "hash": "sha256-R54GQyjSBSapCH6Y0Jt/Xbj2W8ZyXeocZlv8PMgpcyQ=",
       "url": "_framework/Autogestion.Shared.dll"
     },
     {
-      "hash": "sha256-0RZDoVm7QBd2QTcmS6BA0VU2aPBnBPPBUl2Yg30SDtk=",
+      "hash": "sha256-Yyntmjerx8SB10mFyyEqnpZOf/nuul+2XGtXKbdXIvY=",
       "url": "_framework/Autogestion.Shared.pdb"
     },
     {
@@ -1310,7 +1310,7 @@ self.assetsManifest = {
       "url": "_framework/WindowsBase.dll"
     },
     {
-      "hash": "sha256-QxlJaxfgRmx/0Fc4AmnZ6smisKlSfeJRHdZxhOS0VIw=",
+      "hash": "sha256-ghLqBvzxpJkUuYajprNJ+C8HMDw8fyHS6ug0E8um8aE=",
       "url": "_framework/blazor.boot.json"
     },
     {

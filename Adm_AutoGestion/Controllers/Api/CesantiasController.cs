@@ -10,6 +10,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.IO;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 
 namespace Adm_AutoGestion.Controllers.Api
 {
@@ -185,12 +186,13 @@ namespace Adm_AutoGestion.Controllers.Api
         {
             try
             {
-                var carta = await _repository.GenerarCartaPdfBase64(solicitudid);
+             
+                var carta = await _repository.GenerarCartaPdfBase64(solicitudid );
                 return Ok(carta);
             }
             catch (Exception ex)
             {
-                return BadRequest($"Error al listar los soportes: {ex.Message}");
+                return BadRequest($"Error generar carta: {ex.Message}");
             }
         }
 
@@ -206,6 +208,40 @@ namespace Adm_AutoGestion.Controllers.Api
             catch (Exception ex)
             {
                 return BadRequest($"Error al listar los destinos: {ex.Message}");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("api/cesantias/getCartaFondo/{id}")]
+        public async Task<IHttpActionResult> GetCartaFondo(int id)
+        {
+            try
+            {
+                var solicitud = await _repository.ObtenerSolicitudConDetallesAsync(id);
+                if (solicitud == null || string.IsNullOrEmpty(solicitud.CartaFondo))
+                {
+                    return NotFound();
+                }
+
+                // Ruta del archivo
+                string carpetaAnexos = HostingEnvironment.MapPath("~/AnexosCesantias/");
+                string rutaArchivo = Path.Combine(carpetaAnexos, solicitud.CartaFondo);
+
+                if (!File.Exists(rutaArchivo))
+                {
+                    return NotFound();
+                }
+
+                // Convertir archivo a Base64
+                byte[] archivoBytes = File.ReadAllBytes(rutaArchivo);
+                string archivoBase64 = Convert.ToBase64String(archivoBytes);
+
+                return Ok(archivoBase64);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
             }
         }
     }

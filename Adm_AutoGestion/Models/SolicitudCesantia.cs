@@ -27,6 +27,7 @@ namespace Adm_AutoGestion.Models
         public Empleado Empleado { get; set; }
         public List<SoporteCesantia> Soportes { get; set; }
         public List<LogSolicitudCesantia> Log { get; set; }
+        public string CartaFondo { get; set; }
 
     }
 }

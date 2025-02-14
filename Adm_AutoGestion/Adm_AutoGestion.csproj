@@ -3749,6 +3749,10 @@
     <Compile Include="Migrations\202502082025087_campoobligatoriocesantia.Designer.cs">
       <DependentUpon>202502082025087_campoobligatoriocesantia.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202502132335074_campocartacesantias.cs" />
+    <Compile Include="Migrations\202502132335074_campocartacesantias.Designer.cs">
+      <DependentUpon>202502132335074_campocartacesantias.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Acceso.cs" />
     <Compile Include="Models\Adjunto.cs" />
@@ -4306,6 +4310,7 @@
     <Content Include="Views\Sedes\Details.cshtml" />
     <Content Include="Views\Sedes\Edit.cshtml" />
     <Content Include="Views\Sedes\Index.cshtml" />
+    <Content Include="Views\Cesantias\_Detalles.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4340,6 +4345,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202502082025087_campoobligatoriocesantia.resx">
       <DependentUpon>202502082025087_campoobligatoriocesantia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502132335074_campocartacesantias.resx">
+      <DependentUpon>202502132335074_campocartacesantias.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report2.rdlc" />
     <EmbeddedResource Include="Report3.rdlc" />

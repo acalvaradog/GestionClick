@@ -2752,3 +2752,4 @@ C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\System.T
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\System.Text.Json.xml
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\System.ValueTuple.xml
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.campoobligatoriocesantia.resources
+C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.campocartacesantias.resources

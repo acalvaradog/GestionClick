@@ -1,7 +1,9 @@
 ﻿using Adm_AutoGestion.Models;
 using Adm_AutoGestion.Services;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -36,7 +38,7 @@ namespace Adm_AutoGestion.Controllers
 
             var empresasesion = Session["Empresa"].ToString();
             var solicitudes = await _cesantiasRepository.ObtenerSolicitudesAsync(empleadoId, fechaInicio, fechaFin, estado,empresasesion);
-            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList();
+            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList().OrderBy(x=> x.Nombres);
             ViewBag.Estados = _context.EstadoCesantia.ToList();
             ViewBag.EmpleadoId = empleadoId;
             ViewBag.FechaInicio = fechaInicio?.ToString("yyyy-MM-dd");
@@ -60,7 +62,7 @@ namespace Adm_AutoGestion.Controllers
 
             var empresasesion = Session["Empresa"].ToString();
             var solicitudes = await _cesantiasRepository.ObtenerSolicitudesAsync(empleadoId, fechaInicio, fechaFin,1, empresasesion);
-            ViewBag.Empleados = _context.Empleados.Where(x=> x.Empresa == empresasesion).ToList();
+            ViewBag.Empleados = _context.Empleados.Where(x=> x.Empresa == empresasesion).ToList().OrderBy(x => x.Nombres);
             ViewBag.EmpleadoId = empleadoId;
             ViewBag.FechaInicio = fechaInicio?.ToString("yyyy-MM-dd");
             ViewBag.FechaFin = fechaFin?.ToString("yyyy-MM-dd");
@@ -83,7 +85,7 @@ namespace Adm_AutoGestion.Controllers
 
             var empresasesion = Session["Empresa"].ToString();
             var solicitudes = await _cesantiasRepository.ObtenerSolicitudesAsync(empleadoId, fechaInicio, fechaFin, 2, empresasesion);
-            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList();
+            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList().OrderBy(x => x.Nombres);
             ViewBag.EmpleadoId = empleadoId;
             ViewBag.FechaInicio = fechaInicio?.ToString("yyyy-MM-dd");
             ViewBag.FechaFin = fechaFin?.ToString("yyyy-MM-dd");
@@ -111,7 +113,7 @@ namespace Adm_AutoGestion.Controllers
             var logs = await _cesantiasRepository.ObtenerLogsPorSolicitudAsync(id);
             ViewBag.Logs = logs;
             ViewBag.Estados = _context.EstadoCesantia.Where(x => x.Id != 2).ToList();
-            return PartialView("_DetallePorPagarModal", solicitud);
+            return PartialView("_Detalles", solicitud);
         }
 
 
@@ -129,6 +131,47 @@ namespace Adm_AutoGestion.Controllers
             var usuario = Session["NombreEmpleado"].ToString(); // Obtiene el nombre del usuario actual
             await _cesantiasRepository.ActualizarEstadoSolicitudAsync(id, nuevoEstadoId, usuario);
             return RedirectToAction("PorPagar");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SubirCartaFondo(int id, HttpPostedFileBase cartaFondo)
+        {
+            var solicitud = await _cesantiasRepository.ObtenerSolicitudConDetallesAsync(id);
+            if (cartaFondo == null)
+            {
+                TempData["Error"] = "Por favor, seleccione un archivo PDF.";
+                return PartialView("_DetallePorPagar", solicitud);
+            }
+
+            // Verificar que el archivo sea un PDF
+            if (Path.GetExtension(cartaFondo.FileName).ToLower() != ".pdf")
+            {
+                TempData["Error"] = "El archivo debe ser un PDF.";
+                return PartialView("_DetallePorPagar", solicitud);
+            }
+
+            // Guardar el archivo en el servidor
+
+            var nombreArchivo = $"CartaFondo_{id}_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+            //var rutaArchivo = Path.Combine(rutaCarpeta, nombreArchivo);
+            var rutaArchivo = Path.Combine(Server.MapPath("~/AnexosCesantias"), nombreArchivo);
+
+            cartaFondo.SaveAs(rutaArchivo);
+
+            // Guardar la ruta del archivo en la base de datos
+           
+            if (solicitud != null)
+            {
+                solicitud.CartaFondo = nombreArchivo;
+                await _cesantiasRepository.ActualizarSolicitudAsync(solicitud);
+            }
+
+            //return RedirectToAction("Detalles", new { id = id }); // Redirige a la vista de detalles
+            TempData["Success"] = "La carta del fondo se ha subido correctamente.";
+            //return RedirectToAction("_DetallePorPagar", new { id = id });
+
+
+            return PartialView("_DetallePorPagar", solicitud);
         }
     }
 }

@@ -1850,8 +1850,8 @@ C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0
 C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\refint\AutoGestion.dll
 C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\AutoGestion.pdb
 C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\ref\AutoGestion.dll
-C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\dce3ily18f-43lv575xnl.gz
-C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\thmbebsril-1g98d2kmg9.gz
-C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\18f34f13is-sc0xqilyky.gz
-C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\t3ym0yg2o4-5lj1f24bnt.gz
-C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\zv2jcuj6wz-bi7tqdu3xg.gz
+C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\dce3ily18f-h2y5afwx1j.gz
+C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\thmbebsril-do34jukyo8.gz
+C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\18f34f13is-k92sdwysux.gz
+C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\t3ym0yg2o4-1arcmhe4oc.gz
+C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\obj\Debug\net6.0\compressed\zv2jcuj6wz-uxss53okfw.gz

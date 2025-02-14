@@ -9,6 +9,8 @@ using System.Web;
 using PuppeteerSharp;
 using PuppeteerSharp.Media;
 using System.Web.Hosting;
+using System.Web;
+using System.Web.Mvc;
 namespace Adm_AutoGestion.Services
 {
     public class CesantiasRepository
@@ -91,10 +93,10 @@ namespace Adm_AutoGestion.Services
                 query = query.Where(s => s.EmpleadoId == empleadoId.Value);
 
             if (fechaInicio.HasValue)
-                query = query.Where(s => s.FechaRegistro >= fechaInicio.Value);
+                query = query.Where(s => s.FechaRegistro.Date >= fechaInicio.Value.Date);
 
             if (fechaFin.HasValue)
-                query = query.Where(s => s.FechaRegistro <= fechaFin.Value);
+                query = query.Where(s => s.FechaRegistro.Date <= fechaFin.Value.Date);
 
             return await query.ToListAsync();
         }
@@ -159,11 +161,9 @@ namespace Adm_AutoGestion.Services
 
         public string GenerarHtml(SolicitudCesantia solicitud)
         {
-
-            string rutaBase = HostingEnvironment.ApplicationPhysicalPath;
-
+            var ruta = HttpContext.Current.Server.MapPath("~/PlantillasPDF");
             // Construir la ruta completa al archivo HTML
-            string rutaPlantilla = Path.Combine(rutaBase, "PlantillasPDF", "CartaCesantias.html");
+            string rutaPlantilla = Path.Combine(ruta, "CartaCesantias.html");
 
 
             string htmlTemplate = File.ReadAllText(rutaPlantilla);
@@ -225,6 +225,33 @@ namespace Adm_AutoGestion.Services
             await browser.CloseAsync();
 
             return pdfBytes;
+        }
+
+        public async Task ActualizarSolicitudAsync(SolicitudCesantia solicitud)
+        {
+            // Obtener la solicitud existente de la base de datos
+            var solicitudExistente = await _context.SolicitudCesantia
+                .FirstOrDefaultAsync(s => s.Id == solicitud.Id);
+
+            if (solicitudExistente == null)
+            {
+                throw new Exception("Solicitud no encontrada.");
+            }
+
+            // Actualizar los campos necesarios
+            solicitudExistente.CartaFondo = solicitud.CartaFondo; // Actualizar el campo CartaFondo
+            solicitudExistente.EmpleadoId = solicitud.EmpleadoId;
+            solicitudExistente.FechaRegistro = solicitud.FechaRegistro;
+            solicitudExistente.ValorRetiro = solicitud.ValorRetiro;
+            solicitudExistente.DestinoId = solicitud.DestinoId;
+            solicitudExistente.EstadoId = solicitud.EstadoId;
+            solicitudExistente.FondoCesantiasId = solicitud.FondoCesantiasId;
+
+            // Marcar la entidad como modificada
+            _context.Entry(solicitudExistente).State = EntityState.Modified;
+
+            // Guardar los cambios en la base de datos
+            await _context.SaveChangesAsync();
         }
     }
 

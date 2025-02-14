@@ -7,14 +7,39 @@
     <p><strong>Valor Retiro:</strong> @Model.ValorRetiro.ToString("C")</p>
     <p><strong>Destino:</strong> @Model.Destino.Nombre</p>
     <p><strong>Fondo Cesantias:</strong> @Model.FondoCesantias.Name</p>
+
+    <!-- Mostrar el archivo CartaFondo si existe -->
+    <div>
+        <h4>Carta del Fondo</h4>
+        @if (!string.IsNullOrEmpty(Model.CartaFondo))
+        {
+            <p>
+                <strong>Archivo cargado:</strong>
+                <a href="@Url.Content("~/AnexosCesantias/" + Model.CartaFondo)" target="_blank">Descargar Carta</a>
+            </p>
+        }
+        else
+        {
+            <p>No se ha cargado ningún archivo.</p>
+        }
+    </div>
+
+    <!-- Formulario para subir la carta del fondo -->
+    <form method="post" action="~/Cesantias/SubirCartaFondo" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="@Model.Id.ToString()" />
+        <div class="form-group">
+            <label for="cartaFondo">Carta del Fondo (PDF)</label>
+            <input type="file" id="cartaFondo" name="cartaFondo" class="form-control" accept=".pdf" />
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Subir Carta</button>
+    </form>
+
     <h4>Soportes</h4>
     <ul>
-
-
         @foreach (var soporte in Model.Soportes)
         {
             <li>
-                <a href="@Url.Content("../AnexosCesantias/" + soporte.NombreSoporte)" target="_blank">@soporte.NombreSoporte</a>
+                <a href="@Url.Content("~/AnexosCesantias/" + soporte.NombreSoporte)" target="_blank">@soporte.NombreSoporte</a>
             </li>
         }
     </ul>
@@ -40,19 +65,17 @@
         </tbody>
     </table>
 
-    <form method="post" action="/Cesantias/CambiarEstadoPagado">
-        <input type="hidden" name="id" value="@Model.Id.ToString()" />
-        <div class="form-group">
-            <label for="nuevoEstado">Cambiar Estado</label>
-            <select id="nuevoEstado" name="nuevoEstadoId" class="form-control">
-                <option value="">Todos</option>
-                @foreach (var estado in ViewBag.Estados)
-                {
-                    <option value="@estado.Id">@estado.Nombre</option>
-                }
-            </select>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
         </div>
-        <button type="submit" class="btn btn-success mt-2">Guardar</button>
-    </form>
-</div>
+    }
 
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+</div>
