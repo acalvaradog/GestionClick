@@ -134,6 +134,40 @@ namespace Adm_AutoGestion.Services
         }
 
 
+        public List<DetalleHorasExtra> ObtenerDetallesHorasExtra2(string FechaI, string FechaF, string TrabajadorS)
+        {
+            DateTime Fecha1 = DateTime.Now;
+            DateTime Fecha2 = DateTime.Now;
+
+            if (!DateTime.TryParse(FechaI, out Fecha1))
+            { Fecha1 = new DateTime(); }
+            if (!DateTime.TryParse(FechaF, out Fecha2))
+            { Fecha2 = DateTime.Now; }
+
+            int trabajador = int.Parse(TrabajadorS);
+
+            List<DetalleHorasExtra> detalles = new List<DetalleHorasExtra>();
+            using (var db = new AutogestionContext())
+            {
+                detalles = db.DetalleHorasExtras
+                           .Include(x => x.HorasExtra)
+                    .Where(d => d.HorasExtra.FechaPago >= Fecha1 && d.HorasExtra.FechaPago <= Fecha2 && d.HorasExtra.EmpleadoId == trabajador)
+                    .OrderBy(x => x.Fecha)
+                    .ToList();
+
+                foreach (DetalleHorasExtra detalle in detalles)
+                {
+                    detalle.HorasExtra = db.HorasExtra.FirstOrDefault(e => e.Id == detalle.HorasExtraId);
+                    detalle.HorasExtra.Empleado = db.Empleados.FirstOrDefault(e => e.Id == detalle.HorasExtra.EmpleadoId);
+                    detalle.HorasExtra.EstadosHorasExtra = db.EstadosHorasExtra.FirstOrDefault(e => e.Id == detalle.HorasExtra.Estado);
+                    detalle.MotivoTrabajoHE = db.MotivoTrabajoHE.FirstOrDefault(e => e.Id == detalle.MotivoTrabajoHEId);
+                }
+            }
+
+            return detalles;
+        }
+
+
         internal bool Modificar(int Id, string Estado, string Observaciones, int IdUsuarioM, string FechaPago)
         {
 

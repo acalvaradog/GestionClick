@@ -1,7 +1,9 @@
-﻿using Adm_AutoGestion.Models;
+﻿using Adm_AutoGestion.Migrations;
+using Adm_AutoGestion.Models;
 using Adm_AutoGestion.Services;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Org.BouncyCastle.Crypto;
@@ -15,6 +17,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using System.Web.Services.Description;
+using System.Web.UI.WebControls;
+using Image = iTextSharp.text.Image;
 
 
 
@@ -83,14 +87,14 @@ namespace Adm_AutoGestion.Controllers
 
         public ActionResult DescargarPDF(int Id)
         {
-            Document doc = new Document(PageSize.LETTER);
+            Document doc = new Document(PageSize.LETTER.Rotate());
             doc.SetMargins(40f, 40f, 40f, 40f);
             MemoryStream ms = new MemoryStream();
             //FileStream file = new FileStream("archivo.pdf", FileMode.Create,FileAccess.ReadWrite);
             //PdfWriter writer = PdfWriter.GetInstance(doc, file);
             PdfWriter writer = PdfWriter.GetInstance(doc, ms);
-            doc.AddAuthor("Autogestión");
-            doc.AddTitle("Archivo");
+            doc.AddAuthor("GestiónClick");
+            doc.AddTitle("Archivo" + Id);
             doc.Open();
 
             BaseFont _titulo = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, true);
@@ -111,13 +115,16 @@ namespace Adm_AutoGestion.Controllers
 
 
 
-            //Chunk linea  = new Chunk( new iTextSharp.text.pdf.draw.LineSeparator(2f,100f,BaseColor.BLUE,Element.ALIGN_CENTER,0f));
-            //doc.Add(linea);
-
-            //iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance("~/Contents/assets/images/Logo.png");
-            // logo.ScaleAbsoluteWidth(150);
+            string rutaRelativa = "~/Contents/assets/images/Logo.png";
+            string rutaFisica = Server.MapPath(rutaRelativa);
+            iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(rutaFisica);
+            logo.ScaleToFit(200, 200);
+            //logo.ScaleAbsoluteWidth(150);
             var tbl = new PdfPTable(new float[] { 50f, 50f }) { WidthPercentage = 100 };
-            tbl.AddCell(new PdfPCell(new Phrase("Radiologos Especializados S.A.", titulo)) { Border = 0, Rowspan = 2, VerticalAlignment = Element.ALIGN_MIDDLE });
+            // Añadir el logo a la primera celda de la tabla
+            // Añadir el logo a la primera celda de la tabla
+            tbl.AddCell(new PdfPCell(logo) { Border = 0, Rowspan = 2, VerticalAlignment = Element.ALIGN_MIDDLE }); // Logo en la celda
+            //tbl.AddCell(new PdfPCell(new Phrase("Radiologos Especializados S.A.", titulo)) { Border = 0, Rowspan = 2, VerticalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase("REPORTE HORAS EXTRAS", titulo)) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
             doc.Add(tbl);
 
@@ -133,6 +140,7 @@ namespace Adm_AutoGestion.Controllers
 
             var HorasExtra = db.HorasExtra
                              .Include(x => x.Empleado)
+                             .Include(x => x.EstadosHorasExtra)
                              .FirstOrDefault(x => x.Id == Id);
 
             DateTime fechaNacimiento = Convert.ToDateTime(HorasExtra.Empleado.FechaNacimiento);
@@ -154,48 +162,67 @@ namespace Adm_AutoGestion.Controllers
                 genero = "FEMENINO";
             }
 
-            tbl = new PdfPTable(new float[] { 20f, 25f, 10f, 20f, 10f, 15f }) { WidthPercentage = 100 };
+            tbl = new PdfPTable(new float[] { 15f, 20f, 15f, 20f, 10f, 20f }) { WidthPercentage = 100 };
             tbl.AddCell(new PdfPCell(new Phrase("NOMBRE EMPLEADO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.Nombres, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase("CARGO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.Cargo, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase("EDAD:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
-            tbl.AddCell(new PdfPCell(new Phrase(edad.ToString()+ " anos", parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase(edad.ToString(), parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             doc.Add(tbl);
-            tbl = new PdfPTable(new float[] { 20f, 25f, 10f, 20f, 10f, 15f }) { WidthPercentage = 100 };
+            tbl = new PdfPTable(new float[] { 15f, 20f, 15f, 20f, 10f, 20f }) { WidthPercentage = 100 };
             tbl.AddCell(new PdfPCell(new Phrase("CODIGO EMPLEADO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.NroEmpleado, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
-            tbl.AddCell(new PdfPCell(new Phrase("GENERO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase("SEXO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(genero, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase("AREA:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.AreaDescripcion, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+            doc.Add(tbl);
+            tbl = new PdfPTable(new float[] { 15f, 20f, 15f, 20f, 10f, 20f }) { WidthPercentage = 100 };
+            tbl.AddCell(new PdfPCell(new Phrase("FECHA PAGO INICIAL:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.FechaDeRegistro.ToString(), parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase("FECHA PAGO FINAL:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+            tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.FechaDeRegistro.ToString(), parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             tbl.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
             doc.Add(tbl);
+
+
             doc.Add(new Phrase(" "));
-            doc.Add(new Phrase(" "));
-            tbl = new PdfPTable(new float[] { 12f, 11f, 11f, 11f, 11f, 11f, 11f, 11f, 11f }) { WidthPercentage = 100 };
+            //doc.Add(new Phrase(" "));
+            tbl = new PdfPTable(new float[] { 11f, 11f, 11f, 11f, 11f, 11f, 11f, 11f, 12f, 11f, 11f }) { WidthPercentage = 100 };
             var c1 = new PdfPCell(new Phrase("FECHA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
-            var c2 = new PdfPCell(new Phrase("HORA DESDE", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
-            var c3 = new PdfPCell(new Phrase("HORA HASTA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
-            var c9 = new PdfPCell(new Phrase("MOTIVO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c2 = new PdfPCell(new Phrase("HORA INICIAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c3 = new PdfPCell(new Phrase("HORA FINAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c4 = new PdfPCell(new Phrase("DIURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c5 = new PdfPCell(new Phrase("NOCTURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c6 = new PdfPCell(new Phrase("DIURNA FESTIVA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
             var c7 = new PdfPCell(new Phrase("NOCTURNA FESTIVA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
-            var c8 = new PdfPCell(new Phrase("TOTAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            // var c8 = new PdfPCell(new Phrase("TOTAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c9 = new PdfPCell(new Phrase("MOTIVO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            //var c10 = new PdfPCell(new Phrase("FIRMA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c11 = new PdfPCell(new Phrase("No.REGISTRO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c12 = new PdfPCell(new Phrase("ESTADO PAGO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+            var c13 = new PdfPCell(new Phrase("FECHA PAGO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
 
             tbl.AddCell(c1);
             tbl.AddCell(c2);
             tbl.AddCell(c3);
-            tbl.AddCell(c9);
             tbl.AddCell(c4);
             tbl.AddCell(c5);
             tbl.AddCell(c6);
             tbl.AddCell(c7);
-            tbl.AddCell(c8);
+            //tbl.AddCell(c8);
+            tbl.AddCell(c9);
+            //tbl.AddCell(c10);
+            tbl.AddCell(c11);
+            tbl.AddCell(c12);
+            tbl.AddCell(c13);
 
 
 
-            c1.Border = 0; c2.Border = 0; c3.Border = 0; c4.Border = 0; c5.Border = 0; c6.Border = 0; c7.Border = 0; c8.Border = 0; c9.Border = 0;
+            c1.Border = 0; c2.Border = 0; c3.Border = 0; c4.Border = 0; c5.Border = 0; c6.Border = 0; c7.Border = 0; c9.Border = 0;c11.Border = 0; c12.Border = 0; c13.Border = 0;
+
 
             var detalleHorasExtra = _repo.ObtenerDetallesHorasExtra(Id);
 
@@ -217,23 +244,110 @@ namespace Adm_AutoGestion.Controllers
                 c5.Phrase = new Phrase(deta.LiquidacionNocturna.ToString(), parrafo2);
                 c6.Phrase = new Phrase(deta.LiquidacionDiurnaFestivo.ToString(), parrafo2);
                 c7.Phrase = new Phrase(deta.LiquidacionNocturnaFestivo.ToString(), parrafo2);
-                c8.Phrase = new Phrase(deta.TotalHoras.ToString(), parrafo2);
+                //c8.Phrase = new Phrase(deta.TotalHoras.ToString(), parrafo2);
+               // c10.Phrase = new Phrase("FIRMA ELECTRONICA", parrafo2);
+                c11.Phrase = new Phrase(deta.HorasExtraId.ToString(), parrafo2);
+                c12.Phrase = new Phrase(HorasExtra.EstadosHorasExtra.Nombre, parrafo2);
+                c13.Phrase = new Phrase(string.Format("{0:yyyy-MM-dd}", HorasExtra.FechaPago), parrafo2);
 
 
                 tbl.AddCell(c1);
                 tbl.AddCell(c2);
                 tbl.AddCell(c3);
-                tbl.AddCell(c9);
+
                 tbl.AddCell(c4);
                 tbl.AddCell(c5);
                 tbl.AddCell(c6);
                 tbl.AddCell(c7);
-                tbl.AddCell(c8);
+                //tbl.AddCell(c8);
+                tbl.AddCell(c9);
+                //tbl.AddCell(c10);
+                tbl.AddCell(c11);
+                tbl.AddCell(c12);
+                tbl.AddCell(c13);
 
             }
 
-            c1.Colspan = 9;
-            c1.Phrase = new Phrase("Total Horas Extras "+detalleHorasExtra.Sum(x => x.TotalHoras).ToString(), parrafo);
+            doc.Add(tbl);
+
+            tbl = new PdfPTable(new float[] { 11f, 11f, 11f, 11f, 11f, 11f, 11f, 11f, 12f, 11f, 11f }) { WidthPercentage = 100 };
+            c1.Phrase = new Phrase("TOTAL HORAS:", parrafo2);
+            c1.Border = Rectangle.TOP_BORDER;
+            c1.BorderColorTop = new BaseColor(0, 69, 161);
+            c1.BorderWidthTop = 2f;
+            c1.PaddingTop = 4f;
+            c2.Phrase = new Phrase(" ");
+
+            c2.Border = Rectangle.TOP_BORDER;
+            c2.BorderColorTop = new BaseColor(0, 69, 161);
+            c2.BorderWidthTop = 2f;
+            c2.PaddingTop = 4f;
+            c3.Phrase = new Phrase(" ");
+
+            c3.Border = Rectangle.TOP_BORDER;
+            c3.BorderColorTop = new BaseColor(0, 69, 161);
+            c3.BorderWidthTop = 2f;
+            c3.PaddingTop = 4f;
+            c4.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionDiurna).ToString(), parrafo);
+
+            c4.Border = Rectangle.TOP_BORDER;
+            c4.BorderColorTop = new BaseColor(0, 69, 161);
+            c4.BorderWidthTop = 2f;
+            c4.PaddingTop = 4f;
+            c5.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionNocturna).ToString(), parrafo);
+            c5.Border = Rectangle.TOP_BORDER;
+            c5.BorderColorTop = new BaseColor(0, 69, 161);
+            c5.BorderWidthTop = 2f;
+            c5.PaddingTop = 4f;
+            c6.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionDiurnaFestivo).ToString(), parrafo);
+
+            c6.Border = Rectangle.TOP_BORDER;
+            c6.BorderColorTop = new BaseColor(0, 69, 161);
+            c6.BorderWidthTop = 2f;
+            c6.PaddingTop = 4f;
+            c7.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionNocturnaFestivo).ToString(), parrafo);
+
+            c7.Border = Rectangle.TOP_BORDER;
+            c7.BorderColorTop = new BaseColor(0, 69, 161);
+            c7.BorderWidthTop = 2f;
+            c7.PaddingTop = 4f;
+            c9.Phrase = new Phrase(" ");
+
+            c9.Border = Rectangle.TOP_BORDER;
+            c9.BorderColorTop = new BaseColor(0, 69, 161);
+            c9.BorderWidthTop = 2f;
+            c9.PaddingTop = 4f;
+            //c10.Phrase = new Phrase(" ");
+            //c10.PaddingTop = 4f;
+            //c10.Border = Rectangle.TOP_BORDER;
+            //c10.BorderColorTop = new BaseColor(0, 69, 161);
+            //c10.BorderWidthTop = 2f;
+            //c10.PaddingTop = 4f;
+
+
+            c11.Phrase = new Phrase(" ");
+            c11.PaddingTop = 4f;
+            c11.Border = Rectangle.TOP_BORDER;
+            c11.BorderColorTop = new BaseColor(0, 69, 161);
+            c11.BorderWidthTop = 2f;
+            c11.PaddingTop = 4f;
+
+
+            tbl.AddCell(c1);
+            tbl.AddCell(c2);
+            tbl.AddCell(c3);
+
+            tbl.AddCell(c4);
+            tbl.AddCell(c5);
+            tbl.AddCell(c6);
+            tbl.AddCell(c7);
+            //tbl.AddCell(c8);
+            tbl.AddCell(c9);
+            //tbl.AddCell(c10);
+            tbl.AddCell(c11);
+
+            c1.Colspan = 11;
+            c1.Phrase = new Phrase("FIRMA ELECTRONICA DEL RESPONSABLE", parrafo2);
             c1.HorizontalAlignment =Element.ALIGN_RIGHT;
             tbl.AddCell(c1);
 
@@ -456,7 +570,7 @@ namespace Adm_AutoGestion.Controllers
             ListadoFinal = ListadoFinal.OrderBy(x => x.EmpleadoId).ThenBy(x => x.FechaHora).ThenByDescending(x => x.Id).ToList();
 
 
-            if (UnidadOrg != null && UnidadOrg != "")
+            if (UnidadOrg != null && UnidadOrg != "" | (Estado != null && Estado != ""))
             {
                 List<InformeTotalHE> nuevaLista = new List<InformeTotalHE>();
                 foreach (var item in ListadoFinal.Reverse<InformeTotalHE>())
@@ -467,7 +581,10 @@ namespace Adm_AutoGestion.Controllers
                         cumpleCriterio = false;
                     }
 
-
+                    if (item.EstadosHorasExtra.Id != item.EstadosHorasExtra.Id  && !string.IsNullOrEmpty(Estado))
+                    {
+                        cumpleCriterio = false;
+                    }
 
                     if (cumpleCriterio)
                     {
@@ -609,16 +726,16 @@ namespace Adm_AutoGestion.Controllers
             {
                 var IdHora = HttpContext.Request.Params["IdHora"];
                 var Observaciones = HttpContext.Request.Params["Observaciones"];
-                
-                
-
-              
-                    var id = Convert.ToInt32(IdHora);
-                    var HoraExtra = db.HorasExtra.FirstOrDefault(z => z.Id == id);
 
 
-                    mensaje = _repo.EnviarRechazados2(id, IdUsuarioM, Observaciones);
-              
+
+
+                var id = Convert.ToInt32(IdHora);
+                var HoraExtra = db.HorasExtra.FirstOrDefault(z => z.Id == id);
+
+
+                mensaje = _repo.EnviarRechazados2(id, IdUsuarioM, Observaciones);
+
                 if (mensaje == true)
                 {
 
@@ -647,15 +764,16 @@ namespace Adm_AutoGestion.Controllers
 
                 }
 
-                else {
+                else
+                {
 
                     respuesta = "Error al Guardar registro";
 
                 }
 
-                  
 
-                
+
+
                 return Json(new
                 {
                     respuesta,
@@ -2164,210 +2282,576 @@ namespace Adm_AutoGestion.Controllers
 
 
                 }
+            }
+        }
+
+
+        public ActionResult InformeHorasExtraEmpleado(string FechaI, string FechaF, string TrabajadorS)
+        {
+
+
+            List<string> funciones = Acceso.Validar(Session["Empleado"]);
+            if (Acceso.EsAnonimo)
+            {
+                return RedirectToAction("Login", "Login");
+            }
+            else if (!Acceso.EsAnonimo && !funciones.Contains("HorasExtraPDFempleado"))
+            {
+                Session.Add("ErrorAutorizacion", "No cuenta con autorización para la opción seleccionada");
+                return RedirectToAction("Index", "Login");
+            }
+
+            Empleado empleado = new Empleado();
+
+            var Empleadolog = Session["Empleado"];
+            int JefeID2 = 0;
+
+
+            JefeID2 = Convert.ToInt32(Empleadolog);
+
+
+
+            List<InformeTotalHE> ListadoFinal = new List<InformeTotalHE>();
+            using (var db = new AutogestionContext())
+            {
+
+                //----------------List Empleados------------------------------//
+
+
+                var Jefe = db.Empleados.FirstOrDefault(e => e.Id == JefeID2);
+                ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO" && f.Empresa ==Jefe.Empresa).OrderBy(x => x.Nombres).ToList();
+
+
+
+                DateTime Fecha1 = DateTime.Now;
+                DateTime Fecha2 = DateTime.Now;
+
+                List<SelectListItem> lst = new List<SelectListItem>();
+                Int32 IdProceso = new Int32();
+
+                if (!DateTime.TryParse(FechaI, out Fecha1))
+                { Fecha1 = new DateTime(); }
+                if (!DateTime.TryParse(FechaF, out Fecha2))
+                { Fecha2 = DateTime.Now; }
+                Document doc = new Document(PageSize.LETTER.Rotate());
+                doc.SetMargins(40f, 40f, 40f, 40f);
+                MemoryStream ms = new MemoryStream();
+                //FileStream file = new FileStream("archivo.pdf", FileMode.Create,FileAccess.ReadWrite);
+                //PdfWriter writer = PdfWriter.GetInstance(doc, file);
+                PdfWriter writer = PdfWriter.GetInstance(doc, ms);
+                doc.AddAuthor("Autogestión");
+                doc.AddTitle("HorasExtras "+ TrabajadorS);
+                doc.Open();
+
+                BaseFont _titulo = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, true);
+                iTextSharp.text.Font titulo = new iTextSharp.text.Font(_titulo, 14f, iTextSharp.text.Font.BOLD, new BaseColor(0, 0, 0));
+
+                BaseFont _subtitulo = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, true);
+                iTextSharp.text.Font subtitulo = new iTextSharp.text.Font(_subtitulo, 10f, iTextSharp.text.Font.BOLD, new BaseColor(0, 0, 0));
+
+                BaseFont _parrafo = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, true);
+                iTextSharp.text.Font parrafo = new iTextSharp.text.Font(_parrafo, 10f, iTextSharp.text.Font.NORMAL, new BaseColor(0, 0, 0));
+
+                iTextSharp.text.Font negrita = new iTextSharp.text.Font(_subtitulo, 8f, iTextSharp.text.Font.BOLD, new BaseColor(0, 0, 0));
+
+                BaseFont _parrafo2 = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, true);
+                iTextSharp.text.Font parrafo2 = new iTextSharp.text.Font(_parrafo, 8f, iTextSharp.text.Font.NORMAL, new BaseColor(0, 0, 0));
+
+                doc.Add(Chunk.NEWLINE);
+
+
+
+                //Chunk linea  = new Chunk( new iTextSharp.text.pdf.draw.LineSeparator(2f,100f,BaseColor.BLUE,Element.ALIGN_CENTER,0f));
+                //doc.Add(linea);
+                string rutaRelativa = "~/Contents/assets/images/Logo.png";
+                string rutaFisica = Server.MapPath(rutaRelativa);
+                iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance(rutaFisica);
+                logo.ScaleToFit(200, 200);
+                //logo.ScaleAbsoluteWidth(150);
+                var tbl = new PdfPTable(new float[] { 50f, 50f }) { WidthPercentage = 100 };
+                // Añadir el logo a la primera celda de la tabla
+                tbl.AddCell(new PdfPCell(logo) { Border = 0, Rowspan = 2, VerticalAlignment = Element.ALIGN_MIDDLE }); // Logo en la celda
+                //tbl.AddCell(new PdfPCell(new Phrase("Radiologos Especializados S.A.", titulo)) { Border = 0, Rowspan = 2, VerticalAlignment = Element.ALIGN_MIDDLE });
+                tbl.AddCell(new PdfPCell(new Phrase("REPORTE HORAS EXTRAS", titulo)) { Border = 0, HorizontalAlignment = Element.ALIGN_RIGHT });
+                doc.Add(tbl);
+
+                doc.Add(new Phrase(" "));
+
+
+                doc.Add(Chunk.NEWLINE);
+
+                Chunk barra = new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(5f, 30f, new BaseColor(0, 69, 161), Element.ALIGN_LEFT, -1));
+                doc.Add(barra);
+
+                //doc.Add(new Phrase(" "));
+
+                if (TrabajadorS!=null)
+                {
+
+                    int trabajador = int.Parse(TrabajadorS);
+
+
+                    var HorasExtra = db.HorasExtra
+                                         .Include(x => x.Empleado)
+                                         .FirstOrDefault(x => x.EmpleadoId == trabajador);
+
+
+                    DateTime fechaNacimiento = Convert.ToDateTime(HorasExtra.Empleado.FechaNacimiento);
+
+                    DateTime now = DateTime.Today;
+                    int edad = DateTime.Today.Year - fechaNacimiento.Year;
+
+                    if (DateTime.Today < fechaNacimiento.AddYears(edad))
+                        --edad;
+                    string genero;
+
+                    if (HorasExtra.Empleado.Genero == "1")
+                    {
+                        genero = "MASCULINO";
+                    }
+                    else
+                    {
+
+                        genero = "FEMENINO";
+                    }
+
+
+
+                    tbl = new PdfPTable(new float[] { 15f, 20f, 15f, 20f, 10f, 20f }) { WidthPercentage = 100 };
+                    tbl.AddCell(new PdfPCell(new Phrase("NOMBRE EMPLEADO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.Nombres, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase("CARGO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.Cargo, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase("EDAD:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(edad.ToString(), parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    doc.Add(tbl);
+                    tbl = new PdfPTable(new float[] { 15f, 20f, 15f, 20f, 10f, 20f }) { WidthPercentage = 100 };
+                    tbl.AddCell(new PdfPCell(new Phrase("CODIGO EMPLEADO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.NroEmpleado, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase("SEXO:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(genero, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase("AREA:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(HorasExtra.Empleado.AreaDescripcion, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    doc.Add(tbl);
+                    tbl = new PdfPTable(new float[] { 15f, 20f, 15f, 20f, 10f, 20f }) { WidthPercentage = 100 };
+                    tbl.AddCell(new PdfPCell(new Phrase("FECHA PAGO INICIAL:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(FechaI, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase("FECHA PAGO FINAL:", negrita)) { Border = 0, VerticalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(FechaF, parrafo)) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+                    tbl.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, HorizontalAlignment = Element.ALIGN_MIDDLE });
+
+                   
+                    doc.Add(tbl);
+                    doc.Add(new Phrase(" "));
+                    //doc.Add(new Phrase(" "));
+                    tbl = new PdfPTable(new float[] { 11f, 11f, 11f, 11f, 11f, 11f, 11f, 11f, 13f, 12f, 11f,11f}) { WidthPercentage = 100 };
+                    var c1 = new PdfPCell(new Phrase("FECHA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c2 = new PdfPCell(new Phrase("HORA INICIAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c3 = new PdfPCell(new Phrase("HORA FINAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c4 = new PdfPCell(new Phrase("DIURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c5 = new PdfPCell(new Phrase("NOCTURNA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c6 = new PdfPCell(new Phrase("DIURNA FESTIVA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c7 = new PdfPCell(new Phrase("NOCTURNA FESTIVA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                   // var c8 = new PdfPCell(new Phrase("TOTAL", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c9 = new PdfPCell(new Phrase("MOTIVO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c10 = new PdfPCell(new Phrase("FIRMA", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c11 = new PdfPCell(new Phrase("No.REGISTRO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c12 = new PdfPCell(new Phrase("ESTADO PAGO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+                    var c13 = new PdfPCell(new Phrase("FECHA PAGO", negrita)) { Border = 0, BorderWidthBottom = 2f, BorderColor = new BaseColor(0, 69, 161), Padding =4f };
+
+                    tbl.AddCell(c1);
+                    tbl.AddCell(c2);
+                    tbl.AddCell(c3);
+                    tbl.AddCell(c4);
+                    tbl.AddCell(c5);
+                    tbl.AddCell(c6);
+                    tbl.AddCell(c7);
+                    //tbl.AddCell(c8);
+                    tbl.AddCell(c9);
+                    tbl.AddCell(c10);
+                    tbl.AddCell(c11);
+                    tbl.AddCell(c12);
+                    tbl.AddCell(c13);
+
+                   
+
+                    c1.Border = 0; c2.Border = 0; c3.Border = 0; c4.Border = 0; c5.Border = 0; c6.Border = 0; c7.Border = 0;  c9.Border = 0; c10.Border = 0; c11.Border = 0; c12.Border = 0; c13.Border = 0;
+
+                    var detalleHorasExtra = _repo.ObtenerDetallesHorasExtra2(FechaI, FechaF, TrabajadorS);
+
+                    foreach (var deta in detalleHorasExtra)
+                    {
+                        c1.Phrase = new Phrase(string.Format("{0:yyyy-MM-dd}", deta.Fecha), parrafo2);
+                        c2.Phrase = new Phrase(deta.HoraDesde.ToString(), parrafo2);
+                        c3.Phrase = new Phrase(deta.HoraHasta.ToString(), parrafo2);
+                        if (deta.ObservacionesMotivo is null)
+                        {
+                            c9.Phrase = (new Phrase(""));
+                        }
+
+                        else
+                        {
+                            c9.Phrase = new Phrase(deta.ObservacionesMotivo.ToString(), parrafo2);
+                        }
+                        c4.Phrase = new Phrase(deta.LiquidacionDiurna.ToString(), parrafo2);
+                        c5.Phrase = new Phrase(deta.LiquidacionNocturna.ToString(), parrafo2);
+                        c6.Phrase = new Phrase(deta.LiquidacionDiurnaFestivo.ToString(), parrafo2);
+                        c7.Phrase = new Phrase(deta.LiquidacionNocturnaFestivo.ToString(), parrafo2);
+                        //c8.Phrase = new Phrase(deta.TotalHoras.ToString(), parrafo2);
+                        c10.Phrase = new Phrase("FIRMA ELECTRONICA", parrafo2);
+                        c11.Phrase = new Phrase(deta.HorasExtraId.ToString(), parrafo2);
+
+                        var Horas = db.HorasExtra
+                                           .Include(x => x.EstadosHorasExtra)
+                                         .FirstOrDefault(x => x.Id == deta.HorasExtraId);
+
+                        c12.Phrase = new Phrase(Horas.EstadosHorasExtra.Nombre, parrafo2);
+                        c13.Phrase = new Phrase(string.Format("{0:yyyy-MM-dd}", Horas.FechaPago),parrafo2);
+
+
+                        tbl.AddCell(c1);
+                        tbl.AddCell(c2);
+                        tbl.AddCell(c3);
+                       
+                        tbl.AddCell(c4);
+                        tbl.AddCell(c5);
+                        tbl.AddCell(c6);
+                        tbl.AddCell(c7);
+                        //tbl.AddCell(c8);
+                        tbl.AddCell(c9);
+                        tbl.AddCell(c10);
+                        tbl.AddCell(c11);
+                        tbl.AddCell(c12);
+                        tbl.AddCell(c13);
+
+                    }
+                    doc.Add(tbl);
+
+                    tbl = new PdfPTable(new float[] { 11f, 11f, 11f, 11f, 11f, 11f, 11f, 11f, 13f, 12f, 11f, 11f }) { WidthPercentage = 100 };
+                    c1.Phrase = new Phrase("TOTAL HORAS:",parrafo2);
+                    c1.Border = Rectangle.TOP_BORDER;
+                    c1.BorderColorTop = new BaseColor(0, 69, 161); 
+                    c1.BorderWidthTop = 2f;
+                    c1.PaddingTop = 4f;
+                    c2.Phrase = new Phrase(" ");
+                   
+                    c2.Border = Rectangle.TOP_BORDER;
+                    c2.BorderColorTop = new BaseColor(0, 69, 161);
+                    c2.BorderWidthTop = 2f;
+                    c2.PaddingTop = 4f;
+                    c3.Phrase = new Phrase(" ");
+                  
+                    c3.Border = Rectangle.TOP_BORDER;
+                    c3.BorderColorTop = new BaseColor(0, 69, 161);
+                    c3.BorderWidthTop = 2f;
+                    c3.PaddingTop = 4f;
+                    c4.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionDiurna).ToString(), parrafo);
+                
+                    c4.Border = Rectangle.TOP_BORDER;
+                    c4.BorderColorTop = new BaseColor(0, 69, 161);
+                    c4.BorderWidthTop = 2f;
+                    c4.PaddingTop = 4f;
+                    c5.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionNocturna).ToString(), parrafo);
+                    c5.Border = Rectangle.TOP_BORDER;
+                    c5.BorderColorTop = new BaseColor(0, 69, 161);
+                    c5.BorderWidthTop = 2f;
+                    c5.PaddingTop = 4f;
+                    c6.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionDiurnaFestivo).ToString(), parrafo);
+                  
+                    c6.Border = Rectangle.TOP_BORDER;
+                    c6.BorderColorTop = new BaseColor(0, 69, 161);
+                    c6.BorderWidthTop = 2f;
+                    c6.PaddingTop = 4f;
+                    c7.Phrase = new Phrase(detalleHorasExtra.Sum(x => x.LiquidacionNocturnaFestivo).ToString(), parrafo);
+            
+                    c7.Border = Rectangle.TOP_BORDER;
+                    c7.BorderColorTop = new BaseColor(0, 69, 161);
+                    c7.BorderWidthTop = 2f;
+                    c7.PaddingTop = 4f;
+                    c9.Phrase = new Phrase(" ");
+                    
+                    c9.Border = Rectangle.TOP_BORDER;
+                    c9.BorderColorTop = new BaseColor(0, 69, 161);
+                    c9.BorderWidthTop = 2f;
+                    c9.PaddingTop = 4f;
+                    c10.Phrase = new Phrase(" ");
+                    c10.PaddingTop = 4f;
+                    c10.Border = Rectangle.TOP_BORDER;
+                    c10.BorderColorTop = new BaseColor(0, 69, 161);
+                    c10.BorderWidthTop = 2f;
+                    c10.PaddingTop = 4f;
+
+
+                    c11.Phrase = new Phrase(" ");
+                    c11.PaddingTop = 4f;
+                    c11.Border = Rectangle.TOP_BORDER;
+                    c11.BorderColorTop = new BaseColor(0, 69, 161);
+                    c11.BorderWidthTop = 2f;
+                    c11.PaddingTop = 4f;
+
+
+                    tbl.AddCell(c1);
+                    tbl.AddCell(c2);
+                    tbl.AddCell(c3);
+                   
+                    tbl.AddCell(c4);
+                    tbl.AddCell(c5);
+                    tbl.AddCell(c6);
+                    tbl.AddCell(c7);
+                    //tbl.AddCell(c8);
+                    tbl.AddCell(c9);
+                    tbl.AddCell(c10);
+                    tbl.AddCell(c11);
+
+
+
+                    c1.Colspan = 12;
+                    c1.Phrase = new Phrase("FIRMA ELECTRONICA DEL RESPONSABLE", parrafo2);
+                    c1.HorizontalAlignment =Element.ALIGN_MIDDLE;
+
+
+                    tbl.AddCell(c1);
+
+                    doc.Add(tbl);
+                    doc.Add(new Phrase(" "));
+
+                    //tbl = new PdfPTable(new float[] { 100f }) { WidthPercentage = 100 };
+
+                    //string imagenbase64 = HorasExtra.Firma.Split(',')[1];
+
+                    //byte[] imageBytes = Convert.FromBase64String(imagenbase64);
+
+                    //Image pdfImage = Image.GetInstance(imageBytes);
+
+                    //float ancho = pdfImage.Width;
+                    //float alto = pdfImage.Height;
+                    //float proporcion = ancho/ alto;
+
+                    //pdfImage.ScaleAbsoluteWidth(150);
+                    //pdfImage.ScaleAbsoluteHeight(150);
+
+                    //tbl.AddCell(new PdfPCell(pdfImage));
+                    ////  tbl.AddCell(new PdfPCell(new Phrase("Firma", subtitulo)) { Border = 0, VerticalAlignment = Element.ALIGN_CENTER });
+                    //doc.Add(tbl);
+
+                    //tbl = new PdfPTable(new float[] { 100f }) { WidthPercentage = 100 };
+                    //tbl.AddCell(new PdfPCell(new Phrase("Firma", subtitulo)) { Border = 0, VerticalAlignment = Element.ALIGN_CENTER });
+                    //doc.Add(tbl);
+                    // writer.Close();
+                    doc.Close();
+                    //file.Dispose();
+                    ////var pdf = new FileStream("archivo.pdf", FileMode.Open, FileAccess.Read);
+                    //ms.Seek(0, SeekOrigin.Begin);
+                    return File(ms.ToArray(), "application/pdf");
+                }
+                else {
+
+                    return View();
+                }
 
             }
 
 
+
+
+            //private Task<List<HorasExtra>>Consultar(string JefeID, string TrabajadorS, string FechaI, string FechaF, string Estado, string NmrRegistro, string UnidadOrg, string Empresa, string Documento, string NroEmpleado) {
+
+            //    var Empleadolog = Session["Empleado"];
+            //    var EstadoId = 0;
+            //    int JefeID2 = 0;
+            //    if (JefeID == null || JefeID == "")
+            //    {
+            //        JefeID2 = Convert.ToInt32(Empleadolog);
+            //    }
+            //    List<HorasExtra> Proceso = new List<HorasExtra>();
+
+
+            //    using (var db = new AutogestionContext())
+            //    {
+
+            //        //----------------List Empleados------------------------------//
+            //        ViewBag.Sociedad = db.Sociedad.ToList();
+            //        var Jefe = db.Empleados.FirstOrDefault(e => e.Id == JefeID2);
+            //        ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO").ToList();
+            //        ViewBag.EstadosHorasExtra = db.EstadosHorasExtra.ToList();
+            //        var areaDescripcionGroups = db.Empleados.Where(x => x.Activo == "SI" && (x.AreaDescripcion != null && x.AreaDescripcion != "")).GroupBy(b => b.UnidadOrganizativa).ToList();
+            //        ViewBag.AreaDescripcion = new List<SelectListItem>();
+            //        foreach (var x in areaDescripcionGroups)
+            //        {
+            //            Empleado Item = x.FirstOrDefault();
+            //            ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.UnidadOrganizativa, Text = "" + Item.AreaDescripcion + " - " + Item.Empresa });
+            //        }
+            //        DateTime Fecha1 = DateTime.Now;
+            //        DateTime Fecha2 = DateTime.Now;
+
+            //        List<SelectListItem> lst = new List<SelectListItem>();
+            //        Int32 IdProceso = new Int32();
+
+            //        //------------Denifir variable EstadoId------------------------//
+            //        //if (Estado == "Solicitado") { EstadoId = 1; }
+            //        //else if (Estado == "Aprobado Jefe directo") { EstadoId = 2; }
+            //        //else if (Estado == "Cerrado") { EstadoId = 3; }
+            //        //else if (Estado == "Rechazado") { EstadoId = 4; };
+            //        if (Estado != null && Estado != "") { EstadoId = Convert.ToInt32(Estado); }
+
+
+            //        if (NmrRegistro != "")
+            //        {
+            //            IdProceso = Convert.ToInt32(NmrRegistro);
+            //        }
+
+            //        if (!DateTime.TryParse(FechaI, out Fecha1))
+            //        {
+            //            Fecha1 = new DateTime();
+            //        }
+
+            //        if (!DateTime.TryParse(FechaF, out Fecha2))
+            //        {
+            //            Fecha2 = DateTime.Now;
+            //        }
+
+            //        if (TrabajadorS == "")
+            //        {
+            //            if (Estado == "")
+            //            {
+            //                Proceso = db.HorasExtra.Where(e => DbFunctions.TruncateTime(e.FechaDeRegistro) >= Fecha1 &&
+            //                                  DbFunctions.TruncateTime(e.FechaDeRegistro) <= Fecha2
+
+            //                                  && e.Estado == 3 &&  SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)
+            //                                  ).ToList();
+            //            }
+            //            else
+            //            {
+            //                Proceso = db.HorasExtra.Where(e => DbFunctions.TruncateTime(e.FechaDeRegistro) >= Fecha1
+            //                             && e.Estado == 3 &&
+            //                             DbFunctions.TruncateTime(e.FechaDeRegistro) <= Fecha2
+            //                             && SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)
+            //                             ).ToList();
+            //            }
+
+            //        }
+            //        if (TrabajadorS != "")
+            //        {
+
+            //            if (Estado == "")
+            //            {
+            //                int id = -1;
+            //                Int32.TryParse(TrabajadorS, out id);
+
+
+            //                int[] Ids = (from item in db.HorasExtra where item.EmpleadoId.Equals(id) select item.Id).ToArray();
+
+            //                Proceso = db.HorasExtra.Where(e =>
+            //                            Ids.Contains(e.Id) && e.FechaDeRegistro >= Fecha1 && e.FechaDeRegistro <= Fecha2
+            //                            && e.Estado == 3 &&
+            //                            SqlFunctions.StringConvert((decimal)e.EmpleadoId).Contains(TrabajadorS) && SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)).ToList();
+
+            //            }
+            //            else
+            //            {
+            //                int id = -1;
+            //                Int32.TryParse(TrabajadorS, out id);
+            //                int[] Ids = (from item in db.HorasExtra where item.EmpleadoId.Equals(id) select item.Id).ToArray();
+
+            //                Proceso = db.HorasExtra.Where(e =>
+            //                            Ids.Contains(e.Id) && e.FechaDeRegistro >= Fecha1 && e.FechaDeRegistro <= Fecha2
+            //                            && e.Estado == 3 &&
+            //                            SqlFunctions.StringConvert((decimal)e.EmpleadoId).Contains(TrabajadorS) && SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)
+            //                        ).ToList();
+
+
+
+            //            }
+
+            //        }
+            //        List<Empleado> Empleados_Jefe = db.Empleados.Where(x => x.Jefe == Jefe.NroEmpleado && x.Activo == "SI").ToList();
+            //        Proceso = Proceso.OrderBy(x => x.EmpleadoId).ToList();
+            //        int NumeroGuia = 0;
+            //        HorasExtra NewRTotal = new HorasExtra();
+
+            //        foreach (HorasExtra Item in Proceso.Reverse<HorasExtra>())
+            //        {
+            //            int TotalRegistros = Proceso.Where(e => e.EmpleadoId == Item.EmpleadoId).Count();
+            //            Item.Empleado = db.Empleados.FirstOrDefault(e => e.Id == Item.EmpleadoId);
+            //            Item.EstadosHorasExtra = db.EstadosHorasExtra.FirstOrDefault(e => e.Id == Item.Estado);
+            //            NumeroGuia++;
+
+            //            if (NewRTotal.TotalHoras == null || NewRTotal.TotalLiquidacionDiurna == null ||
+            //                NewRTotal.TotalLiquidacionDiurnaFestivo == null || NewRTotal.TotalLiquidacionNocturna == null ||
+            //                NewRTotal.TotalLiquidacionNocturnaFestivo == null)
+            //            {
+            //                //INICIALIZA CAMPOS PARA PODER HACER OPERACIONES
+            //                NewRTotal.TotalHoras = 0;
+            //                NewRTotal.TotalLiquidacionDiurna = 0;
+            //                NewRTotal.TotalLiquidacionDiurnaFestivo = 0;
+            //                NewRTotal.TotalLiquidacionNocturna = 0;
+            //                NewRTotal.TotalLiquidacionNocturnaFestivo = 0;
+            //            }
+            //            NewRTotal.EmpleadoId = Item.EmpleadoId;
+            //            NewRTotal.Empleado = Item.Empleado;
+            //            NewRTotal.Estado = Item.Estado;
+            //            NewRTotal.TotalLiquidacionDiurna = NewRTotal.TotalLiquidacionDiurna + Item.TotalLiquidacionDiurna;
+            //            NewRTotal.TotalLiquidacionDiurnaFestivo = NewRTotal.TotalLiquidacionDiurnaFestivo + Item.TotalLiquidacionDiurnaFestivo;
+            //            NewRTotal.TotalLiquidacionNocturna = NewRTotal.TotalLiquidacionNocturna + Item.TotalLiquidacionNocturna;
+            //            NewRTotal.TotalLiquidacionNocturnaFestivo = NewRTotal.TotalLiquidacionNocturnaFestivo + Item.TotalLiquidacionNocturnaFestivo;
+            //            NewRTotal.TotalHoras = NewRTotal.TotalHoras + Item.TotalHoras;
+            //            if (NumeroGuia == TotalRegistros)
+            //            {
+            //                NewRTotal.EstadosHorasExtra = db.EstadosHorasExtra.FirstOrDefault(e => e.Id == Item.Estado);
+            //                NumeroGuia = 0;
+            //                Proceso.Add(NewRTotal);
+            //                NewRTotal = new HorasExtra();
+            //            }
+            //        }
+            //        if (UnidadOrg != null && UnidadOrg != "" || (Empresa != null && Empresa != "") || (Documento != null && Documento != "") || (NroEmpleado != null && NroEmpleado != ""))
+            //        {
+            //            List<HorasExtra> nuevaLista = new List<HorasExtra>();
+            //            foreach (var item in Proceso.Reverse<HorasExtra>())
+            //            {
+            //                bool cumpleCriterio = true;
+            //                if (item.Empleado.UnidadOrganizativa != UnidadOrg && !string.IsNullOrEmpty(UnidadOrg))
+            //                {
+            //                    cumpleCriterio = false;
+            //                }
+
+            //                if (item.Empleado.Empresa != Empresa && !string.IsNullOrEmpty(Empresa))
+            //                {
+            //                    cumpleCriterio = false;
+            //                }
+
+            //                if (item.Empleado.Documento != Documento && !string.IsNullOrEmpty(Documento))
+            //                {
+            //                    cumpleCriterio = false;
+            //                }
+
+            //                if (item.Empleado.NroEmpleado != NroEmpleado && !string.IsNullOrEmpty(NroEmpleado))
+            //                {
+            //                    cumpleCriterio = false;
+            //                }
+
+            //                if (cumpleCriterio)
+            //                {
+            //                    nuevaLista.Add(item);
+            //                }
+            //            }
+            //            Proceso = nuevaLista.OrderBy(x => x.EmpleadoId).ToList();
+
+            //        }
+            //        if (string.IsNullOrWhiteSpace(FechaI) || string.IsNullOrWhiteSpace(FechaF) || !DateTime.TryParse(FechaI, out Fecha1) || !DateTime.TryParse(FechaF, out Fecha2))
+            //        {
+            //            return(new List<HorasExtra>());
+            //        }
+
+            //    }
+            //    Proceso = Proceso.OrderBy(x => x.EmpleadoId).ThenByDescending(x => x.Id).ToList();
+
+
+            //}
+
+
+
         }
-
-
-
-        //private Task<List<HorasExtra>>Consultar(string JefeID, string TrabajadorS, string FechaI, string FechaF, string Estado, string NmrRegistro, string UnidadOrg, string Empresa, string Documento, string NroEmpleado) {
-
-        //    var Empleadolog = Session["Empleado"];
-        //    var EstadoId = 0;
-        //    int JefeID2 = 0;
-        //    if (JefeID == null || JefeID == "")
-        //    {
-        //        JefeID2 = Convert.ToInt32(Empleadolog);
-        //    }
-        //    List<HorasExtra> Proceso = new List<HorasExtra>();
-
-
-        //    using (var db = new AutogestionContext())
-        //    {
-
-        //        //----------------List Empleados------------------------------//
-        //        ViewBag.Sociedad = db.Sociedad.ToList();
-        //        var Jefe = db.Empleados.FirstOrDefault(e => e.Id == JefeID2);
-        //        ViewBag.Empleado = db.Empleados.Where(f => f.Activo != "NO").ToList();
-        //        ViewBag.EstadosHorasExtra = db.EstadosHorasExtra.ToList();
-        //        var areaDescripcionGroups = db.Empleados.Where(x => x.Activo == "SI" && (x.AreaDescripcion != null && x.AreaDescripcion != "")).GroupBy(b => b.UnidadOrganizativa).ToList();
-        //        ViewBag.AreaDescripcion = new List<SelectListItem>();
-        //        foreach (var x in areaDescripcionGroups)
-        //        {
-        //            Empleado Item = x.FirstOrDefault();
-        //            ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.UnidadOrganizativa, Text = "" + Item.AreaDescripcion + " - " + Item.Empresa });
-        //        }
-        //        DateTime Fecha1 = DateTime.Now;
-        //        DateTime Fecha2 = DateTime.Now;
-
-        //        List<SelectListItem> lst = new List<SelectListItem>();
-        //        Int32 IdProceso = new Int32();
-
-        //        //------------Denifir variable EstadoId------------------------//
-        //        //if (Estado == "Solicitado") { EstadoId = 1; }
-        //        //else if (Estado == "Aprobado Jefe directo") { EstadoId = 2; }
-        //        //else if (Estado == "Cerrado") { EstadoId = 3; }
-        //        //else if (Estado == "Rechazado") { EstadoId = 4; };
-        //        if (Estado != null && Estado != "") { EstadoId = Convert.ToInt32(Estado); }
-
-
-        //        if (NmrRegistro != "")
-        //        {
-        //            IdProceso = Convert.ToInt32(NmrRegistro);
-        //        }
-
-        //        if (!DateTime.TryParse(FechaI, out Fecha1))
-        //        {
-        //            Fecha1 = new DateTime();
-        //        }
-
-        //        if (!DateTime.TryParse(FechaF, out Fecha2))
-        //        {
-        //            Fecha2 = DateTime.Now;
-        //        }
-
-        //        if (TrabajadorS == "")
-        //        {
-        //            if (Estado == "")
-        //            {
-        //                Proceso = db.HorasExtra.Where(e => DbFunctions.TruncateTime(e.FechaDeRegistro) >= Fecha1 &&
-        //                                  DbFunctions.TruncateTime(e.FechaDeRegistro) <= Fecha2
-
-        //                                  && e.Estado == 3 &&  SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)
-        //                                  ).ToList();
-        //            }
-        //            else
-        //            {
-        //                Proceso = db.HorasExtra.Where(e => DbFunctions.TruncateTime(e.FechaDeRegistro) >= Fecha1
-        //                             && e.Estado == 3 &&
-        //                             DbFunctions.TruncateTime(e.FechaDeRegistro) <= Fecha2
-        //                             && SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)
-        //                             ).ToList();
-        //            }
-
-        //        }
-        //        if (TrabajadorS != "")
-        //        {
-
-        //            if (Estado == "")
-        //            {
-        //                int id = -1;
-        //                Int32.TryParse(TrabajadorS, out id);
-
-
-        //                int[] Ids = (from item in db.HorasExtra where item.EmpleadoId.Equals(id) select item.Id).ToArray();
-
-        //                Proceso = db.HorasExtra.Where(e =>
-        //                            Ids.Contains(e.Id) && e.FechaDeRegistro >= Fecha1 && e.FechaDeRegistro <= Fecha2
-        //                            && e.Estado == 3 &&
-        //                            SqlFunctions.StringConvert((decimal)e.EmpleadoId).Contains(TrabajadorS) && SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)).ToList();
-
-        //            }
-        //            else
-        //            {
-        //                int id = -1;
-        //                Int32.TryParse(TrabajadorS, out id);
-        //                int[] Ids = (from item in db.HorasExtra where item.EmpleadoId.Equals(id) select item.Id).ToArray();
-
-        //                Proceso = db.HorasExtra.Where(e =>
-        //                            Ids.Contains(e.Id) && e.FechaDeRegistro >= Fecha1 && e.FechaDeRegistro <= Fecha2
-        //                            && e.Estado == 3 &&
-        //                            SqlFunctions.StringConvert((decimal)e.EmpleadoId).Contains(TrabajadorS) && SqlFunctions.StringConvert((decimal)e.Id).Contains(NmrRegistro)
-        //                        ).ToList();
-
-
-
-        //            }
-
-        //        }
-        //        List<Empleado> Empleados_Jefe = db.Empleados.Where(x => x.Jefe == Jefe.NroEmpleado && x.Activo == "SI").ToList();
-        //        Proceso = Proceso.OrderBy(x => x.EmpleadoId).ToList();
-        //        int NumeroGuia = 0;
-        //        HorasExtra NewRTotal = new HorasExtra();
-
-        //        foreach (HorasExtra Item in Proceso.Reverse<HorasExtra>())
-        //        {
-        //            int TotalRegistros = Proceso.Where(e => e.EmpleadoId == Item.EmpleadoId).Count();
-        //            Item.Empleado = db.Empleados.FirstOrDefault(e => e.Id == Item.EmpleadoId);
-        //            Item.EstadosHorasExtra = db.EstadosHorasExtra.FirstOrDefault(e => e.Id == Item.Estado);
-        //            NumeroGuia++;
-
-        //            if (NewRTotal.TotalHoras == null || NewRTotal.TotalLiquidacionDiurna == null ||
-        //                NewRTotal.TotalLiquidacionDiurnaFestivo == null || NewRTotal.TotalLiquidacionNocturna == null ||
-        //                NewRTotal.TotalLiquidacionNocturnaFestivo == null)
-        //            {
-        //                //INICIALIZA CAMPOS PARA PODER HACER OPERACIONES
-        //                NewRTotal.TotalHoras = 0;
-        //                NewRTotal.TotalLiquidacionDiurna = 0;
-        //                NewRTotal.TotalLiquidacionDiurnaFestivo = 0;
-        //                NewRTotal.TotalLiquidacionNocturna = 0;
-        //                NewRTotal.TotalLiquidacionNocturnaFestivo = 0;
-        //            }
-        //            NewRTotal.EmpleadoId = Item.EmpleadoId;
-        //            NewRTotal.Empleado = Item.Empleado;
-        //            NewRTotal.Estado = Item.Estado;
-        //            NewRTotal.TotalLiquidacionDiurna = NewRTotal.TotalLiquidacionDiurna + Item.TotalLiquidacionDiurna;
-        //            NewRTotal.TotalLiquidacionDiurnaFestivo = NewRTotal.TotalLiquidacionDiurnaFestivo + Item.TotalLiquidacionDiurnaFestivo;
-        //            NewRTotal.TotalLiquidacionNocturna = NewRTotal.TotalLiquidacionNocturna + Item.TotalLiquidacionNocturna;
-        //            NewRTotal.TotalLiquidacionNocturnaFestivo = NewRTotal.TotalLiquidacionNocturnaFestivo + Item.TotalLiquidacionNocturnaFestivo;
-        //            NewRTotal.TotalHoras = NewRTotal.TotalHoras + Item.TotalHoras;
-        //            if (NumeroGuia == TotalRegistros)
-        //            {
-        //                NewRTotal.EstadosHorasExtra = db.EstadosHorasExtra.FirstOrDefault(e => e.Id == Item.Estado);
-        //                NumeroGuia = 0;
-        //                Proceso.Add(NewRTotal);
-        //                NewRTotal = new HorasExtra();
-        //            }
-        //        }
-        //        if (UnidadOrg != null && UnidadOrg != "" || (Empresa != null && Empresa != "") || (Documento != null && Documento != "") || (NroEmpleado != null && NroEmpleado != ""))
-        //        {
-        //            List<HorasExtra> nuevaLista = new List<HorasExtra>();
-        //            foreach (var item in Proceso.Reverse<HorasExtra>())
-        //            {
-        //                bool cumpleCriterio = true;
-        //                if (item.Empleado.UnidadOrganizativa != UnidadOrg && !string.IsNullOrEmpty(UnidadOrg))
-        //                {
-        //                    cumpleCriterio = false;
-        //                }
-
-        //                if (item.Empleado.Empresa != Empresa && !string.IsNullOrEmpty(Empresa))
-        //                {
-        //                    cumpleCriterio = false;
-        //                }
-
-        //                if (item.Empleado.Documento != Documento && !string.IsNullOrEmpty(Documento))
-        //                {
-        //                    cumpleCriterio = false;
-        //                }
-
-        //                if (item.Empleado.NroEmpleado != NroEmpleado && !string.IsNullOrEmpty(NroEmpleado))
-        //                {
-        //                    cumpleCriterio = false;
-        //                }
-
-        //                if (cumpleCriterio)
-        //                {
-        //                    nuevaLista.Add(item);
-        //                }
-        //            }
-        //            Proceso = nuevaLista.OrderBy(x => x.EmpleadoId).ToList();
-
-        //        }
-        //        if (string.IsNullOrWhiteSpace(FechaI) || string.IsNullOrWhiteSpace(FechaF) || !DateTime.TryParse(FechaI, out Fecha1) || !DateTime.TryParse(FechaF, out Fecha2))
-        //        {
-        //            return(new List<HorasExtra>());
-        //        }
-
-        //    }
-        //    Proceso = Proceso.OrderBy(x => x.EmpleadoId).ThenByDescending(x => x.Id).ToList();
-
-
-        //}
-
-
-
     }
 }
 

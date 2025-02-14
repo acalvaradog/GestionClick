@@ -199,7 +199,7 @@ namespace Adm_AutoGestion.Controllers
                 _repo.CrearNoticia(model, Imagenes, rutaCarpeta);
 
                 TempData["MensajeExito"] = "La noticia se guardó correctamente.";
-                return View("Index");
+                return RedirectToAction("Index"); ;
             }
             else
             {

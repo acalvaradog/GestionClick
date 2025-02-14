@@ -344,6 +344,23 @@
 
                                     }
 
+                                    
+                                    <li class="nav-item">
+                                        <a class="nav-link " href="~/Sedes/Index">
+                                            <i class="icon">
+                                                <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                                    <g>
+                                                        <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                                    </g>
+                                                </svg>
+                                            </i>
+                                            <i class="sidenav-mini-icon">S</i>
+                                            <span class="item-name">Sedes</span>
+                                        </a>
+                                    </li>
+
+                                    
+
                                     @if (funciones.Contains("Preguntas"))
                                     {
 
@@ -523,21 +540,21 @@
                                     }
 
                                     @*@if (funciones.Contains("ActualizacionEvaluadoresEvadesh"))
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link " href="~/EstructuraJerarquicaEVADES/ActualizacionMasivaEvadesh">
-                                <i class="icon">
-                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
-                                        <g>
-                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
-                                        </g>
-                                    </svg>
-                                </i>
-                                <i class="sidenav-mini-icon">ES</i>
-                                <span class="item-name">Actualización Evaluadores Eva. Desempeño</span>
-                            </a>
-                        </li>
-                    }*@
+        {
+            <li class="nav-item">
+                <a class="nav-link " href="~/EstructuraJerarquicaEVADES/ActualizacionMasivaEvadesh">
+                    <i class="icon">
+                        <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                            <g>
+                                <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                            </g>
+                        </svg>
+                    </i>
+                    <i class="sidenav-mini-icon">ES</i>
+                    <span class="item-name">Actualización Evaluadores Eva. Desempeño</span>
+                </a>
+            </li>
+        }*@
 
                                     @if (funciones.Contains("TerceroCrear"))
                                     {
@@ -567,8 +584,8 @@
                                                         </g>
                                                     </svg>
                                                 </i>
-                                                <i class="sidenav-mini-icon">DE</i>
-                                                <span class="item-name">Habilitar Desprendible</span>
+                                                <i class="sidenav-mini-icon">ES</i>
+                                                <span class="item-name">Habilitar Descarga Desprendible</span>
                                             </a>
                                         </li>
                                     }
@@ -3004,6 +3021,26 @@
                                                 </i>
                                                 <i class="sidenav-mini-icon">IJ</i>
                                                 <span class="item-name">Horas Extras Totales</span>
+                                            </a>
+                                        </li>
+                                    }
+
+
+
+                                    @if (funciones.Contains("HorasExtraPDFempleado"))
+                                    {
+
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="~/HorasExtra/InformeHorasExtraEmpleado">
+                                                <i class="icon">
+                                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                                        <g>
+                                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                                        </g>
+                                                    </svg>
+                                                </i>
+                                                <i class="sidenav-mini-icon">IJ</i>
+                                                <span class="item-name">Informe PDF</span>
                                             </a>
                                         </li>
                                     }
