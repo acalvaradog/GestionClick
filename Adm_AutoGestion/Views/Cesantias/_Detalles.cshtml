@@ -1,0 +1,26 @@
+﻿@model Adm_AutoGestion.Models.SolicitudCesantia
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Contenido de la vista principal -->
+<div>
+    <!-- Mostrar la vista parcial -->
+    @Html.Partial("_DetallePorPagar", Model)
+
+    <!-- Formulario para cambiar el estado -->
+    <form method="post" action="~/Cesantias/CambiarEstadoPagado">
+        <input type="hidden" name="id" value="@Model.Id.ToString()" />
+        <div class="form-group">
+            <label for="nuevoEstado">Cambiar Estado</label>
+            <select id="nuevoEstado" name="nuevoEstadoId" class="form-control">
+                <option value="">Todos</option>
+                @foreach (var estado in ViewBag.Estados)
+                {
+                    <option value="@estado.Id">@estado.Nombre</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success mt-2">Guardar</button>
+    </form>
+</div>
+
