@@ -46,3 +46,15 @@ D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogesti
 D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
 D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
 D:\Cata\Mercado Alvarado\Documentos\6-Repository_Personal\GestionClick\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.deps.json
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.dll
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfoInputs.cache
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfo.cs
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.sourcelink.json
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.dll
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
+C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll

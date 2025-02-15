@@ -84,6 +84,9 @@
     <Reference Include="itextsharp, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.4\lib\net461\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp.xmlworker, Version=5.5.13.4, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xmlworker.5.5.13.4\lib\net461\itextsharp.xmlworker.dll</HintPath>
+    </Reference>
     <Reference Include="K4os.Hash.xxHash, Version=1.0.8.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
       <HintPath>..\packages\K4os.Hash.xxHash.1.0.8\lib\net462\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
@@ -3290,6 +3293,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="PlantillasPDF\CartaCesantias.html" />
+    <None Include="PlantillasPDF\PlantillaSolicitudCesantias.cshtml" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -3515,6 +3519,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="libman.json" />
+    <Content Include="Views\Cesantias\SolicitudCesantias.cshtml" />
     <None Include="Properties\PublishProfiles\publicacion_admautogestion.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -4311,6 +4316,7 @@
     <Content Include="Views\Sedes\Edit.cshtml" />
     <Content Include="Views\Sedes\Index.cshtml" />
     <Content Include="Views\Cesantias\_Detalles.cshtml" />
+    <Content Include="Views\Cesantias\CartaAprobacion.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

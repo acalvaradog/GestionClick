@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Autogestion.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3bec8376a58fe1447cbe94dd9306bd8489c02e8d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33d6410a42ddddf36fa96766b4e628b2365835b5")]
 [assembly: System.Reflection.AssemblyProductAttribute("Autogestion.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Autogestion.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

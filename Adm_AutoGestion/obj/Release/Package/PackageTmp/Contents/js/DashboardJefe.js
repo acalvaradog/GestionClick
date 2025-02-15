@@ -17,11 +17,11 @@
     $('#Procesos').click(function ()
     { window.location.href = '../ProcesoDisciplinario/DetalleProcesoDisciplinario1?EmpleadoI=&FechaProcesoI=&FechaProcesoF=&NmrProceso=&Estado=Cerrado&Prioridad=&Sancion=Suspension&FechaSuspencion='; });
     //$('#VPendientes').click(function () { window.location.href = '../Viaticos/InformeViaticos?EmpleadoCP=&TrabajadorS=&FechaI=&FechaF=&Estado=Solicitado&NmrRegistro='; });
-    $('#VPendientes').click(function () { window.location.href = '../Viaticos/JefeDirecto'; });
-    $('#EvaDesempPendientesP').click(function ()
-    { window.location.href = '../EvaDesempeño/InformeEvaPendientes?FechaInicio=&FechaFin=&TipoPresentacion2=1&TipoPrueba=1&Empleados='; });
-    $('#EvaDesempPendientesE').click(function ()
-    { window.location.href = '../EvaDesempeño/InformeEvaPendientes?FechaInicio=&FechaFin=&TipoPresentacion2=1&TipoPrueba=2&Empleados='; });
+    //$('#VPendientes').click(function () { window.location.href = '../Viaticos/JefeDirecto'; });
+    //$('#EvaDesempPendientesP').click(function ()
+    //{ window.location.href = '../EvaDesempeño/InformeEvaPendientes?FechaInicio=&FechaFin=&TipoPresentacion2=1&TipoPrueba=1&Empleados='; });
+    //$('#EvaDesempPendientesE').click(function ()
+    //{ window.location.href = '../EvaDesempeño/InformeEvaPendientes?FechaInicio=&FechaFin=&TipoPresentacion2=1&TipoPrueba=2&Empleados='; });
     $('#HEPendientes').click(function ()
     { window.location.href = '../HorasExtra/JefeDirectoHorasExtra'; });
 

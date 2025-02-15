@@ -4,22 +4,22 @@
 @{
     ViewData["Title"] = "Solicitudes por Aprobar";
     Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+  
 }
 <div class="card">
-    <h2>Solicitudes por Aprobar</h2>
 
-    <div>
+    <div class="card-header colorTitulo mb-3">
+        <h4>Retiro Parcial de Cesantias Pendientes por Aprobar</h4>
+    </div>
+    <div class="card-body">
+
+
+
         <form method="get">
             <div class="row">
-                <div class="col-4" style="text-align:left">
-                    <label for="Empresa">Empresa:</label>
-                   @Session["Empresa"]
-
-                </div>
-
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="trabajador">Trabajador:</label>
-                    <select id="trabajador" name="empleadoId" class="form-control">
+                    <select id="trabajador" name="empleadoId" class="form-control  selectpicker" data_live_search="true">
                         <option value="">Todos</option>
                         @foreach (var empleado in ViewBag.Empleados)
                         {
@@ -27,86 +27,94 @@
                         }
                     </select>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="fechaInicio">Desde:</label>
                     <input type="date" id="fechaInicio" name="fechaInicio" class="form-control" />
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
                     <label for="fechaFin">Hasta:</label>
                     <input type="date" id="fechaFin" name="fechaFin" class="form-control" />
                 </div>
             </div>
-                <button type="submit" class="btn btn-primary">Buscar</button>
-</form>
-    </div>
-    </div>
-<div class="card">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Trabajador</th>
-                <th>Fecha de Registro</th>
-                <th>Valor Retiro</th>
-                <th>Destino</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var solicitud in Model)
-            {
-                <tr>
-                    <td>@solicitud.Id</td>
-                    <td>@solicitud.Empleado.Nombres</td>
-                    <td>@solicitud.FechaRegistro.ToShortDateString()</td>
-                    <td>@solicitud.ValorRetiro.ToString("C")</td>
-                    <td>@solicitud.Destino.Nombre</td>
-                    <td>
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detalleModal"
-                                data-id="@solicitud.Id">
-                            Ver Detalle
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
-    <!-- Modal -->
-    <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detalleModalLabel">Detalle de la Solicitud</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" class="btn btn-outline-primary rounded-pill">Buscar</button>
                 </div>
-                <div class="modal-body" id="detalleModalBody">
-                    <!-- Aquí se cargará el contenido dinámicamente -->
-                    <div class="text-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Cargando...</span>
+            </div>
+        </form>
+
+        <hr />
+        <div class="row justify-content-start">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Trabajador</th>
+                            <th>Fecha de Registro</th>
+                            <th>Valor Retiro</th>
+                            <th>Destino</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var solicitud in Model)
+                        {
+                            <tr>
+                                <td>@solicitud.Id</td>
+                                <td>@solicitud.Empleado.Nombres</td>
+                                <td>@solicitud.FechaRegistro.ToShortDateString()</td>
+                                <td>@solicitud.ValorRetiro.ToString("C", new System.Globalization.CultureInfo("es-CO"))</td>
+                                <td>@solicitud.Destino.Nombre</td>
+                                <td>
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detalleModal"
+                                            data-id="@solicitud.Id">
+                                        Ver Detalle
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color: #1565C0">
+                        <h5 class="modal-title" id="detalleModalLabel">Detalle de la Solicitud</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="detalleModalBody">
+                        <!-- Aquí se cargará el contenido dinámicamente -->
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
-        <script>
-            // Cargar detalles dinámicamente en el modal
-            $('#detalleModal').on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget); // Botón que activó el modal
-                var solicitudId = button.data('id'); // Extraer ID de la solicitud
-                var modalBody = $('#detalleModalBody');
+@section Scripts {
+    <script>
+        // Cargar detalles dinámicamente en el modal
+        $('#detalleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Botón que activó el modal
+            var solicitudId = button.data('id'); // Extraer ID de la solicitud
+            var modalBody = $('#detalleModalBody');
 
-                // Mostrar spinner mientras se carga el contenido
-                modalBody.html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div></div>');
+            // Mostrar spinner mientras se carga el contenido
+            modalBody.html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div></div>');
 
-                // Cargar contenido desde el servidor
-                $.get('../Cesantias/Detalle/' + solicitudId, function (data) {
-                    modalBody.html(data);
-                });
+            // Cargar contenido desde el servidor
+            $.get('../Cesantias/Detalle/' + solicitudId, function (data) {
+                modalBody.html(data);
             });
-        </script>
-    }
+        });
+    </script>
+}

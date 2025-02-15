@@ -187,7 +187,9 @@ namespace Adm_AutoGestion.Controllers.Api
             try
             {
              
-                var carta = await _repository.GenerarCartaPdfBase64(solicitudid );
+                    
+                    
+                    var carta = await _repository.GenerarCartaPdfBase64(solicitudid);
                 return Ok(carta);
             }
             catch (Exception ex)
@@ -198,12 +200,10 @@ namespace Adm_AutoGestion.Controllers.Api
             {
 
                 //string rutaRelativa = @"C:\PlantillasPDF";
-                string rutaRelativa = "~/PlantillasPDF";
-               
-                var ruta = HttpContext.Current.Server.MapPath(rutaRelativa);
-                //var ruta = HttpContext.Current.Server.MapPath("~/PlantillasPDF");
-                // Construir la ruta completa al archivo HTML
-                string rutaPlantilla = Path.Combine(ruta, "CartaCesantias.html");
+                string rutaRelativa = "~/PlantillasPDF/Cesantias.html";
+                string rutaPlantilla = HttpContext.Current.Server.MapPath(rutaRelativa);
+
+
                 return BadRequest($"Error generar carta: {ex.Message} ruta {rutaPlantilla}");
             }
         }

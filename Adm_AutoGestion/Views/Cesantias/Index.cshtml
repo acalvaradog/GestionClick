@@ -92,9 +92,12 @@
                                     @if (solicitud.EstadoId == 2)
                                     {
                                         <button type="button" class="btn btn-danger btn-pdf" data-id="@solicitud.Id">
-                                            <i class="fas fa-file-pdf"></i> PDF
+                                            <i class="fas fa-file-pdf"></i> Carta Respuesta
                                         </button>
                                     }
+                                    <a href="@Url.Action("GenerarPDF", "Cesantias", new { id = solicitud.Id })" class="btn btn-danger">
+                                        <i class="fas fa-file-pdf"></i> Soporte Solicitud
+                                    </a>
                                 </td>
                             </tr>
                         }
@@ -143,7 +146,7 @@
 
             $('.btn-pdf').on('click', function () {
                 var solicitudId = $(this).data('id'); // Obtener el ID de la solicitud
-                var url = '/api/cesantias/GenerarCarta/' + solicitudId;
+                var url = '../api/cesantias/GenerarCarta/' + solicitudId;
 
                 // Hacer la solicitud GET a la API
                 $.get(url, function (data) {

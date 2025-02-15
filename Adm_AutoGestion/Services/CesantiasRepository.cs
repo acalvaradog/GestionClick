@@ -11,6 +11,9 @@ using PuppeteerSharp.Media;
 using System.Web.Hosting;
 using System.Web;
 using System.Web.Mvc;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using iTextSharp.text;
 namespace Adm_AutoGestion.Services
 {
     public class CesantiasRepository
@@ -148,22 +151,46 @@ namespace Adm_AutoGestion.Services
             // Obtener datos de la base de datos
             var solicitud = await ObtenerSolicitudConDetallesAsync(solicitudId);
 
+            ;
 
-            // Generar HTML
-            var html = GenerarHtml(solicitud);
+            //// Generar HTML
+            //var html = GenerarHtml(solicitud);
 
-            // Convertir HTML a PDF
-            var pdfBytes = await ConvertirHtmlAPdf(html);
+            //// Convertir HTML a PDF
+           //var pdfBytes = await ConvertirHtmlAPdf(html);
 
             // Convertir PDF a base64
-            return Convert.ToBase64String(pdfBytes);
+            return Convert.ToBase64String(GenerarCartaPdf(solicitud));
+        }
+
+        public byte[] GenerarPdfConItextSharp(string html)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                // Crear documento
+                var document = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
+                var writer = PdfWriter.GetInstance(document, memoryStream);
+                document.Open();
+
+                using (var stringReader = new StringReader(html))
+                {
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, stringReader);
+                }
+
+                document.Close();
+                return memoryStream.ToArray();
+            }
+        }
+        public byte[] GenerarCartaPdf(SolicitudCesantia solicitud)
+        {
+            string html = GenerarHtml(solicitud);
+            return GenerarPdfConItextSharp(html);
         }
 
         public string GenerarHtml(SolicitudCesantia solicitud)
         {
-            var ruta = HttpContext.Current.Server.MapPath("~/PlantillasPDF");
-            // Construir la ruta completa al archivo HTML
-            string rutaPlantilla = Path.Combine(ruta, "CartaCesantias.html");
+            string rutaRelativa = "~/PlantillasPDF/Cesantias.html";
+            string rutaPlantilla = HttpContext.Current.Server.MapPath(rutaRelativa);
 
 
             string htmlTemplate = File.ReadAllText(rutaPlantilla);

@@ -1,0 +1,11 @@
+﻿@Model Adm_AutoGestion.Models.SolicitudCesantia
+
+<h1>Informe de Cesantías</h1>
+<p><strong>ID:</strong> @Model.Id</p>
+<p><strong>Empleado:</strong> @Model.Empleado.Nombres</p>
+<p><strong>Fecha de Registro:</strong> @Model.FechaRegistro.ToShortDateString()</p>
+<p><strong>Valor de Retiro:</strong> @Model.ValorRetiro.ToString("C", new System.Globalization.CultureInfo("es-CO"))</p>
+<p><strong>Estado:</strong> @Model.Estado.Nombre</p>
+<p><strong>Destino:</strong> @Model.Destino.Nombre</p>
+<p><strong>Fondo de Cesantías:</strong> @Model.FondoCesantias.Name</p>
+<p><strong>Carta del Fondo:</strong> @Model.CartaFondo</p>

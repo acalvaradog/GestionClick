@@ -1,5 +1,9 @@
 ﻿using Adm_AutoGestion.Models;
 using Adm_AutoGestion.Services;
+using DocumentFormat.OpenXml.Wordprocessing;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -8,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows.Controls;
 
 namespace Adm_AutoGestion.Controllers
 {
@@ -173,5 +178,60 @@ namespace Adm_AutoGestion.Controllers
 
             return PartialView("_DetallePorPagar", solicitud);
         }
+
+        public async Task<ActionResult> GenerarPDF(int id)
+        {
+            // Obtener la solicitud de cesantías
+            var solicitud = await _cesantiasRepository.ObtenerSolicitudConDetallesAsync(id);
+
+            // Crear el PDF
+            using (var memoryStream = new MemoryStream())
+            {
+                var document = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4, 50, 50, 25, 25);
+                var writer = PdfWriter.GetInstance(document, memoryStream);
+                document.Open();
+
+                // Agregar contenido al PDF
+                var html = RenderViewToString("SolicitudCesantias", solicitud);
+                using (var sr = new StringReader(html))
+                {
+                    XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, sr);
+                }
+
+
+                string rutaCarpeta = Server.MapPath("~/AnexosCesantias");
+                // Agregar los soportes PDF
+                foreach (var soporte in solicitud.Soportes)
+                {
+                    if (soporte.NombreSoporte.EndsWith(".pdf"))
+                    {
+                        var reader = new PdfReader($"{rutaCarpeta}/{soporte.NombreSoporte}");
+                        for (var i = 1; i <= reader.NumberOfPages; i++)
+                        {
+                            document.NewPage();
+                            var importedPage = writer.GetImportedPage(reader, i);
+                            writer.DirectContent.AddTemplate(importedPage, 0, 0);
+                        }
+                    }
+                }
+
+                document.Close();
+                return File(memoryStream.ToArray(), "application/pdf", "InformeCesantias.pdf");
+            }
+        }
+
+        private string RenderViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
     }
 }

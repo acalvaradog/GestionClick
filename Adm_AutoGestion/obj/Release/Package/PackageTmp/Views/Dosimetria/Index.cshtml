@@ -44,17 +44,18 @@
                                 }
                             </select>
                         </div>
-                    </div>
-                    <br />
-                    <div class="row justify-content-start">
-                        <div class="col-12" style="text-align:center">
-                            @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
-                            <button type="submit" class="btn btn-outline-primary rounded-pill mb-2">Buscar</button>
+                        <div class="form-group col-md-6">
+                            <div class="col-12" style="text-align:center">
+                                @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                                <button type="submit" class="btn btn-outline-primary rounded-pill mb-2">Buscar</button>
+                            </div>
                         </div>
-                    </div>
-                    <br />
-                    @*<button type="submit" class="btn btn-primary">Buscar</button>*@
-                </form>
+                        </div>
+
+
+                        <br />
+                        @*<button type="submit" class="btn btn-primary">Buscar</button>*@
+</form>
             </div>
 
         </div>
@@ -135,8 +136,11 @@
                 if (response.success) {
                     location.reload();
                 } else {
-                    alert("Ocurrió un error. Por favor, verifica los datos.");
+                    let errorMessages = response.errors.join("\n");
+                    alert("Se encontraron los siguientes errores:\n" + errorMessages);
                 }
+            }).fail(function () {
+                alert("Error en la comunicación con el servidor. Por favor intenta nuevamente.");
             });
         });
     </script>
