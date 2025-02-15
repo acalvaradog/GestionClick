@@ -191,8 +191,20 @@ namespace Adm_AutoGestion.Controllers.Api
                 return Ok(carta);
             }
             catch (Exception ex)
+             
+            
+          
+
             {
-                return BadRequest($"Error generar carta: {ex.Message}");
+
+                //string rutaRelativa = @"C:\PlantillasPDF";
+                string rutaRelativa = "~/PlantillasPDF";
+               
+                var ruta = HttpContext.Current.Server.MapPath(rutaRelativa);
+                //var ruta = HttpContext.Current.Server.MapPath("~/PlantillasPDF");
+                // Construir la ruta completa al archivo HTML
+                string rutaPlantilla = Path.Combine(ruta, "CartaCesantias.html");
+                return BadRequest($"Error generar carta: {ex.Message} ruta {rutaPlantilla}");
             }
         }
 
