@@ -1,58 +1,94 @@
 ﻿@model Adm_AutoGestion.Models.SolicitudCesantia
 
 <div>
-    <h4>Información General</h4>
-    <p><strong>Trabajador:</strong> @Model.Empleado.Nombres</p>
-    <p><strong>Fecha de Registro:</strong> @Model.FechaRegistro.ToShortDateString()</p>
-    <p><strong>Valor Retiro:</strong> @Model.ValorRetiro.ToString("C")</p>
-    <p><strong>Destino:</strong> @Model.Destino.Nombre</p>
-    <p><strong>Fondo Cesantias:</strong> @Model.FondoCesantias.Name</p>
-    <h4>Soportes</h4>
-    <ul>
+    <div class="card">
+        <div class="body">
+            <h4>Información General</h4>
+            <hr />
+            <div class="row">
+                <div class="col-md-6 mt-3">
+                    <p><strong>Fecha de Registro:</strong> @Model.FechaRegistro.ToShortDateString()</p>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <p><strong>Trabajador:</strong> @Model.Empleado.Nombres</p>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <p><strong>Destino:</strong> @Model.Destino.Nombre</p>
+                </div>
+                <div class="col-md-6 mt-3">
+                    <p><strong>Fondo Cesantias:</strong> @Model.FondoCesantias.Name</p>
+                </div>
+
+                <div class="col-md-6 mt-3">
+                    <p><strong>Valor Retiro:</strong> @Model.ValorRetiro.ToString("C", new System.Globalization.CultureInfo("es-CO"))</p>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <h4>Soportes</h4>
+            <ul>
 
 
-        @foreach (var soporte in Model.Soportes)
-        {
-            <li>
-                <a href="@Url.Content("../AnexosCesantias/" + soporte.NombreSoporte)" target="_blank">@soporte.NombreSoporte</a>
-            </li>
-        }
-    </ul>
-
-    <h4>Historial de Acciones</h4>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Fecha y Hora</th>
-                <th>Usuario</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var log in Model.Log)
-            {
-                <tr>
-                    <td>@log.FechaHora</td>
-                    <td>@log.Usuario</td>
-                    <td>@log.Accion</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <form method="post" action="~/Cesantias/CambiarEstado">
-        <input type="hidden" name="id" value="@Model.Id.ToString()" />
-        <div class="form-group">
-            <label for="nuevoEstado">Cambiar Estado</label>
-            <select id="nuevoEstado" name="nuevoEstadoId" class="form-control">
-                <option value="">Todos</option>
-                @foreach (var estado in ViewBag.Estados)
+                @foreach (var soporte in Model.Soportes)
                 {
-                    <option value="@estado.Id">@estado.Nombre</option>
+                    <li>
+                        <a href="@Url.Content("../AnexosCesantias/" + soporte.NombreSoporte)" target="_blank">@soporte.NombreSoporte</a>
+                    </li>
                 }
-            </select>
-        </div>
-        <button type="submit" class="btn btn-success mt-2">Guardar</button>
-    </form>
-</div>
+            </ul>
 
+            <hr />
+
+            <h4>Historial de Acciones</h4>
+
+            <div class="row justify-content-start">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th>Fecha y Hora</th>
+                                <th>Usuario</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var log in Model.Log)
+                            {
+                                <tr>
+                                    <td>@log.FechaHora</td>
+                                    <td>@log.Usuario</td>
+                                    <td>@log.Accion</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr />
+
+            <form method="post" action="~/Cesantias/CambiarEstado">
+                <input type="hidden" name="id" value="@Model.Id.ToString()" />
+                <div class="form-group">
+                    <label for="nuevoEstado">Cambiar Estado</label>
+                    <select id="nuevoEstado" name="nuevoEstadoId" class="form-control">
+                        <option value="">Todos</option>
+                        @foreach (var estado in ViewBag.Estados)
+                        {
+                            <option value="@estado.Id">@estado.Nombre</option>
+                        }
+                    </select>
+                </div>
+                <div class="row justify-content-start">
+                    <div class="col-12" style="text-align:center">
+                        <button type="submit" class="btn btn-outline-success rounded-pill mt-2">Guardar</button>
+                    </div>
+                </div>
+                <br />
+            </form>
+        </div>
+
+    </div>
+</div>

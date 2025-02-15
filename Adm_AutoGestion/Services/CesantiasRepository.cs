@@ -169,12 +169,18 @@ namespace Adm_AutoGestion.Services
             string htmlTemplate = File.ReadAllText(rutaPlantilla);
 
             var datos = new Dictionary<string, string>
-    {
+
+           
+            {
+
+           
+
+
         { "{{Fecha}}", DateTime.Now.ToString("dd/MM/yyyy") },
         { "{{FondoCesantias}}", solicitud.FondoCesantias.Name },
         { "{{NombreTrabajador}}", solicitud.Empleado.Nombres},
         { "{{Identificacion}}", solicitud.Empleado.Documento},
-        { "{{ValorRetiro}}", solicitud.ValorRetiro.ToString("C") },
+        { "{{ValorRetiro}}", solicitud.ValorRetiro.ToString("C",new System.Globalization.CultureInfo("es-CO")) },
         { "{{ConceptoRetiro}}",  solicitud.Destino.Nombre },
         { "{{RepresentanteLegal}}", "JUAN CARLOS MANTILLA SUAREZ" },
         { "{{CCRepresentante}}", "13.827.980" },

@@ -2,6 +2,18 @@
 <html>
 <head>
     <style>
+
+        .logo-container {
+            position: absolute; /* O fixed si quieres que se quede fijo */
+            top: 10px; /* Ajusta la distancia desde la parte superior */
+            left: 10px; /* Ajusta la distancia desde la izquierda */
+            z-index: 100; /* Asegura que esté encima de otros elementos */
+        }
+
+            .logo-container img {
+                max-width: 150px; /* Ajusta el ancho máximo del logo */
+                height: auto;
+            }
         body {
             font-family: Arial, sans-serif;
             margin: 50px;
@@ -24,15 +36,20 @@
     </style>
 </head>
 <body>
+
+   
     <div class="header">
         Floridablanca, {{Fecha}}
     </div>
     <div class="content">
+        <br />
+        <br />
         <p>SEÑORES</p>
         <p><strong>{{FondoCesantias}}</strong></p>
         <p>Ciudad</p>
+        <br />
         <p>Asunto: Retiro de cesantías</p>
-        <p>
+        <p style="text-align:justify">
             Según lo dispuesto en el Artículo 21 de la ley 1429 de 2010 (que modificó
             el Art. 256 del código sustantivo del trabajo) y a la aclaración
             contenida en la carta circular 011 del 7 de Febrero de 2011 del
@@ -40,11 +57,14 @@
             autorizado el retiro parcial de vivienda del trabajador(a) señalado más
             adelante, en las siguientes condiciones:
         </p>
+        <br />
         <p>Nombre del Trabajador: {{NombreTrabajador}}</p>
         <p>Identificación: {{Identificacion}}</p>
         <p>Valor Retiro: {{ValorRetiro}}</p>
         <p>Concepto Retiro: {{ConceptoRetiro}}</p>
-        <p>
+        <br />
+        <br />
+        <p style="text-align:justify">
             La empresa se compromete a vigilar la inversión de las cesantías de
             acuerdo con lo estipulado en las normas antes señaladas.
         </p>
@@ -52,7 +72,7 @@
     <div class="footer">
         <p><strong>{{RepresentanteLegal}}</strong></p>
         <p>CC. {{CCRepresentante}} expedida {{LugarExpedicion}}</p>
-        <p>Pbx. {{Telefono}} extensión {{Extension}}</p>
+        <p>PBX. {{Telefono}} extensión {{Extension}}</p>
     </div>
 </body>
 </html>

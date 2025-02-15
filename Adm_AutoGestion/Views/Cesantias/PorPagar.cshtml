@@ -6,16 +6,17 @@
     Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
 }
 <div class="card">
-    <h2>Solicitudes por Pagar</h2>
 
-    <div>
+    <div class="card-header colorTitulo mb-3"><h4>Solicitud de Cesantias Pendientes por Pagar</h4></div>
+    <div class="card-body">
+
         <form method="get">
             <div class="row">
 
 
                 <div class="form-group col-md-4">
                     <label for="trabajador">Trabajador:</label>
-                    <select id="trabajador" name="empleadoId" class="form-control">
+                    <select id="trabajador" name="empleadoId" class="form-control selectpicker" data_live_search="true">
                         <option value="">Todos</option>
                         @foreach (var empleado in ViewBag.Empleados)
                         {
@@ -32,48 +33,58 @@
                     <input type="date" id="fechaFin" name="fechaFin" class="form-control" />
                 </div>
             </div>
-                <button type="submit" class="btn btn-primary">Buscar</button>
-</form>
+
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" class="btn btn-outline-primary rounded-pill">Buscar</button>
+                </div>
+            </div>
+
+        </form>
+
+        <hr />
+        <div class="row justify-content-start">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Trabajador</th>
+                            <th>Fecha de Registro</th>
+                            <th>Valor Retiro</th>
+                            <th>Destino</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var solicitud in Model)
+                        {
+                            <tr>
+                                <td>@solicitud.Id</td>
+                                <td>@solicitud.Empleado.Nombres</td>
+                                <td>@solicitud.FechaRegistro.ToShortDateString()</td>
+                                <td>@solicitud.ValorRetiro.ToString("C", new System.Globalization.CultureInfo("es-CO"))</td>
+                                <td>@solicitud.Destino.Nombre</td>
+                                <td>
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detalleModal"
+                                            data-id="@solicitud.Id">
+                                        Ver Detalle
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    </div>
-<div class="card">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Trabajador</th>
-                <th>Fecha de Registro</th>
-                <th>Valor Retiro</th>
-                <th>Destino</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var solicitud in Model)
-            {
-                <tr>
-                    <td>@solicitud.Id</td>
-                    <td>@solicitud.Empleado.Nombres</td>
-                    <td>@solicitud.FechaRegistro.ToShortDateString()</td>
-                    <td>@solicitud.ValorRetiro.ToString("C")</td>
-                    <td>@solicitud.Destino.Nombre</td>
-                    <td>
-                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detalleModal"
-                                data-id="@solicitud.Id">
-                            Ver Detalle
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detalleModalLabel">Detalle de la Solicitud</h5>
+                <div class="modal-header" style="background-color: #1565C0">
+                    <h5 class="modal-title" id="detalleModalLabel">Detalle Solicitud Retiro Parcial de Cesantias</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="detalleModalBody">

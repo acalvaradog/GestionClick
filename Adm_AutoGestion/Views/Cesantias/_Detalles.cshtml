@@ -7,6 +7,8 @@
     <!-- Mostrar la vista parcial -->
     @Html.Partial("_DetallePorPagar", Model)
 
+    <hr />
+
     <!-- Formulario para cambiar el estado -->
     <form method="post" action="~/Cesantias/CambiarEstadoPagado">
         <input type="hidden" name="id" value="@Model.Id.ToString()" />
@@ -20,7 +22,11 @@
                 }
             </select>
         </div>
-        <button type="submit" class="btn btn-success mt-2">Guardar</button>
+        <div class="row justify-content-start">
+            <div class="col-12" style="text-align:center">
+                <button type="submit" class="btn btn-outline-success rounded-pill mt-2">Guardar</button>
+            </div>
+        </div>
     </form>
 </div>
 
