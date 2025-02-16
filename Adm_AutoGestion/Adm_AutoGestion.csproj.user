@@ -3,7 +3,7 @@
   <PropertyGroup>
     <NameOfLastUsedPublishProfile>C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
     <ProjectView>ShowAllFiles</ProjectView>
-    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
+    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />

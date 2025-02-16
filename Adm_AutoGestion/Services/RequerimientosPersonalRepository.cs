@@ -525,7 +525,7 @@ public bool enviar_correo_CambioEstSel(string correoEmpl, int EstadoSeleccion, i
                     correo.Priority = System.Net.Mail.MailPriority.Normal;
                     correo.IsBodyHtml = true;
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
+                    smtp.Host = "smtp-relay.gmail.com";
                     smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                     smtp.EnableSsl = true;
@@ -602,7 +602,7 @@ public bool enviar_correo_CambioEstSel(string correoEmpl, int EstadoSeleccion, i
 
 
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
+                    smtp.Host = "smtp-relay.gmail.com";
                     smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                     smtp.EnableSsl = true;
@@ -659,7 +659,7 @@ public bool enviar_correo_CambioEstSel(string correoEmpl, int EstadoSeleccion, i
 
 
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
+                    smtp.Host = "smtp-relay.gmail.com";
                     smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                     smtp.EnableSsl = true;
@@ -719,7 +719,7 @@ public bool enviar_correo_CambioEstSel(string correoEmpl, int EstadoSeleccion, i
 
 
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
+                    smtp.Host = "smtp-relay.gmail.com";
                     smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                     smtp.EnableSsl = true;
@@ -781,7 +781,7 @@ public bool enviar_correo_CambioEstSel(string correoEmpl, int EstadoSeleccion, i
 
 
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
+                    smtp.Host = "smtp-relay.gmail.com";
                     smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                     smtp.EnableSsl = true;
@@ -842,7 +842,7 @@ public bool enviar_correo_CambioEstSel(string correoEmpl, int EstadoSeleccion, i
                     correo.Priority = System.Net.Mail.MailPriority.Normal;
                     correo.IsBodyHtml = true;
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
+                    smtp.Host = "smtp-relay.gmail.com";
                     smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                     smtp.EnableSsl = true;
@@ -899,7 +899,7 @@ public bool enviar_correo_CambioEstSel(string correoEmpl, int EstadoSeleccion, i
 
 
                     System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                    smtp.Host = "smtp.gmail.com";
+                    smtp.Host = "smtp-relay.gmail.com";
                     smtp.Port = 587;
                     smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                     smtp.EnableSsl = true;

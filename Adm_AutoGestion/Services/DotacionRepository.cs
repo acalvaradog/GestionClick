@@ -261,7 +261,7 @@ namespace Adm_AutoGestion.Services
                         correo.IsBodyHtml = true;
 
                         System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
+                        smtp.Host = "smtp-relay.gmail.com";
                         smtp.Port = 587;
                         smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                         smtp.EnableSsl = true;
@@ -308,7 +308,7 @@ namespace Adm_AutoGestion.Services
                         correo.IsBodyHtml = true;
 
                         System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient();
-                        smtp.Host = "smtp.gmail.com";
+                        smtp.Host = "smtp-relay.gmail.com";
                         smtp.Port = 587;
                         smtp.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo);
                         smtp.EnableSsl = true;

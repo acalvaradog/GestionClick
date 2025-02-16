@@ -299,7 +299,7 @@ namespace Adm_AutoGestion.Services
 
                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient
                 {
-                    Host = "smtp.gmail.com",
+                    Host = "smtp-relay.gmail.com",
                     Port = 587,
                     Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.Correo.ToString(), contraseñacorreo),
                     EnableSsl = true
