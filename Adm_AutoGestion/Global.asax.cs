@@ -8,6 +8,7 @@ using System.Web.Optimization;
 using Adm_AutoGestion.App_Start;
 using System.Web.Http;
 using Adm_AutoGestion.Tareas;
+using OfficeOpenXml;
 //using Microsoft.AspNet.SignalR;
 namespace Adm_AutoGestion
 {
@@ -23,7 +24,7 @@ namespace Adm_AutoGestion
             //Planificacion.StartNotificacion();
             //Planificacion.StartActualizacionEmpleados();
             //Planificacion.StartActualizacionEstructuraJerarquicadeEmpleados();
-
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // O LicenseContext.Commercial
         }
     }
 }

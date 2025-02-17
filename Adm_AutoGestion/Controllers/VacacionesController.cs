@@ -5,30 +5,20 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.Mvc;
 using System.Data;
 using SAP.Middleware.Connector;
-using SAPExtractorDotNET;
 using System.Web.Script.Serialization;
-
 using System.Net;
 using System.Text;
 using System.IO;
-using Newtonsoft.Json;
-
-
-
+using OfficeOpenXml;
 
 
 namespace Adm_AutoGestion.Controllers
 {
 
 
-    public class DatosEmpleado
-    {
-        
-    }
 
     public class ControlVacacionesJefe
     {
@@ -2328,6 +2318,86 @@ namespace Adm_AutoGestion.Controllers
             }
 
         }
+
+
+
+        //Carga Masiva periodo Vacaciones
+
+        private static List<List<string>> _datosTemporales;
+        public ActionResult CargarPeriodosVacaciones(HttpPostedFileBase archivoExcel)
+        {
+            if (archivoExcel != null && archivoExcel.ContentLength > 0)
+            {
+                try
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        archivoExcel.InputStream.CopyTo(stream);
+                        stream.Position = 0;
+
+                        using (var paquete = new ExcelPackage(stream))
+                        {
+
+                            if (paquete.Workbook.Worksheets.Count >= 1) // Verifica si hay al menos una hoja
+                            {
+                                var hoja = paquete.Workbook.Worksheets[0]; // Suponiendo que la primera hoja es la que quieres cargar
+                                int totalFilas = hoja.Dimension.Rows;
+                                int totalColumnas = hoja.Dimension.Columns;
+
+                                _datosTemporales = new List<List<string>>();
+                                List<string> columnas = new List<string>();
+
+                                // Obtener nombres de columnas (primera fila)
+                                for (int col = 1; col <= totalColumnas; col++)
+                                {
+                                    columnas.Add(hoja.Cells[1, col].Value?.ToString());
+                                }
+                                ViewBag.Columnas = columnas;
+
+                                // Obtener datos (a partir de la segunda fila)
+                                for (int fila = 2; fila <= totalFilas; fila++)
+                                {
+                                    List<string> filaDatos = new List<string>();
+                                    for (int col = 1; col <= totalColumnas; col++)
+                                    {
+                                        filaDatos.Add(hoja.Cells[fila, col].Value?.ToString());
+                                    }
+                                    _datosTemporales.Add(filaDatos);
+                                }
+
+                                ViewBag.Datos = _datosTemporales;
+
+                                ViewBag.Mensaje = "Archivo cargado correctamente.";
+                            }
+
+                        }
+
+
+                               
+                            
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Error al cargar el archivo: " + ex.Message;
+                }
+            }
+            else
+            {
+                ViewBag.Error = "Por favor, selecciona un archivo Excel.";
+            }
+        
+        
+        
+        
+
+           return View(); 
+        
+        }
+
+
+
+
     }
 
 }
