@@ -17,6 +17,6 @@ public class ApiServiceSelector
 
     public string GetApiUrl()
     {
-        return _configuration[$"Api:ApiUrl{_empresaSeleccionada}"];
+        return _configuration[$"ApiUrls:ApiURL{_empresaSeleccionada}"];
     }
 }

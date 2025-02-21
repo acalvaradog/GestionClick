@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Esi3+qxpvPUt5uLbV0VUgKPQ1l0257HaGKDM5Kffk9E=",
+  "Hash": "fN0C2PLG8H1oGsZcxa9p4/SPqDkiebnEVrO9huHXemo=",
   "Source": "AutoGestion",
   "BasePath": "/",
   "Mode": "Root",
@@ -2299,8 +2299,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "WasmResource",
       "AssetTraitValue": "runtime",
-      "Fingerprint": "5wl0g8r80s",
-      "Integrity": "1U74oM8ktCFos6njhYqh6qQIQ/TbKbcPnl0WBGcjeIA=",
+      "Fingerprint": "c5fpl37vtm",
+      "Integrity": "EJZ7Mu19JQieMcIIfYzPPv9iQE3DJOMoIzPjtcxlsqw=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "obj\\Debug\\net6.0\\AutoGestion.dll"
@@ -2320,8 +2320,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "WasmResource",
       "AssetTraitValue": "symbol",
-      "Fingerprint": "3240x22ai8",
-      "Integrity": "i73RdgeBTPlpna612Hyp2WBRcMJMl5Unlg3nF68Kz08=",
+      "Fingerprint": "2hm32ndtn6",
+      "Integrity": "el0VvslmGp79pUgWY0rrU+eoOmntbu2aidKxoOIwzlg=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "obj\\Debug\\net6.0\\AutoGestion.pdb"
@@ -2383,8 +2383,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "WasmResource",
       "AssetTraitValue": "manifest",
-      "Fingerprint": "9qvmqx5frf",
-      "Integrity": "3yd+tT3sYk6EfCoBTa1PiIkN2POI3H52fApNr+ookp4=",
+      "Fingerprint": "6ruma93gq0",
+      "Integrity": "MoPbEEfXLplNVmX7hM+QZj4cVRK4N+YnnUr5gKaM0Hs=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "obj\\Debug\\net6.0\\blazor.boot.json"
@@ -7136,7 +7136,7 @@
       "OriginalItemSpec": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.Components.Authorization.dll"
     },
     {
-      "Identity": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\18f34f13is-5wl0g8r80s.gz",
+      "Identity": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\18f34f13is-c5fpl37vtm.gz",
       "SourceId": "AutoGestion",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\",
@@ -7150,8 +7150,8 @@
       "RelatedAsset": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\AutoGestion.dll",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "6vcudd5rna",
-      "Integrity": "XtIn0hMKVGjyt98WLIv0WWe4GHPKSEBP11SSHEb5mx0=",
+      "Fingerprint": "oybi5orv37",
+      "Integrity": "8P1zTymjEJfgt64E64sDMax7zUOp7ocdvxWMtCaG0rY=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\AutoGestion.dll"
@@ -10874,7 +10874,7 @@
       "OriginalItemSpec": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.AspNetCore.SignalR.Client.dll"
     },
     {
-      "Identity": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\t3ym0yg2o4-3240x22ai8.gz",
+      "Identity": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\t3ym0yg2o4-2hm32ndtn6.gz",
       "SourceId": "AutoGestion",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\",
@@ -10888,8 +10888,8 @@
       "RelatedAsset": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\AutoGestion.pdb",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "va9yxsiqnw",
-      "Integrity": "l7RYng1aNxMV6vIppHIoPbTy9lu0Od74Pmqyr3ySSBg=",
+      "Fingerprint": "lv2dvormg0",
+      "Integrity": "0V6jrxApUPEfMiV6fdUo4aZiW/mTSHgOiYz6nCeCrWg=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\AutoGestion.pdb"
@@ -11693,7 +11693,7 @@
       "OriginalItemSpec": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\Microsoft.Extensions.Logging.Abstractions.dll"
     },
     {
-      "Identity": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\zv2jcuj6wz-9qvmqx5frf.gz",
+      "Identity": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\zv2jcuj6wz-6ruma93gq0.gz",
       "SourceId": "AutoGestion",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\",
@@ -11707,8 +11707,8 @@
       "RelatedAsset": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\blazor.boot.json",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "h161lgl56o",
-      "Integrity": "KyZh1WmH317OTOn3w4mgbmp4cqhnPM4iCnKBWZG3Xjw=",
+      "Fingerprint": "gqk5lxhgvk",
+      "Integrity": "OGFAogrxZ5kDsecJ44ppFd4kGmSIZ9fQOBOdjrqr6k8=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\bin\\Debug\\net6.0\\wwwroot\\_framework\\blazor.boot.json"
@@ -11791,8 +11791,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "BlazorServiceWorker",
       "AssetTraitValue": "ServiceWorkerJs",
-      "Fingerprint": "4kf6avbcae",
-      "Integrity": "vJVeXug50HPk+WDuPwayZnmGSsIvor+sK9IVe0iHTOw=",
+      "Fingerprint": "rjfrj0kb2f",
+      "Integrity": "d3oiJ8UA9UciH6hYOVTC6jW+T+z5sMDPOgba6fq0YU8=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "wwwroot\\service-worker.js"
@@ -11812,8 +11812,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "BlazorServiceWorker",
       "AssetTraitValue": "ServiceWorkerManifest",
-      "Fingerprint": "5gmv3vum2w",
-      "Integrity": "ZaIcOga6MHpr42Pn91xQK9L4dEj70OfyLdPe+vUb9Tc=",
+      "Fingerprint": "vcvrpii7gl",
+      "Integrity": "f/iaCxAsodF+kmZye6jJ/UtXHV053mGjPVLesLOXyjg=",
       "CopyToOutputDirectory": "PreserveNewest",
       "CopyToPublishDirectory": "Never",
       "OriginalItemSpec": "obj\\Debug\\net6.0\\service-worker\\service-worker-assets.js.build"
@@ -17423,7 +17423,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "810496"
+          "Value": "808960"
         },
         {
           "Name": "Content-Type",
@@ -17431,11 +17431,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"1U74oM8ktCFos6njhYqh6qQIQ/TbKbcPnl0WBGcjeIA=\""
+          "Value": "\"EJZ7Mu19JQieMcIIfYzPPv9iQE3DJOMoIzPjtcxlsqw=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:53:59 GMT"
+          "Value": "Fri, 21 Feb 2025 01:09:23 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -17445,18 +17445,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-1U74oM8ktCFos6njhYqh6qQIQ/TbKbcPnl0WBGcjeIA="
+          "Value": "sha256-EJZ7Mu19JQieMcIIfYzPPv9iQE3DJOMoIzPjtcxlsqw="
         }
       ]
     },
     {
       "Route": "_framework/AutoGestion.dll",
-      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\18f34f13is-5wl0g8r80s.gz",
+      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\18f34f13is-c5fpl37vtm.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000003937876"
+          "Quality": "0.000003938016"
         }
       ],
       "ResponseHeaders": [
@@ -17466,15 +17466,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "253943"
+          "Value": "253934"
         },
         {
           "Name": "ETag",
-          "Value": "\"XtIn0hMKVGjyt98WLIv0WWe4GHPKSEBP11SSHEb5mx0=\""
+          "Value": "\"8P1zTymjEJfgt64E64sDMax7zUOp7ocdvxWMtCaG0rY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:32:28 GMT"
+          "Value": "Sat, 15 Feb 2025 13:49:15 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -17494,19 +17494,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"1U74oM8ktCFos6njhYqh6qQIQ/TbKbcPnl0WBGcjeIA=\""
+          "Value": "W/\"EJZ7Mu19JQieMcIIfYzPPv9iQE3DJOMoIzPjtcxlsqw=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-1U74oM8ktCFos6njhYqh6qQIQ/TbKbcPnl0WBGcjeIA="
+          "Value": "sha256-EJZ7Mu19JQieMcIIfYzPPv9iQE3DJOMoIzPjtcxlsqw="
         }
       ]
     },
     {
       "Route": "_framework/AutoGestion.dll.gz",
-      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\18f34f13is-5wl0g8r80s.gz",
+      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\18f34f13is-c5fpl37vtm.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -17515,7 +17515,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "253943"
+          "Value": "253934"
         },
         {
           "Name": "Content-Type",
@@ -17523,11 +17523,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"XtIn0hMKVGjyt98WLIv0WWe4GHPKSEBP11SSHEb5mx0=\""
+          "Value": "\"8P1zTymjEJfgt64E64sDMax7zUOp7ocdvxWMtCaG0rY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:32:28 GMT"
+          "Value": "Sat, 15 Feb 2025 13:49:15 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -17545,7 +17545,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-XtIn0hMKVGjyt98WLIv0WWe4GHPKSEBP11SSHEb5mx0="
+          "Value": "sha256-8P1zTymjEJfgt64E64sDMax7zUOp7ocdvxWMtCaG0rY="
         }
       ]
     },
@@ -17560,7 +17560,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "500652"
+          "Value": "499940"
         },
         {
           "Name": "Content-Type",
@@ -17568,11 +17568,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"i73RdgeBTPlpna612Hyp2WBRcMJMl5Unlg3nF68Kz08=\""
+          "Value": "\"el0VvslmGp79pUgWY0rrU+eoOmntbu2aidKxoOIwzlg=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:53:59 GMT"
+          "Value": "Fri, 21 Feb 2025 01:09:23 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -17582,13 +17582,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-i73RdgeBTPlpna612Hyp2WBRcMJMl5Unlg3nF68Kz08="
+          "Value": "sha256-el0VvslmGp79pUgWY0rrU+eoOmntbu2aidKxoOIwzlg="
         }
       ]
     },
     {
       "Route": "_framework/AutoGestion.pdb",
-      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\t3ym0yg2o4-3240x22ai8.gz",
+      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\t3ym0yg2o4-2hm32ndtn6.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
@@ -17607,11 +17607,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"l7RYng1aNxMV6vIppHIoPbTy9lu0Od74Pmqyr3ySSBg=\""
+          "Value": "\"0V6jrxApUPEfMiV6fdUo4aZiW/mTSHgOiYz6nCeCrWg=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:32:28 GMT"
+          "Value": "Sat, 15 Feb 2025 13:49:15 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -17631,19 +17631,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"i73RdgeBTPlpna612Hyp2WBRcMJMl5Unlg3nF68Kz08=\""
+          "Value": "W/\"el0VvslmGp79pUgWY0rrU+eoOmntbu2aidKxoOIwzlg=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-i73RdgeBTPlpna612Hyp2WBRcMJMl5Unlg3nF68Kz08="
+          "Value": "sha256-el0VvslmGp79pUgWY0rrU+eoOmntbu2aidKxoOIwzlg="
         }
       ]
     },
     {
       "Route": "_framework/AutoGestion.pdb.gz",
-      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\t3ym0yg2o4-3240x22ai8.gz",
+      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\t3ym0yg2o4-2hm32ndtn6.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -17660,11 +17660,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"l7RYng1aNxMV6vIppHIoPbTy9lu0Od74Pmqyr3ySSBg=\""
+          "Value": "\"0V6jrxApUPEfMiV6fdUo4aZiW/mTSHgOiYz6nCeCrWg=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:32:28 GMT"
+          "Value": "Sat, 15 Feb 2025 13:49:15 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -17682,7 +17682,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-l7RYng1aNxMV6vIppHIoPbTy9lu0Od74Pmqyr3ySSBg="
+          "Value": "sha256-0V6jrxApUPEfMiV6fdUo4aZiW/mTSHgOiYz6nCeCrWg="
         }
       ]
     },
@@ -17979,11 +17979,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"3yd+tT3sYk6EfCoBTa1PiIkN2POI3H52fApNr+ookp4=\""
+          "Value": "\"MoPbEEfXLplNVmX7hM+QZj4cVRK4N+YnnUr5gKaM0Hs=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:53:59 GMT"
+          "Value": "Fri, 21 Feb 2025 01:09:24 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -17993,18 +17993,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3yd+tT3sYk6EfCoBTa1PiIkN2POI3H52fApNr+ookp4="
+          "Value": "sha256-MoPbEEfXLplNVmX7hM+QZj4cVRK4N+YnnUr5gKaM0Hs="
         }
       ]
     },
     {
       "Route": "_framework/blazor.boot.json",
-      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\zv2jcuj6wz-9qvmqx5frf.gz",
+      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\zv2jcuj6wz-6ruma93gq0.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000100563154"
+          "Quality": "0.000100553042"
         }
       ],
       "ResponseHeaders": [
@@ -18014,15 +18014,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "9943"
+          "Value": "9944"
         },
         {
           "Name": "ETag",
-          "Value": "\"KyZh1WmH317OTOn3w4mgbmp4cqhnPM4iCnKBWZG3Xjw=\""
+          "Value": "\"OGFAogrxZ5kDsecJ44ppFd4kGmSIZ9fQOBOdjrqr6k8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:32:28 GMT"
+          "Value": "Sat, 15 Feb 2025 13:49:16 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -18042,19 +18042,19 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"3yd+tT3sYk6EfCoBTa1PiIkN2POI3H52fApNr+ookp4=\""
+          "Value": "W/\"MoPbEEfXLplNVmX7hM+QZj4cVRK4N+YnnUr5gKaM0Hs=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-3yd+tT3sYk6EfCoBTa1PiIkN2POI3H52fApNr+ookp4="
+          "Value": "sha256-MoPbEEfXLplNVmX7hM+QZj4cVRK4N+YnnUr5gKaM0Hs="
         }
       ]
     },
     {
       "Route": "_framework/blazor.boot.json.gz",
-      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\zv2jcuj6wz-9qvmqx5frf.gz",
+      "AssetFile": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\Debug\\net6.0\\compressed\\zv2jcuj6wz-6ruma93gq0.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -18063,7 +18063,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "9943"
+          "Value": "9944"
         },
         {
           "Name": "Content-Type",
@@ -18071,11 +18071,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"KyZh1WmH317OTOn3w4mgbmp4cqhnPM4iCnKBWZG3Xjw=\""
+          "Value": "\"OGFAogrxZ5kDsecJ44ppFd4kGmSIZ9fQOBOdjrqr6k8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:32:28 GMT"
+          "Value": "Sat, 15 Feb 2025 13:49:16 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -18093,7 +18093,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-KyZh1WmH317OTOn3w4mgbmp4cqhnPM4iCnKBWZG3Xjw="
+          "Value": "sha256-OGFAogrxZ5kDsecJ44ppFd4kGmSIZ9fQOBOdjrqr6k8="
         }
       ]
     },
@@ -54168,7 +54168,7 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"vJVeXug50HPk+WDuPwayZnmGSsIvor+sK9IVe0iHTOw=\""
+          "Value": "\"d3oiJ8UA9UciH6hYOVTC6jW+T+z5sMDPOgba6fq0YU8=\""
         },
         {
           "Name": "Last-Modified",
@@ -54182,7 +54182,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-vJVeXug50HPk+WDuPwayZnmGSsIvor+sK9IVe0iHTOw="
+          "Value": "sha256-d3oiJ8UA9UciH6hYOVTC6jW+T+z5sMDPOgba6fq0YU8="
         }
       ]
     },
@@ -54205,11 +54205,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZaIcOga6MHpr42Pn91xQK9L4dEj70OfyLdPe+vUb9Tc=\""
+          "Value": "\"f/iaCxAsodF+kmZye6jJ/UtXHV053mGjPVLesLOXyjg=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 21 Feb 2025 01:53:59 GMT"
+          "Value": "Fri, 21 Feb 2025 01:09:24 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -54219,7 +54219,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ZaIcOga6MHpr42Pn91xQK9L4dEj70OfyLdPe+vUb9Tc="
+          "Value": "sha256-f/iaCxAsodF+kmZye6jJ/UtXHV053mGjPVLesLOXyjg="
         }
       ]
     },

@@ -2754,6 +2754,3 @@ C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\System.V
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.campoobligatoriocesantia.resources
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.campocartacesantias.resources
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\itextsharp.xmlworker.dll
-C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\EPPlus.dll
-C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\OfficeOpenXml.Extension.AspNetCore.dll
-C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\EPPlus.xml

@@ -1,4 +1,4 @@
-/* Manifest version: CkwtYbvf */
+/* Manifest version: lKTAmsWQ */
 const baseURL = '/';
 const indexURL = '/index.html';
 const networkFetchEvent = 'fetch';

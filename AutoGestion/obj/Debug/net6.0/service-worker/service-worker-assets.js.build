@@ -1,5 +1,5 @@
 self.assetsManifest = {
-  "version": "CkwtYbvf",
+  "version": "lKTAmsWQ",
   "assets": [
     {
       "hash": "sha256-d34CCz/uy3zyE4SomG0cr8Piqj1ZqDlEWdV/NwYjjZo=",
@@ -454,11 +454,11 @@ self.assetsManifest = {
       "url": "_content/MudBlazor/MudBlazor.min.js"
     },
     {
-      "hash": "sha256-1U74oM8ktCFos6njhYqh6qQIQ/TbKbcPnl0WBGcjeIA=",
+      "hash": "sha256-EJZ7Mu19JQieMcIIfYzPPv9iQE3DJOMoIzPjtcxlsqw=",
       "url": "_framework/AutoGestion.dll"
     },
     {
-      "hash": "sha256-i73RdgeBTPlpna612Hyp2WBRcMJMl5Unlg3nF68Kz08=",
+      "hash": "sha256-el0VvslmGp79pUgWY0rrU+eoOmntbu2aidKxoOIwzlg=",
       "url": "_framework/AutoGestion.pdb"
     },
     {
@@ -1310,7 +1310,7 @@ self.assetsManifest = {
       "url": "_framework/WindowsBase.dll"
     },
     {
-      "hash": "sha256-3yd+tT3sYk6EfCoBTa1PiIkN2POI3H52fApNr+ookp4=",
+      "hash": "sha256-MoPbEEfXLplNVmX7hM+QZj4cVRK4N+YnnUr5gKaM0Hs=",
       "url": "_framework/blazor.boot.json"
     },
     {

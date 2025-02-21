@@ -26,11 +26,9 @@ builder.Services.AddScoped<IChatManager>(sp => chatManager);
 
 builder.Services.AddSingleton<ApiServiceSelector>();
 
-
 builder.Services.AddScoped(sp =>
 {
     var apiUrlService = sp.GetRequiredService<ApiServiceSelector>();
-
     return new HttpClient { BaseAddress = new Uri(apiUrlService.GetApiUrl()) };
 });
 
