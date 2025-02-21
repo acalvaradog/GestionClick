@@ -20,9 +20,18 @@ var chatManager = new ChatManager(chatHttpClient);
 builder.Services.AddScoped<IChatManager>(sp => chatManager);
 
 
-var url = builder.Configuration.GetValue<string>("Api:ApiUrl");
+//var url = builder.Configuration.GetValue<string>("Api:ApiUrl");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(url) });
+//builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(url) });
+
+builder.Services.AddSingleton<ApiServiceSelector>();
+
+builder.Services.AddScoped(sp =>
+{
+    var apiUrlService = sp.GetRequiredService<ApiServiceSelector>();
+    return new HttpClient { BaseAddress = new Uri(apiUrlService.GetApiUrl()) };
+});
+
 //builder.Services.AddTransient<IChatManager, ChatManager>();
 //builder.Services.AddHttpClient("Autogestion.ServerAPI", client =>
 //{

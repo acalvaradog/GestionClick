@@ -12,7 +12,7 @@
 @inject IJSRuntime JS
 @inject IDialogService DialogService
 @using AutoGestion.Componentes;
-
+@inject ApiServiceSelector ApiSelector
 @if (mostrarSelecEmpresa)
 {
     <SelectEmpresa Empleados="@listaempleado"
@@ -90,6 +90,9 @@ else{
                 empleadoseleccionado = listaempleado
                     .Where(x => x.PERNR == nroempleado.Trim())
                     .FirstOrDefault();
+
+                ApiSelector.SetEmpresa(empleadoseleccionado.BUKRS);
+
             }
         }
     }
@@ -183,6 +186,8 @@ else{
         empleadoseleccionado = empleado;
         tcsSeleccionEmpleado?.SetResult(empleado);
         mostrarSelecEmpresa = false;
+
+        ApiSelector.SetEmpresa(empleado.BUKRS);
         StateHasChanged();
     }
 
