@@ -123,10 +123,10 @@ namespace Adm_AutoGestion.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> CambiarEstado(int id, int nuevoEstadoId)
+        public async Task<ActionResult> CambiarEstado(int id, int nuevoEstadoId, string Observacion)
         {
             var usuario = Session["NombreEmpleado"].ToString();  // Obtiene el nombre del usuario actual
-            await _cesantiasRepository.ActualizarEstadoSolicitudAsync(id, nuevoEstadoId, usuario);
+            await _cesantiasRepository.ActualizarEstadoSolicitudAsync(id, nuevoEstadoId, usuario,Observacion);
             return RedirectToAction("PorAprobar");
         }
 
@@ -134,7 +134,7 @@ namespace Adm_AutoGestion.Controllers
         public async Task<ActionResult> CambiarEstadoPagado(int id, int nuevoEstadoId)
         {
             var usuario = Session["NombreEmpleado"].ToString(); // Obtiene el nombre del usuario actual
-            await _cesantiasRepository.ActualizarEstadoSolicitudAsync(id, nuevoEstadoId, usuario);
+            await _cesantiasRepository.ActualizarEstadoSolicitudAsync(id, nuevoEstadoId, usuario,"");
             return RedirectToAction("PorPagar");
         }
 
@@ -187,7 +187,7 @@ namespace Adm_AutoGestion.Controllers
             // Crear el PDF
             using (var memoryStream = new MemoryStream())
             {
-                var document = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4, 50, 50, 25, 25);
+                var document = new iTextSharp.text.Document(iTextSharp.text.PageSize.A4, 10, 10, 10, 10);
                 var writer = PdfWriter.GetInstance(document, memoryStream);
                 document.Open();
 
@@ -210,7 +210,10 @@ namespace Adm_AutoGestion.Controllers
                         {
                             document.NewPage();
                             var importedPage = writer.GetImportedPage(reader, i);
-                            writer.DirectContent.AddTemplate(importedPage, 0, 0);
+
+                            // Escalar y ajustar márgenes
+                            float scale = document.PageSize.Width / importedPage.Width;
+                            writer.DirectContent.AddTemplate(importedPage, scale, 0, 0, scale, 10, 10);
                         }
                     }
                 }

@@ -124,12 +124,13 @@ namespace Adm_AutoGestion.Services
                 .ToListAsync();
         }
 
-        public async Task ActualizarEstadoSolicitudAsync(int solicitudId, int nuevoEstadoId, string usuario)
+        public async Task ActualizarEstadoSolicitudAsync(int solicitudId, int nuevoEstadoId, string usuario,string Observacion)
         {
             var solicitud = await _context.SolicitudCesantia.FindAsync(solicitudId);
             if (solicitud != null)
             {
                 solicitud.EstadoId = nuevoEstadoId;
+                if (Observacion != null) solicitud.Observacion = Observacion;
 
                 // Crear un log de la acción
                 var log = new LogSolicitudCesantia

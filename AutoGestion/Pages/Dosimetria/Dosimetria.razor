@@ -3,50 +3,106 @@
 @using MudBlazor
 @using Autogestion.Shared.DTO;
 @using Autogestion.Shared.DTO.Empleado;
+@using System;
+@using System.Globalization;
 @inject Blazored.LocalStorage.ILocalStorageService localStore
 <MudContainer>
-
-
     @if (dosisResult != null)
     {
         @foreach (var item in dosisResult)
         {
-            <MudPaper Class="pa-4 mt-4">
-                <MudText>Año: @item.año</MudText>
-                <MudGrid>
-                    @if (item.TotalAnualHp10 > 0) { 
-                        <MudItem xs="12" sm="6">
-                            <MudText Typo="Typo.h6">Dosis Anual Hp10:</MudText>
-                            <MudText>@item.TotalAnualHp10</MudText>
-                        </MudItem>
-                    }
-                    @if (item.TotalAnualHp3 > 0)
-                    {
-                        <MudItem xs="12" sm="6">
-                            <MudText Typo="Typo.h6">Dosis Anual Hp3:</MudText>
-                            <MudText>@item.TotalAnualHp3</MudText>
-                        </MudItem>
-                    }
-                    @if (item.TotalAcumuladoHp10 > 0)
-                    {
-                        <MudItem xs="12" sm="6">
-                            <MudText Typo="Typo.h6">Dosis Acumulada Hp10:</MudText>
-                            <MudText>@item.TotalAcumuladoHp10</MudText>
-                        </MudItem>
-                    }
-                    @if (item.TotalAcumuladoHp3 > 0)
-                    {
-                        <MudItem xs="12" sm="6">
-                            <MudText Typo="Typo.h6">Dosis Acumulada Hp3:</MudText>
-                        <MudText>@item.TotalAcumuladoHp3</MudText>
-                    </MudItem>
-                    }
-                </MudGrid>
-            </MudPaper>   
-        }
+            <MudCard Class="pa-4 mt-4" Elevation="4">
+                <MudCardHeader>
+                    <MudText Typo="Typo.h5" Class="font-weight-bold">Año: @item.año</MudText>
+                </MudCardHeader>
 
+                <MudCardContent>
+                    <!-- Resumen anual -->
+                    <MudGrid Spacing="2" Justify="Justify.FlexStart">
+                        @if (item.TotalAnualHp10 > 0)
+                        {
+                            <MudItem xs="12" sm="6" md="4">
+                                <MudPaper Class="pa-3" Elevation="1">
+                                    <MudChip Color="Color.Primary" Variant="Variant.Filled" Class="mb-2">Dosis Anual Tórax</MudChip>
+                                    <MudText Typo="Typo.body1" Class="font-weight-bold">@item.TotalAnualHp10</MudText>
+                                </MudPaper>
+                            </MudItem>
+                        }
+
+                        @if (item.TotalAnualHp3 > 0)
+                        {
+                            <MudItem xs="12" sm="6" md="4">
+                                <MudPaper Class="pa-3" Elevation="1">
+                                    <MudChip Color="Color.Secondary" Variant="Variant.Filled" Class="mb-2">Dosis Anual Cristalino</MudChip>
+                                    <MudText Typo="Typo.body1" Class="font-weight-bold">@item.TotalAnualHp3</MudText>
+                                </MudPaper>
+                            </MudItem>
+                        }
+
+                        @if (item.TotalAcumuladoHp10 > 0)
+                        {
+                            <MudItem xs="12" sm="6" md="4">
+                                <MudPaper Class="pa-3" Elevation="1">
+                                    <MudChip Color="Color.Info" Variant="Variant.Filled" Class="mb-2">Dosis Acumulada Tórax</MudChip>
+                                    <MudText Typo="Typo.body1" Class="font-weight-bold">@item.TotalAcumuladoHp10</MudText>
+                                </MudPaper>
+                            </MudItem>
+                        }
+
+                        @if (item.TotalAcumuladoHp3 > 0)
+                        {
+                            <MudItem xs="12" sm="6" md="4">
+                                <MudPaper Class="pa-3" Elevation="1">
+                                    <MudChip Color="Color.Success" Variant="Variant.Filled" Class="mb-2">Dosis Acumulada Cristalino</MudChip>
+                                    <MudText Typo="Typo.body1" Class="font-weight-bold">@item.TotalAcumuladoHp3</MudText>
+                                </MudPaper>
+                            </MudItem>
+                        }
+                    </MudGrid>
+
+                    <!-- Detalles por mes -->
+                    @if (item.ValoresPorMes != null && item.ValoresPorMes.Any())
+                    {
+                        <MudDivider Class="my-4" />
+
+                        <MudExpansionPanels>
+                            <MudExpansionPanel Text="Ver detalles por mes" Icon="@Icons.Material.Filled.CalendarMonth">
+                                <MudGrid Spacing="2" Justify="Justify.FlexStart">
+                                    @foreach (var valormes in item.ValoresPorMes)
+                                    {
+                                        <MudItem xs="12" sm="6" md="4" lg="3">
+                                            <MudPaper Class="pa-3" Elevation="1">
+                                                <MudText Typo="Typo.subtitle1" Class="font-weight-bold mb-2">
+                                                    @CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(valormes.Mes)
+                                                </MudText>
+
+                                                @if (valormes.ValorHp3 > 0)
+                                                {
+                                                    <MudText Typo="Typo.body2">Tórax: @valormes.ValorHp3</MudText>
+                                                }
+
+                                                @if (valormes.ValorHp10 > 0)
+                                                {
+                                                    <MudText Typo="Typo.body2">Cristalino: @valormes.ValorHp10</MudText>
+                                                }
+                                            </MudPaper>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+                    }
+                </MudCardContent>
+            </MudCard>
+        }
+    }
+    else
+    {
+        <MudText Typo="Typo.h6" Class="text-center">No hay datos disponibles.</MudText>
     }
 </MudContainer>
+
+
 
 @code {
     private int empleadoId;

@@ -29,5 +29,7 @@ namespace Adm_AutoGestion.Models
         public List<LogSolicitudCesantia> Log { get; set; }
         public string CartaFondo { get; set; }
 
+        public string Observacion { get; set; }
+
     }
 }

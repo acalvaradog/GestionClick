@@ -21,6 +21,8 @@ else{
             <MudTh>Destino</MudTh>
             <MudTh>Estado</MudTh>
             <MudTh>Acciones</MudTh>
+            <MudTh></MudTh>
+            <MudTh>Observación</MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd>@context.Id</MudTd>
@@ -43,6 +45,16 @@ else{
                                    OnClick="() => DescargarCartaFondo(context.Id)" />
                 }
             </MudTd>
+             <MudTd>
+                <MudTextField @bind-Value="@context.Observacion"
+                           
+                              Lines="5"
+                              Variant="Variant.Filled"
+                              Adornment="Adornment.None"
+                         
+                    />
+
+             </MudTd>
         </RowTemplate>
     </MudTable>
 }

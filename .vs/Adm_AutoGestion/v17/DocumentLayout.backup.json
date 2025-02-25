@@ -3,36 +3,68 @@
   "WorkspaceRootPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{C9819DC8-582D-4A23-958D-57DD61EF6309}|AutoGestion\\AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\autogestion\\pages\\dosimetria\\dosimetria.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C9819DC8-582D-4A23-958D-57DD61EF6309}|AutoGestion\\AutoGestion.csproj|solutionrelative:autogestion\\pages\\dosimetria\\dosimetria.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\views\\dosimetria\\reportedosimetria.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\views\\dosimetria\\reportedosimetria.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9819DC8-582D-4A23-958D-57DD61EF6309}|AutoGestion\\AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\autogestion\\pages\\cesantias\\historicocesantias.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C9819DC8-582D-4A23-958D-57DD61EF6309}|AutoGestion\\AutoGestion.csproj|solutionrelative:autogestion\\pages\\cesantias\\historicocesantias.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\controllers\\dosimetriacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\dosimetriacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\views\\dosimetria\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\views\\dosimetria\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\views\\dosimetria\\_createedit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\views\\dosimetria\\_createedit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\controllers\\api\\dosimetriacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\api\\dosimetriacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\views\\dosimetria\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\views\\dosimetria\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\views\\cesantias\\_detallemodal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\views\\cesantias\\_detallemodal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\services\\cesantiasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\services\\cesantiasrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\plantillaspdf\\plantillasolicitudcesantias.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\plantillaspdf\\plantillasolicitudcesantias.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\views\\cesantias\\poraprobar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\views\\cesantias\\poraprobar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\controllers\\api\\soportehojavidacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\api\\soportehojavidacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\controllers\\api\\cesantiascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\api\\cesantiascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\adm_autogestion\\controllers\\vacacionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\vacacionescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\controllers\\cesantiascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\cesantiascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\controllers\\servicioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\servicioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\models\\solicitudcesantia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\models\\solicitudcesantia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\adm_autogestion\\controllers\\api\\empleadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\controllers\\api\\empleadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\views\\cesantias\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\views\\cesantias\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|c:\\users\\user\\source\\repos\\acalvaradog\\gestionclick\\adm_autogestion\\models\\eventos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\models\\eventos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\adm_autogestion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{72B8E45A-24D7-4DED-8A35-D2AD9853049B}|Adm_AutoGestion\\Adm_AutoGestion.csproj|solutionrelative:adm_autogestion\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +74,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -61,128 +93,215 @@
               "Name": "ST:817610043:0:{bf84ea66-d821-4dba-b1b1-2777d8574775}"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SoporteHojaVidaController.cs",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\SoporteHojaVidaController.cs",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\Api\\SoporteHojaVidaController.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\SoporteHojaVidaController.cs",
-              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\Api\\SoporteHojaVidaController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAA5wCwAAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T19:47:00.345Z",
+              "DocumentIndex": 0,
+              "Title": "Dosimetria.razor",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\Pages\\Dosimetria\\Dosimetria.razor",
+              "RelativeDocumentMoniker": "AutoGestion\\Pages\\Dosimetria\\Dosimetria.razor",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\Pages\\Dosimetria\\Dosimetria.razor*",
+              "RelativeToolTip": "AutoGestion\\Pages\\Dosimetria\\Dosimetria.razor*",
+              "ViewState": "AgIAADoAAAAAAAAAAAAowFkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-25T01:10:30.702Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "PlantillaSolicitudCesantias.cshtml",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\PlantillasPDF\\PlantillaSolicitudCesantias.cshtml",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\PlantillasPDF\\PlantillaSolicitudCesantias.cshtml",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\PlantillasPDF\\PlantillaSolicitudCesantias.cshtml",
-              "RelativeToolTip": "Adm_AutoGestion\\PlantillasPDF\\PlantillaSolicitudCesantias.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "ReporteDosimetria.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\ReporteDosimetria.cshtml",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Views\\Dosimetria\\ReporteDosimetria.cshtml",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\ReporteDosimetria.cshtml",
+              "RelativeToolTip": "Adm_AutoGestion\\Views\\Dosimetria\\ReporteDosimetria.cshtml",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAGEAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T19:29:28.159Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "CesantiasRepository.cs",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Services\\CesantiasRepository.cs",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\Services\\CesantiasRepository.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Services\\CesantiasRepository.cs",
-              "RelativeToolTip": "Adm_AutoGestion\\Services\\CesantiasRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T19:16:47.176Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CesantiasController.cs",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\CesantiasController.cs",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\CesantiasController.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\CesantiasController.cs",
-              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\CesantiasController.cs",
-              "ViewState": "AgIAAH0AAAAAAAAAAAAUwOEAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T13:31:09.089Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Cesantias\\Index.cshtml",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\Views\\Cesantias\\Index.cshtml",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Cesantias\\Index.cshtml",
-              "RelativeToolTip": "Adm_AutoGestion\\Views\\Cesantias\\Index.cshtml",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAAAF8AAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-02-15T12:45:33.343Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Eventos.cs",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Models\\Eventos.cs",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\Models\\Eventos.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Models\\Eventos.cs",
-              "RelativeToolTip": "Adm_AutoGestion\\Models\\Eventos.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T12:45:25.375Z",
+              "WhenOpened": "2025-02-25T01:07:53.759Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "SolicitudCesantia.cs",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Models\\SolicitudCesantia.cs",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\Models\\SolicitudCesantia.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Models\\SolicitudCesantia.cs",
-              "RelativeToolTip": "Adm_AutoGestion\\Models\\SolicitudCesantia.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAIwBsAAAAbAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T12:42:52.921Z",
+              "Title": "_CreateEdit.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\_CreateEdit.cshtml",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Views\\Dosimetria\\_CreateEdit.cshtml",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\_CreateEdit.cshtml",
+              "RelativeToolTip": "Adm_AutoGestion\\Views\\Dosimetria\\_CreateEdit.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABYAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-25T01:07:09.979Z",
               "EditorCaption": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "Orientation": 0,
-      "VerticalTabListWidth": 256,
-      "FloatingWindowState": {
-        "Id": "10e6f2d5-1755-4a28-9e6e-82bb66c7e9dd",
-        "Display": 0,
-        "X": -228,
-        "Y": 166,
-        "Width": 1394,
-        "Height": 683,
-        "WindowState": 2
-      },
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\Index.cshtml",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Views\\Dosimetria\\Index.cshtml",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\Index.cshtml",
+              "RelativeToolTip": "Adm_AutoGestion\\Views\\Dosimetria\\Index.cshtml",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAEkAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-25T01:06:38.812Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "CesantiasController.cs",
-              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\CesantiasController.cs",
-              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\Api\\CesantiasController.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\CesantiasController.cs",
-              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\Api\\CesantiasController.cs",
-              "ViewState": "AgIAALUAAAAAAAAAAAAQwL8AAABHAAAAAAAAAA==",
+              "Title": "DosimetriaController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\DosimetriaController.cs",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\DosimetriaController.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\DosimetriaController.cs",
+              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\DosimetriaController.cs",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAcwF4AAABgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-15T19:14:09.058Z",
+              "WhenOpened": "2025-02-25T01:05:17.81Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HistoricoCesantias.razor",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\Pages\\Cesantias\\HistoricoCesantias.razor",
+              "RelativeDocumentMoniker": "AutoGestion\\Pages\\Cesantias\\HistoricoCesantias.razor",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\Pages\\Cesantias\\HistoricoCesantias.razor",
+              "RelativeToolTip": "AutoGestion\\Pages\\Cesantias\\HistoricoCesantias.razor",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA8AAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-24T23:47:17.346Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DosimetriaController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\DosimetriaController.cs",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\Api\\DosimetriaController.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\DosimetriaController.cs",
+              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\Api\\DosimetriaController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAApwB8AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T01:09:33.431Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Views\\Dosimetria\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Dosimetria\\Dashboard.cshtml",
+              "RelativeToolTip": "Adm_AutoGestion\\Views\\Dosimetria\\Dashboard.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-25T01:07:29.718Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_DetalleModal.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Cesantias\\_DetalleModal.cshtml",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Views\\Cesantias\\_DetalleModal.cshtml",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Cesantias\\_DetalleModal.cshtml",
+              "RelativeToolTip": "Adm_AutoGestion\\Views\\Cesantias\\_DetalleModal.cshtml",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAAFUAAAB7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-25T00:23:25.322Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "PorAprobar.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Cesantias\\PorAprobar.cshtml",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Views\\Cesantias\\PorAprobar.cshtml",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Views\\Cesantias\\PorAprobar.cshtml",
+              "RelativeToolTip": "Adm_AutoGestion\\Views\\Cesantias\\PorAprobar.cshtml",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAFEAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-25T00:22:32.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Global.asax.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Global.asax.cs",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Global.asax.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Global.asax.cs",
+              "RelativeToolTip": "Adm_AutoGestion\\Global.asax.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T23:47:06.016Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "CesantiasRepository.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Services\\CesantiasRepository.cs",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Services\\CesantiasRepository.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Services\\CesantiasRepository.cs",
+              "RelativeToolTip": "Adm_AutoGestion\\Services\\CesantiasRepository.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAApwIYAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T23:36:53.549Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ServiciosController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\ServiciosController.cs",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\ServiciosController.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\ServiciosController.cs",
+              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\ServiciosController.cs",
+              "ViewState": "AgIAAK8BAAAAAAAAAAAAAKABAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-21T01:24:53.252Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "VacacionesController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\VacacionesController.cs",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\VacacionesController.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\VacacionesController.cs",
+              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\VacacionesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-21T01:19:10.316Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "EmpleadoController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\EmpleadoController.cs",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Controllers\\Api\\EmpleadoController.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Controllers\\Api\\EmpleadoController.cs",
+              "RelativeToolTip": "Adm_AutoGestion\\Controllers\\Api\\EmpleadoController.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-21T02:32:37.866Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Web.config",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Web.config",
+              "RelativeDocumentMoniker": "Adm_AutoGestion\\Web.config",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Adm_AutoGestion\\Web.config",
+              "RelativeToolTip": "Adm_AutoGestion\\Web.config",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAADsAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-02-21T01:08:22.903Z",
               "EditorCaption": ""
             }
           ]

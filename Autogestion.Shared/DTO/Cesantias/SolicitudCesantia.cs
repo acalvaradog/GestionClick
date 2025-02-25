@@ -25,6 +25,8 @@ namespace Autogestion.Shared.DTO.Cesantias
         public int EstadoId { get; set; }
         public EstadoCesantiaDTO? Estado { get; set; }
         public List<SoporteCesantiaDTO>? Soportes { get; set; }
-        
+
+        public string Observacion { get; set; }
+
     }
 }

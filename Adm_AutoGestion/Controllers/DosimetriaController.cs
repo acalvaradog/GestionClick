@@ -36,7 +36,7 @@ namespace Adm_AutoGestion.Controllers
                 return RedirectToAction("Index", "Login");
             }
             var empresasesion = Session["Empresa"].ToString();
-            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList();
+            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).OrderBy(x=> x.Nombres).ToList();
             ViewBag.Sedes = _context.Sede.ToList();
             var registros = _repository.GetAll();
             return View(registros.ToList());
@@ -45,7 +45,7 @@ namespace Adm_AutoGestion.Controllers
         public PartialViewResult Create()
         {
             var empresasesion = Session["Empresa"].ToString();
-            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList();
+            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).OrderBy(x => x.Nombres).ToList();
             ViewBag.Sedes = _context.Sede.ToList();
             ViewBag.Anios = Enumerable.Range(2024, 7).Select(a => new { Value = a, Text = a.ToString() }).ToList();
             ViewBag.Meses = Enumerable.Range(1, 12).Select(m => new
@@ -60,7 +60,7 @@ namespace Adm_AutoGestion.Controllers
         {
             var empresasesion = Session["Empresa"].ToString();
             var registro = _repository.GetById(id);
-            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList();
+            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).OrderBy(x => x.Nombres).ToList();
             ViewBag.Sedes = _context.Sede.ToList();
             ViewBag.Anios = Enumerable.Range(2024, 7).Select(a => new { Value = a, Text = a.ToString() }).ToList();
             ViewBag.Meses = Enumerable.Range(1, 12).Select(m => new
@@ -106,7 +106,7 @@ namespace Adm_AutoGestion.Controllers
             }
 
             var empresasesion = Session["Empresa"].ToString();
-            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList();
+            ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).OrderBy(x => x.Nombres).ToList();
             ViewBag.Sedes = _context.Sede.ToList();
             if (!anio.HasValue)
             {
