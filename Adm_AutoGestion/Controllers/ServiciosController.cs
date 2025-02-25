@@ -411,6 +411,10 @@ namespace Adm_AutoGestion.Controllers
                         }
                         else 
                         {
+                            Datos = Datos.AsEnumerable()
+                            .OrderBy(row => row.Field<string>("BUKRS"))
+                            .CopyToDataTable();
+
                             foreach (var empleado in empleados)
                             {
 

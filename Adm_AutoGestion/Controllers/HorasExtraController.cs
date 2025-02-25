@@ -486,7 +486,7 @@ namespace Adm_AutoGestion.Controllers
                                 Encabezado => Encabezado.Id,
                                 Detallado => Detallado.HorasExtraId,
                                 (Encabezado, Detallado) => new { Encabezado, Detallado })
-                             .Where(x => (x.Encabezado.Estado == 1|| x.Encabezado.Estado == 5)  && x.Encabezado.Empleado.Empresa == empleado.Empresa && x.Encabezado.Empleado.Lider == empleado.NroEmpleado
+                             .Where(x => (x.Encabezado.Estado == 1 ) && x.Encabezado.Empleado.Empresa == empleado.Empresa && x.Encabezado.Empleado.Lider == empleado.NroEmpleado
                              && (string.IsNullOrEmpty(TrabajadorS) || SqlFunctions.StringConvert((decimal)x.Encabezado.EmpleadoId).Contains(TrabajadorS)
                              && (string.IsNullOrEmpty(UnidadOrg) ||  x.Encabezado.Empleado.UnidadOrganizativa.Contains(UnidadOrg))))
 
@@ -511,6 +511,8 @@ namespace Adm_AutoGestion.Controllers
 
                                     }).ToList();
                 }
+
+
 
 
 
@@ -591,8 +593,26 @@ namespace Adm_AutoGestion.Controllers
                         nuevaLista.Add(item);
                     }
                 }
-                ListadoFinal = nuevaLista.OrderBy(x => x.EmpleadoId).ToList();
 
+                if (Estado!= "")
+                {
+
+                    var Estadofil = Convert.ToInt32(Estado);
+
+                    ListadoFinal = nuevaLista.Where(x => x.Estado == Estadofil).OrderBy(x => x.EmpleadoId).ToList();
+
+                }
+                else {
+
+                    ListadoFinal = nuevaLista.OrderBy(x => x.EmpleadoId).ToList();
+
+                }
+
+
+
+              
+
+               
 
 
             }
@@ -1585,9 +1605,9 @@ namespace Adm_AutoGestion.Controllers
                                  ).Where(Union => DbFunctions.TruncateTime(Union.Detallado.Fecha) >= Fecha1 &&
                                    DbFunctions.TruncateTime(Union.Detallado.Fecha) <= Fecha2
                                    &&  SqlFunctions.StringConvert((decimal)Union.Encabezado.Id).Contains(NmrRegistro)
-                                    &&  SqlFunctions.StringConvert((decimal)Union.Encabezado.Estado).Contains(Estado)
                                     && Union.Encabezado.Empleado.Lider == empleado.NroEmpleado
-                                 ).Select(x =>
+                                    &&    (string.IsNullOrEmpty(Estado) || SqlFunctions.StringConvert((decimal)Union.Encabezado.Estado).Contains(Estado)
+                                 )).Select(x =>
                                         new InformeTotalHE
                                         {
                                             Id = x.Encabezado.Id,
@@ -1863,6 +1883,8 @@ namespace Adm_AutoGestion.Controllers
                 { Fecha1 = new DateTime(); }
                 if (!DateTime.TryParse(FechaF, out Fecha2))
                 { Fecha2 = DateTime.Now; }
+
+
                 if (TrabajadorS == "")
                 {
                     ListadoFinal = db.HorasExtra
@@ -2074,8 +2096,8 @@ namespace Adm_AutoGestion.Controllers
                 { Fecha1 = new DateTime(); }
                 if (!DateTime.TryParse(FechaF, out Fecha2))
                 { Fecha2 = DateTime.Now; }
-                if (TrabajadorS == "")
-                {
+                
+               
                     ListadoFinal = db.HorasExtra
                              .Join(db.DetalleHorasExtras,
                                 Encabezado => Encabezado.Id,
@@ -2102,43 +2124,43 @@ namespace Adm_AutoGestion.Controllers
                                         Estado = x.Encabezado.Estado,
                                         FechaPago = x.Encabezado.FechaPago
                                     }).ToList();
-                }
+                
 
-                if (TrabajadorS != "")
-                {
-                    int id = -1;
-                    Int32.TryParse(TrabajadorS, out id);
+                //if (TrabajadorS != "")
+                //{
+                //    int id = -1;
+                //    Int32.TryParse(TrabajadorS, out id);
 
 
-                    int[] Ids = (from item in db.HorasExtra where item.EmpleadoId.Equals(id) select item.Id).ToArray();
+                //    int[] Ids = (from item in db.HorasExtra where item.EmpleadoId.Equals(id) select item.Id).ToArray();
 
-                    ListadoFinal = db.HorasExtra.Join(db.DetalleHorasExtras,
-                                Encabezado => Encabezado.Id,
-                                Detallado => Detallado.HorasExtraId,
-                                (Encabezado, Detallado) => new { Encabezado, Detallado }
-                             ).Where(Union =>
-                                    Ids.Contains(Union.Encabezado.Id) && Union.Detallado.Fecha >= Fecha1 && Union.Detallado.Fecha <= Fecha2
-                                    && Union.Encabezado.Estado == 3 &&
-                                    SqlFunctions.StringConvert((decimal)Union.Encabezado.EmpleadoId).Contains(TrabajadorS) && SqlFunctions.StringConvert((decimal)Union.Encabezado.Id).Contains(NmrRegistro)
-                                     && Union.Encabezado.Empleado.Empresa == empleado.Empresa
-                                    ).Select(x =>
-                                    new InformeTotalHE
-                                    {
-                                        Id = x.Encabezado.Id,
-                                        FechadeRegistro = x.Encabezado.FechaDeRegistro,
-                                        FechaHora = x.Detallado.Fecha,
-                                        EmpleadoId = x.Encabezado.EmpleadoId,
-                                        HoraDesde = x.Detallado.HoraDesde,
-                                        HoraHasta = x.Detallado.HoraHasta,
-                                        LiquidacionDiurna = x.Detallado.LiquidacionDiurna,
-                                        LiquidacionDiurnaFestivo = x.Detallado.LiquidacionDiurnaFestivo,
-                                        LiquidacionNocturna = x.Detallado.LiquidacionNocturna,
-                                        LiquidacionNocturnaFestivo = x.Detallado.LiquidacionNocturnaFestivo,
-                                        TotalHoras = x.Detallado.TotalHoras,
-                                        Estado = x.Encabezado.Estado,
-                                        FechaPago = x.Encabezado.FechaPago
-                                    }).ToList();
-                }
+                //    ListadoFinal = db.HorasExtra.Join(db.DetalleHorasExtras,
+                //                Encabezado => Encabezado.Id,
+                //                Detallado => Detallado.HorasExtraId,
+                //                (Encabezado, Detallado) => new { Encabezado, Detallado }
+                //             ).Where(Union =>
+                //                    Ids.Contains(Union.Encabezado.Id) && Union.Detallado.Fecha >= Fecha1 && Union.Detallado.Fecha <= Fecha2
+                //                    && Union.Encabezado.Estado == 3 &&
+                //                    SqlFunctions.StringConvert((decimal)Union.Encabezado.EmpleadoId).Contains(TrabajadorS) && SqlFunctions.StringConvert((decimal)Union.Encabezado.Id).Contains(NmrRegistro)
+                //                     && Union.Encabezado.Empleado.Empresa == empleado.Empresa
+                //                    ).Select(x =>
+                //                    new InformeTotalHE
+                //                    {
+                //                        Id = x.Encabezado.Id,
+                //                        FechadeRegistro = x.Encabezado.FechaDeRegistro,
+                //                        FechaHora = x.Detallado.Fecha,
+                //                        EmpleadoId = x.Encabezado.EmpleadoId,
+                //                        HoraDesde = x.Detallado.HoraDesde,
+                //                        HoraHasta = x.Detallado.HoraHasta,
+                //                        LiquidacionDiurna = x.Detallado.LiquidacionDiurna,
+                //                        LiquidacionDiurnaFestivo = x.Detallado.LiquidacionDiurnaFestivo,
+                //                        LiquidacionNocturna = x.Detallado.LiquidacionNocturna,
+                //                        LiquidacionNocturnaFestivo = x.Detallado.LiquidacionNocturnaFestivo,
+                //                        TotalHoras = x.Detallado.TotalHoras,
+                //                        Estado = x.Encabezado.Estado,
+                //                        FechaPago = x.Encabezado.FechaPago
+                //                    }).ToList();
+                //}
 
                 ListadoFinal = ListadoFinal.OrderBy(x => x.EmpleadoId).ToList();
                 int NumeroGuia = 0;
@@ -2214,7 +2236,25 @@ namespace Adm_AutoGestion.Controllers
                             nuevaLista.Add(item);
                         }
                     }
-                    ListadoFinal = nuevaLista.OrderBy(x => x.EmpleadoId).ToList();
+
+                    if (!string.IsNullOrEmpty(TrabajadorS))
+                    {
+                        
+                        int idempfil = 0;
+                        Int32.TryParse(TrabajadorS, out idempfil);
+
+                        ListadoFinal = nuevaLista.Where(x => x.EmpleadoId == idempfil).OrderBy(x => x.EmpleadoId).ToList();
+
+
+                    }
+                    else {
+
+                        ListadoFinal = nuevaLista.OrderBy(x => x.EmpleadoId).ToList();
+
+                    }
+
+
+                  
 
                 }
                 if (string.IsNullOrWhiteSpace(FechaI) || string.IsNullOrWhiteSpace(FechaF) || !DateTime.TryParse(FechaI, out Fecha1) || !DateTime.TryParse(FechaF, out Fecha2))
