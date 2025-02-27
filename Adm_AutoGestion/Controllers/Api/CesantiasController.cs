@@ -64,14 +64,14 @@ namespace Adm_AutoGestion.Controllers.Api
                         if (extension != "jpg" && extension != "jpeg" && extension != "png" && extension != "doc" && extension != "docx" && extension != "pdf")
                         {
                             respuesta = "El tipo de archivo " + extension + " no es permitido.";
-                            return Json(respuesta);
+                            return BadRequest(respuesta);
                         }
                     }
                     else
                     {
                         // Manejo del caso en que el archivo no tiene extensión
-                        respuesta = "El archivo no tiene una extensión válida.";
-                        return Json(respuesta);
+                        respuesta = "Archivos muy grandes.";
+                        return BadRequest(respuesta);
                     }
 
                     var size = httpPostedFile.ContentLength / (1024 * 1024); //MB
@@ -82,7 +82,7 @@ namespace Adm_AutoGestion.Controllers.Api
                     if (size > pesoMaximo)
                     {
                         respuesta = "El archivo supera el tamaño permitido de carga.";
-                        return Json(respuesta);
+                        return BadRequest(respuesta);
 
                     }
 

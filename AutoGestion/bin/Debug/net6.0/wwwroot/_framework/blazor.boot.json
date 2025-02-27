@@ -1,7 +1,7 @@
 {
   "entryAssembly": "AutoGestion",
   "resources": {
-    "hash": "sha256-WVq6KcBkAlK6UL0Nxrbc39pfTBy/9St7TpnX/HXYmVk=",
+    "hash": "sha256-+8XeKBXx7vKo1Q7J9eOyfl6eHvmIoVmHSZEkdSnPM40=",
     "runtime": {
       "dotnet.js": "sha256-pu7MO47B6So4jcW6iY2UI11lBZYz2EQnJKiYNsOpNJg=",
       "dotnet.timezones.blat": "sha256-vrFYQt55a4tGoDGoyRfjjGa1nSecx646RK78iTzPWCM=",
@@ -224,12 +224,12 @@
       "mscorlib.dll": "sha256-FHccFgM8rcGOQ8oacA4eEgiiOynHayVKyd2ICq3Bo4w=",
       "netstandard.dll": "sha256-D91viTBgwuzeuIOx1KgBYnoY0hl2IpcBu/zr22Fu0BU=",
       "System.Private.CoreLib.dll": "sha256-5FbWgChEgLPlYByi8VsHTisbCpgMNSbf95JK5dVOs50=",
-      "Autogestion.Shared.dll": "sha256-MkcPqkheqmbfdmsJXa0OvO+h590H0Uzsl+kX6ATwOEQ=",
-      "AutoGestion.dll": "sha256-ioQJMWHBmEecEOgxmiaIKkEALWHXpAkrizUNni2fVDw="
+      "Autogestion.Shared.dll": "sha256-apaqQboPb80Xpt7i+vovs8Vev1w0E5BIQeooNxRhMDs=",
+      "AutoGestion.dll": "sha256-/aU/SlTCtzKc5ci4ACseXY5aIWKaJXI3gfNIv1mHqKg="
     },
     "pdb": {
-      "Autogestion.Shared.pdb": "sha256-8JVBxPCzyeBLNZvLcSM9ITTtMp+y6WxOsmgbschZ+lA=",
-      "AutoGestion.pdb": "sha256-efYM0mSMJSwWLyE3X9OdOHB7bzhCN7OtNO3/R6eXbM0="
+      "Autogestion.Shared.pdb": "sha256-iZs/2kFth3Ce5lV7Do5ErrmSC6t6g/jMFq9twovQpdk=",
+      "AutoGestion.pdb": "sha256-Jtz2eJiHh40coJiE50DURyjRLZWh2BakaJkkPjZ5GFI="
     },
     "runtimeAssets": {
       "dotnet.wasm": {

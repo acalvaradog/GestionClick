@@ -43,6 +43,9 @@ namespace Adm_AutoGestion.Controllers
 
             var empresasesion = Session["Empresa"].ToString();
             var solicitudes = await _cesantiasRepository.ObtenerSolicitudesAsync(empleadoId, fechaInicio, fechaFin, estado,empresasesion);
+            if (estado == null) { 
+            solicitudes  = solicitudes.Where(x=> x.EstadoId != 3).ToList();
+            }
             ViewBag.Empleados = _context.Empleados.Where(x => x.Empresa == empresasesion).ToList().OrderBy(x=> x.Nombres);
             ViewBag.Estados = _context.EstadoCesantia.ToList();
             ViewBag.EmpleadoId = empleadoId;
@@ -67,6 +70,8 @@ namespace Adm_AutoGestion.Controllers
 
             var empresasesion = Session["Empresa"].ToString();
             var solicitudes = await _cesantiasRepository.ObtenerSolicitudesAsync(empleadoId, fechaInicio, fechaFin,1, empresasesion);
+            solicitudes.AddRange(await _cesantiasRepository.ObtenerSolicitudesAsync(empleadoId, fechaInicio, fechaFin, 5, empresasesion));
+
             ViewBag.Empleados = _context.Empleados.Where(x=> x.Empresa == empresasesion).ToList().OrderBy(x => x.Nombres);
             ViewBag.EmpleadoId = empleadoId;
             ViewBag.FechaInicio = fechaInicio?.ToString("yyyy-MM-dd");

@@ -54,7 +54,7 @@
             <HeaderContent>
                 <MudTh>Nombre Anexo</MudTh>
                 <MudTh>Anexo</MudTh>
-                <MudTh>Archivo</MudTh>
+                <MudTh>Archivo (peso máximo 2000 MB)</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd>
@@ -194,14 +194,14 @@
             }
             else
             {
-                await JS.ShowMessage("Ocurrió un error al guardar, vuelve a intentarlo", "Error", "");
+                await JS.ShowMessage("Error",$"{await response.Content.ReadAsStringAsync()}", "error");
             }
             _loading = false;
         }
         catch (Exception ex)
         {
             _loading = false;
-            await JS.ShowMessage($"Ocurrió un error al guardar, vuelve a intentarlo {ex.Message}", "Error", "");
+            await JS.ShowMessage("Error", $"Ocurrió un error al guardar, vuelve a intentarlo {ex.Message}", "error");
         }
     }
 
