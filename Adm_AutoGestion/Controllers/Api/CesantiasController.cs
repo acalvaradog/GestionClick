@@ -70,7 +70,7 @@ namespace Adm_AutoGestion.Controllers.Api
                     else
                     {
                         // Manejo del caso en que el archivo no tiene extensión
-                        respuesta = "Archivos muy grandes.";
+                        respuesta = "nombre de archivo no debe contener caracteres especiales ni nombres muy grandes.";
                         return BadRequest(respuesta);
                     }
 
