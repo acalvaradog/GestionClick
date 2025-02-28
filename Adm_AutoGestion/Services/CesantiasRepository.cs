@@ -168,11 +168,42 @@ namespace Adm_AutoGestion.Services
         {
             using (var memoryStream = new MemoryStream())
             {
-                // Crear documento
                 var document = new Document(PageSize.A4, 20f, 20f, 20f, 20f);
                 var writer = PdfWriter.GetInstance(document, memoryStream);
                 document.Open();
 
+                // Rutas de las imágenes
+                string logoPath = HttpContext.Current.Server.MapPath("~/Contents/image/Logo.png");
+                string watermarkPath = HttpContext.Current.Server.MapPath("~/Contents/image/logo.png");
+
+                //// ➤ Agregar logo en la parte superior izquierda (antes del contenido HTML)
+                //if (File.Exists(logoPath))
+                //{
+                //    var logo = Image.GetInstance(new Uri(logoPath));
+                //    logo.ScaleToFit(120f, 120f); // Ajustar tamaño
+
+                //    // Posicionar en la esquina superior izquierda
+                //    float logoX = 20f; // Margen izquierdo
+                //    float logoY = document.PageSize.Height - 120f; // Altura total - tamaño del logo
+                //    logo.SetAbsolutePosition(logoX, logoY);
+                //    writer.DirectContent.AddImage(logo);
+                //}
+
+                // ➤ Agregar marca de agua (centrada en la página)
+                if (File.Exists(watermarkPath))
+                {
+                    var watermark = Image.GetInstance(new Uri(watermarkPath));
+                    watermark.ScaleToFit(400f, 400f); // Tamaño de la marca de agua
+
+                    // Centrar en la página
+                    float watermarkX = (document.PageSize.Width - watermark.ScaledWidth) / 2;
+                    float watermarkY = (document.PageSize.Height - watermark.ScaledHeight) / 2;
+                    watermark.SetAbsolutePosition(watermarkX, watermarkY);
+                    watermark.Alignment = Image.UNDERLYING;
+                    writer.DirectContentUnder.AddImage(watermark);
+                }
+
+                // ➤ Renderizar el HTML (sin imagen del logo)
                 using (var stringReader = new StringReader(html))
                 {
                     XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, stringReader);
@@ -182,6 +213,9 @@ namespace Adm_AutoGestion.Services
                 return memoryStream.ToArray();
             }
         }
+
+
+
         public byte[] GenerarCartaPdf(SolicitudCesantia solicitud)
         {
             string html = GenerarHtml(solicitud);
@@ -225,42 +259,7 @@ namespace Adm_AutoGestion.Services
             return htmlTemplate;
         }
 
-        public async Task<byte[]> ConvertirHtmlAPdf(string html)
-        {
-            await new BrowserFetcher().DownloadAsync();
-
-            // Lanzar el navegador
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions { Headless = true });
-
-            // Crear una nueva página
-            var page = await browser.NewPageAsync();
-
-            // Establecer el contenido HTML
-            await page.SetContentAsync(html);
-
-            // Configurar opciones para el PDF
-            var pdfOptions = new PdfOptions
-            {
-                Format = PaperFormat.A4, // Formato A4
-                MarginOptions = new MarginOptions // Márgenes
-                {
-                    Top = "20mm",
-                    Right = "20mm",
-                    Bottom = "20mm",
-                    Left = "20mm"
-                },
-                PrintBackground = true // Incluir fondos (útil si usas colores o imágenes de fondo)
-            };
-
-            // Generar el PDF como un arreglo de bytes
-            var pdfBytes = await page.PdfDataAsync(pdfOptions);
-
-            // Cerrar el navegador
-            await browser.CloseAsync();
-
-            return pdfBytes;
-        }
-
+   
         public async Task ActualizarSolicitudAsync(SolicitudCesantia solicitud)
         {
             // Obtener la solicitud existente de la base de datos

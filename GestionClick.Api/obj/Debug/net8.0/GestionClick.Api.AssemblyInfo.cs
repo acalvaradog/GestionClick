@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GestionClick.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+900493f295efe1bed0d4b97b229417db97178aff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f99112db3f07946f70606a89d42dfd9b043faa74")]
 [assembly: System.Reflection.AssemblyProductAttribute("GestionClick.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GestionClick.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
