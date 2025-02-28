@@ -10,7 +10,7 @@
     if (!string.IsNullOrWhiteSpace(ErrorAutorizacion)) { Session.Remove("ErrorAutorizacion"); }
 }
 
-
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
 <form>
     <div class="card">
@@ -109,6 +109,13 @@
     </div>
 </form>
 
+<div class="row justify-content-start">
+    <div class="col-12" style="text-align:left">
+        @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+        <button type="button" class="btn btn-outline-success  rounded-pill mb-2" onclick="ExportarExcelPerGH()">Excel</button>
+    </div>
+</div>
+
 <div class="table-responsive">
     <table id="Exportar_a_Excel" class="table table-striped dt-responsive " style="width:100%">
         <thead class="text-center text-capitalize ">
@@ -130,8 +137,8 @@
                 <th>Motivo Permiso</th>
 
                 @*<th>Ver Historico</th>
-        <th>Doc. Adjunto</th>
-        <th>Anular Permiso</th>*@
+                    <th>Doc. Adjunto</th>
+                    <th>Anular Permiso</th>*@
                 <!--<th>Doc. Adjunto-->@*@Html.DisplayNameFor(model => model.Adjunto)*@<!--</th>-->
             </tr>
         </thead>
@@ -154,7 +161,7 @@
                     </td>
                     <td>
                         @*<a class="btn text-black text-capitalize" data-bs-toggle="tooltip" data-bs-placement="top"
-            title="Detalle Empleado" value="" onclick="Detalle($Id = @item.EmpleadoId)">&nbsp; @item.Empleado.Nombres.ToLower()</a>*@
+                            title="Detalle Empleado" value="" onclick="Detalle($Id = @item.EmpleadoId)">&nbsp; @item.Empleado.Nombres.ToLower()</a>*@
                         @Html.ActionLink(@item.Empleado.Nombres.ToLower(), "Details2", "Empleado", new { id = item.EmpleadoId }, new { @class = "bg-color-danger", data_modal = "" })
 
                     </td>

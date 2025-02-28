@@ -13,6 +13,9 @@ using System.Net;
 using System.Text;
 using System.IO;
 using OfficeOpenXml;
+using Adm_AutoGestion.Models.EvaDesempeno;
+using Adm_AutoGestion.Migrations;
+using System.Globalization;
 
 
 namespace Adm_AutoGestion.Controllers
@@ -36,7 +39,7 @@ namespace Adm_AutoGestion.Controllers
 
     public class CalendarioVacaciones
     {
-        
+
         public string Nombres { get; set; }
         public DateTime FechaInicial { get; set; }
         public DateTime FechaFin { get; set; }
@@ -44,7 +47,7 @@ namespace Adm_AutoGestion.Controllers
 
     }
 
-    
+
     public class VacacionesController : Controller
     {
 
@@ -134,48 +137,49 @@ namespace Adm_AutoGestion.Controllers
                     Datos2 = Datos.FirstOrDefault(e => e.EmpleadoId == model.EmpleadoId);
                     HabilitarVacaciones autoriza = db.HabilitarVacaciones.FirstOrDefault(e => e.EmpleadoId == model.EmpleadoId);
 
-                    if (Datos2.EstadoId != 5 && Datos2.EstadoId != 12){
-
-                    if (model.FechaFin > model.FechaInicial)
+                    if (Datos2.EstadoId != 5 && Datos2.EstadoId != 12)
                     {
 
-
-                        if (autoriza.Pagadas == "NO" && model.VacacionesPagadas == "SI")
+                        if (model.FechaFin > model.FechaInicial)
                         {
 
-                            message = "El empleado no tiene autorización para solicitar vacaciones Pagas.";
-                        }
-                        else
-                        {
 
-                            if (autoriza.Anticipadas == "NO" && model.VacacionesAdelantadas == "SI")
+                            if (autoriza.Pagadas == "NO" && model.VacacionesPagadas == "SI")
                             {
-                                message = "El empleado no tiene autorización para solicitar vacaciones Adelantadas.";
+
+                                message = "El empleado no tiene autorización para solicitar vacaciones Pagas.";
                             }
                             else
                             {
-                                // TODO: Add insert logic here
-                                if (ModelState.IsValid)
+
+                                if (autoriza.Anticipadas == "NO" && model.VacacionesAdelantadas == "SI")
                                 {
-                                    model.Empresa = Codigo.Empresa;
-                                    model.IdModifica = IdUsuarioM;
-                                    model.EmpleadoId = Codigo.Id;
-                                    _repo.Crear(model);
-                                    return RedirectToAction("Index");
+                                    message = "El empleado no tiene autorización para solicitar vacaciones Adelantadas.";
+                                }
+                                else
+                                {
+                                    // TODO: Add insert logic here
+                                    if (ModelState.IsValid)
+                                    {
+                                        model.Empresa = Codigo.Empresa;
+                                        model.IdModifica = IdUsuarioM;
+                                        model.EmpleadoId = Codigo.Id;
+                                        _repo.Crear(model);
+                                        return RedirectToAction("Index");
+                                    }
                                 }
                             }
+
+
+                        }
+                        else
+                        {
+                            message = "La fecha Final debe ser mayor a la fecha Inicial.";
                         }
 
+                        message = "No es posible realizar una nueva solicitud, debido a que ya tiene una en proceso.";
 
                     }
-                    else
-                    {
-                        message = "La fecha Final debe ser mayor a la fecha Inicial.";
-                    }
-
-                    message = "No es posible realizar una nueva solicitud, debido a que ya tiene una en proceso.";
-
-                }
 
                 }
             }
@@ -241,7 +245,7 @@ namespace Adm_AutoGestion.Controllers
             var VacacionesAdelanta = HttpContext.Request.Params["Vacaciones.VacacionesAdelantadas"];
             var VacacionesMayor6 = HttpContext.Request.Params["Vacaciones.VacacionesDiasMayor6"];
             var Cantdias = HttpContext.Request.Params["Vacaciones.Cantdias"];
-            
+
 
             Vacaciones Datosvacaciones = new Vacaciones();
             Datosvacaciones.EmpleadoId = Convert.ToInt16(EmpleadoId);
@@ -258,7 +262,7 @@ namespace Adm_AutoGestion.Controllers
             try
             {
 
-               
+
                 using (var db = new AutogestionContext())
                 {
                     //string Nro = string.Format("{0}", model.EmpleadoId);
@@ -286,59 +290,59 @@ namespace Adm_AutoGestion.Controllers
                         }
                     }
 
-                       
 
-                        if (Autoriza == null)
+
+                    if (Autoriza == null)
+                    {
+
+                        Datosvacaciones.VacacionesPagadas = "NO";
+                        Datosvacaciones.VacacionesAdelantadas = "NO";
+                        Datosvacaciones.VacacionesDiasMayor6 = "NO";
+
+                        if (DSol > DPen)
                         {
-
-                            Datosvacaciones.VacacionesPagadas = "NO";
-                            Datosvacaciones.VacacionesAdelantadas = "NO";
-                            Datosvacaciones.VacacionesDiasMayor6 = "NO";
-
-                            if (DSol > DPen)
-                            {
-                                message = "Los dias solicitados exceden de la cantidad de dias que tiene pendientes por disfrutar. Favor solicitar autorización.";
-                                return Json(message);
-                            }
+                            message = "Los dias solicitados exceden de la cantidad de dias que tiene pendientes por disfrutar. Favor solicitar autorización.";
+                            return Json(message);
                         }
+                    }
 
-                                //var httpPostedFile = Request.Files["Adjunto"];
+                    //var httpPostedFile = Request.Files["Adjunto"];
 
-                                //if (httpPostedFile != null)
-                                //{
+                    //if (httpPostedFile != null)
+                    //{
 
-                                //    var extension = httpPostedFile.FileName.Split('.');
+                    //    var extension = httpPostedFile.FileName.Split('.');
 
-                                //    //if (extension[1] != "jpg" && extension[1] != "jpeg" && extension[1] != "png" && extension[1] != "doc" && extension[1] != "docx" && extension[1] != "pdf" && extension[1] != "odt" && extension[1] != "ods")
-                                //    if (extension[1] != "doc" && extension[1] != "docx" && extension[1] != "pdf" && extension[1] != "odt" && extension[1] != "ods")
-                                //    {
-                                //        message = "El tipo de archivo " + extension[1] + " no es permitido.";
-                                //        return Json(message);
-                                //    }
+                    //    //if (extension[1] != "jpg" && extension[1] != "jpeg" && extension[1] != "png" && extension[1] != "doc" && extension[1] != "docx" && extension[1] != "pdf" && extension[1] != "odt" && extension[1] != "ods")
+                    //    if (extension[1] != "doc" && extension[1] != "docx" && extension[1] != "pdf" && extension[1] != "odt" && extension[1] != "ods")
+                    //    {
+                    //        message = "El tipo de archivo " + extension[1] + " no es permitido.";
+                    //        return Json(message);
+                    //    }
 
-                                //    var size = httpPostedFile.ContentLength / 1024;
-                                //    if (size > 3000)
-                                //    {
-                                //        message = "El archivo supera el tamaño permitido de carga.";
-                                //        return Json(message);
-                                //    }
+                    //    var size = httpPostedFile.ContentLength / 1024;
+                    //    if (size > 3000)
+                    //    {
+                    //        message = "El archivo supera el tamaño permitido de carga.";
+                    //        return Json(message);
+                    //    }
 
-                                //    // Validate the uploaded image(optional)
-                                //    DateTime date1 = DateTime.Now;
-                                //    var nombrearchivo = date1.ToString("yyyyMMddHHmmssffff").ToString() + "-" + httpPostedFile.FileName;
+                    //    // Validate the uploaded image(optional)
+                    //    DateTime date1 = DateTime.Now;
+                    //    var nombrearchivo = date1.ToString("yyyyMMddHHmmssffff").ToString() + "-" + httpPostedFile.FileName;
 
-                                //    var fileSavePath = Path.Combine(Server.MapPath("~/AnexosVacaciones"), nombrearchivo);
-                                //    Datosvacaciones.Adjunto = nombrearchivo;
-                                //    httpPostedFile.SaveAs(fileSavePath);
-                                //}
-                                // TODO: Add insert logic here
-                                if (ModelState.IsValid)
-                                {
-                                    Datosvacaciones.IdModifica = IdUsuarioM;
-                                    message = _repo.Crear(Datosvacaciones);
-                                    message = "true";
-                                    return Json(message);
-                                }
+                    //    var fileSavePath = Path.Combine(Server.MapPath("~/AnexosVacaciones"), nombrearchivo);
+                    //    Datosvacaciones.Adjunto = nombrearchivo;
+                    //    httpPostedFile.SaveAs(fileSavePath);
+                    //}
+                    // TODO: Add insert logic here
+                    if (ModelState.IsValid)
+                    {
+                        Datosvacaciones.IdModifica = IdUsuarioM;
+                        message = _repo.Crear(Datosvacaciones);
+                        message = "true";
+                        return Json(message);
+                    }
                 }
             }
             catch
@@ -346,7 +350,7 @@ namespace Adm_AutoGestion.Controllers
 
             }
 
-            
+
             return Json(message);
         }
 
@@ -384,7 +388,7 @@ namespace Adm_AutoGestion.Controllers
                 var empleado = db.Empleados.Find(empleadoid);
 
                 //var lista = db.PersonalActivo.Where(x => x.Superior == empleado.NroEmpleado || x.Jefe == empleado.NroEmpleado || x.Director == empleado.NroEmpleado).Select(x => new { x.Area }).GroupBy(b => b.Area).ToList();
-                var lista = db.Empleados.Where(x =>  x.Jefe == empleado.NroEmpleado && x.Activo == "SI").Select(x => new { x.AreaDescripcion }).GroupBy(b => b.AreaDescripcion).ToList();
+                var lista = db.Empleados.Where(x => x.Jefe == empleado.NroEmpleado && x.Activo == "SI").Select(x => new { x.AreaDescripcion }).GroupBy(b => b.AreaDescripcion).ToList();
                 foreach (var x in lista)
                 {
                     lst.Add(new SelectListItem() { Text = x.Key.ToString(), Value = x.Key.ToString() });
@@ -450,13 +454,14 @@ namespace Adm_AutoGestion.Controllers
 
 
             }
-            
-            
-            
+
+
+
             return View(model);
         }
 
-        public ActionResult BusquedaAprobacion(string Area, string Sociedad) {
+        public ActionResult BusquedaAprobacion(string Area, string Sociedad)
+        {
             return View();
         }
 
@@ -476,36 +481,36 @@ namespace Adm_AutoGestion.Controllers
                 string modifica = String.Format("{0}", Session["Empleado"]);
                 Int32.TryParse(modifica, out IdUsuarioM);
 
-                
-                    if (Id != "0")
+
+                if (Id != "0")
+                {
+                    // TODO: Add update logic here
+                    _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
+                    if (Estado == "5")
                     {
-                        // TODO: Add update logic here
-                        _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
-                        if (Estado == "5")
+                        using (var db = new AutogestionContext())
                         {
-                            using (var db = new AutogestionContext())
-                            {
-                                Empleado empleado = new Empleado();
-                                empleado = db.Empleados.FirstOrDefault(e => e.Id == empleadoid);
-                                var jefe = db.Empleados.FirstOrDefault(s => s.NroEmpleado == empleado.Jefe);
-                                NotificacionCorreo("Rechazo", Empleado, Observacion, empleado.Nombres, empleado.Correo, jefe.Correo);
-                            }
+                            Empleado empleado = new Empleado();
+                            empleado = db.Empleados.FirstOrDefault(e => e.Id == empleadoid);
+                            var jefe = db.Empleados.FirstOrDefault(s => s.NroEmpleado == empleado.Jefe);
+                            NotificacionCorreo("Rechazo", Empleado, Observacion, empleado.Nombres, empleado.Correo, jefe.Correo);
                         }
                     }
-                    else
-                    {
-                        message = "Antes de Guardar, debe seleccionar un registro de la tabla.";
-                    }
+                }
+                else
+                {
+                    message = "Antes de Guardar, debe seleccionar un registro de la tabla.";
+                }
 
-                    string filtros = string.Format("{0}", Session["filtrosVac"]);
+                string filtros = string.Format("{0}", Session["filtrosVac"]);
 
-                    string[] datos = filtros.Split(',');
-                    Session.Remove("filtrosVac");
-                    Session["message"] = message;
-                    return RedirectToAction("AprobacionSuperior", "Vacaciones", new { Area = datos[0], Sociedad = datos[1] });
+                string[] datos = filtros.Split(',');
+                Session.Remove("filtrosVac");
+                Session["message"] = message;
+                return RedirectToAction("AprobacionSuperior", "Vacaciones", new { Area = datos[0], Sociedad = datos[1] });
 
-                    //Session["message"] = message;
-                    //return RedirectToAction("AprobacionSuperior");
+                //Session["message"] = message;
+                //return RedirectToAction("AprobacionSuperior");
             }
 
             catch (SystemException ex)
@@ -515,8 +520,8 @@ namespace Adm_AutoGestion.Controllers
                 return View();
             }
 
-            
-            
+
+
         }
 
         public ActionResult Edit(int id)
@@ -595,25 +600,25 @@ namespace Adm_AutoGestion.Controllers
             Int32.TryParse(EmpleadoId, out EmpId);
 
             using (var db = new AutogestionContext())
-                {
-                    var empleado = db.Empleados.FirstOrDefault(e => e.Id == EmpId);
-                    ViewBag.Empresa = empleado.Empresa;
+            {
+                var empleado = db.Empleados.FirstOrDefault(e => e.Id == EmpId);
+                ViewBag.Empresa = empleado.Empresa;
             }
 
-            if (FechaIni != null && FechaFin != null )
+            if (FechaIni != null && FechaFin != null)
             {
                 if (FechaIni != "" && FechaFin != "")
                 {
                     model = _repo.ObtenerTodos5(EmpleadoId, FechaIni, FechaFin, Empresa);
-                    
-                    }
+
+                }
             }
 
 
 
             Session["filtrosV"] = String.Format("{0},{1},{2}", FechaIni, FechaFin, Empresa);
 
-            
+
 
             return View(model);
         }
@@ -643,7 +648,7 @@ namespace Adm_AutoGestion.Controllers
                 string modifica = String.Format("{0}", Session["Empleado"]);
                 Int32.TryParse(modifica, out IdUsuarioM);
 
-                
+
 
                 using (var db = new AutogestionContext())
                 {
@@ -651,89 +656,90 @@ namespace Adm_AutoGestion.Controllers
                     if (Id != "0")
                     {
 
-                    Vacaciones vacaciones = db.Vacaciones.Find(id);
+                        Vacaciones vacaciones = db.Vacaciones.Find(id);
 
-                    if (vacaciones.VacacionesAdelantadas == "NO")
-                    {
+                        if (vacaciones.VacacionesAdelantadas == "NO")
+                        {
 
-                        //if (Estado == "4")
-                        //{
-                            
-
-                        //    config.Add(RfcConfigParameters.Name, "SAP");
-                        //    config.Add(RfcConfigParameters.AppServerHost, Properties.Settings.Default.Servidor.ToString());
-                        //    config.Add(RfcConfigParameters.SystemNumber, Properties.Settings.Default.Id.ToString());
-                        //    config.Add(RfcConfigParameters.User, Properties.Settings.Default.Usuario.ToString());
-                        //    config.Add(RfcConfigParameters.Password, contraseña);
-                        //    config.Add(RfcConfigParameters.Client, Properties.Settings.Default.Mandante.ToString());
-                        //    config.Add(RfcConfigParameters.Language, "ES");
-                        //    config.Add(RfcConfigParameters.SAPRouter, Properties.Settings.Default.Saprouter.ToString());
-                        //    config.Add(RfcConfigParameters.LogonGroup, "Foscal");
-
-                        //    RfcDestinationManager.RegisterDestinationConfiguration(DestinacionConfiguracion);
-                        //    DestinacionConfiguracion.AddOrEditDestination(config);
-                        //    RfcDestination destination = RfcDestinationManager.GetDestination("SAP");
-
-                        //    RfcRepository repository = destination.Repository;
-                        //    IRfcFunction function = repository.CreateFunction("ZMF_INFO_VACACIONES");
-                        //    //PARAMETROS IMPORT
-
-                        //    DateTime fecha1 = DateTime.Parse(FechaInicial);
-                        //    DateTime fecha2 = DateTime.Parse(FechaFin);
-                        //    function.SetValue("I_PERNR", NroEmpleado);
-                        //    function.SetValue("I_FECHAINI", fecha1);
-                        //    function.SetValue("I_FECHAFIN", fecha2);
-
-                        //    function.Invoke(destination);
-                        //    //OBTENER RESPUESTA 
-
-                        //    object per = function.GetValue("E_RESPUESTA");
+                            //if (Estado == "4")
+                            //{
 
 
-                        //    if (per == "1")
-                        //    {
-                        //        message = "Se a grabado con exito. No se realiza registro en SAP debido a que es una solicitud de vacaciones adelantadas.";
-                        //    }
+                            //    config.Add(RfcConfigParameters.Name, "SAP");
+                            //    config.Add(RfcConfigParameters.AppServerHost, Properties.Settings.Default.Servidor.ToString());
+                            //    config.Add(RfcConfigParameters.SystemNumber, Properties.Settings.Default.Id.ToString());
+                            //    config.Add(RfcConfigParameters.User, Properties.Settings.Default.Usuario.ToString());
+                            //    config.Add(RfcConfigParameters.Password, contraseña);
+                            //    config.Add(RfcConfigParameters.Client, Properties.Settings.Default.Mandante.ToString());
+                            //    config.Add(RfcConfigParameters.Language, "ES");
+                            //    config.Add(RfcConfigParameters.SAPRouter, Properties.Settings.Default.Saprouter.ToString());
+                            //    config.Add(RfcConfigParameters.LogonGroup, "Foscal");
 
-                        //    if (per == "2")
-                        //    {
-                        //        message = "Empleado inactivo.";
-                        //    }
+                            //    RfcDestinationManager.RegisterDestinationConfiguration(DestinacionConfiguracion);
+                            //    DestinacionConfiguracion.AddOrEditDestination(config);
+                            //    RfcDestination destination = RfcDestinationManager.GetDestination("SAP");
 
-                        //    if (per == "3")
-                        //    {
-                        //        message = "Empleado no Existe.";
-                        //    }
+                            //    RfcRepository repository = destination.Repository;
+                            //    IRfcFunction function = repository.CreateFunction("ZMF_INFO_VACACIONES");
+                            //    //PARAMETROS IMPORT
 
-                        //    if (per == "4")
-                        //    {
-                        //        message = "Fecha Fin menor.";
-                        //    }
+                            //    DateTime fecha1 = DateTime.Parse(FechaInicial);
+                            //    DateTime fecha2 = DateTime.Parse(FechaFin);
+                            //    function.SetValue("I_PERNR", NroEmpleado);
+                            //    function.SetValue("I_FECHAINI", fecha1);
+                            //    function.SetValue("I_FECHAFIN", fecha2);
 
-                            
-                        //}
+                            //    function.Invoke(destination);
+                            //    //OBTENER RESPUESTA 
+
+                            //    object per = function.GetValue("E_RESPUESTA");
 
 
-                    }
-                    else {
+                            //    if (per == "1")
+                            //    {
+                            //        message = "Se a grabado con exito. No se realiza registro en SAP debido a que es una solicitud de vacaciones adelantadas.";
+                            //    }
 
-                       
-                    }
+                            //    if (per == "2")
+                            //    {
+                            //        message = "Empleado inactivo.";
+                            //    }
 
-                    _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
-                    Empleado empleado = new Empleado();
-                    empleado = db.Empleados.FirstOrDefault(e => e.NroEmpleado == NroEmpleado);
-                    var jefe = db.Empleados.FirstOrDefault(s => s.NroEmpleado == empleado.Jefe);
-                    if (Estado == "5")
-                    {
-                        NotificacionCorreo("Rechazo", NroEmpleado, Observacion, empleado.Nombres, empleado.Correo, jefe.Correo);
-                    }
-                    if(Estado == "11")
-                    {
-                        var correojefeGH = db.Configuraciones.FirstOrDefault(e => e.Parametro == "CORREOJEFEGH");
-                        var Obser = "";
-                        NotificacionCorreo("Aprobar", NroEmpleado, Obser, empleado.Nombres, correojefeGH.Valor, correojefeGH.Valor);
-                    }
+                            //    if (per == "3")
+                            //    {
+                            //        message = "Empleado no Existe.";
+                            //    }
+
+                            //    if (per == "4")
+                            //    {
+                            //        message = "Fecha Fin menor.";
+                            //    }
+
+
+                            //}
+
+
+                        }
+                        else
+                        {
+
+
+                        }
+
+                        _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
+                        Empleado empleado = new Empleado();
+                        empleado = db.Empleados.FirstOrDefault(e => e.NroEmpleado == NroEmpleado);
+                        var jefe = db.Empleados.FirstOrDefault(s => s.NroEmpleado == empleado.Jefe);
+                        if (Estado == "5")
+                        {
+                            NotificacionCorreo("Rechazo", NroEmpleado, Observacion, empleado.Nombres, empleado.Correo, jefe.Correo);
+                        }
+                        if (Estado == "11")
+                        {
+                            var correojefeGH = db.Configuraciones.FirstOrDefault(e => e.Parametro == "CORREOJEFEGH");
+                            var Obser = "";
+                            NotificacionCorreo("Aprobar", NroEmpleado, Obser, empleado.Nombres, correojefeGH.Valor, correojefeGH.Valor);
+                        }
 
                     }
                     else
@@ -742,15 +748,15 @@ namespace Adm_AutoGestion.Controllers
                     }
 
                     // TODO: Add update logic here
-                    
+
                     Session["message"] = message;
 
                     string filtros = string.Format("{0}", Session["filtrosV"]);
 
                     string[] datos = filtros.Split(',');
                     Session.Remove("filtrosV");
-                    return RedirectToAction("Confirmacion", "Vacaciones", new { FechaIni = datos[0], FechaFin = datos[1], Empresa = datos[2]});
-                   
+                    return RedirectToAction("Confirmacion", "Vacaciones", new { FechaIni = datos[0], FechaFin = datos[1], Empresa = datos[2] });
+
 
                 }
 
@@ -763,36 +769,37 @@ namespace Adm_AutoGestion.Controllers
             }
         }
 
-        public ActionResult Confirmacion2(string Id) {
+        public ActionResult Confirmacion2(string Id)
+        {
 
             Vacaciones model = new Vacaciones();
             int id = -1;
             Int32.TryParse(Id, out id);
             string EmpleadoId = String.Format("{0}", Session["Empleado"]);
 
-             using (var db = new AutogestionContext())
+            using (var db = new AutogestionContext())
             {
 
                 model = db.Vacaciones.FirstOrDefault(e => e.Id == id);
                 model.Empleado = db.Empleados.FirstOrDefault(e => e.Id == model.EmpleadoId);
                 ViewBag.Vacaciones = model;
 
-            //if (id > 0)
-            //{
-            //    string opcion = "Confirmar";
-            //    model = _repo.ObtenerTodos2(opcion, EmpleadoId);
-            //    ViewBag.Vacaciones = model.FirstOrDefault(e => e.Id == id);
-            //}
+                //if (id > 0)
+                //{
+                //    string opcion = "Confirmar";
+                //    model = _repo.ObtenerTodos2(opcion, EmpleadoId);
+                //    ViewBag.Vacaciones = model.FirstOrDefault(e => e.Id == id);
+                //}
 
-            //if (ViewBag.Vacaciones == null)
-            //{
-            //    ViewBag.Vacaciones = new Models.Vacaciones();
-            //    ViewBag.Vacaciones.Empleado = new Empleado();
-            //}
-            
+                //if (ViewBag.Vacaciones == null)
+                //{
+                //    ViewBag.Vacaciones = new Models.Vacaciones();
+                //    ViewBag.Vacaciones.Empleado = new Empleado();
+                //}
 
-            return PartialView(model);
-             }
+
+                return PartialView(model);
+            }
         }
 
 
@@ -811,7 +818,7 @@ namespace Adm_AutoGestion.Controllers
                 Session.Add("ErrorAutorizacion", "No cuenta con autorización para la opción seleccionada");
                 return RedirectToAction("Index", "Login");
             }
-        
+
             int id = -1;
             string opcion = "Gestion";
             Int32.TryParse(Id, out id);
@@ -840,33 +847,33 @@ namespace Adm_AutoGestion.Controllers
 
             try
             {
-                 int id = 0;
+                int id = 0;
                 Int32.TryParse(Id, out id);
                 int empleadoid = 0;
                 Int32.TryParse(Empleado, out empleadoid);
                 string modifica = String.Format("{0}", Session["Empleado"]);
                 Int32.TryParse(modifica, out IdUsuarioM);
 
-                
-                    if (Id != "0")
+
+                if (Id != "0")
+                {
+                    // TODO: Add update logic here
+                    _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
+                    if (Estado == "5")
                     {
-                        // TODO: Add update logic here
-                        _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
-                        if (Estado == "5")
+                        using (var db = new AutogestionContext())
                         {
-                            using (var db = new AutogestionContext())
-                            {
-                                Empleado empleado = new Empleado();
-                                empleado = db.Empleados.FirstOrDefault(e => e.Id == empleadoid);
-                                var jefe = db.Empleados.FirstOrDefault(s => s.NroEmpleado == empleado.Jefe);
-                                NotificacionCorreo("Rechazo", Empleado, Observacion, empleado.Nombres, empleado.Correo, jefe.Correo);
-                            }
+                            Empleado empleado = new Empleado();
+                            empleado = db.Empleados.FirstOrDefault(e => e.Id == empleadoid);
+                            var jefe = db.Empleados.FirstOrDefault(s => s.NroEmpleado == empleado.Jefe);
+                            NotificacionCorreo("Rechazo", Empleado, Observacion, empleado.Nombres, empleado.Correo, jefe.Correo);
                         }
                     }
-                    else
-                    {
-                        message = "Antes de Guardar, debe seleccionar un registro de la tabla.";
-                    }
+                }
+                else
+                {
+                    message = "Antes de Guardar, debe seleccionar un registro de la tabla.";
+                }
 
 
                 Session["message"] = message;
@@ -907,7 +914,7 @@ namespace Adm_AutoGestion.Controllers
         }
 
 
-        public ActionResult Informe(string FechaIni, string FechaFin, string Empleado, string Estado ,string Empresa, string Codigo)
+        public ActionResult Informe(string FechaIni, string FechaFin, string Empleado, string Estado, string Empresa, string Codigo)
         {
 
             List<string> funciones = Acceso.Validar(Session["Empleado"]);
@@ -923,13 +930,13 @@ namespace Adm_AutoGestion.Controllers
             }
 
 
-             List<Vacaciones> Items = new List<Vacaciones>();
+            List<Vacaciones> Items = new List<Vacaciones>();
 
             using (var db = new AutogestionContext())
             {
 
 
-               
+
                 var lista = db.Sociedad.ToList();
                 ViewBag.Sociedad = lista;
 
@@ -958,7 +965,8 @@ namespace Adm_AutoGestion.Controllers
                                                DbFunctions.TruncateTime(e.Fecha) <= Fecha2).ToList();
 
                 }
-                if (estado != 0) {
+                if (estado != 0)
+                {
                     Items = db.Vacaciones.Where(e => e.Empleado.Nombres.Contains(Empleado) &&
                                                 e.Empleado.Empresa.Contains(Empresa) &&
                                                 e.Empleado.NroEmpleado.Contains(Codigo) &&
@@ -972,10 +980,10 @@ namespace Adm_AutoGestion.Controllers
                     Item.Empleado = db.Empleados.FirstOrDefault(e => e.Id == Item.EmpleadoId);
                     Item.EstadoVacaciones = db.EstadoVacaciones.FirstOrDefault(x => x.Id == Item.EstadoId);
                     Item.personal = db.PersonalActivo.FirstOrDefault(s => s.CodigoEmpleado == Item.Empleado.NroEmpleado);
-                    Item.HistorialVacaciones = db.HistorialVacaciones.Where(e => e.VacacionesId == Item.Id).OrderByDescending(x => x.Fecha).FirstOrDefault();                    
+                    Item.HistorialVacaciones = db.HistorialVacaciones.Where(e => e.VacacionesId == Item.Id).OrderByDescending(x => x.Fecha).FirstOrDefault();
                     Item.Empleado2 = db.Empleados.FirstOrDefault(e => e.Id == Item.HistorialVacaciones.UsuarioModifica);
-                    
-                    
+
+
                 }
 
             }
@@ -1041,7 +1049,7 @@ namespace Adm_AutoGestion.Controllers
                                                DbFunctions.TruncateTime(e.Fecha) >= Fecha1 &&
                                                DbFunctions.TruncateTime(e.Fecha) <= Fecha2 &&
                                                e.Empleado.Activo == "SI" &&
-                                               e.Empleado.Jefe == empleado.NroEmpleado ).ToList();
+                                               e.Empleado.Jefe == empleado.NroEmpleado).ToList();
 
                 }
                 if (estado != 0)
@@ -1092,7 +1100,7 @@ namespace Adm_AutoGestion.Controllers
 
         public ActionResult HistorialVac(string Id)
         {
-           
+
             var model = _repo.ObtenerTodos3(Id);
 
             return View(model);
@@ -1126,7 +1134,7 @@ namespace Adm_AutoGestion.Controllers
                     correo.Priority = System.Net.Mail.MailPriority.Normal;
                     correo.IsBodyHtml = true;
                 }
-                if (asunto == "Aprobar") 
+                if (asunto == "Aprobar")
                 {
                     correo.To.Add(emailjefe);
 
@@ -1175,7 +1183,7 @@ namespace Adm_AutoGestion.Controllers
 
             using (var db = new AutogestionContext())
             {
-                
+
                 var empleado = db.Empleados.FirstOrDefault(e => e.Id == Usuario);
                 List<Empleado> lista = db.Empleados.Where(s => s.Jefe == empleado.NroEmpleado).ToList();
                 ViewBag.Empleados = lista;
@@ -1253,7 +1261,7 @@ namespace Adm_AutoGestion.Controllers
                             }
                         }
 
-                        
+
                         Result = Result.Substring(0, Result.Length - 1);
                         ViewBag.DatosSap = Result;
                         string[] filas = Result.Split(',');
@@ -1313,11 +1321,11 @@ namespace Adm_AutoGestion.Controllers
             Int32.TryParse(usuariosesion, out Usuario);
             List<Vacaciones> vacaciones = new List<Vacaciones>();
             string cantdp = "";
-            
+
 
             DataTable Datos = new DataTable();
             var Result = "";
-            
+
 
 
             using (var db = new AutogestionContext())
@@ -1351,11 +1359,11 @@ namespace Adm_AutoGestion.Controllers
 
                 var empleado = db.Empleados.FirstOrDefault(e => e.Id == Usuario);
                 //List<Empleado> lista = db.Empleados.Where(s => s.Superior == empleado.NroEmpleado || s.Jefe == empleado.NroEmpleado && s.Activo != "NO").Select(x => new { x.Nombres }).GroupBy(b => b.Nombres).ToList();
-                List<Empleado> lista2 = db.Empleados.Where(s =>  s.Jefe == empleado.NroEmpleado && s.Activo != "NO")
+                List<Empleado> lista2 = db.Empleados.Where(s => s.Jefe == empleado.NroEmpleado && s.Activo != "NO")
                                                     .Where(s => s.AreaDescripcion.Contains(Area))
                                                     .Where(s => s.Empresa.Contains(Sociedad)).OrderBy(b => b.Nombres).ToList();
                 InMemoryDestinationConfiguration DestinacionConfiguracion = new InMemoryDestinationConfiguration();
-                
+
 
 
                 foreach (Empleado datosemple in lista2)
@@ -1446,7 +1454,7 @@ namespace Adm_AutoGestion.Controllers
                 }
             }
 
-            
+
 
             return View(vacaciones);
         }
@@ -1591,7 +1599,7 @@ namespace Adm_AutoGestion.Controllers
 
                     int count = Datos.Rows.Count;
                     int s = count - 1;
-                    
+
                     decimal resta = 0;
 
                     for (var f = 0; f < count; f++)
@@ -1606,7 +1614,7 @@ namespace Adm_AutoGestion.Controllers
                     }
 
 
-                   
+
 
                 }
                 catch (SystemException ex)
@@ -1731,16 +1739,16 @@ namespace Adm_AutoGestion.Controllers
 
         }
 
-        public ActionResult EditarModoTrabajo(int id) 
+        public ActionResult EditarModoTrabajo(int id)
         {
             Session["IdEmpleado"] = id;
 
             using (AutogestionContext db = new AutogestionContext())
             {
-                var model = db.Empleados.FirstOrDefault(x=> x.Id == id);
+                var model = db.Empleados.FirstOrDefault(x => x.Id == id);
                 return PartialView(model);
             }
-            
+
         }
 
         [HttpPost]
@@ -1786,7 +1794,7 @@ namespace Adm_AutoGestion.Controllers
             int Id = 0;
             Int32.TryParse(Empleado, out Id);
 
-            
+
             using (var db = new AutogestionContext())
             {
                 datos = db.Empleados.Find(Id);
@@ -1797,7 +1805,7 @@ namespace Adm_AutoGestion.Controllers
             return PartialView();
         }
 
-        
+
         public ActionResult GrabarSolicitudAutorVac(string VacacionesPagadas, string VacacionesAdelantadas, string VacacionesMayores6, string EmpleadoP)
         {
             string res = "";
@@ -1856,7 +1864,7 @@ namespace Adm_AutoGestion.Controllers
 
             DataTable Datos = new DataTable();
             var Result = "";
-            
+
 
             using (AutogestionContext db = new AutogestionContext())
             {
@@ -1874,7 +1882,8 @@ namespace Adm_AutoGestion.Controllers
 
                 ViewBag.Opciones = lst;
 
-                if (Area != null) {
+                if (Area != null)
+                {
 
                     var empleados = db.Empleados.FirstOrDefault(e => e.Id == Usuario);
                     //List<Empleado> lista = db.Empleados.Where(s => s.Superior == empleado.NroEmpleado || s.Jefe == empleado.NroEmpleado && s.Activo != "NO").Select(x => new { x.Nombres }).GroupBy(b => b.Nombres).ToList();
@@ -1973,9 +1982,9 @@ namespace Adm_AutoGestion.Controllers
 
 
                     }
-                
-                
-                
+
+
+
                 }
 
             }
@@ -2017,7 +2026,7 @@ namespace Adm_AutoGestion.Controllers
             using (AutogestionContext db = new AutogestionContext())
             {
 
-              
+
 
                 var empleadoid = Session["Empleado"];
                 var empleado = db.Empleados.Find(empleadoid);
@@ -2263,7 +2272,7 @@ namespace Adm_AutoGestion.Controllers
                     fila.FechaFin = fila.FechaFin.AddDays(1);
                     Fecha1 = fila.FechaInicial.ToString("yyyy-MM-dd");
                     Fecha2 = fila.FechaFin.ToString("yyyy-MM-dd");
-                    
+
 
                     Result += String.Format(fila.Nombres + ";" + Fecha1 + ";" + Fecha2 + ";" + fila.Estado + ",");
                 }
@@ -2272,7 +2281,7 @@ namespace Adm_AutoGestion.Controllers
                 Result = Result.Substring(0, Result.Length - 1);
             }
 
-            return  Result;
+            return Result;
         }
 
 
@@ -2326,6 +2335,11 @@ namespace Adm_AutoGestion.Controllers
         private static List<List<string>> _datosTemporales;
         public ActionResult CargarPeriodosVacaciones(HttpPostedFileBase archivoExcel)
         {
+
+
+
+            var empleadoid = Session["Empleado"];
+
             if (archivoExcel != null && archivoExcel.ContentLength > 0)
             {
                 try
@@ -2367,14 +2381,88 @@ namespace Adm_AutoGestion.Controllers
 
                                 ViewBag.Datos = _datosTemporales;
 
-                                ViewBag.Mensaje = "Archivo cargado correctamente.";
+                                List<PeriodoVacacionesEmpleado> model = new List<PeriodoVacacionesEmpleado>();
+                                using (var db = new AutogestionContext())
+                                {
+
+                                    if (_datosTemporales != null)
+
+                                        foreach (var fila in _datosTemporales)
+                                        {
+
+                                            {
+                                                DateTime? fechaingresoreal = null; // Inicializar como null
+                                                DateTime fechaingreso = DateTime.MinValue;
+                                                DateTime periodoini = DateTime.MinValue;
+                                                DateTime peridofin = DateTime.MinValue;
+
+
+
+                                                if (!string.IsNullOrEmpty(fila[1]))
+                                                {
+
+                                                    fechaingresoreal = DateTime.ParseExact(fila[1], "dd/MM/yyyy H:mm:ss", null);
+                                                }
+                                                DateTime fechaTemporal = DateTime.MinValue; // O cualquier otro valor predeterminado que tenga sentido en tu contexto
+
+                                                if (!string.IsNullOrEmpty(fila[2]))
+                                                {
+                                                    DateTime.TryParseExact(fila[2], "dd/MM/yyyy H:mm:ss", null, DateTimeStyles.None, out fechaTemporal);
+                                                    fechaingreso = fechaTemporal;
+                                                }
+
+                                                fechaTemporal = DateTime.MinValue;
+                                                if (!string.IsNullOrEmpty(fila[3]))
+                                                {
+                                                    DateTime.TryParseExact(fila[3], "dd/MM/yyyy H:mm:ss", null, DateTimeStyles.None, out fechaTemporal);
+                                                    periodoini = fechaTemporal;
+                                                }
+
+                                                fechaTemporal = DateTime.MinValue;
+                                                if (!string.IsNullOrEmpty(fila[4]))
+                                                {
+                                                    DateTime.TryParseExact(fila[4], "dd/MM/yyyy H:mm:ss", null, DateTimeStyles.None, out fechaTemporal);
+                                                    peridofin = fechaTemporal;
+                                                }
+
+                                                var empleado = db.Empleados.AsEnumerable().FirstOrDefault(x => x.NroEmpleado == fila[0]);
+
+
+                                                model.Add(new PeriodoVacacionesEmpleado()
+                                                {
+                                                    EmpleadoId = empleado.Id, // Suponiendo que el nombre está en la primera column
+                                                    FechaIngresoReal = fechaingresoreal, // Suponiendo que el precio está en la segunda columna
+                                                    FechaIngreso = fechaingreso,
+                                                    PeriodoInicio=  periodoini,
+                                                    PeriodoFin = peridofin,
+                                                    Dias = Convert.ToInt32(fila[5]),// Suponiendo que la cantidad está en la tercera columna
+                                                    FechaRegistro = DateTime.Now,
+                                                    EmpleadoIdRegistra =  Convert.ToInt32(empleadoid),
+                                                });
+                                                
+
+                                            }
+
+                                        }
+
+                                    db.PeriodoVacacionesEmpleado.AddRange(model);
+                                    db.SaveChanges();
+
+                                    ViewBag.Mensaje = "Archivo cargado correctamente.";
+                                    return View(model);
+
+
+
+                                }
+
+
                             }
 
                         }
 
 
-                               
-                            
+
+
                     }
                 }
                 catch (Exception ex)
@@ -2386,13 +2474,14 @@ namespace Adm_AutoGestion.Controllers
             {
                 ViewBag.Error = "Por favor, selecciona un archivo Excel.";
             }
-        
-        
-        
-        
 
-           return View(); 
-        
+
+
+            return View();
+
+
+
+
         }
 
 

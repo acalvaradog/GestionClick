@@ -3,6 +3,7 @@ using Adm_AutoGestion.Services;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -89,7 +90,7 @@ namespace Adm_AutoGestion.Services
         }
 
 
-        public List<Permiso> ObtenerTodos3(string Id, string Fecha, string FechaPermiso, string FechaFinPermiso)
+        public List<Permiso> ObtenerTodos3(string Id, string Fecha, string FechaPermiso, string FechaFinPermiso, string TrabajadorS)
         {
             using (var db = new AutogestionContext())
             {
@@ -130,11 +131,12 @@ namespace Adm_AutoGestion.Services
                     datos = db.Empleados.Find(id);
 
                     Items = db.Permisos.Where(a => a.RevisadoNomina == "NO" && a.EstadoId == 4
-                                                //&& DbFunctions.TruncateTime(a.Fecha) == fecha
-                                                && DbFunctions.TruncateTime(a.FechaPermiso) >= inicio
-                                                && DbFunctions.TruncateTime(a.FechaFinPermiso) <= fin).ToList();
+                                 && DbFunctions.TruncateTime(a.FechaPermiso) >= inicio
+                                 && DbFunctions.TruncateTime(a.FechaFinPermiso) <= fin
+                                 && (string.IsNullOrEmpty(TrabajadorS) || SqlFunctions.StringConvert((decimal)a.EmpleadoId).Contains(TrabajadorS)))
+                                 .ToList();
 
-                  
+
                 }
                 else {
 
@@ -147,7 +149,8 @@ namespace Adm_AutoGestion.Services
                     Items = db.Permisos.Where(a => a.RevisadoNomina == "NO" && a.EstadoId == 4
                                                 && DbFunctions.TruncateTime(a.Fecha) == fecha
                                                 && DbFunctions.TruncateTime(a.FechaPermiso) >= inicio
-                                                && DbFunctions.TruncateTime(a.FechaFinPermiso) <= fin).ToList();
+                                                && DbFunctions.TruncateTime(a.FechaFinPermiso) <= fin
+                                                 && (string.IsNullOrEmpty(TrabajadorS) || SqlFunctions.StringConvert((decimal)a.EmpleadoId).Contains(TrabajadorS))).ToList();
 
                     
                 }

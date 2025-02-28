@@ -25,62 +25,84 @@
 }
 
 
-    <div class="card">
-        <div class="card-header d-flex justify-content-between"><h4>Carga Masiva Periodos Vacaciones</h4></div>
+<div class="card">
+    <div class="card-header d-flex justify-content-between"><h4>Carga Masiva Periodos Vacaciones</h4></div>
 
-        <hr />
-
-
-        <div class="card-body">
-          
-            <div class="row">
-                @using (Html.BeginForm("CargarPeriodosVacaciones", "Vacaciones", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                {
-                    <div class="col-md-6">
-                        <input class="form-control" type="file" name="archivoExcel">
-                    </div>
-                    <div class="col-md-2">
+    <hr />
 
 
-                        <button type="submit" class="btn  btn-outline-primary">CargarDatos</button>
+    <div class="card-body">
 
+        <div class="row">
+            @using (Html.BeginForm("CargarPeriodosVacaciones", "Vacaciones", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="col-md-6">
+                    <input class="form-control" type="file" name="archivoExcel">
+                </div>
 
-                    </div>
-                }
-
+                <br />
                 <div class="col-md-2">
 
 
+                    <button type="submit" class="btn  btn-outline-primary">CargarDatos</button>
+
+
+                </div>
+            }
+
+            @*<div class="col-md-2">
+
+
                     <button type="button" class="btn  btn-outline-success">Guardar</button>
-                </div>
-            </div>
+                </div>*@
+        </div>
 
-           
-                <br />
-                <div class="container-fluid">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-sm">
-                            <thead>
+
+        <br />
+
+        @if (Model != null)
+        {
+
+            <div class="container-fluid">
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+
+                                <th>Codigo Empleado</th>
+                                <th>Fecha Ingreso Real</th>
+                                <th>Fecha Ingreso</th>
+                                <th>Periodo Inicial</th>
+                                <th>Periodo Final</th>
+                                <th>Dias</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Codigo Empleado</th>
-                                    <th>Fecha Ingreso Real</th>
-                                    <th>Fecha Ingreso</th>
-                                    <th>Periodo Inicial</th>
-                                    <th>Periodo Final</th>
-                                    <th>Dias</th>
-
+                                    <td> @Html.DisplayFor(modelItem => item.EmpleadoId)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.FechaIngresoReal)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.FechaIngreso)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.PeriodoInicio)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.PeriodoFin)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.Dias)</td>
+                                   
                                 </tr>
-                            </thead>
-                        </table>
+                            }
+                        </tbody>
+                    </table>
 
 
 
 
-                    </div>
                 </div>
-
             </div>
+
+        }
+
     </div>
+</div>
 
 

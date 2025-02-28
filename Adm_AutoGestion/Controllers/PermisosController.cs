@@ -733,7 +733,7 @@ namespace Adm_AutoGestion.Controllers
         }
         //**********************--------------------************************
 
-        public ActionResult ConfirmacionPerNom(string Id, string Fecha, string FechaPermiso, string FechaFinPermiso)
+        public ActionResult ConfirmacionPerNom(string Id, string Fecha, string FechaPermiso, string FechaFinPermiso, string TrabajadorS)
         {
 
             List<Permiso> model = new List<Permiso>();
@@ -750,16 +750,20 @@ namespace Adm_AutoGestion.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
+
+            var EmpreUsu2 = Session["Empresa"];
             var EmpreUsu = Convert.ToInt32(Session["Empresa"]);
             int id = -1;
             string opcion = "Confirmar_Nom";
             Int32.TryParse(Id, out id);
             string EmpleadoId = String.Format("{0}", Session["Empleado"]);
+
+           ViewBag.Empleado2 = db.Empleados.Where(f => f.Activo != "NO"  && f.Empresa == EmpreUsu2).OrderBy(x => x.Nombres).ToList();
             if (Fecha != null || FechaPermiso != null && FechaFinPermiso != null)
             {
                 if (Fecha != null || FechaPermiso != "" && FechaFinPermiso != "")
                 {
-                    model = _repo.ObtenerTodos3(EmpleadoId, Fecha, FechaPermiso, FechaFinPermiso);
+                    model = _repo.ObtenerTodos3(EmpleadoId, Fecha, FechaPermiso, FechaFinPermiso,TrabajadorS);
                 }
             }
             
