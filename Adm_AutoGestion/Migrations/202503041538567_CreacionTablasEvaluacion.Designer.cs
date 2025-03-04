@@ -7,13 +7,13 @@ namespace Adm_AutoGestion.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class fondocesantiassolicitud : IMigrationMetadata
+    public sealed partial class CreacionTablasEvaluacion : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(fondocesantiassolicitud));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CreacionTablasEvaluacion));
         
         string IMigrationMetadata.Id
         {
-            get { return "202502081823535_fondocesantias-solicitud"; }
+            get { return "202503041538567_CreacionTablasEvaluacion"; }
         }
         
         string IMigrationMetadata.Source

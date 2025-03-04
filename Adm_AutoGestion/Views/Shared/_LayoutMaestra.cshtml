@@ -699,6 +699,89 @@
                         }
 
 
+
+
+                        @if (funciones.Contains("EvaluacionDesempenoRa"))
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="collapse" href="#sidebar-evaluacion" role="button" aria-expanded="false" aria-controls="sidebar-cesantias">
+                                    <i class="icon-20">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                            <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518z" />
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                            <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11m0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12" />
+                                        </svg>
+                                    </i>
+                                    <span class="item-name">Evaluación Desempeño</span>
+                                    <i class="right-icon">
+                                        <svg class="icon-18" xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </i>
+                                </a>
+                                <ul class="sub-nav collapse" id="sidebar-evaluacion" data-bs-parent="#sidebar-menu">
+                                    @if (funciones.Contains("EvaluacionDesempenoRa"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="~/EvaluacionDesempenoRa/Index">
+                                                <i class="icon">
+                                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                                        <g>
+                                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                                        </g>
+                                                    </svg>
+                                                </i>
+                                                <i class="sidenav-mini-icon">ED</i>
+                                                <span class="item-name"> Evaluación Desempeño</span>
+                                            </a>
+                                        </li>
+                                    }
+
+                                    @*@if (funciones.Contains("CesantiasPorAprobar"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="~/Cesantias/PorAprobar">
+                                                <i class="icon">
+                                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                                        <g>
+                                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                                        </g>
+                                                    </svg>
+                                                </i>
+                                                <i class="sidenav-mini-icon">CA</i>
+                                                <span class="item-name">Cesantias por Aprobar</span>
+                                            </a>
+                                        </li>
+                                    }*@
+
+                                    @*@if (funciones.Contains("CesantiasPorPagar"))
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link " href="~/Cesantias/PorPagar">
+                                                <i class="icon">
+                                                    <svg class="icon-10" xmlns="http://www.w3.org/2000/svg" width="10" viewBox="0 0 24 24" fill="currentColor">
+                                                        <g>
+                                                            <circle cx="12" cy="12" r="8" fill="currentColor"></circle>
+                                                        </g>
+                                                    </svg>
+                                                </i>
+                                                <i class="sidenav-mini-icon">CP</i>
+                                                <span class="item-name">Cesantias por Pagar</span>
+                                            </a>
+                                        </li>
+                                    }*@
+
+
+                                </ul>
+                            </li>
+
+
+
+
+                        }
+
+
                         @if (funciones.Contains("Incapacidades") || funciones.Contains("AprobarIncapacidad") || funciones.Contains("CargarAseguradora") || funciones.Contains("InformeIncapacidadesGeneral") || funciones.Contains("InformeIncapacidadesJefe"))
                         {
 

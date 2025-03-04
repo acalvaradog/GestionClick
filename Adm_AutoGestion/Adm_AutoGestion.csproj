@@ -3675,6 +3675,7 @@
     <Compile Include="Controllers\EstructuraJerarquicaController.cs" />
     <Compile Include="Controllers\EstructuraJerarquicaEVADESController.cs" />
     <Compile Include="Controllers\EvaDesempeñoController.cs" />
+    <Compile Include="Controllers\EvaluacionDesempenoRaController.cs" />
     <Compile Include="Controllers\EventosController.cs" />
     <Compile Include="Controllers\GrupoEmpleadosController.cs" />
     <Compile Include="Controllers\HabilitarVacacionesController.cs" />
@@ -3752,10 +3753,6 @@
     <Compile Include="Migrations\202502081822168_fondocesantias.Designer.cs">
       <DependentUpon>202502081822168_fondocesantias.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202502081823535_fondocesantias-solicitud.cs" />
-    <Compile Include="Migrations\202502081823535_fondocesantias-solicitud.Designer.cs">
-      <DependentUpon>202502081823535_fondocesantias-solicitud.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\202502082025087_campoobligatoriocesantia.cs" />
     <Compile Include="Migrations\202502082025087_campoobligatoriocesantia.Designer.cs">
       <DependentUpon>202502082025087_campoobligatoriocesantia.cs</DependentUpon>
@@ -3771,6 +3768,10 @@
     <Compile Include="Migrations\202503040011483_valoresnulldosimetria.cs" />
     <Compile Include="Migrations\202503040011483_valoresnulldosimetria.Designer.cs">
       <DependentUpon>202503040011483_valoresnulldosimetria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503041538567_CreacionTablasEvaluacion.cs" />
+    <Compile Include="Migrations\202503041538567_CreacionTablasEvaluacion.designer.cs">
+      <DependentUpon>202503041538567_CreacionTablasEvaluacion.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Acceso.cs" />
@@ -3871,6 +3872,12 @@
     <Compile Include="Models\EvaDesempeno\tipo identificacion.cs" />
     <Compile Include="Models\EvaDesempeno\usuario perfil.cs" />
     <Compile Include="Models\EvaDesempeno\usuarios x sociedad.cs" />
+    <Compile Include="Models\EvaluacionDesempenoRa\EvaluacionCriterio.cs" />
+    <Compile Include="Models\EvaluacionDesempenoRa\EvaluacionDetalle.cs" />
+    <Compile Include="Models\EvaluacionDesempenoRa\EvaluacionEncabezado.cs" />
+    <Compile Include="Models\EvaluacionDesempenoRa\EvaluacionIndicador.cs" />
+    <Compile Include="Models\EvaluacionDesempenoRa\EvaluacionPeriodo.cs" />
+    <Compile Include="Models\EvaluacionDesempenoRa\EvaluacionSubArea.cs" />
     <Compile Include="Models\Evento.cs" />
     <Compile Include="Models\Eventos.cs" />
     <Compile Include="Models\EventosRelacionados.cs" />
@@ -3983,6 +3990,7 @@
     <Compile Include="Services\EstructuraJerarquicaEVADESRepository.cs" />
     <Compile Include="Services\EstructuraJerarquicaRepository.cs" />
     <Compile Include="Services\EvaDesempenoRepository.cs" />
+    <Compile Include="Services\EvaluacionDesempenoRepository.cs" />
     <Compile Include="Services\EventosRepository.cs" />
     <Compile Include="Services\GrupoEmpleadosRepository.cs" />
     <Compile Include="Services\HabilitarVacacionesRepository.cs" />
@@ -4332,6 +4340,8 @@
     <Content Include="Views\Sedes\Index.cshtml" />
     <Content Include="Views\Cesantias\_Detalles.cshtml" />
     <Content Include="Views\Cesantias\CartaAprobacion.cshtml" />
+    <Content Include="Views\EvaluacionDesempenoRa\EvaluacionDesempeno.cshtml" />
+    <Content Include="Views\EvaluacionDesempenoRa\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4361,9 +4371,6 @@
     <EmbeddedResource Include="Migrations\202502081822168_fondocesantias.resx">
       <DependentUpon>202502081822168_fondocesantias.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202502081823535_fondocesantias-solicitud.resx">
-      <DependentUpon>202502081823535_fondocesantias-solicitud.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202502082025087_campoobligatoriocesantia.resx">
       <DependentUpon>202502082025087_campoobligatoriocesantia.cs</DependentUpon>
     </EmbeddedResource>
@@ -4375,6 +4382,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503040011483_valoresnulldosimetria.resx">
       <DependentUpon>202503040011483_valoresnulldosimetria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503041538567_CreacionTablasEvaluacion.resx">
+      <DependentUpon>202503041538567_CreacionTablasEvaluacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report2.rdlc" />
     <EmbeddedResource Include="Report3.rdlc" />

@@ -1,0 +1,156 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.Empleado>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+    TimeZoneInfo zonaHorariaBogota = TimeZoneInfo.CreateCustomTimeZone("America/Bogota", new TimeSpan(-5, 0, 0), "America/Bogota", "Hora de Bogotá");
+
+}
+
+
+
+
+<form method="post">
+    <div class="card">
+        <div class="card-header colorTitulo mb-3"><h4>Empleados a Evaluar </h4></div>
+        <div class="card-body">
+            <div class="row justify-content-start">
+
+                <div class="col-6" style="text-align:left">
+                    <label for="Area">Área</label>
+
+                    @Html.DropDownList("UnidadOrg", new SelectList(ViewBag.AreaDescripcion, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                </div>
+                <div class="col-6" style="text-align:left">
+                    <label for="">Trabajador Solicitante</label>
+                    @Html.DropDownList("TrabajadorS", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker ", data_live_search = "true" })
+                </div>
+
+
+
+
+            </div>
+
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary  rounded-pill     mb-2" onclick="@Url.Action("JefeDirectoHoraExtra","HorasExtra")"> Buscar</button>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:left">
+                    @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                    <button type="button" class="btn btn-outline-success  rounded-pill mb-2" onclick="ExportarExcelJefe()">Excel</button>
+                </div>
+            </div>
+
+            <div class="container-fluid">
+                <div class="table-responsive">
+                    <table id="Tabla_Empleados_Eva" class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Evaluar</th>
+                                <th>Id</th>
+                                <th>Codigo Empleado</th>
+                                <th>Documento</th>
+                                <th>Nombre Empleado</th>
+                                <th>Area</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var empleado in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <a href="@Url.Action("EvaluacionDesempeno", new { id = empleado.Id })"
+                                           data-modalEvaluacionDesempeno=""
+                                           onclick="openmodalEvaluacion(this.href, 'Evaluación Desempeño Empleado')">
+                                            <i class="fas fa-clock text-primary"></i>
+                                            <span class="sr-only">Evaluacion</span>
+                                        </a>
+                                    </td>
+                                    <td>@empleado.Id</td>
+                                    <td>@empleado.NroEmpleado</td>
+                                    <td>@empleado.Documento</td>
+                                    <td>@empleado.Nombres</td>
+                                    <td>@empleado.AreaDescripcion</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</form>
+
+
+
+
+
+<div class="modal fade in" id="modal_EV">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h5 class="modal-title text-white"> Titulo </h5>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div id="contentModalEV">
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade in" id="modalObservacion" tabindex="-1" aria-labelledby="modalObservacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1565C0">
+                <h5 class="modal-title text-white"> Observación Hora Extra</h5>
+                <button type="button" id="close" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+                <p id="textoObservacion"></p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $("a[data-modalEvaluacionDesempeno]").on("click", function (e) {
+            openmodalEvaluacion(this.href);
+
+
+            return false;
+        });
+
+        function openmodalEvaluacion(url, modalTitle) {
+            $('#contentModalEV').load(url, function () {
+                $('#modal_EV .modal-title').text(modalTitle);
+                $('#modal_EV').modal('show');
+
+                //bindForm(this);
+            });
+        }
+
+    </script>
+}
