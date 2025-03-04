@@ -12,10 +12,10 @@ namespace Adm_AutoGestion.DTO
         public int SedeId { get; set; }
         public string NombreSede { get; set; }
         public List<ValoresPorMesDTO> ValoresPorMes { get; set; }
-        public decimal TotalAnualHp10 { get; set; }
-        public decimal TotalAnualHp3 { get; set; }
-        public decimal TotalAcumuladoHp10 { get; set; }
-        public decimal TotalAcumuladoHp3 { get; set; }
+        public decimal? TotalAnualHp10 { get; set; }
+        public decimal? TotalAnualHp3 { get; set; }
+        public decimal? TotalAcumuladoHp10 { get; set; }
+        public decimal? TotalAcumuladoHp3 { get; set; }
 
         public int año {  get; set; }
     }

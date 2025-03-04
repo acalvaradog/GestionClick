@@ -2758,3 +2758,4 @@ C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\EPPlus.d
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\OfficeOpenXml.Extension.AspNetCore.dll
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\EPPlus.xml
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.campoobservacióncesantias.resources
+C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.valoresnulldosimetria.resources

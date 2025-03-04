@@ -7,13 +7,13 @@ namespace Adm_AutoGestion.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class fondocesantiassolicitud : IMigrationMetadata
+    public sealed partial class valoresnulldosimetria : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(fondocesantiassolicitud));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(valoresnulldosimetria));
         
         string IMigrationMetadata.Id
         {
-            get { return "202502081823535_fondocesantias-solicitud"; }
+            get { return "202503040011483_valoresnulldosimetria"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,0 +1,349 @@
+﻿
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2">
+                <label for="Empresa">id:</label>
+                <input class="form-control" type="text" id="Id" name="Id" value="@ViewBag.Empleado.Id" disabled />
+            </div>
+            <div class="col-md-4">
+                <label for="Empresa">Nombre Empleado:</label>
+                <input class="form-control" type="text" value="@ViewBag.Empleado.Nombres" disabled />
+            </div>
+            <div class="col-md-3">
+                <label for="Empresa">Unidad Organizativa:</label>
+                <input class="form-control" type="text" value="@ViewBag.Empleado.UnidadOrganizativa" disabled />
+            </div>
+            <div class="col-md-3">
+                <label for="Empresa">Area:</label>
+                <input class="form-control" type="text" value="@ViewBag.Empleado.AreaDescripcion" disabled />
+            </div>
+
+            <div class="col-6" style="text-align:left">
+                <label for="">Nombre Evaluador:</label>
+                @Html.DropDownList("EvaluadorId", new SelectList(ViewBag.Evaluador, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+            </div>
+
+        
+
+            <div class="col-6" style="text-align:left">
+                <label for="">PeriodoEvaluado:</label>
+                @Html.DropDownList("Periodo", new SelectList(ViewBag.Periodo, "Id", "Periodo"), "Seleccione...", htmlAttributes: new { @class = "form-control" })
+            </div>
+
+
+
+
+            @*<div class="col-md-4">
+            <label for="Empresa"> SubArea:</label>
+            <select class="form-control" id="SubArea" name="SubArea">
+                <option value="">Seleccione...</option>
+                @if (ViewBag.SubArea != null)
+                {
+
+                    foreach (var item in ViewBag.SubArea)
+                    {
+
+                        <option value="@item.Id">@item.Descripcion</option>
+
+                    }
+
+                }
+
+
+            </select>
+        </div>*@
+        </div>
+        <br />
+
+        @*<div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary  rounded-pill   mb-2" onclick="@Url.Action("EvaluacionDesempenoRa","EvaluacionDesempeno")"> Cargar Evaluación</button>
+                </div>
+            </div>*@
+        <hr />
+
+
+        <div class="row">
+
+
+
+            <div class="col-md-6">
+                <label for="Empresa"> Indicador</label>
+                <select class="form-control" id="Indicador" name="Indicador">
+                    <option value="">Seleccione...</option>
+                    @if (ViewBag.Indicador != null)
+                    {
+
+                        foreach (var item in ViewBag.Indicador)
+                        {
+
+                            <option value="@item.Id">@item.Descripcion</option>
+
+                        }
+
+                    }
+
+
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label for="Empresa">Criterio</label>
+                <input class="form-control" type="text" value="@ViewBag.Empleado.AreaDescripcion" id="CriterioId" name="CriterioId" disabled />
+            </div>
+
+            <div class="col-md-3">
+                <label for="Empresa">Evidencia</label>
+                <input class="form-control" type="text" id="Evidencia" name="Evidencia" disabled />
+            </div>
+        </div>
+        <br />
+        <div class="row">
+
+            <div class="col-4">
+
+                <h6>Base del Indicador</h6>
+                <div class="row">
+                    <div class="col-4">
+                        <label for="Empresa">Numerador</label>
+                        <input class="form-control" id="BaseNumerador" name="BaseNumerador" type="text" />
+                    </div>
+                    <div class="col-4">
+                        <label for="Empresa">Denominador</label>
+                        <input class="form-control" id="BaseDenominador" name="BaseDenominador" type="text" />
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+
+            </div>
+            <br />
+            <div class="col-4">
+                <h6>Indicador</h6>
+                <div class="row">
+                    <div class="col-4">
+                        <label for="Empresa">Numerador</label>
+                        <input class="form-control" id="IndicadorNumerador" name ="IndicadorNumerador" type="text" />
+                    </div>
+                    <div class="col-4">
+                        <label for="Empresa">Denominador</label>
+                        <input class="form-control" id="IndicadorDenominador" name ="IndicadorDenominador" type="text" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="Empresa">Porcentaje</label>
+                        <input class="form-control"id="Porcentaje" name="Porcentaje" type="text" disabled />
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <br />
+                        <button  class="btn btn-outline-success">Cargar Datos</button>
+                    </div>
+                    <div class="col-md-6">
+                        <br />
+                        <button id="btnAgregarDatos" class="btn btn-outline-primary">Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <hr />
+        <div class="row justify-content-start">
+            <div class="table-responsive">
+                <table id="Tabla_Evaluacion" class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Indicador</th>
+                            <th>Nombre Indicador</th>
+                            <th>Base Numerador</th>
+                            <th>Base Denominador</th>
+                            <th>Indicador Numerador</th>
+                            <th>Indicador Denominador</th>
+                            <th>Porcentaje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
+
+        <div class="row justify-content-start">
+            <div class="col-12" style="text-align:left">
+                <label for="Empresa">Retroalimentación:</label>
+                <textarea class="form-control" rows="3" id="retroalimentacion" name="retroalimentacion"></textarea>
+            </div>
+        </div>
+        <div class="row justify-content-start">
+            <div class="col-12" style="text-align:left">
+                <label for="Empresa">Plan de Mejora:</label>
+                <textarea  class="form-control" rows="3" id="planmejora" name="planmejora"></textarea>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row justify-content-start">
+            <div class="col-12" style="text-align:center">
+                @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                <button type="button" class="btn btn-outline-success mb-2" id="btnGuardarEv">Guardar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        $('#Indicador').change(function () {
+            var indicadorId = $(this).val();
+
+            if (indicadorId) {
+                var indicadores = @Html.Raw(Json.Encode(ViewBag.Indicador));
+                var indicadorSeleccionado = indicadores.find(x => x.Id == indicadorId);
+
+                if (indicadorSeleccionado) {
+                    $('#CriterioId').val(indicadorSeleccionado.CriterioId);
+                    $('#Evidencia').val(indicadorSeleccionado.Evidencia);
+                } else {
+                    $('#CriterioId').val('');CriterioId
+                    $('#Evidencia').val('');
+                }
+            } else {
+                $('#criterioInput').val('');
+                $('#evidenciaInput').val('');
+            }
+        });
+
+
+        $("#btnAgregarDatos").click(function () {
+            var selectId = $("#Indicador").val();
+            var selectNombre = $("#Indicador option:selected").text(); // Obtener el texto
+            var basenumerador = parseInt($("#BaseNumerador").val());
+            var basedenominador = parseInt($("#BaseDenominador").val());
+            var indicadornumerador = parseInt($("#IndicadorNumerador").val());
+            var indicadordenominador = parseInt($("#IndicadorDenominador").val());
+            var porcentaje = $("#Porcentaje").val();
+
+            if (basenumerador == null || basedenominador == null|| basenumerador == "" || basedenominador == "") {
+
+                basenumerador = 0;
+                basedenominador = 0;
+                 
+            }
+
+            if (isNaN(basenumerador) || (isNaN(basedenominador))) {
+                basenumerador = 0;
+                basedenominador = 0;
+            }
+
+            var porcentaje1 = 0;
+            if (basedenominador != 0) {
+                porcentaje1 = (basenumerador / basedenominador);
+             
+            }
+
+            var porcentaje2 = 0;
+            if (indicadordenominador != 0) {
+                porcentaje2 = (indicadornumerador / indicadordenominador);
+            }
+
+            // Sumar porcentajes
+            var porcentajeTotal = ((porcentaje1 + porcentaje2)/2)*100;
+            porcentajeTotal = porcentajeTotal.toFixed(2); // Redondear a 2 decimales
+
+
+
+
+            var nuevaFila = $("<tr>");
+            nuevaFila.append("<td>" + selectId + "</td>");
+            nuevaFila.append("<td>" + selectNombre + "</td>"); // Agregar el nombre del select
+            nuevaFila.append("<td>" + basenumerador + "</td>");
+            nuevaFila.append("<td>" + basedenominador + "</td>");
+            nuevaFila.append("<td>" + indicadornumerador + "</td>");
+            nuevaFila.append("<td>" + indicadordenominador + "</td>");
+            nuevaFila.append("<td>" + porcentajeTotal + "</td>");
+            nuevaFila.append('<td><button class="eliminarFilaBtn">Eliminar</button></td>');
+
+            $("#Tabla_Evaluacion tbody").append(nuevaFila);
+
+            // Limpiar los campos
+            $("#Indicador").val(""),
+                $("#basenumerador").val("");
+            $("#basedenominador").val("");
+            $("#indicadornumerador").val("");
+            $("#indicadordenominador").val("");
+            $("#porcentaje").val("");
+
+        });
+
+        $(document).on("click", ".eliminarFilaBtn", function () {
+            $(this).closest("tr").remove();
+        });
+
+        
+    });
+
+    $('#btnGuardar').click(function () {
+        // Deshabilitar el botón y mostrar un indicador de carga (opcional)
+        const btnGuardar = $(this);
+        btnGuardar.prop('disabled', true);
+
+        const empleadoId = $('#Id').val();
+        const evaluadorId= $('#EvaluadorId').val();
+        const periodo = $('#Periodo').val();
+        const retroalimentacion = $('#retroalimentacion').val();
+        const planMejora = $('#planmejora').val();
+
+        const detalles = $('#Tabla_Evaluacion tbody tr').map(function () {
+            const inputs = $(this).find('input');
+            return {
+                IndicadorId: inputs.eq(0).val(),
+                BaseNumerador: parseInt(inputs.eq(1).val()),
+                BaseDenominador: parseInt(inputs.eq(2).val()),
+                IndicadorNumerador: parseInt(inputs.eq(3).val()),
+                IndicadorDenominador: parseInt(inputs.eq(4).val()),
+                Porcentaje: parseFloat(inputs.eq(5).val())
+            };
+        }).get();
+
+        const datos = {
+            EmpleadoId: empleadoId,
+            EvaluadorId: evaluadorId,
+            PeriodoEvaluacion: periodo,
+            Retroalimentacion: retroalimentacion,
+            PlandeMejora: planMejora,
+            DetallesEvaluacion: detalles
+        };
+
+        $.ajax({
+            url: '../EvaluacionDesempenoRa/GuardarEvaluacion', // Reemplaza con la URL correcta
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(datos),
+            success: function (response) {
+                // Habilitar el botón y ocultar el indicador de carga (opcional)
+                btnGuardar.prop('disabled', false);
+
+                alert('Evaluación guardada correctamente');
+                // Puedes limpiar el formulario o redirigir a otra página
+                $('#formularioEvaluacion')[0].reset();
+            },
+            error: function (error) {
+                // Habilitar el botón y ocultar el indicador de carga (opcional)
+                btnGuardar.prop('disabled', false);
+                alert('Error al guardar la evaluación');
+                console.error('Error:', error);
+            }
+        });
+   
+});
+
+
+
+ </script>

@@ -13,13 +13,13 @@
         {
             <MudCard Class="pa-4 mt-4" Elevation="4">
                 <MudCardHeader>
-                    <MudText Typo="Typo.h5" Class="font-weight-bold">Año: @item.año</MudText>
+                    <MudText Typo="Typo.h5" Class="font-weight-bold">Año: @item.año Sede @item.NombreSede</MudText>
                 </MudCardHeader>
 
                 <MudCardContent>
                     <!-- Resumen anual -->
                     <MudGrid Spacing="2" Justify="Justify.FlexStart">
-                        @if (item.TotalAnualHp10 > 0)
+                        @if (item.TotalAnualHp10.HasValue && item.TotalAnualHp10.Value.ToString() != "0,0")
                         {
                             <MudItem xs="12" sm="6" md="4">
                                 <MudPaper Class="pa-3" Elevation="1">
@@ -29,7 +29,7 @@
                             </MudItem>
                         }
 
-                        @if (item.TotalAnualHp3 > 0)
+                        @if (item.TotalAnualHp3.HasValue && item.TotalAnualHp3.Value.ToString() != "0,0")
                         {
                             <MudItem xs="12" sm="6" md="4">
                                 <MudPaper Class="pa-3" Elevation="1">
@@ -39,7 +39,7 @@
                             </MudItem>
                         }
 
-                        @if (item.TotalAcumuladoHp10 > 0)
+@*                         @if (item.TotalAcumuladoHp10 > 0)
                         {
                             <MudItem xs="12" sm="6" md="4">
                                 <MudPaper Class="pa-3" Elevation="1">
@@ -57,7 +57,7 @@
                                     <MudText Typo="Typo.body1" Class="font-weight-bold">@item.TotalAcumuladoHp3</MudText>
                                 </MudPaper>
                             </MudItem>
-                        }
+                        } *@
                     </MudGrid>
 
                     <!-- Detalles por mes -->
@@ -76,15 +76,16 @@
                                                     @CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(valormes.Mes)
                                                 </MudText>
 
-                                                @if (valormes.ValorHp3 > 0)
+                                                @if (valormes.ValorHp3.HasValue && valormes.ValorHp3.Value.ToString() != "0,0")
                                                 {
-                                                    <MudText Typo="Typo.body2">Tórax: @valormes.ValorHp3</MudText>
+                                                    <MudText Typo="Typo.body2">Cristalin: @valormes.ValorHp3</MudText>
                                                 }
 
-                                                @if (valormes.ValorHp10 > 0)
+                                                @if (valormes.ValorHp10.HasValue && valormes.ValorHp10.Value.ToString() != "0,0")
                                                 {
-                                                    <MudText Typo="Typo.body2">Cristalino: @valormes.ValorHp10</MudText>
+                                                    <MudText Typo="Typo.body2">Tórax: @valormes.ValorHp10</MudText>
                                                 }
+                                               
                                             </MudPaper>
                                         </MudItem>
                                     }

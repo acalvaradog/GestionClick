@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
+using Adm_AutoGestion.Models.EvaluacionDesempenoRa;
 
 namespace Adm_AutoGestion.Models
 {
@@ -158,5 +159,20 @@ namespace Adm_AutoGestion.Models
         public DbSet<FondoCesantias> FondoCesantias { get; set; }
 
         public DbSet<PeriodoVacacionesEmpleado> PeriodoVacacionesEmpleado { get; set; }
+
+        // Evaluacion desempeño
+
+        public DbSet<EvaluacionCriterio> EvaluacionCriterio { get; set; }
+
+        public DbSet<EvaluacionDetalle> EvaluacionDetalle{ get; set; }
+
+        public DbSet<EvaluacionEncabezado> EvaluacionEncabezado { get; set; }
+
+        public DbSet<EvaluacionIndicador> EvaluacionIndicador { get; set; }
+
+        public DbSet<EvaluacionSubArea> EvaluacionSubArea { get; set; }
+
+        public DbSet<EvaluacionPeriodo> EvaluacionPeriodo { get; set; }
+
     }
 }

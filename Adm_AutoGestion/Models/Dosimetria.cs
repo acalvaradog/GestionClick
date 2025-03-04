@@ -23,12 +23,12 @@ namespace Adm_AutoGestion.Models
             [Required]
             public int Mes { get; set; } // Mes del registro (1-12).
 
-            [Required]
+           
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
-        public decimal ValorHp10 { get; set; } // Valor de dosimetría (Hp(10)).
-        [Required]
+        public decimal? ValorHp10 { get; set; } // Valor de dosimetría (Hp(10)).
+     
         [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
-        public decimal ValorHp3 { get; set; } // Valor de dosimetría (Hp(10)).
+        public decimal? ValorHp3 { get; set; } // Valor de dosimetría (Hp(10)).
 
         [Required]
             [ForeignKey("Sede")]
