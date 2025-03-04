@@ -3768,6 +3768,10 @@
     <Compile Include="Migrations\202502250020117_campo-observación-cesantias.Designer.cs">
       <DependentUpon>202502250020117_campo-observación-cesantias.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503040011483_valoresnulldosimetria.cs" />
+    <Compile Include="Migrations\202503040011483_valoresnulldosimetria.Designer.cs">
+      <DependentUpon>202503040011483_valoresnulldosimetria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Acceso.cs" />
     <Compile Include="Models\Adjunto.cs" />
@@ -4368,6 +4372,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202502250020117_campo-observación-cesantias.resx">
       <DependentUpon>202502250020117_campo-observación-cesantias.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503040011483_valoresnulldosimetria.resx">
+      <DependentUpon>202503040011483_valoresnulldosimetria.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report2.rdlc" />
     <EmbeddedResource Include="Report3.rdlc" />

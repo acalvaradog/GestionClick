@@ -65,14 +65,14 @@ namespace Adm_AutoGestion.Services
         {
             return _context.Dosimetria
                 .Where(d => d.EmpleadoId == empleadoId && d.Anio == anio)
-                .Sum(d => d.ValorHp10);
+                .Sum(d => d.ValorHp10.Value);
         }
 
         public decimal GetAcumuladoTotal(int empleadoId)
         {
             return _context.Dosimetria
                 .Where(d => d.EmpleadoId == empleadoId)
-                .Sum(d => d.ValorHp10);
+                .Sum(d => d.ValorHp10.Value);
         }
         public List<ReporteDosimetriaViewModelDTO> ObtenerReporteDosimetria(int anio, int? mes, int? empleadoId, int? sedeId)
         {
@@ -128,13 +128,13 @@ namespace Adm_AutoGestion.Services
                     .Select(m => new ValoresPorMesDTO
                     {
                         Mes = m,
-                        ValorHp10 = d.Registros.Where(r => r.Mes == m).Sum(r => r.ValorHp10),
-                        ValorHp3 = d.Registros.Where(r => r.Mes == m).Sum(r => r.ValorHp3)
+                        ValorHp10 = d.Registros.Where(r => r.Mes == m).Sum(r => r.ValorHp10.Value),
+                        ValorHp3 = d.Registros.Where(r => r.Mes == m).Sum(r => r.ValorHp3.Value)
                     }).ToList(),
-                TotalAnualHp10 = d.TotalAnualHp10,
-                TotalAnualHp3 = d.TotalAnualHp3,
-                TotalAcumuladoHp10 = d.TotalAcumuladoHp10,
-                TotalAcumuladoHp3 = d.TotalAcumuladoHp3
+                TotalAnualHp10 = d.TotalAnualHp10.Value,
+                TotalAnualHp3 = d.TotalAnualHp3.Value,
+                TotalAcumuladoHp10 = d.TotalAcumuladoHp10.Value,
+                TotalAcumuladoHp3 = d.TotalAcumuladoHp3.Value
             }).ToList();
 
             return resultado;
