@@ -137,7 +137,11 @@ namespace Adm_AutoGestion.Services
                 {
                     SolicitudCesantiaId = solicitudId,
                     Usuario = usuario,
-                    Accion = nuevoEstadoId == 2 ? "Aprobado" : nuevoEstadoId == 3 ? "Rechazado" : "Pagado",
+                    Accion = nuevoEstadoId == 2 ? "Aprobado" :
+         nuevoEstadoId == 3 ? "Rechazado" :
+         nuevoEstadoId == 4 ? "Pagado" :
+         nuevoEstadoId == 5 ? "En revisión" :
+         "Estado desconocido",
                     FechaHora = DateTime.Now
                 };
 
