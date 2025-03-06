@@ -89,7 +89,7 @@
                                             data-id="@solicitud.Id">
                                         Ver Detalle
                                     </button>
-                                    @if (solicitud.EstadoId == 2)
+                                    @if (solicitud.EstadoId == 2 || solicitud.EstadoId == 4)
                                     {
                                         <button type="button" class="btn btn-danger btn-pdf" data-id="@solicitud.Id">
                                             <i class="fas fa-file-pdf"></i> Carta Respuesta

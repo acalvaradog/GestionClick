@@ -53,6 +53,7 @@
                             <th>Fecha de Registro</th>
                             <th>Valor Retiro</th>
                             <th>Destino</th>
+                            <th>Fondo</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -65,6 +66,7 @@
                                 <td>@solicitud.FechaRegistro.ToShortDateString()</td>
                                 <td>@solicitud.ValorRetiro.ToString("C", new System.Globalization.CultureInfo("es-CO"))</td>
                                 <td>@solicitud.Destino.Nombre</td>
+                                <td>@solicitud.FondoCesantias.Name</td>
                                 <td>
                                     <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#detalleModal"
                                             data-id="@solicitud.Id">

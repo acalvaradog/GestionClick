@@ -3511,23 +3511,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\alvaror\\.nuget\\packages\\": {},
+    "C:\\Users\\User\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alvaror\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj",
+      "projectUniqueName": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj",
       "projectName": "AutoGestion",
-      "projectPath": "C:\\Users\\alvaror\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj",
-      "packagesPath": "C:\\Users\\alvaror\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alvaror\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\",
+      "projectPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\alvaror\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -3543,8 +3543,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\alvaror\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
-              "projectPath": "C:\\Users\\alvaror\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
+            "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
+              "projectPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
             }
           }
         }
@@ -3557,7 +3557,7 @@
       "restoreAuditProperties": {
         "enableAudit": "true",
         "auditLevel": "low",
-        "auditMode": "direct"
+        "auditMode": "all"
       },
       "SdkAnalysisLevel": "9.0.100"
     },
@@ -3655,7 +3655,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {
@@ -3663,5 +3663,40 @@
         "#import": []
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"Microsoft.Extensions.Caching.Memory\" 6.0.0 tiene una vulnerabilidad de gravedad alta conocida, https://github.com/advisories/GHSA-qj66-m88j-hmgj",
+      "libraryId": "Microsoft.Extensions.Caching.Memory",
+      "targetGraphs": [
+        "net6.0",
+        "net6.0/browser-wasm"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"System.Text.Json\" 8.0.3 tiene una vulnerabilidad de gravedad alta conocida, https://github.com/advisories/GHSA-8g4q-xg66-9fp4",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        "net6.0",
+        "net6.0/browser-wasm"
+      ]
+    },
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "El paquete \"System.Text.Json\" 8.0.3 tiene una vulnerabilidad de gravedad alta conocida, https://github.com/advisories/GHSA-hh2w-p6rv-4g7w",
+      "libraryId": "System.Text.Json",
+      "targetGraphs": [
+        "net6.0",
+        "net6.0/browser-wasm"
+      ]
+    }
+  ]
 }

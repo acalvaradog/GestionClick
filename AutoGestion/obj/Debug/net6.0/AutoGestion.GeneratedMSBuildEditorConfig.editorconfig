@@ -10,342 +10,344 @@ build_property.ProjectTypeGuids =
 build_property.InvariantGlobalization = false
 build_property.PlatformNeutralAssembly = 
 build_property.EnforceExtendedAnalyzerRules = 
-build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = browser
 build_property.RootNamespace = AutoGestion
 build_property.RootNamespace = AutoGestion
-build_property.ProjectDir = C:\GestionClick\AutoGestion\
+build_property.ProjectDir = C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\GestionClick\AutoGestion
+build_property.MSBuildProjectDirectory = C:\Users\User\source\repos\acalvaradog\GestionClick\AutoGestion
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 6.0
+build_property.EnableCodeStyleSeverity = 
 
-[C:/GestionClick/AutoGestion/App.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Componentes/ImagenNoticia.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Componentes/ImagenNoticia.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcSW1hZ2VuTm90aWNpYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Componentes/LecturaQR.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Componentes/LecturaQR.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTGVjdHVyYVFSLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Componentes/ListaCumpleanos.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Componentes/ListaCumpleanos.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTGlzdGFDdW1wbGVhbm9zLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Componentes/NotificacionReconocimiento.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Componentes/NotificacionReconocimiento.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTm90aWZpY2FjaW9uUmVjb25vY2ltaWVudG8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Componentes/Notification.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Componentes/Notification.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcTm90aWZpY2F0aW9uLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Componentes/SelectEmpresa.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Componentes/SelectEmpresa.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50ZXNcU2VsZWN0RW1wcmVzYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Authentication/Forgot.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Authentication/Forgot.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb25cRm9yZ290LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Authentication/Login.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Authentication/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb25cTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Authentication/Register.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Authentication/Register.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb25cUmVnaXN0ZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Authentication/Reset.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Authentication/Reset.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb25cUmVzZXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/AutoEvaluacionCovid/AutoevaluacionCovid.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/AutoEvaluacionCovid/AutoevaluacionCovid.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0b0V2YWx1YWNpb25Db3ZpZFxBdXRvZXZhbHVhY2lvbkNvdmlkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/AutoEvaluacionCovid/CertificadoSintomas.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/AutoEvaluacionCovid/CertificadoSintomas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0b0V2YWx1YWNpb25Db3ZpZFxDZXJ0aWZpY2Fkb1NpbnRvbWFzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Certificaciones/CertificadoIngresos.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Certificaciones/CertificadoIngresos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VydGlmaWNhY2lvbmVzXENlcnRpZmljYWRvSW5ncmVzb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Certificaciones/CertificadoLaboral.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Certificaciones/CertificadoLaboral.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VydGlmaWNhY2lvbmVzXENlcnRpZmljYWRvTGFib3JhbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Certificaciones/DesprendiblePago.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Certificaciones/DesprendiblePago.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VydGlmaWNhY2lvbmVzXERlc3ByZW5kaWJsZVBhZ28ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Certificaciones/PrincipalCertificaciones.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Certificaciones/PrincipalCertificaciones.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VydGlmaWNhY2lvbmVzXFByaW5jaXBhbENlcnRpZmljYWNpb25lcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Cesantias/HistoricoCesantias.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Cesantias/HistoricoCesantias.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VzYW50aWFzXEhpc3Rvcmljb0Nlc2FudGlhcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Cesantias/Solicitudcesantia.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Cesantias/Solicitudcesantia.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2VzYW50aWFzXFNvbGljaXR1ZGNlc2FudGlhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Chat/Chat.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Chat/Chat.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhdFxDaGF0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Cursos/Certificados.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Cursos/Certificados.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3Vyc29zXENlcnRpZmljYWRvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Cursos/CursosDisponibles.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Cursos/CursosDisponibles.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3Vyc29zXEN1cnNvc0Rpc3BvbmlibGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Cursos/MisCursos.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Cursos/MisCursos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3Vyc29zXE1pc0N1cnNvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Dosimetria/Dosimetria.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Dosimetria/Dosimetria.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG9zaW1ldHJpYVxEb3NpbWV0cmlhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Dotacion/ActualizarTallas.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Dotacion/ActualizarTallas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRG90YWNpb25cQWN0dWFsaXphclRhbGxhcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Capacitacion.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Capacitacion.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXENhcGFjaXRhY2lvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Certificados.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Certificados.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXENlcnRpZmljYWRvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Conferencia.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Conferencia.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXENvbmZlcmVuY2lhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Congreso.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Congreso.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXENvbmdyZXNvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Curso.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Curso.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXEN1cnNvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/DetallesDialog.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/DetallesDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXERldGFsbGVzRGlhbG9nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Diplomado.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Diplomado.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXERpcGxvbWFkby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Entrenamiento.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Entrenamiento.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXEVudHJlbmFtaWVudG8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/FormacionesAbiertas.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/FormacionesAbiertas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXEZvcm1hY2lvbmVzQWJpZXJ0YXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Historico.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Historico.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXEhpc3Rvcmljby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Seminario.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Seminario.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXFNlbWluYXJpby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Educacion/Taller.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Educacion/Taller.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWR1Y2FjaW9uXFRhbGxlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Epp/FirmaEPP.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Epp/FirmaEPP.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXBwXEZpcm1hRVBQLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Evadesh/Autoevaluacion.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Evadesh/Autoevaluacion.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXZhZGVzaFxBdXRvZXZhbHVhY2lvbi5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Eventos/ConfirmacionInscripcionFamiliarDialog.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Eventos/ConfirmacionInscripcionFamiliarDialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXZlbnRvc1xDb25maXJtYWNpb25JbnNjcmlwY2lvbkZhbWlsaWFyRGlhbG9nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Eventos/EventosAgendados.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Eventos/EventosAgendados.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXZlbnRvc1xFdmVudG9zQWdlbmRhZG9zLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Eventos/EventosCerrados.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Eventos/EventosCerrados.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXZlbnRvc1xFdmVudG9zQ2VycmFkb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Eventos/EventosDisponibles.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Eventos/EventosDisponibles.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXZlbnRvc1xFdmVudG9zRGlzcG9uaWJsZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Eventos/RegistroEventoFamiliar.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Eventos/RegistroEventoFamiliar.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXZlbnRvc1xSZWdpc3Ryb0V2ZW50b0ZhbWlsaWFyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Eventos/RegistroFamiliar.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Eventos/RegistroFamiliar.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXZlbnRvc1xSZWdpc3Ryb0ZhbWlsaWFyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/HojaVida/CargarSoporte.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/HojaVida/CargarSoporte.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9qYVZpZGFcQ2FyZ2FyU29wb3J0ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/HojaVida/HojaDeVida.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/HojaVida/HojaDeVida.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9qYVZpZGFcSG9qYURlVmlkYS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/HojaVida/ListadoSoportes.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/HojaVida/ListadoSoportes.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9qYVZpZGFcTGlzdGFkb1NvcG9ydGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Horarios/HorarioAdministrativo.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Horarios/HorarioAdministrativo.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9yYXJpb3NcSG9yYXJpb0FkbWluaXN0cmF0aXZvLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Horarios/HorarioEnfermeria.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Horarios/HorarioEnfermeria.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9yYXJpb3NcSG9yYXJpb0VuZmVybWVyaWEucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Horarios/HorarioSistemas.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Horarios/HorarioSistemas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9yYXJpb3NcSG9yYXJpb1Npc3RlbWFzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/HorasExtra/CrearHorasExtra.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/HorasExtra/CrearHorasExtra.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9yYXNFeHRyYVxDcmVhckhvcmFzRXh0cmEucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/HorasExtra/DetalleHorasExtraModal.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/HorasExtra/DetalleHorasExtraModal.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9yYXNFeHRyYVxEZXRhbGxlSG9yYXNFeHRyYU1vZGFsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/HorasExtra/HistoricoHorasExtra.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/HorasExtra/HistoricoHorasExtra.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9yYXNFeHRyYVxIaXN0b3JpY29Ib3Jhc0V4dHJhLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Incapacidad/Historialncapacidades.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Incapacidad/Historialncapacidades.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5jYXBhY2lkYWRcSGlzdG9yaWFsbmNhcGFjaWRhZGVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Incapacidad/RegistroIncapacidad.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Incapacidad/RegistroIncapacidad.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5jYXBhY2lkYWRcUmVnaXN0cm9JbmNhcGFjaWRhZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Index.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Noticia/NoticiaCard.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Noticia/NoticiaCard.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90aWNpYVxOb3RpY2lhQ2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Noticia/Noticias.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Noticia/Noticias.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90aWNpYVxOb3RpY2lhcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Noticia/NoticiasBanner.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Noticia/NoticiasBanner.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTm90aWNpYVxOb3RpY2lhc0Jhbm5lci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Permisos/HistorialPermisos.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Permisos/HistorialPermisos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVybWlzb3NcSGlzdG9yaWFsUGVybWlzb3MucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Permisos/SolicitarPermiso.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Permisos/SolicitarPermiso.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVybWlzb3NcU29saWNpdGFyUGVybWlzby5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Personal/Account.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Personal/Account.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyc29uYWxcQWNjb3VudC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Personal/Dashboard.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Personal/Dashboard.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUGVyc29uYWxcRGFzaGJvYXJkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/PreguntasFrecuentes/DialogPreguntas.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/PreguntasFrecuentes/DialogPreguntas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJlZ3VudGFzRnJlY3VlbnRlc1xEaWFsb2dQcmVndW50YXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/PreguntasFrecuentes/ListTemas.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/PreguntasFrecuentes/ListTemas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJlZ3VudGFzRnJlY3VlbnRlc1xMaXN0VGVtYXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Reconocimiento/Crear.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Reconocimiento/Crear.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjb25vY2ltaWVudG9cQ3JlYXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Reconocimiento/HistoricoReconocimiento.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Reconocimiento/HistoricoReconocimiento.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjb25vY2ltaWVudG9cSGlzdG9yaWNvUmVjb25vY2ltaWVudG8ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Reconocimiento/ReconocimientosUltimoMes.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Reconocimiento/ReconocimientosUltimoMes.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVjb25vY2ltaWVudG9cUmVjb25vY2ltaWVudG9zVWx0aW1vTWVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Vacaciones/AutorizarVacaciones.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Vacaciones/AutorizarVacaciones.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmFjYWNpb25lc1xBdXRvcml6YXJWYWNhY2lvbmVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Vacaciones/EstadoSolicitud.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Vacaciones/EstadoSolicitud.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmFjYWNpb25lc1xFc3RhZG9Tb2xpY2l0dWQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Vacaciones/SolicitarVacaciones.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Vacaciones/SolicitarVacaciones.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmFjYWNpb25lc1xTb2xpY2l0YXJWYWNhY2lvbmVzLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Viaticos/Create.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Viaticos/Create.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlhdGljb3NcQ3JlYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Viaticos/Dialog.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Viaticos/Dialog.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlhdGljb3NcRGlhbG9nLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Pages/Viaticos/ListaViaticos.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Pages/Viaticos/ListaViaticos.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVmlhdGljb3NcTGlzdGFWaWF0aWNvcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Shared/LoginLayout.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Shared/LoginLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Shared/PersonCard.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Shared/PersonCard.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFBlcnNvbkNhcmQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Shared/Reload.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Shared/Reload.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFJlbG9hZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Shared/SurveyPrompt.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/_Imports.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/GestionClick/AutoGestion/Shared/MainLayout.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Shared/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-sujoyuf5lk
 
-[C:/GestionClick/AutoGestion/Shared/NavMenu.razor]
+[C:/Users/User/source/repos/acalvaradog/GestionClick/AutoGestion/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-kifa1uyi8e

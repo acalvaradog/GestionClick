@@ -179,7 +179,7 @@ namespace Adm_AutoGestion.Services
                 // Rutas de las imágenes
                 string logoPath = HttpContext.Current.Server.MapPath("~/Contents/image/Logo.png");
                 string watermarkPath = HttpContext.Current.Server.MapPath("~/Contents/image/logo.png");
-
+                string firmaPath = HttpContext.Current.Server.MapPath("~/Contents/image/firmarepresentante.png");
                 //// ➤ Agregar logo en la parte superior izquierda (antes del contenido HTML)
                 //if (File.Exists(logoPath))
                 //{
@@ -211,6 +211,19 @@ namespace Adm_AutoGestion.Services
                 using (var stringReader = new StringReader(html))
                 {
                     XMLWorkerHelper.GetInstance().ParseXHtml(writer, document, stringReader);
+                }
+
+                // ➤ Agregar la firma en el footer
+                if (File.Exists(firmaPath))
+                {
+                    var firma = Image.GetInstance(new Uri(firmaPath));
+                    firma.ScaleToFit(120f, 60f); // Ajustar tamaño de la firma
+
+                    // Posicionar la firma en el footer
+                    float firmaX = 50f; // Margen izquierdo (ajusta este valor para moverla a la izquierda)
+                    float firmaY = document.PageSize.Height - 530f;
+                    firma.SetAbsolutePosition(firmaX, firmaY);
+                    writer.DirectContent.AddImage(firma);
                 }
 
                 document.Close();

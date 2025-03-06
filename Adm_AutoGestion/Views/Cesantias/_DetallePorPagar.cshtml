@@ -44,8 +44,8 @@
             </div>
 
             <!-- Formulario para subir la carta del fondo -->
-            <form method="post" action="~/Cesantias/SubirCartaFondo" enctype="multipart/form-data">
-                <input type="hidden" name="id" value="@Model.Id.ToString()" />
+            <form id="formSubirCarta" enctype="multipart/form-data">
+                <input type="hidden" name="id" value="@Model.Id" />
                 <div class="form-group">
                     <label for="cartaFondo">Carta del Fondo (PDF)</label>
                     <input type="file" id="cartaFondo" name="cartaFondo" class="form-control" accept=".pdf" />
@@ -107,3 +107,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#formSubirCarta").submit(function (e) {
+            e.preventDefault(); // Evitar el envío tradicional del formulario
+
+            // Crear un objeto FormData para manejar el archivo
+            var formData = new FormData(this);
+
+            // Enviar el formulario mediante AJAX
+            $.ajax({
+                url: '@Url.Action("SubirCartaFondo", "Cesantias")',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    // Actualiza la sección con el contenido de la vista parcial
+                    $("#detalleCesantias").html(response);
+                    alertify.alert("Se subio correctamente la carta")
+                    $("#detalleModal").modal("hide");
+                    location.reload();
+                },
+                error: function () {
+                    alertify.alert("Hubo un error al subir la carta.");
+                }
+            });
+        });
+    });
+</script>

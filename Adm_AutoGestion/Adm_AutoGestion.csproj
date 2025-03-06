@@ -2881,6 +2881,7 @@
     <Content Include="Contents\image\entrega-realizada.png" />
     <Content Include="Contents\image\EnviarEncuesta.png" />
     <Content Include="Contents\image\favicon.ico" />
+    <Content Include="Contents\image\firmarepresentante.png" />
     <Content Include="Contents\image\firma.png" />
     <Content Include="Contents\image\firmar2.png" />
     <Content Include="Contents\image\gastos.png" />

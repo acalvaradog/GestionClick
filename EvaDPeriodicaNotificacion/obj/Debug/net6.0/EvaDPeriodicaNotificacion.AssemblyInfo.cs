@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EvaDPeriodicaNotificacion")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3bec8376a58fe1447cbe94dd9306bd8489c02e8d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7f6290c76ecc8eba943b9cf070c2ec517de2511")]
 [assembly: System.Reflection.AssemblyProductAttribute("EvaDPeriodicaNotificacion")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EvaDPeriodicaNotificacion")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

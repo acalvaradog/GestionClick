@@ -2730,7 +2730,6 @@ C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\Microsof
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\Microsoft.Bcl.HashCode.xml
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.AjustesCapacitacionesCesantias.resources
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.fondocesantias.resources
-C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.fondocesantiassolicitud.resources
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\Microsoft.Extensions.Logging.Abstractions.dll
@@ -2759,3 +2758,4 @@ C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\OfficeOp
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\bin\EPPlus.xml
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.campoobservacióncesantias.resources
 C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.valoresnulldosimetria.resources
+C:\Users\User\source\repos\acalvaradog\GestionClick\Adm_AutoGestion\obj\Debug\Adm_AutoGestion.Migrations.CreacionTablasEvaluacion.resources
