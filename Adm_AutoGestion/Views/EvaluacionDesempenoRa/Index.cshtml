@@ -23,7 +23,7 @@
                     @Html.DropDownList("UnidadOrg", new SelectList(ViewBag.AreaDescripcion, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
                 </div>
                 <div class="col-6" style="text-align:left">
-                    <label for="">Trabajador Solicitante</label>
+                    <label for="">Trabajador Evaluado</label>
                     @Html.DropDownList("TrabajadorS", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker ", data_live_search = "true" })
                 </div>
 
@@ -53,12 +53,12 @@
                     <table id="Tabla_Empleados_Eva" class="table table-striped table-sm">
                         <thead>
                             <tr>
-                                <th>Evaluar</th>
-                                <th>Id</th>
-                                <th>Codigo Empleado</th>
-                                <th>Documento</th>
-                                <th>Nombre Empleado</th>
-                                <th>Area</th>
+                                <th style="text-align:center"></th>
+                                <th style="text-align:center">Id</th>
+                                <th style="text-align:center">Codigo Empleado</th>
+                                <th style="text-align:center">Documento</th>
+                                <th style="text-align:left">Nombre Empleado</th>
+                                <th style="text-align:left">Area</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,15 +69,15 @@
                                         <a href="@Url.Action("EvaluacionDesempeno", new { id = empleado.Id })"
                                            data-modalEvaluacionDesempeno=""
                                            onclick="openmodalEvaluacion(this.href, 'Evaluación Desempeño Empleado')">
-                                            <i class="fas fa-clock text-primary"></i>
+                                            <i class="fas fa-pen text-primary"></i>
                                             <span class="sr-only">Evaluacion</span>
                                         </a>
                                     </td>
-                                    <td>@empleado.Id</td>
-                                    <td>@empleado.NroEmpleado</td>
-                                    <td>@empleado.Documento</td>
-                                    <td>@empleado.Nombres</td>
-                                    <td>@empleado.AreaDescripcion</td>
+                                    <td style="text-align:center">@empleado.Id</td>
+                                    <td style="text-align:center">@empleado.NroEmpleado</td>
+                                    <td style="text-align:center">@empleado.Documento</td>
+                                    <td style="text-align:left">@empleado.Nombres</td>
+                                    <td style="text-align:left">@empleado.AreaDescripcion</td>
                                 </tr>
                             }
                         </tbody>

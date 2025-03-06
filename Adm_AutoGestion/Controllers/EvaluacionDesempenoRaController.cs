@@ -191,7 +191,7 @@ namespace Adm_AutoGestion.Controllers
             encabezado.FechaRegistro = DateTime.Now;
             encabezado.Retroalimentacion = retroalimentacion;
             encabezado.PlandeMejora = planmejora;
-            encabezado.PuntajeFinal = float.Parse(puntaje);
+            encabezado.PuntajeFinal = float.Parse(puntaje, CultureInfo.InvariantCulture);
 
 
 
@@ -286,9 +286,58 @@ namespace Adm_AutoGestion.Controllers
 
             return Json(new { respuesta });
         }
-    
+
+        public ActionResult EvaluacionDesempenoRealizadas(string UnidadOrg, string TrabajadorS)
+
+
+        {
+
+
+            List<string> funciones = Acceso.Validar(Session["Empleado"]);
+            if (Acceso.EsAnonimo)
+            {
+                return RedirectToAction("login", "login");
+            }
+            else if (!Acceso.EsAnonimo && !funciones.Contains("EvaluacionesRealizadas"))
+            {
+                Session.Add("ErrorAutorizacion", "No cuenta con autorización para la opción seleccionada");
+                return RedirectToAction("Index", "Login");
+            }
+
+
+            var empleadosession = Convert.ToString(Session["Empleado"]);
+            var empresasesion = Session["Empresa"].ToString();
+
+
+            ViewBag.Empleado = _context.Empleados.Where(f => f.Activo != "NO"  && f.Empresa == empresasesion).OrderBy(x => x.Nombres).ToList();
+            var areaDescripcionGroups = _context.Empleados.Where(f => f.Activo != "NO" && f.AreaDescripcion != null && f.AreaDescripcion != "" && f.Empresa == empresasesion).GroupBy(b => b.AreaDescripcion).ToList();
+            ViewBag.AreaDescripcion = new List<SelectListItem>();
+            foreach (var x in areaDescripcionGroups)
+            {
+
+                Empleado Item = x.FirstOrDefault();
+                if (Item.UnidadOrganizativa != "00003103" || Item.UnidadOrganizativa != "00003105" || Item.UnidadOrganizativa != "00003109" ||  Item.UnidadOrganizativa != "00003110" ||  Item.UnidadOrganizativa != "00003117" || Item.UnidadOrganizativa != "00003625" || Item.UnidadOrganizativa != "00003700")
+                {
+
+                    ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.UnidadOrganizativa, Text = "" + Item.AreaDescripcion });
+                }
+
+                // ViewBag.AreaDescripcion.Add(new SelectListItem() { Value = Item.AreaDescripcion, Text = Item.AreaDescripcion });
+            }
+
+
+            var evaluaciones = _evaluacionRepository.GetAllEvaluation(UnidadOrg, TrabajadorS);
+
+
+
+
+            return View(evaluaciones);
 
         }
+
+
+
+    }
 
 }
 
