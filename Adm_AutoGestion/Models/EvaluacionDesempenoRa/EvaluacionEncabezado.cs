@@ -16,6 +16,6 @@ namespace Adm_AutoGestion.Models.EvaluacionDesempenoRa
         public string PlandeMejora { get; set; }
         public float PuntajeFinal { get; set; }
 
-        //public List<EvaluacionEncabezado> EvaluacionEncabezado { get; set; }
+        public List<EvaluacionDetalle> EvaluacionDetalle { get; set; }
     }
 }

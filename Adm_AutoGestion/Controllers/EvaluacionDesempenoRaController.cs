@@ -7,6 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using System.Data;
+using System.Data.Entity;
+using System.Web.Script.Serialization;
+using OfficeOpenXml.Drawing.Chart;
+using System.Globalization;
 
 
 namespace Adm_AutoGestion.Controllers
@@ -143,13 +148,13 @@ namespace Adm_AutoGestion.Controllers
             string unidadorgan = ViewBag.Empleado.UnidadOrganizativa;
             string empresa = ViewBag.Empleado.Empresa;
 
-            ViewBag.SubArea = _context.SubAreaEvaluacion.Where(x => x.UnidadOrganizativa == unidadorgan).ToList();
+            ViewBag.SubArea = _context.EvaluacionSubArea.Where(x => x.UnidadOrganizativa == unidadorgan).ToList();
 
             ViewBag.Evaluador = _context.Empleados.Where(x => x.Empresa == empresa && x.Activo == "SI").OrderBy(x => x.Nombres).ToList();
 
-            ViewBag.Periodo = _context.PeriodoEvaluado.Where(x => x.Estado == true).ToList();
+            ViewBag.Periodo = _context.EvaluacionPeriodo.Where(x => x.Estado == true).ToList();
 
-            ViewBag.Indicador  = _context.Indicador
+            ViewBag.Indicador  = _context.EvaluacionIndicador
                               .Where(x => x.UnidadOrganizativa == unidadorgan).ToList();
 
             return PartialView();
@@ -158,39 +163,139 @@ namespace Adm_AutoGestion.Controllers
 
 
 
+        [HttpPost]
+        public JsonResult SaveEvaluacion()
 
-    }
+        {
+
+            string respuesta = "";
+
+            var empleadoId = HttpContext.Request.Form["EmpleadoId"];
+            var evaluadorId = HttpContext.Request.Form["EvaluadorId"];
+            var periodo = HttpContext.Request.Form["PeriodoEvaluacion"];
+            var retroalimentacion = HttpContext.Request.Form["Retroalimentacion"];
+            var planmejora = HttpContext.Request.Form["PlandeMejora"];
+            var puntaje= HttpContext.Request.Form["PuntajeFinal"];
+           
+
+
+            // Guardar Evaluacion 
+            List<EvaluacionDetalle> detalle = new List<EvaluacionDetalle>();
+
+            EvaluacionEncabezado encabezado = new EvaluacionEncabezado();
+
+
+            encabezado.EmpleadoId =  int.Parse(empleadoId);
+            encabezado.EvaluadorId =  int.Parse(evaluadorId);
+            encabezado.PeriodoEvaluacion = periodo;
+            encabezado.FechaRegistro = DateTime.Now;
+            encabezado.Retroalimentacion = retroalimentacion;
+            encabezado.PlandeMejora = planmejora;
+            encabezado.PuntajeFinal = float.Parse(puntaje);
 
 
 
 
-//    public ActionResult GuardarEvaluacion(EncabezadoEvaluacion evaluacion)
-//    {
-//        if (ModelState.IsValid)
-//        {
-//            try
-//            {
-//                // Aquí puedes procesar los datos recibidos
-//                // Por ejemplo, puedes guardarlos en una base de datos
+            // Agregar la evaluación principal (encabezado)
+            _context.EvaluacionEncabezado.Add(encabezado);
 
-//                // Si todo sale bien, puedes retornar un JSON con un mensaje de éxito
-//                return Json(new { success = true, message = "Evaluación guardada correctamente" });
-//            }
-//            catch (Exception ex)
-//            {
-//                // Si ocurre un error, puedes retornar un JSON con un mensaje de error
-//                return Json(new { success = false, message = "Error al guardar la evaluación: " + ex.Message });
-//            }
-//        }
-//        else
-//        {
-//            // Si el modelo no es válido, puedes retornar un JSON con los errores de validación
-//            return Json(new { success = false, message = "Error de validación", errors = ModelState.Values.SelectMany(v => v.Errors) });
-//        }
-//    }
-//}
+            // Guardar los cambios para obtener el EvaluacionId generado
+            _context.SaveChanges();
+
+
+            // Procesar los detalles de la evaluación
+            List<EvaluacionDetalle> detallesEvaluacion = new List<EvaluacionDetalle>();
+            foreach (string key in HttpContext.Request.Form.Keys)
+            {
+                if (key.StartsWith("DetallesEvaluacion"))
+                {
+                    var parts = key.Split('[');
+                    if (parts.Length >= 2)
+                    {
+                        var indexPart = parts[1].Split(']');
+                        if (indexPart.Length > 0 && int.TryParse(indexPart[0], out int index))
+                        {
+                            while (detallesEvaluacion.Count <= index)
+                            {
+                                detallesEvaluacion.Add(new EvaluacionDetalle());
+                            }
+
+                            var propertyParts = parts[1].Split('.');
+                            if (propertyParts.Length >= 2)
+                            {
+                                var propertyName = propertyParts[1];
+                                var value = HttpContext.Request.Form[key];
+
+                                switch (propertyName)
+                                {
+                                    case "IndicadorId":
+                                        if (int.TryParse(value, out int indicadorId))
+                                        {
+                                            detallesEvaluacion[index].IndicadorId = indicadorId;
+                                        }
+                                        break;
+                                    case "BaseNumerador":
+                                        if (int.TryParse(value, out int baseNumerador))
+                                        {
+                                            detallesEvaluacion[index].BaseNumerador = baseNumerador;
+                                        }
+                                        break;
+                                    case "BaseDenominador":
+                                        if (int.TryParse(value, out int baseDenominador))
+                                        {
+                                            detallesEvaluacion[index].BaseDenominador = baseDenominador;
+                                        }
+                                        break;
+                                    case "IndicadorNumerador":
+                                        if (int.TryParse(value, out int indicadorNumerador))
+                                        {
+                                            detallesEvaluacion[index].IndicadorNumerador = indicadorNumerador;
+                                        }
+                                        break;
+                                    case "IndicadorDenominador":
+                                        if (int.TryParse(value, out int indicadorDenominador))
+                                        {
+                                            detallesEvaluacion[index].IndicadorDenominador = indicadorDenominador;
+                                        }
+                                        break;
+                                    case "Porcentaje":
+                                        if (float.TryParse(value, out float porcentaje))
+                                        {
+                                            detallesEvaluacion[index].Porcentaje = porcentaje;
+                                        }
+                                        break;
+                                }
+
+                                detallesEvaluacion[index].EvaluacionId = encabezado.Id;
+                            }
+                        }
+
+
+                       
+                    }
+                   
+
+                }
+            }
+
+
+            _context.EvaluacionDetalle.AddRange(detallesEvaluacion);
+            _context.SaveChanges();
+
+            respuesta = "Datos Guardados correctamente.";
+
+            return Json(new { respuesta });
+        }
+    
+
+        }
 
 }
+
+
+    
+
+
 
 
 

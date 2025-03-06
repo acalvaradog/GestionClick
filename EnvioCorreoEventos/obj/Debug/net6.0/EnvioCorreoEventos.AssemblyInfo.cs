@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EnvioCorreoEventos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9fd6fadcc61b6a885708bcbfd4a82d864ff2fdea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+117195933b05979f089ec40c7182c48bbb4c9665")]
 [assembly: System.Reflection.AssemblyProductAttribute("EnvioCorreoEventos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EnvioCorreoEventos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
