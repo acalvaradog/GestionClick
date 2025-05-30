@@ -88,6 +88,7 @@ C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\Autogestion.Shared.Generated
 C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\Autogestion.Shared.AssemblyInfoInputs.cache
 C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\Autogestion.Shared.AssemblyInfo.cs
 C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\Autogestion.Shared.csproj.CoreCompileInputs.cache
+C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\Autogestion.Shared.sourcelink.json
 C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\Autogestion.Shared.dll
 C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\refint\Autogestion.Shared.dll
 C:\GestionClick\Autogestion.Shared\obj\Debug\net6.0\Autogestion.Shared.pdb

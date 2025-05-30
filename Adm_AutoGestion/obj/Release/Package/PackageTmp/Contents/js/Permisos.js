@@ -272,3 +272,15 @@ function Historico($Id) {
             }
 
 //***********************************------------------------------------********************************************
+
+function ExportarExcelPerGH() {
+
+    // Selecciona la tabla HTML
+    var tabla = document.getElementById("Exportar_a_Excel");
+
+    // Convierte la tabla a un libro de Excel
+    var wb = XLSX.utils.table_to_book(tabla);
+
+    // Guarda el libro de Excel
+    XLSX.writeFile(wb, 'tabla.xlsx');
+}

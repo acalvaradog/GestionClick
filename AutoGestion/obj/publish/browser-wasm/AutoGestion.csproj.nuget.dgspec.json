@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\AutoGestion\\AutoGestion.csproj": {}
+    "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj": {}
   },
   "projects": {
-    "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
+    "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
+        "projectUniqueName": "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
         "projectName": "Autogestion.Shared",
-        "projectPath": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
+        "projectPath": "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
         "packagesPath": "C:\\Users\\Cata\\.nuget\\packages\\",
-        "outputPath": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\Autogestion.Shared\\obj\\",
+        "outputPath": "C:\\GestionClick\\Autogestion.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -69,14 +69,14 @@
         }
       }
     },
-    "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\AutoGestion\\AutoGestion.csproj": {
+    "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\AutoGestion\\AutoGestion.csproj",
+        "projectUniqueName": "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj",
         "projectName": "AutoGestion",
-        "projectPath": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\AutoGestion\\AutoGestion.csproj",
+        "projectPath": "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj",
         "packagesPath": "C:\\Users\\Cata\\.nuget\\packages\\",
-        "outputPath": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\AutoGestion\\obj\\publish\\browser-wasm\\",
+        "outputPath": "C:\\GestionClick\\AutoGestion\\obj\\publish\\browser-wasm\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -98,8 +98,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
-                "projectPath": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
+              "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
+                "projectPath": "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
               }
             }
           }

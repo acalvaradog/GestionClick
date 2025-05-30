@@ -36,7 +36,17 @@ $(document).ready(function () {
         modalBody.textContent = observacion;
     });
 
-   
+    $("#seleccionarTodos").on("change", function () {
+        $(".miCheckbox").prop("checked", this.checked);
+    });
+
+    $(".miCheckbox").on("change", function () {
+        if (!this.checked && $("#seleccionarTodos").prop("checked")) {
+            $("#seleccionarTodos").prop("checked", false);
+        } else if ($(".miCheckbox:checked").length === $(".miCheckbox").length && !$("#seleccionarTodos").prop("checked")) {
+            $("#seleccionarTodos").prop("checked", true);
+        }
+    });
 
    
 

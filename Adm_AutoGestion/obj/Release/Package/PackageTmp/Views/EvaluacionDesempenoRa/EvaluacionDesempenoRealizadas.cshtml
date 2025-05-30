@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Adm_AutoGestion.Models.EvaluacionDesempenoRa.EvaluacionEncabezado>
+
+@{
+    ViewBag.Title = "EvaluacionDesempenoRealizadas";
+    Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+}
+
+
+
+
+<form method="post">
+    <div class="card">
+        <div class="card-header colorTitulo mb-3"><h4>Reporte evaluaciones Realizadas</h4></div>
+        <div class="card-body">
+
+            <div class="row justify-content-start">
+
+                <div class="col-6" style="text-align:left">
+                    <label for="Area">Área:</label>
+
+                    @Html.DropDownList("UnidadOrg", new SelectList(ViewBag.AreaDescripcion, "Value", "Text"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
+                </div>
+                <div class="col-6" style="text-align:left">
+                    <label for="">Trabajador Evaluado:</label>
+                    @Html.DropDownList("TrabajadorS", new SelectList(ViewBag.Empleado, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker ", data_live_search = "true" })
+                </div>
+
+
+            </div>
+
+            <br />
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:center">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary  rounded-pill     mb-2"> Buscar</button>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="container-fluid">
+                <div class="table-responsive">
+                    <table id="TablaEvaRealizadas" class="table table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha Evaluación</th>
+                                <th>Trabajador</th>
+                                <th>Evaluador </th>
+                                <th>Periodo Evaluación </th>
+                                <th>Retroalimentación</th>
+                                <th>Plan de Mejora </th>
+                                <th>Puntaje Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var evaluaciones in Model)
+                            {
+                                <tr>
+                                    <td>@evaluaciones.Id</td>
+                                    <td>@evaluaciones.FechaRegistro</td>
+                                    <td>@evaluaciones.Empleado.Nombres</td>
+                                    <td>@evaluaciones.EvaluadorId</td>
+                                    <td>@evaluaciones.PeriodoEvaluacion</td>
+                                    <td>@evaluaciones.Retroalimentacion</td>
+                                    <td>@evaluaciones.PlandeMejora</td>
+                                    <td>@evaluaciones.PuntajeFinal</td>
+
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+
+</form>
+

@@ -3,7 +3,14 @@
 @{
     ViewBag.Title = "InformeGeneral";
     Layout = "~/Views/Shared/_LayoutMaestra.cshtml";
+
+
 }
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
 <form>
 
 
@@ -47,10 +54,10 @@
                     @Html.DropDownList("Empresa", new SelectList(ViewBag.Empresa, "Codigo", "Descripcion"), htmlAttributes: new { @class = "form-control selectpicker", data_live_search = "true" })
                     @*Html.TextBox("Empresa", null, htmlAttributes: new { @class = "form-control", placeholder = "Empresa" })*@
                     @*<select class="form-control" id="Empresa" name="Empresa">
-                        <option value="">Seleccionar...</option>
-                        <option value="1000" @(ViewBag.EmpresaSeleccionada == "1000" ? "selected" : "")>1000</option>
-                        <option value="2000" @(ViewBag.EmpresaSeleccionada == "2000" ? "selected" : "")>2000</option>
-                    </select>*@
+                            <option value="">Seleccionar...</option>
+                            <option value="1000" @(ViewBag.EmpresaSeleccionada == "1000" ? "selected" : "")>1000</option>
+                            <option value="2000" @(ViewBag.EmpresaSeleccionada == "2000" ? "selected" : "")>2000</option>
+                        </select>*@
                 </div>
                 <div class="col-3" style="text-align:left">
                     <label for="exampleFormControlSelect1">Estado: </label>&nbsp&nbsp
@@ -60,7 +67,7 @@
                         <option value="2" @(ViewBag.EstadoSeleccionado == "2" ? "selected" : "")>Aprobado</option>
                         <option value="3" @(ViewBag.EstadoSeleccionado == "3" ? "selected" : "")>Rechazado</option>
                         @*<option value="15">Cargar Aseguradora</option>
-                        <option value="16">Devuelto</option>*@
+                            <option value="16">Devuelto</option>*@
                     </select>
                 </div>
             </div>
@@ -74,6 +81,13 @@
             </div>
 
             <hr />
+
+            <div class="row justify-content-start">
+                <div class="col-12" style="text-align:left">
+                    @*<a class="fas fa-file-excel btn btn-outline-success  mb-2" href="@Url.Action("ExportaExcel","HorasExtra",new { model =  detalle},null)">Excel</a>*@
+                    <button type="button" class="btn btn-outline-success  rounded-pill mb-2" onclick="ExportarExcelIncGH()">Excel</button>
+                </div>
+            </div>
 
             <div class="table-responsive">
                 <table class="table table-striped display dataTable table-sm" id="Exportar_a_Excel">
@@ -171,8 +185,8 @@
                                     </a>
                                 </td>
                                 @*<td>
-                                    @Html.ActionLink("Edit", "Edit", new { id=item.Id })
-                                </td>*@
+                                        @Html.ActionLink("Edit", "Edit", new { id=item.Id })
+                                    </td>*@
                             </tr>
                         }
 
@@ -232,5 +246,17 @@
 
 
     });
+
+    function ExportarExcelIncGH() {
+
+        // Selecciona la tabla HTML
+        var tabla = document.getElementById("Exportar_a_Excel");
+
+        // Convierte la tabla a un libro de Excel
+        var wb = XLSX.utils.table_to_book(tabla);
+
+        // Guarda el libro de Excel
+        XLSX.writeFile(wb, 'tabla.xlsx');
+    }
 
 </script>

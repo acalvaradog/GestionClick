@@ -64,121 +64,136 @@
                     @Html.TextBox("FechaFinPermiso", "{0:d}", htmlAttributes: new { @class = "form-control", type = "date", id = "FechaFinPermiso", name = "FechaFinPermiso" })
                 </div>
 
-                <div class="col-md-3" style="text-align:left;padding-top: 30px;">
+                <div class="col-md-6" style="text-align:left">
+                    <label for="">Trabajador Solicitante:</label>
+                    @Html.DropDownList("TrabajadorS", new SelectList(ViewBag.Empleado2, "Id", "Nombres"), "Seleccione...", htmlAttributes: new { @class = "form-control selectpicker ", data_live_search = "true" })
+                </div>
+
+                @*<div class="col-md-3" style="text-align:left;padding-top: 30px;">
+                    <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary rounded-pill mb-2"> Buscar</button>
+                </div>*@
+            </div>
+            <br />
+
+            <div class="row justify-content-start">
+
+                <div class="col-12" style="text-align:center">
                     <button type="submit" id="Search" class="bi bi-search btn btn-outline-primary rounded-pill mb-2"> Buscar</button>
                 </div>
             </div>
-        </form>
+
+</form>
+
+        <hr />
+
+        <div class="table-responsive">
+            <table id="Tabla_Per_Nom" class="table table-striped dt-responsive " style="width:100%">
+                <thead class="text-center text-capitalize ">
+                    <tr>
+                        <th>Ver</th>
+                        <th>Doc. Adjunto</th>
+                        <th>Anular Permiso</th>
+                        <th>Nombre Empleado</th>
+                        <th>Codigo Empleado</th>
+                        <th>Fecha De Solicitud</th>
+                        <th>Fecha Ini.</th>
+                        <th>Fecha Fin</th>
+                        <th>Hora Ini.</th>
+                        <th>Hora Fin</th>
+                        <th>Ver Historico</th>
+                        <th>Remunerado</th>
+                        <th>Estado Permiso</th>
+                        <th>Jornada laboral completa</th>
+                        <th>Motivo Permiso</th>
+
+                    </tr>
+                </thead>
+                <tbody class="text-center text-capitalize align-content-center">
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @Html.ActionLink("Ver", "ConfirmacionPerNom2", new { id = item.Id }, new { data_modal25 = "" })
+                            </td>
+                            <td>
+                                <button id="Boton_Desc" class="btn close  text-primary mr-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Adjuntos" value="" onclick="Descarga_Adjuntos_Per($Id = @item.Id)"><i class="fas fa-cloud-download-alt"></i></button>
+                            </td>
+                            <td>
+                                <h4>
+                                    <button class="btn text-primary" onclick="Modal_Anularnom($Id = @item.Id)"><i class="fas fa-ban "></i></button>
+                                </h4>
+                            </td>
+                            <td>
+                                @*<a class="btn text-black text-capitalize" data-bs-toggle="tooltip" data-bs-placement="top" title="Detalle Empleado" value="" onclick="Detalle($Id = @item.EmpleadoId)">&nbsp; @item.Empleado.Nombres.ToLower()</a>*@
+
+                                @Html.ActionLink(@item.Empleado.Nombres.ToLower(), "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.FechaPermiso).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Convert.ToDateTime(item.FechaFinPermiso).ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoraInicioPermiso)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.HoraFinPermiso)
+                            </td>
+                            <td>
+                                <h4><button id="Boton_Histo" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="" onclick="Historico($Id = @item.Id)"><i class="fas fa-clock"></i></button></h4>
+
+                                @*<h4><button class="btn fab fa-hive text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="" onclick="Historico($Id = @item.Id)"></button></h4>*@
+                            </td>
+                            <td>
+                                @if (item.Remunerado == "SI")
+                                {<img src="~/Contents/image/dinero.png">}
+                                else
+                                {<i class="fal fa-times-square" style="color: #c80000;"></i>}
+                                @*{<i class="far fa-check-square" style="color: #1ec201;"></i>}
+                                    else
+                                      {<i class="fal fa-times-square" style="color: #c80000;"></i>}*@
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EstadoPermiso.Nombre)
+                            </td>
+                            <td>
+                                @if (item.Jornada == "SI")
+                                {
+                                    <p>SI</p>
+                                    @*<i class="far fa-check-square" style="color: #1ec201;"></i>*@
+                                }
+                                else
+                                {
+                                    <p>NO</p>
+                                    @*<i class="fal fa-times-square" style="color: #c80000;"></i>*@
+                                }
+
+                                @*@if (item.Jornada == "1")
+                                    {<i id="iJornada" class="text-info fas fa-check-circle"></i> }
+                                    else
+                                    { <i id="iJornada" class="fas fa-ban text-danger"></i>
+                                    }*@
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MotivoPermiso.Nombre)
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
-<div class="table-responsive">
-    <table id="Tabla_Per_Nom" class="table table-striped dt-responsive " style="width:100%">
-        <thead class="text-center text-capitalize ">
-            <tr>
-                <th>Ver</th>
-                <th>Doc. Adjunto</th>
-                <th>Anular Permiso</th>
-                <th>Nombre Empleado</th>
-                <th>Codigo Empleado</th>
-                <th>Fecha De Solicitud</th>
-                <th>Fecha Ini.</th>
-                <th>Fecha Fin</th>
-                <th>Hora Ini.</th>
-                <th>Hora Fin</th>
-                <th>Ver Historico</th>
-                <th>Remunerado</th>
-                <th>Estado Permiso</th>
-                <th>Jornada laboral completa</th>
-                <th>Motivo Permiso</th>
-
-            </tr>
-        </thead>
-        <tbody class="text-center text-capitalize align-content-center">
-            @foreach (var item in Model)
-            {
-
-                <tr>
-                    <td>
-                        @Html.ActionLink("Ver", "ConfirmacionPerNom2", new { id = item.Id }, new { data_modal25 = "" })
-                    </td>
-                    <td>
-                        <button id="Boton_Desc" class="btn close  text-primary mr-4" data-bs-toggle="tooltip" data-bs-placement="top" title="Ver Adjuntos" value="" onclick="Descarga_Adjuntos_Per($Id = @item.Id)"><i class="fas fa-cloud-download-alt"></i></button>
-                    </td>
-                    <td>
-                        <h4>
-                            <button class="btn text-primary" onclick="Modal_Anularnom($Id = @item.Id)"><i class="fas fa-ban "></i></button>
-                        </h4>
-                    </td>
-                    <td>
-                        @*<a class="btn text-black text-capitalize" data-bs-toggle="tooltip" data-bs-placement="top" title="Detalle Empleado" value="" onclick="Detalle($Id = @item.EmpleadoId)">&nbsp; @item.Empleado.Nombres.ToLower()</a>*@
-
-                        @Html.ActionLink(@item.Empleado.Nombres.ToLower(), "Details2", "Empleado", new { id = item.EmpleadoId }, new { data_modal = "" })
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Empleado.NroEmpleado)
-                    </td>
-                    <td>
-                        @Convert.ToDateTime(item.Fecha).ToString("dd/MM/yyyy")
-                    </td>
-                    <td>
-                        @Convert.ToDateTime(item.FechaPermiso).ToString("dd/MM/yyyy")
-                    </td>
-                    <td>
-                        @Convert.ToDateTime(item.FechaFinPermiso).ToString("dd/MM/yyyy")
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HoraInicioPermiso)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HoraFinPermiso)
-                    </td>
-                    <td>
-                        <h4><button id="Boton_Histo" class="btn text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="" onclick="Historico($Id = @item.Id)"><i class="fas fa-clock"></i></button></h4>
-
-                        @*<h4><button class="btn fab fa-hive text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Historico Permiso" value="" onclick="Historico($Id = @item.Id)"></button></h4>*@
-                    </td>
-                    <td>
-                        @if (item.Remunerado == "SI")
-                        {<img src="~/Contents/image/dinero.png">}
-                        else
-                        {<i class="fal fa-times-square" style="color: #c80000;"></i>}
-                        @*{<i class="far fa-check-square" style="color: #1ec201;"></i>}
-            else
-              {<i class="fal fa-times-square" style="color: #c80000;"></i>}*@
-
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EstadoPermiso.Nombre)
-                    </td>
-                    <td>
-                        @if (item.Jornada == "SI")
-                        {
-                            <p>SI</p>
-                            @*<i class="far fa-check-square" style="color: #1ec201;"></i>*@
-                        }
-                        else
-                        {
-                            <p>NO</p>
-                            @*<i class="fal fa-times-square" style="color: #c80000;"></i>*@
-                        }
-
-                        @*@if (item.Jornada == "1")
-            {<i id="iJornada" class="text-info fas fa-check-circle"></i> }
-            else
-            { <i id="iJornada" class="fas fa-ban text-danger"></i>
-            }*@
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.MotivoPermiso.Nombre)
-                    </td>
-
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
 
 @*----------------------------------------- Modal Historico ------------------------------------------------------ *@
 <div class="modal " id="Modal_Historico_json" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -400,6 +415,6 @@
             });
 
         });
-                        //***********************************------------------------------------********************************************
+        //***********************************------------------------------------********************************************
     </script>
 }

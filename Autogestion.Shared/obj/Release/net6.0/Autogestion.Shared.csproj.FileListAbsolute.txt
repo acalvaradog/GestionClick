@@ -58,3 +58,15 @@ C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Relea
 C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
 C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
 C:\Users\User\source\repos\acalvaradog\GestionClick\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll
+C:\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.deps.json
+C:\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.dll
+C:\GestionClick\Autogestion.Shared\bin\Release\net6.0\Autogestion.Shared.pdb
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfoInputs.cache
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.AssemblyInfo.cs
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.csproj.CoreCompileInputs.cache
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.sourcelink.json
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.dll
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\refint\Autogestion.Shared.dll
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\Autogestion.Shared.pdb
+C:\GestionClick\Autogestion.Shared\obj\Release\net6.0\ref\Autogestion.Shared.dll

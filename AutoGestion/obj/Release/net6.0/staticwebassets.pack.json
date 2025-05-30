@@ -1,0 +1,345 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\bin\\Release\\net6.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\obj\\Release\\net6.0\\compressed\\erstgeuj8g.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\obj\\Release\\net6.0\\scopedcss\\bundle\\AutoGestion.styles.css",
+      "PackagePath": "staticwebassets\\AutoGestion.styles.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\obj\\Release\\net6.0\\service-worker-assets.js",
+      "PackagePath": "staticwebassets\\service-worker-assets.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\obj\\Release\\net6.0\\service-worker\\service-worker.published.js",
+      "PackagePath": "staticwebassets\\service-worker.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\Instructivo Evaluación De Desempeño.pdf",
+      "PackagePath": "staticwebassets\\Instructivo Evaluación De Desempeño.pdf"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\Instructivo de Incapacidades.pdf",
+      "PackagePath": "staticwebassets\\Instructivo de Incapacidades.pdf"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\Media\\notification.mp3",
+      "PackagePath": "staticwebassets\\Media\\notification.mp3"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\ServiceWorkerRegister.js",
+      "PackagePath": "staticwebassets\\ServiceWorkerRegister.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\appsettings.json",
+      "PackagePath": "staticwebassets\\appsettings.json"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\EstilosPersonalizados.css",
+      "PackagePath": "staticwebassets\\css\\EstilosPersonalizados.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\noticias.css",
+      "PackagePath": "staticwebassets\\css\\noticias.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "PackagePath": "staticwebassets\\css\\open-iconic"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\README.md",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\README.md"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "PackagePath": "staticwebassets\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\icon-512.png",
+      "PackagePath": "staticwebassets\\icon-512.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\img\\LOGO-CLINICA-FOSCAL-completo.png",
+      "PackagePath": "staticwebassets\\img\\LOGO-CLINICA-FOSCAL-completo.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\img\\Logo.png",
+      "PackagePath": "staticwebassets\\img\\Logo.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\img\\Logo2.jpg",
+      "PackagePath": "staticwebassets\\img\\Logo2.jpg"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\img\\Logoauto2.png",
+      "PackagePath": "staticwebassets\\img\\Logoauto2.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\img\\loader.gif",
+      "PackagePath": "staticwebassets\\img\\loader.gif"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\img\\logoauto.png",
+      "PackagePath": "staticwebassets\\img\\logoauto.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\Utilities.js",
+      "PackagePath": "staticwebassets\\js\\Utilities.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\.gitignore",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\.gitignore"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\.travis.yml",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\.travis.yml"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\Contributors.md",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\Contributors.md"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\Gruntfile.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\Gruntfile.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\README.md",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\README.md"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\bower.json",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\bower.json"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\css\\main.css",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\css\\main.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\fonts\\FontAwesome.otf",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\fonts\\FontAwesome.otf"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.eot",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.eot"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.svg",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.svg"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.ttf",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.ttf"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.woff",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\fonts\\fontawesome-webfont.woff"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\img\\banner.jpg",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\img\\banner.jpg"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\img\\dialogs.png",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\img\\dialogs.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\img\\treehouse.png",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\img\\treehouse.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\img\\webdev.png",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\img\\webdev.png"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shBrushJScript.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shBrushJScript.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shCore.css",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shCore.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shCore.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shCore.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shCoreDefault.css",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\example\\assets\\js\\lib\\sh\\shCoreDefault.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\lib\\alertify.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\lib\\alertify.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\lib\\alertify.min.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\lib\\alertify.min.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\package.json",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\package.json"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\src\\alertify.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\src\\alertify.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\index.html",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\index.html"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\qunit\\qunit.css",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\qunit\\qunit.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\qunit\\qunit.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\qunit\\qunit.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\specs\\alert.test.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\specs\\alert.test.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\specs\\confirm.test.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\specs\\confirm.test.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\specs\\global.test.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\specs\\global.test.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\specs\\log.test.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\specs\\log.test.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\test\\specs\\prompt.test.js",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\test\\specs\\prompt.test.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\themes\\alertify.bootstrap.css",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\themes\\alertify.bootstrap.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\themes\\alertify.core.css",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\themes\\alertify.core.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\alertify.js-0.3\\themes\\alertify.default.css",
+      "PackagePath": "staticwebassets\\js\\alertify.js-0.3\\themes\\alertify.default.css"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\js\\jquery-3.1.1.min.js",
+      "PackagePath": "staticwebassets\\js\\jquery-3.1.1.min.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\manifest.json",
+      "PackagePath": "staticwebassets\\manifest.json"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\permisos\\Permisos.html",
+      "PackagePath": "staticwebassets\\permisos\\Permisos.html"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\permisos\\Permisos.js",
+      "PackagePath": "staticwebassets\\permisos\\Permisos.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\vacaciones\\Autorizaciones.js",
+      "PackagePath": "staticwebassets\\vacaciones\\Autorizaciones.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\vacaciones\\Vacaciones.js",
+      "PackagePath": "staticwebassets\\vacaciones\\Vacaciones.js"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\vacaciones\\autorizarvacaciones.html",
+      "PackagePath": "staticwebassets\\vacaciones\\autorizarvacaciones.html"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\vacaciones\\img\\Spinner.gif",
+      "PackagePath": "staticwebassets\\vacaciones\\img\\Spinner.gif"
+    },
+    {
+      "Id": "C:\\GestionClick\\AutoGestion\\wwwroot\\vacaciones\\vacaciones.html",
+      "PackagePath": "staticwebassets\\vacaciones\\vacaciones.html"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.AutoGestion.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.build.AutoGestion.props",
+      "PackagePath": "build\\AutoGestion.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildMultiTargeting.AutoGestion.props",
+      "PackagePath": "buildMultiTargeting\\AutoGestion.props"
+    },
+    {
+      "Id": "obj\\Release\\net6.0\\staticwebassets\\msbuild.buildTransitive.AutoGestion.props",
+      "PackagePath": "buildTransitive\\AutoGestion.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

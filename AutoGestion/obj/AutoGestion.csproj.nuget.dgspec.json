@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj": {}
+    "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
+    "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
+        "projectUniqueName": "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
         "projectName": "Autogestion.Shared",
-        "projectPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\obj\\",
+        "projectPath": "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj",
+        "packagesPath": "C:\\Users\\Cata\\.nuget\\packages\\",
+        "outputPath": "C:\\GestionClick\\Autogestion.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Cata\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -43,9 +43,9 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net6.0": {
@@ -66,24 +66,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj": {
+    "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj",
+        "projectUniqueName": "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj",
         "projectName": "AutoGestion",
-        "projectPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\AutoGestion.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\AutoGestion\\obj\\",
+        "projectPath": "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj",
+        "packagesPath": "C:\\Users\\Cata\\.nuget\\packages\\",
+        "outputPath": "C:\\GestionClick\\AutoGestion\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Cata\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -99,8 +99,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
-                "projectPath": "C:\\Users\\User\\source\\repos\\acalvaradog\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
+              "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj": {
+                "projectPath": "C:\\GestionClick\\Autogestion.Shared\\Autogestion.Shared.csproj"
               }
             }
           }
@@ -113,9 +113,9 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "all"
+          "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net6.0": {
@@ -177,7 +177,7 @@
             "Microsoft.NET.Sdk.WebAssembly.Pack": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[9.0.0, )",
+              "version": "[9.0.5, )",
               "autoReferenced": true
             },
             "MudBlazor": {
@@ -211,7 +211,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

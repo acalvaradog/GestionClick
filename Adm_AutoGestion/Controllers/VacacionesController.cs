@@ -16,6 +16,7 @@ using OfficeOpenXml;
 using Adm_AutoGestion.Models.EvaDesempeno;
 using Adm_AutoGestion.Migrations;
 using System.Globalization;
+using System.Web.Services.Description;
 
 
 namespace Adm_AutoGestion.Controllers
@@ -364,6 +365,7 @@ namespace Adm_AutoGestion.Controllers
         {
 
             List<string> funciones = Acceso.Validar(Session["Empleado"]);
+            string EmpresaSesion = Convert.ToString(Session["Empresa"]);
 
             if (Acceso.EsAnonimo)
             {
@@ -378,7 +380,7 @@ namespace Adm_AutoGestion.Controllers
             List<SelectListItem> lst = new List<SelectListItem>();
             List<SelectListItem> lst2 = new List<SelectListItem>();
             List<Vacaciones> model = new List<Vacaciones>();
-
+            
             Session["filtrosVac"] = String.Format("{0},{1}", Area, Sociedad);
 
             using (AutogestionContext db = new AutogestionContext())
@@ -388,7 +390,7 @@ namespace Adm_AutoGestion.Controllers
                 var empleado = db.Empleados.Find(empleadoid);
 
                 //var lista = db.PersonalActivo.Where(x => x.Superior == empleado.NroEmpleado || x.Jefe == empleado.NroEmpleado || x.Director == empleado.NroEmpleado).Select(x => new { x.Area }).GroupBy(b => b.Area).ToList();
-                var lista = db.Empleados.Where(x => x.Jefe == empleado.NroEmpleado && x.Activo == "SI").Select(x => new { x.AreaDescripcion }).GroupBy(b => b.AreaDescripcion).ToList();
+                var lista = db.Empleados.Where(x => x.Jefe == empleado.NroEmpleado && x.Activo == "SI" && empleado.Empresa == EmpresaSesion).Select(x => new { x.AreaDescripcion }).GroupBy(b => b.AreaDescripcion).ToList();
                 foreach (var x in lista)
                 {
                     lst.Add(new SelectListItem() { Text = x.Key.ToString(), Value = x.Key.ToString() });
@@ -404,7 +406,9 @@ namespace Adm_AutoGestion.Controllers
                 }
 
 
-                ViewBag.Empresas = lst2;
+                //ViewBag.Empresas = lst2;
+
+                ViewBag.Empresas =   db.Sociedad.Where(x => x.Codigo == EmpresaSesion).ToList();
 
 
                 int id = -1;
@@ -421,7 +425,7 @@ namespace Adm_AutoGestion.Controllers
                     if (id > 0)
                     {
                         string opcion = "Aprobar";
-                        model = _repo.ObtenerTodos2(opcion, EmpleadoId, Area, Sociedad);
+                        model = _repo.ObtenerTodos2(opcion, EmpleadoId, Area, EmpresaSesion);
                         ViewBag.Vacaciones = model.FirstOrDefault(e => e.Id == id);
                     }
 
@@ -480,12 +484,12 @@ namespace Adm_AutoGestion.Controllers
                 Int32.TryParse(Empleado, out empleadoid);
                 string modifica = String.Format("{0}", Session["Empleado"]);
                 Int32.TryParse(modifica, out IdUsuarioM);
-
+                string opcion = "JEFE";
 
                 if (Id != "0")
                 {
                     // TODO: Add update logic here
-                    _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
+                    _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra,opcion);
                     if (Estado == "5")
                     {
                         using (var db = new AutogestionContext())
@@ -725,8 +729,8 @@ namespace Adm_AutoGestion.Controllers
 
 
                         }
-
-                        _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
+                        string opcion = "GESTIONH";
+                        _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra, opcion);
                         Empleado empleado = new Empleado();
                         empleado = db.Empleados.FirstOrDefault(e => e.NroEmpleado == NroEmpleado);
                         var jefe = db.Empleados.FirstOrDefault(s => s.NroEmpleado == empleado.Jefe);
@@ -853,12 +857,12 @@ namespace Adm_AutoGestion.Controllers
                 Int32.TryParse(Empleado, out empleadoid);
                 string modifica = String.Format("{0}", Session["Empleado"]);
                 Int32.TryParse(modifica, out IdUsuarioM);
-
+                string opcion = "";
 
                 if (Id != "0")
                 {
                     // TODO: Add update logic here
-                    _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra);
+                    _repo.Modificar(Observacion, Id, Empleado, Estado, IdUsuarioM, FechaInicial, FechaFin, Cds, Cdp, ObservacionTra, opcion);
                     if (Estado == "5")
                     {
                         using (var db = new AutogestionContext())
@@ -2336,8 +2340,7 @@ namespace Adm_AutoGestion.Controllers
         public ActionResult CargarPeriodosVacaciones(HttpPostedFileBase archivoExcel)
         {
 
-
-
+            string message = "";
             var empleadoid = Session["Empleado"];
 
             if (archivoExcel != null && archivoExcel.ContentLength > 0)
@@ -2386,46 +2389,132 @@ namespace Adm_AutoGestion.Controllers
                                 {
 
                                     if (_datosTemporales != null)
-
+                                    {
                                         foreach (var fila in _datosTemporales)
                                         {
+                                            DateTime? fechaingresoreal = null;
+                                            DateTime fechaingreso = DateTime.MinValue;
+                                            DateTime periodoini = DateTime.MinValue;
+                                            DateTime peridofin = DateTime.MinValue;
+                                            string[] formatos = { "dd/MM/yyyy H:mm:ss", "dd/MM/yyyy", "yyyy/MM/dd H:mm:ss", "yyyy/MM/dd" };
 
+                                            // Función local para intentar parsear la fecha de forma segura
+                                            DateTime? ParsearFechaSegura(string valor)
                                             {
-                                                DateTime? fechaingresoreal = null; // Inicializar como null
-                                                DateTime fechaingreso = DateTime.MinValue;
-                                                DateTime periodoini = DateTime.MinValue;
-                                                DateTime peridofin = DateTime.MinValue;
+                                                if (!string.IsNullOrEmpty(valor))
+                                                    if (!string.IsNullOrEmpty(valor))
+                                                    {
+                                                        if (double.TryParse(valor, out double excelSerialDate))
+                                                        {
+                                                            try
+                                                            {
+                                                                return DateTime.FromOADate(excelSerialDate);
+                                                            }
+                                                            catch (Exception)
+                                                            {
+                                                                Console.WriteLine($"Advertencia: No se pudo convertir la fecha numérica de Excel '{valor}'.");
+                                                                // Si falla la conversión de OADate, podríamos intentar parsear como texto igualmente
+                                                            }
+                                                        }
+
+                                                       if (DateTime.TryParseExact(valor, formatos, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime resultado))
+                                                        {
+                                                            return resultado;
+                                                        }
+                                                        else
+                                                        {
+                                                            Console.WriteLine($"Advertencia: No se pudo parsear la fecha '{valor}'. Valor: '{valor}'");
+                                                            return null;
+                                                        }
+                                                    }
+                                                return null;
+                                            }
+
+                                            // Procesar fila[1] (fechaingresoreal)
+                                            fechaingresoreal = ParsearFechaSegura(fila[1]);
+
+                                            // Procesar fila[2] (fechaingreso)
+                                            DateTime? fechaIngresoNullable = ParsearFechaSegura(fila[2]);
+                                            if (fechaIngresoNullable.HasValue)
+                                            {
+                                                fechaingreso = fechaIngresoNullable.Value;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine($"Advertencia: No se pudo parsear la fecha de ingreso '{fila[2]}'. Se usará el valor predeterminado: {fechaingreso}");
+                                                // Considera si este es el comportamiento deseado
+                                            }
+
+                                            // Procesar fila[3] (periodoini)
+                                            DateTime? periodoIniNullable = ParsearFechaSegura(fila[3]);
+                                            if (periodoIniNullable.HasValue)
+                                            {
+                                                periodoini = periodoIniNullable.Value;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine($"Advertencia: No se pudo parsear la fecha de inicio de periodo '{fila[3]}'. Se usará el valor predeterminado: {periodoini}");
+                                                // Considera si este es el comportamiento deseado
+                                            }
+
+                                            // Procesar fila[4] (peridofin)
+                                            DateTime? periodoFinNullable = ParsearFechaSegura(fila[4]);
+                                            if (periodoFinNullable.HasValue)
+                                            {
+                                                peridofin = periodoFinNullable.Value;
+                                            }
+                                            else
+                                            {
+                                                Console.WriteLine($"Advertencia: No se pudo parsear la fecha de fin de periodo '{fila[4]}'. Se usará el valor predeterminado: {peridofin}");
+                                                // Considera si este es el comportamiento deseado
+                                            }
 
 
 
-                                                if (!string.IsNullOrEmpty(fila[1]))
-                                                {
+                                            //if (_datosTemporales != null)
 
-                                                    fechaingresoreal = DateTime.ParseExact(fila[1], "dd/MM/yyyy H:mm:ss", null);
-                                                }
-                                                DateTime fechaTemporal = DateTime.MinValue; // O cualquier otro valor predeterminado que tenga sentido en tu contexto
+                                            //    foreach (var fila in _datosTemporales)
+                                            //    {
 
-                                                if (!string.IsNullOrEmpty(fila[2]))
-                                                {
-                                                    DateTime.TryParseExact(fila[2], "dd/MM/yyyy H:mm:ss", null, DateTimeStyles.None, out fechaTemporal);
-                                                    fechaingreso = fechaTemporal;
-                                                }
+                                            //        {
+                                            //            DateTime? fechaingresoreal = null; // Inicializar como null
+                                            //            DateTime fechaingreso = DateTime.MinValue;
+                                            //            DateTime periodoini = DateTime.MinValue;
+                                            //            DateTime peridofin = DateTime.MinValue;
+                                            //            DateTime fechaTemporal;
+                                            //            //DateTime fechaTemporal = DateTime.MinValue; // O cualquier otro valor predeterminado que tenga sentido en tu contexto
+                                            //            string[] formatos = { "dd/MM/yyyy H:mm:ss", "dd/MM/yyyy", "yyyy/MM/dd H:mm:ss", "yyyy/MM/dd" };
 
-                                                fechaTemporal = DateTime.MinValue;
-                                                if (!string.IsNullOrEmpty(fila[3]))
-                                                {
-                                                    DateTime.TryParseExact(fila[3], "dd/MM/yyyy H:mm:ss", null, DateTimeStyles.None, out fechaTemporal);
-                                                    periodoini = fechaTemporal;
-                                                }
+                                            //            if (!string.IsNullOrEmpty(fila[1]))
+                                            //            {
 
-                                                fechaTemporal = DateTime.MinValue;
-                                                if (!string.IsNullOrEmpty(fila[4]))
-                                                {
-                                                    DateTime.TryParseExact(fila[4], "dd/MM/yyyy H:mm:ss", null, DateTimeStyles.None, out fechaTemporal);
-                                                    peridofin = fechaTemporal;
-                                                }
+                                            //                DateTime.TryParseExact(fila[1], formatos, null, DateTimeStyles.None, out fechaTemporal);
 
-                                                var empleado = db.Empleados.AsEnumerable().FirstOrDefault(x => x.NroEmpleado == fila[0]);
+                                            //            }
+
+
+
+                                            //            if (!string.IsNullOrEmpty(fila[2]))
+                                            //            {
+                                            //                DateTime.TryParseExact(fila[2], formatos, null, DateTimeStyles.None, out fechaTemporal);
+                                            //                fechaingreso = fechaTemporal;
+                                            //            }
+
+                                            //            fechaTemporal = DateTime.MinValue;
+                                            //            if (!string.IsNullOrEmpty(fila[3]))
+                                            //            {
+                                            //                DateTime.TryParseExact(fila[3], formatos, null, DateTimeStyles.None, out fechaTemporal);
+                                            //                periodoini = fechaTemporal;
+                                            //            }
+
+                                            //            fechaTemporal = DateTime.MinValue;
+                                            //            if (!string.IsNullOrEmpty(fila[4]))
+                                            //            {
+                                            //                DateTime.TryParseExact(fila[4], formatos, null, DateTimeStyles.None, out fechaTemporal);
+                                            //                peridofin = fechaTemporal;
+                                            //            }
+
+                                            var empleado = db.Empleados.AsEnumerable().FirstOrDefault(x => x.NroEmpleado == fila[0]);
 
 
                                                 model.Add(new PeriodoVacacionesEmpleado()
@@ -2438,6 +2527,7 @@ namespace Adm_AutoGestion.Controllers
                                                     Dias = Convert.ToInt32(fila[5]),// Suponiendo que la cantidad está en la tercera columna
                                                     FechaRegistro = DateTime.Now,
                                                     EmpleadoIdRegistra =  Convert.ToInt32(empleadoid),
+                                                    DiasporDisfrutar = Convert.ToInt32(fila[6]),
                                                 });
                                                 
 
@@ -2448,7 +2538,9 @@ namespace Adm_AutoGestion.Controllers
                                     db.PeriodoVacacionesEmpleado.AddRange(model);
                                     db.SaveChanges();
 
-                                    ViewBag.Mensaje = "Archivo cargado correctamente.";
+                                    message = String.Format("Archivo cargado correctamente.");
+                                    Session["message"] = message;
+                                  
                                     return View(model);
 
 
@@ -2467,12 +2559,31 @@ namespace Adm_AutoGestion.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Error = "Error al cargar el archivo: " + ex.Message;
+                    string errorMessage = "Ocurrió un error:\n";
+                    errorMessage += $"Mensaje: {ex.Message}\n";
+                    errorMessage += $"StackTrace:\n{ex.StackTrace}\n";
+
+                    Exception innerException = ex.InnerException;
+                    while (innerException != null)
+                    {
+                        errorMessage += $"--- Excepción Interna ---\n";
+                        errorMessage += $"Mensaje: {innerException.Message}\n";
+                        errorMessage += $"StackTrace:\n{innerException.StackTrace}\n";
+                        innerException = innerException.InnerException;
+                    }
+
+
+                    message = String.Format("Error al cargar el archivo: {0}", ex.Message);
+                    Session["message"] =errorMessage;
+
+                  
                 }
             }
             else
             {
-                ViewBag.Error = "Por favor, selecciona un archivo Excel.";
+                message = String.Format("Por favor, selecciona un archivo Excel");
+                Session["message"] = message;
+               
             }
 
 

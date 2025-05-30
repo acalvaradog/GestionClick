@@ -75,7 +75,7 @@ else
                 <MudTimePicker Label="Hora Hasta" @bind-Time="timeHasta" Step="15" @bind-Date="DetalleHorasExtra.HoraHasta" PickerClosed="Verificar" />
                 </MudItem> *@
                         <MudItem xs="12" sm="3">
-                            <MudSelect T="TimeSpan?" Text="Seleccione..." @bind-Value="timeDesde" Label="Hora Desde" SelectedValuesChanged="Verificar2">
+                            <MudSelect T="TimeSpan?" Text="Seleccione..." @bind-Value="timeDesde" Label="Hora Desde" SelectedValuesChanged="Verificar2" OnKeyUp="Verificar2">
 
                                 @foreach (var opcion in HorasDelDía)
                                 {
@@ -86,7 +86,7 @@ else
                             </MudSelect>
                         </MudItem>
                         <MudItem xs="12" sm="3">
-                            <MudSelect T="TimeSpan?" Text="Seleccione..." @bind-Value="timeHasta" Label="Hora Hasta" SelectedValuesChanged="Verificar2">
+                            <MudSelect T="TimeSpan?" Text="Seleccione..." @bind-Value="timeHasta" Label="Hora Hasta" SelectedValuesChanged="Verificar2" OnKeyUp="Verificar2">
                                 @foreach (var opcion in HorasDelDía)
                                 {
                                     <MudSelectItem T="TimeSpan?" Value="@opcion"> @opcion</MudSelectItem>

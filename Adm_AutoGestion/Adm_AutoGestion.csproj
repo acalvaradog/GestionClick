@@ -3124,6 +3124,7 @@
     <Content Include="Contents\js\EncabezadoEncuesta.js" />
     <Content Include="Contents\js\EstructuraJerarquica.js" />
     <Content Include="Contents\js\EvaDesempeño.js" />
+    <Content Include="Contents\js\EvaluacionRa.js" />
     <Content Include="Contents\js\Eventos.js" />
     <Content Include="Contents\js\fullcalendar-5.8.0\lib\locales-all.js" />
     <Content Include="Contents\js\fullcalendar-5.8.0\lib\locales-all.min.js" />
@@ -3301,6 +3302,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <None Include="PlantillasPDF\PlantillaSolicitudCesantias.cshtml" />
+    <Content Include="PlantillasPDF\Cesantias.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -3676,6 +3678,7 @@
     <Compile Include="Controllers\EstructuraJerarquicaController.cs" />
     <Compile Include="Controllers\EstructuraJerarquicaEVADESController.cs" />
     <Compile Include="Controllers\EvaDesempeñoController.cs" />
+    <Compile Include="Controllers\EvaluacionCriteriosController.cs" />
     <Compile Include="Controllers\EvaluacionDesempenoRaController.cs" />
     <Compile Include="Controllers\EventosController.cs" />
     <Compile Include="Controllers\GrupoEmpleadosController.cs" />
@@ -3773,6 +3776,10 @@
     <Compile Include="Migrations\202503041538567_CreacionTablasEvaluacion.cs" />
     <Compile Include="Migrations\202503041538567_CreacionTablasEvaluacion.designer.cs">
       <DependentUpon>202503041538567_CreacionTablasEvaluacion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202504212240403_campo_dias_Disfrutar.cs" />
+    <Compile Include="Migrations\202504212240403_campo_dias_Disfrutar.designer.cs">
+      <DependentUpon>202504212240403_campo_dias_Disfrutar.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Acceso.cs" />
@@ -3991,6 +3998,7 @@
     <Compile Include="Services\EstructuraJerarquicaEVADESRepository.cs" />
     <Compile Include="Services\EstructuraJerarquicaRepository.cs" />
     <Compile Include="Services\EvaDesempenoRepository.cs" />
+    <Compile Include="Services\EvaluacionCriterioRepository.cs" />
     <Compile Include="Services\EvaluacionDesempenoRepository.cs" />
     <Compile Include="Services\EventosRepository.cs" />
     <Compile Include="Services\GrupoEmpleadosRepository.cs" />
@@ -4343,6 +4351,10 @@
     <Content Include="Views\Cesantias\CartaAprobacion.cshtml" />
     <Content Include="Views\EvaluacionDesempenoRa\EvaluacionDesempeno.cshtml" />
     <Content Include="Views\EvaluacionDesempenoRa\Index.cshtml" />
+    <Content Include="Views\EvaluacionDesempenoRa\EvaluacionDesempenoRealizadas.cshtml" />
+    <Content Include="Views\EvaluacionCriterios\Create.cshtml" />
+    <Content Include="Views\EvaluacionCriterios\Index.cshtml" />
+    <Content Include="Views\Vacaciones\CargarPeriodosVacaciones.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -4386,6 +4398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503041538567_CreacionTablasEvaluacion.resx">
       <DependentUpon>202503041538567_CreacionTablasEvaluacion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202504212240403_campo_dias_Disfrutar.resx">
+      <DependentUpon>202504212240403_campo_dias_Disfrutar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Report2.rdlc" />
     <EmbeddedResource Include="Report3.rdlc" />

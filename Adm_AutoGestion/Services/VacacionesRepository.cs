@@ -60,8 +60,10 @@ namespace Adm_AutoGestion.Services
                     //}
 
 
-                    Items = db.Vacaciones.Where(e => e.EstadoId == 1 &&  e.Empleado.Jefe == datos.NroEmpleado && e.Empleado.AreaDescripcion == Area && e.Empleado.Empresa == Sociedad).ToList();
-                foreach (Vacaciones Item in Items)
+                    Items = db.Vacaciones.Where(e => e.EstadoId == 1 &&  e.Empleado.Jefe == datos.NroEmpleado && 
+                    e.Empleado.Empresa == Sociedad).ToList();
+                
+                    foreach (Vacaciones Item in Items)
                 {
                     Item.Empleado = db.Empleados.FirstOrDefault(e => e.Id == Item.EmpleadoId);
                     Item.EstadoVacaciones = db.EstadoVacaciones.FirstOrDefault(x => x.Id == Item.EstadoId);
@@ -247,7 +249,7 @@ namespace Adm_AutoGestion.Services
         }
 
 
-        internal void Modificar(string Observacion, string Id, string Empleado, string Estado, int IdUsuarioM, string FechaInicial, string FechaFin, string Cds, string Cdp, string ObservacionTra)
+        internal void Modificar(string Observacion, string Id, string Empleado, string Estado, int IdUsuarioM, string FechaInicial, string FechaFin, string Cds, string Cdp, string ObservacionTra, string opcion)
         {
 
             using (var db = new AutogestionContext())
@@ -308,8 +310,57 @@ namespace Adm_AutoGestion.Services
                     db.HistorialVacaciones.Add(Historial);
                     db.SaveChanges();
 
+                    if(opcion =="GESTIONH") {
+                    
+                        List<PeriodoVacacionesEmpleado> PeriodoVacaciones = new List<PeriodoVacacionesEmpleado>();
+
+                    PeriodoVacaciones = db.PeriodoVacacionesEmpleado
+                                         .Where(x => x.EmpleadoId ==  empleado &&  x.DiasporDisfrutar < 15)
+                                         .OrderBy (x => x.PeriodoFin).ToList();
+
+
+                    int cantidadSolicitados = Convert.ToInt32(Cds);
+                    int diasrestantesSolicitados = Convert.ToInt32(Cds);
+
+                    foreach (var periodo in PeriodoVacaciones)
+                    {
+
+                      
+                     
+
+                        if (diasrestantesSolicitados >0) {
+
+                            int diasDisponiblesPeriodo = periodo.Dias - periodo.DiasporDisfrutar;
+                            int diasAAsignar = Math.Min(diasrestantesSolicitados, diasDisponiblesPeriodo);
+
+                            if (diasAAsignar > 0) {
+
+                                periodo.DiasporDisfrutar += diasAAsignar;
+                                periodo.EmpleadoModifica = IdUsuarioM;
+                                periodo.FechaModifica = DateTime.Now;
+                                diasrestantesSolicitados -= diasAAsignar;
+
+                            }
+
+
+                        }
+
+                        db.SaveChanges();
+
+
+                    }
+
+
+                    }
+
+
+
+
+
+
+
                 }
-                catch
+                catch(Exception e)
                 {
                 }
             }

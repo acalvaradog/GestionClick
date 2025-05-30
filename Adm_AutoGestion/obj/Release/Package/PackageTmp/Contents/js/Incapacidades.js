@@ -1,4 +1,7 @@
-﻿$(document).ready(function () {
+﻿
+
+
+$(document).ready(function () {
 
     /**************************** VALIDAR FORMULARIO ***********************************/
     $('#frm_aprobar_incapacidad').submit(function (event) {
@@ -121,3 +124,4 @@ function Descarga_Adjuntos_Incap($Id, Empleado, IndJefe) {
     });
 }
         //***********************************------------------------------------********************************************
+

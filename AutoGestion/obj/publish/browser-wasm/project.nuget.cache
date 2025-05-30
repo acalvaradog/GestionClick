@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Mv7/H7hNvSj+CO4hMmIsS++uRo1fj16cul7YCjPLF4EP2MzrGZ4BvraEP0Xe9M89b0BlTJMshtBE/l6HLcKnpQ==",
+  "dgSpecHash": "UHe61ZZ3+mXtlPSzbm/5ncG34OZKQkpX+KD1DpGy0N9IqKEZdPSZCYjQ68v1wK5/0jwHbu8/lLig9K5gEX14gw==",
   "success": true,
-  "projectFilePath": "D:\\Cata\\Mercado Alvarado\\Documentos\\6-Repository_Personal\\GestionClick\\AutoGestion\\AutoGestion.csproj",
+  "projectFilePath": "C:\\GestionClick\\AutoGestion\\AutoGestion.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Cata\\.nuget\\packages\\blazorbarcodescanner.zxing.js\\1.0.3\\blazorbarcodescanner.zxing.js.1.0.3.nupkg.sha512",
     "C:\\Users\\Cata\\.nuget\\packages\\blazored.localstorage\\4.3.0\\blazored.localstorage.4.3.0.nupkg.sha512",

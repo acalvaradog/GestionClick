@@ -26,6 +26,8 @@ namespace Adm_AutoGestion.Models
         [Required]
         public int Dias { get; set; }
 
+        public int DiasporDisfrutar { get; set; }
+
         // Auditoria
         public DateTime FechaRegistro { get; set; }
         public int EmpleadoIdRegistra  { get; set; }

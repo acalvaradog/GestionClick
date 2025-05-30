@@ -1,7 +1,7 @@
 {
   "entryAssembly": "AutoGestion",
   "resources": {
-    "hash": "sha256-MQOkCgBQ8JnWs3fl6/mUk0LSt+DF9peHTLhaUpTAI2Q=",
+    "hash": "sha256-rXZWsDrznTURiVizoKkb6f6hB436jEeLT19d1pdp0I0=",
     "runtime": {
       "dotnet.6.0.33.yhiguvkaes.js": "sha256-3qQapGQ76xXOm4Dpi23h4jVNXH1bTJXQIuoMVyT5rnU=",
       "dotnet.timezones.blat": "sha256-P+/t9PCEv/9QsJggxMNw2wdb6fNvy1O6Es0UqrFfIPQ=",
@@ -11,8 +11,8 @@
       "icudt_no_CJK.dat": "sha256-OxylFgLJlFqixsj+nLxYVsv5iZLvfIKMpLf9hrWaChA="
     },
     "assembly": {
-      "AutoGestion.dll": "sha256-OEtEBnllaTqx+QC0knfKmm5a7U7tAB8jU+07EtIv9Ik=",
-      "Autogestion.Shared.dll": "sha256-7bdXJsZy3qVH1hTzhVY012eFm/j1Do6tSUh5OQ8v4/0=",
+      "AutoGestion.dll": "sha256-yWp+kZbUh2v5E6Y4KCpvNYMGzD/zo1OwLQ78VtGgRdo=",
+      "Autogestion.Shared.dll": "sha256-Cv5nEE29vA5BWL6KdtLV5hN8fb3WQps7EbaCUSi63m8=",
       "BlazorBarcodeScanner.ZXing.JS.dll": "sha256-GzZ69zQTblA4UBwFZ827Vch0Fvqj/KOLzOlKnHf+gUM=",
       "Blazored.LocalStorage.dll": "sha256-Jq/dS58mO5wtL2d0x/FeAdDZ1bUTpTzPODJpBZUre/4=",
       "BootstrapBlazor.dll": "sha256-k3rDgZg3fe9glumlncNI1Gc2busER5BeI1MrX46We4c=",

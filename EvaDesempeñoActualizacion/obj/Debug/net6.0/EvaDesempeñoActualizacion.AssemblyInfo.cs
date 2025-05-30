@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EvaDesempeñoActualizacion")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7f6290c76ecc8eba943b9cf070c2ec517de2511")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+88dfe7b2474b4938c0c23f8c04b1f927137e86db")]
 [assembly: System.Reflection.AssemblyProductAttribute("EvaDesempeñoActualizacion")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EvaDesempeñoActualizacion")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

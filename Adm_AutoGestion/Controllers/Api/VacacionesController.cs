@@ -407,128 +407,209 @@ namespace Adm_AutoGestion.Controllers.Api
 
         [HttpGet]
         [Route("api/Historial/{documento}")]
+        //public string Historial(string documento)
+        //{
+
+        //    DataTable Datos = new DataTable();
+        //    var Result = "";
+        //    //var Diferencia = ""; 
+        //    InMemoryDestinationConfiguration DestinacionConfiguracion = new InMemoryDestinationConfiguration();
+
+        //    String contraseña = Properties.Settings.Default.Contraseña.ToString();
+        //    var encodedTextBytes = Convert.FromBase64String(contraseña);
+
+        //    contraseña = Encoding.UTF8.GetString(encodedTextBytes);
+
+        //    RfcConfigParameters config = new RfcConfigParameters();
+
+
+        //    try
+        //    {
+
+
+        //        config.Add(RfcConfigParameters.Name, "SAP");
+        //        config.Add(RfcConfigParameters.AppServerHost, Properties.Settings.Default.Servidor.ToString());
+        //        config.Add(RfcConfigParameters.SystemNumber, Properties.Settings.Default.Id.ToString());
+        //        config.Add(RfcConfigParameters.User, Properties.Settings.Default.Usuario.ToString());
+        //        config.Add(RfcConfigParameters.Password, contraseña);
+        //        config.Add(RfcConfigParameters.Client, Properties.Settings.Default.Mandante.ToString());
+        //        config.Add(RfcConfigParameters.Language, "ES");
+        //        config.Add(RfcConfigParameters.SAPRouter, Properties.Settings.Default.Saprouter.ToString());
+        //        config.Add(RfcConfigParameters.LogonGroup, "Foscal");
+
+        //        RfcDestinationManager.RegisterDestinationConfiguration(DestinacionConfiguracion);
+        //        DestinacionConfiguracion.AddOrEditDestination(config);
+        //        RfcDestination destination = RfcDestinationManager.GetDestination("SAP");
+
+        //        RfcRepository repository = destination.Repository;
+        //        IRfcFunction function = repository.CreateFunction("ZMF_CONTING_ABSENTISMO");
+        //        //PARAMETROS IMPORT
+        //        function.SetValue("I_PERNR", documento);
+
+        //        function.Invoke(destination);
+        //        //OBTENER RESPUESTA 
+
+        //        IRfcTable Tabla = function.GetTable("TB_PA2006");
+
+        //        Datos = GetDataTableFromRFCTable(Tabla);
+                
+
+        //        int count = Datos.Rows.Count;
+        //        int s = count - 1;
+        //        int cont = 6;
+        //        decimal suma = 0;
+        //        decimal resta = 0;
+               
+
+        //        for (var f = 0; f < count; f++ )
+        //        {
+                    
+        //                if (Datos.Rows[f]["KTART"].ToString() == "02" && Datos.Rows[f]["DEEND"].ToString() == "9999-12-31")
+        //                {
+        //                    Result += String.Format("<tr><td>" + Datos.Rows[f]["BEGDA"].ToString() + "</td><td>" + Datos.Rows[f]["ENDDA"].ToString() + "</td><td>" + Math.Round(Convert.ToDecimal(Datos.Rows[f]["ANZHL"].ToString())) + "</td><td>" + Math.Round(Convert.ToDecimal(Datos.Rows[f]["KVERB"].ToString())) + "</td></tr>");
+
+        //                    resta = (Math.Round(Convert.ToDecimal(Datos.Rows[f]["ANZHL"].ToString())) - Math.Round(Convert.ToDecimal(Datos.Rows[f]["KVERB"].ToString())));
+        //                    suma = suma + resta;
+
+        //                }
+                    
+        //        }
+
+        //        Result += String.Format(";" + suma);
+
+        //        if (Datos.Rows.Count > 0)
+        //        {
+
+
+
+        //            using (var db = new AutogestionContext())
+        //            {
+        //                var empleado = db.Empleados.FirstOrDefault(x => x.Documento == documento);
+
+        //                if (empleado == null)
+        //                {
+
+        //                    var nuevoempleado = new Empleado();
+        //                    nuevoempleado.Documento = documento;
+        //                    nuevoempleado.NroEmpleado = Datos.Rows[0]["PERNR"].ToString();
+        //                    nuevoempleado.Nombres = Datos.Rows[0]["ENAME"].ToString();
+        //                    nuevoempleado.Empresa = Datos.Rows[0]["BUKRS"].ToString();
+        //                    nuevoempleado.Contraseña = "";
+        //                    db.Empleados.Add(nuevoempleado);
+        //                    db.SaveChanges();
+
+
+        //                }
+        //            }
+        //        }
+
+        //    }
+        //    catch (SystemException ex)
+        //    {
+        //        // ErrorLog(ex.Message + ";Conectar a Sap;Clase Procedimientos;Rutina Consultar Citas");
+        //    }
+        //    catch (RfcLogonException ex)
+        //    {
+        //        //ErrorLog(ex.Message + ";Conectar a Sap;Clase Procedimientos;Rutina Consultar Citas");
+        //    }
+        //    catch (RfcAbapException ex)
+        //    {
+        //        //ErrorLog(ex.Message + ";Conectar a Sap;Clase Procedimientos;Rutina Consultar Citas");
+        //    }
+        //    finally
+        //    {
+        //        RfcDestinationManager.UnregisterDestinationConfiguration(DestinacionConfiguracion);
+        //        // DestinacionConfiguracion.RemoveDestination("SAP");
+        //    }
+
+        //    string resultado = "";
+
+
+        //    //}
+
+        //    //resultado = DataSetToJSON(Datos);
+        //    resultado = (Result);
+        //    return resultado;
+
+        //}
+
+        //Ajuste para que lea Tabla periodo vacaciones
+
         public string Historial(string documento)
         {
 
-            DataTable Datos = new DataTable();
             var Result = "";
-            //var Diferencia = ""; 
-            InMemoryDestinationConfiguration DestinacionConfiguracion = new InMemoryDestinationConfiguration();
 
-            String contraseña = Properties.Settings.Default.Contraseña.ToString();
-            var encodedTextBytes = Convert.FromBase64String(contraseña);
+            try { 
 
-            contraseña = Encoding.UTF8.GetString(encodedTextBytes);
+            
 
-            RfcConfigParameters config = new RfcConfigParameters();
+            var model = db.PeriodoVacacionesEmpleado.
+                        Include(x => x.Empleado).Where(x => x.Empleado.NroEmpleado ==  documento).ToList();
 
 
-            try
+
+            decimal suma = 0;
+
+
+                
+                foreach (var periodo in model)
             {
-
-
-                config.Add(RfcConfigParameters.Name, "SAP");
-                config.Add(RfcConfigParameters.AppServerHost, Properties.Settings.Default.Servidor.ToString());
-                config.Add(RfcConfigParameters.SystemNumber, Properties.Settings.Default.Id.ToString());
-                config.Add(RfcConfigParameters.User, Properties.Settings.Default.Usuario.ToString());
-                config.Add(RfcConfigParameters.Password, contraseña);
-                config.Add(RfcConfigParameters.Client, Properties.Settings.Default.Mandante.ToString());
-                config.Add(RfcConfigParameters.Language, "ES");
-                config.Add(RfcConfigParameters.SAPRouter, Properties.Settings.Default.Saprouter.ToString());
-                config.Add(RfcConfigParameters.LogonGroup, "Foscal");
-
-                RfcDestinationManager.RegisterDestinationConfiguration(DestinacionConfiguracion);
-                DestinacionConfiguracion.AddOrEditDestination(config);
-                RfcDestination destination = RfcDestinationManager.GetDestination("SAP");
-
-                RfcRepository repository = destination.Repository;
-                IRfcFunction function = repository.CreateFunction("ZMF_CONTING_ABSENTISMO");
-                //PARAMETROS IMPORT
-                function.SetValue("I_PERNR", documento);
-
-                function.Invoke(destination);
-                //OBTENER RESPUESTA 
-
-                IRfcTable Tabla = function.GetTable("TB_PA2006");
-
-                Datos = GetDataTableFromRFCTable(Tabla);
                 
 
-                int count = Datos.Rows.Count;
-                int s = count - 1;
-                int cont = 6;
-                decimal suma = 0;
-                decimal resta = 0;
+                Result += String.Format("<tr><td>" + periodo.PeriodoInicio.ToString() + "</td><td>" + periodo.PeriodoFin.ToString() + "</td><td>" + periodo.Dias + "</td><td>" + periodo.DiasporDisfrutar  + "</td></tr>");
+
+                decimal resta = (periodo.Dias - periodo.DiasporDisfrutar);
+                suma += resta;
+            }
+
+
+
+
+                Result += String.Format(";" + suma);
                
-
-                for (var f = 0; f < count; f++ )
-                {
-                    
-                        if (Datos.Rows[f]["KTART"].ToString() == "02" && Datos.Rows[f]["DEEND"].ToString() == "9999-12-31")
-                        {
-                            Result += String.Format("<tr><td>" + Datos.Rows[f]["BEGDA"].ToString() + "</td><td>" + Datos.Rows[f]["ENDDA"].ToString() + "</td><td>" + Math.Round(Convert.ToDecimal(Datos.Rows[f]["ANZHL"].ToString())) + "</td><td>" + Math.Round(Convert.ToDecimal(Datos.Rows[f]["KVERB"].ToString())) + "</td></tr>");
-
-                            resta = (Math.Round(Convert.ToDecimal(Datos.Rows[f]["ANZHL"].ToString())) - Math.Round(Convert.ToDecimal(Datos.Rows[f]["KVERB"].ToString())));
-                            suma = suma + resta;
-
-                        }
-                    
-                }
-
-                Result += String.Format(";" + suma);
-
-                if (Datos.Rows.Count > 0)
-                {
+                //if (Datos.Rows.Count > 0)
+                //{
 
 
 
-                    using (var db = new AutogestionContext())
-                    {
-                        var empleado = db.Empleados.FirstOrDefault(x => x.Documento == documento);
+                //    using (var db = new AutogestionContext())
+                //    {
+                //        var empleado = db.Empleados.FirstOrDefault(x => x.Documento == documento);
 
-                        if (empleado == null)
-                        {
+                //        if (empleado == null)
+                //        {
 
-                            var nuevoempleado = new Empleado();
-                            nuevoempleado.Documento = documento;
-                            nuevoempleado.NroEmpleado = Datos.Rows[0]["PERNR"].ToString();
-                            nuevoempleado.Nombres = Datos.Rows[0]["ENAME"].ToString();
-                            nuevoempleado.Empresa = Datos.Rows[0]["BUKRS"].ToString();
-                            nuevoempleado.Contraseña = "";
-                            db.Empleados.Add(nuevoempleado);
-                            db.SaveChanges();
+                //            var nuevoempleado = new Empleado();
+                //            nuevoempleado.Documento = documento;
+                //            nuevoempleado.NroEmpleado = Datos.Rows[0]["PERNR"].ToString();
+                //            nuevoempleado.Nombres = Datos.Rows[0]["ENAME"].ToString();
+                //            nuevoempleado.Empresa = Datos.Rows[0]["BUKRS"].ToString();
+                //            nuevoempleado.Contraseña = "";
+                //            db.Empleados.Add(nuevoempleado);
+                //            db.SaveChanges();
 
 
-                        }
-                    }
-                }
+                //        }
+                //    }
+                //}
 
             }
             catch (SystemException ex)
             {
                 // ErrorLog(ex.Message + ";Conectar a Sap;Clase Procedimientos;Rutina Consultar Citas");
             }
-            catch (RfcLogonException ex)
-            {
-                //ErrorLog(ex.Message + ";Conectar a Sap;Clase Procedimientos;Rutina Consultar Citas");
-            }
-            catch (RfcAbapException ex)
-            {
-                //ErrorLog(ex.Message + ";Conectar a Sap;Clase Procedimientos;Rutina Consultar Citas");
-            }
-            finally
-            {
-                RfcDestinationManager.UnregisterDestinationConfiguration(DestinacionConfiguracion);
-                // DestinacionConfiguracion.RemoveDestination("SAP");
-            }
+           
+
+
 
             string resultado = "";
-
+            resultado = (Result);
 
             //}
 
             //resultado = DataSetToJSON(Datos);
-            resultado = (Result);
+
             return resultado;
 
         }
